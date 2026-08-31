@@ -275,7 +275,7 @@ input.prefilled {
     class="connection"
   ></div>
 
-  <!-- DATOS -->
+  <!-- DATOS DE LA COTIZACIÓN -->
 
   <div class="card">
 
@@ -438,11 +438,22 @@ input.prefilled {
 </div>
 
 
-<div id="warning" class="warning"></div>
+<div
+  id="warning"
+  class="warning"
+></div>
 
-<div id="info" class="info"></div>
 
-<div id="success" class="success"></div>
+<div
+  id="info"
+  class="info"
+></div>
+
+
+<div
+  id="success"
+  class="success"
+></div>
 
 
 <div class="buttons">
@@ -555,14 +566,12 @@ input.prefilled {
 
   <strong>💾 Storage</strong>
 
-
   <p>
     Necesidad calculada:
     <strong id="storageNeeded">
       0 GB
     </strong>
   </p>
-
 
   <p>
     Storage a cotizar:
@@ -571,14 +580,12 @@ input.prefilled {
     </strong>
   </p>
 
-
   <p>
     Cantidad de packs:
     <strong id="storagePacks">
       1
     </strong>
   </p>
-
 
   <p>
     Costo Storage:
@@ -665,7 +672,9 @@ function loadCurrentOpportunity() {
   try {
 
     currentOpportunity =
-      JSON.parse(stored);
+      JSON.parse(
+        stored
+      );
 
   }
 
@@ -689,7 +698,7 @@ function loadCurrentOpportunity() {
 
 
   /*
-    Cliente
+    CLIENTE
   */
 
   const client =
@@ -713,7 +722,7 @@ function loadCurrentOpportunity() {
 
 
   /*
-    Oportunidad
+    OPORTUNIDAD
   */
 
   const opportunity =
@@ -737,7 +746,7 @@ function loadCurrentOpportunity() {
 
 
   /*
-    Usuarios
+    USUARIOS
   */
 
   if (
@@ -771,7 +780,7 @@ function loadCurrentOpportunity() {
 
 
   /*
-    Intentar interpretar storage.
+    STORAGE
   */
 
   if (
@@ -810,6 +819,67 @@ function loadCurrentOpportunity() {
   }
 
 
+  /*
+    SI YA EXISTE UNA COTIZACIÓN,
+    CARGARLA
+  */
+
+  if (
+    currentOpportunity.quote
+  ) {
+
+    const quote =
+      currentOpportunity.quote;
+
+
+    setInputValue(
+      "setup",
+      quote.setup
+    );
+
+
+    setInputValue(
+      "users",
+      quote.users
+    );
+
+
+    setInputValue(
+      "signatures",
+      quote.signatures
+    );
+
+
+    setInputValue(
+      "imageWeight",
+      quote.imageWeight
+    );
+
+
+    setInputValue(
+      "images",
+      quote.images
+    );
+
+
+    setInputValue(
+      "manualPacks",
+      quote.manualPacks
+    );
+
+
+    setInputValue(
+      "support",
+      quote.support
+    );
+
+  }
+
+
+  /*
+    MENSAJE DE CONEXIÓN
+  */
+
   const connection =
     document.getElementById(
       "connection"
@@ -817,23 +887,79 @@ function loadCurrentOpportunity() {
 
 
   connection.textContent =
-    "🔗 Cotización vinculada a: " +
-    currentOpportunity.client +
-    " — " +
-    currentOpportunity.project;
+    currentOpportunity.quote
+
+      ? "🔗 Cotización asociada a: " +
+        currentOpportunity.client +
+        " — " +
+        currentOpportunity.project +
+        " · Ya existe una cotización guardada."
+
+      : "🔗 Cotización vinculada a: " +
+        currentOpportunity.client +
+        " — " +
+        currentOpportunity.project;
 
 
   connection.style.display =
     "block";
 
+
+  /*
+    CALCULAR CON LOS DATOS CARGADOS
+  */
+
+  setTimeout(
+    calculate,
+    50
+  );
+
 }
 
 
 /* =========================================
-   HELPERS DE DATOS
+   SET INPUT
 ========================================= */
 
-function parseNumber(value) {
+function setInputValue(
+  id,
+  value
+) {
+
+  if (
+    value === undefined ||
+    value === null
+  ) {
+
+    return;
+
+  }
+
+
+  const input =
+    document.getElementById(
+      id
+    );
+
+
+  input.value =
+    value;
+
+
+  input.classList.add(
+    "prefilled"
+  );
+
+}
+
+
+/* =========================================
+   NUMERO
+========================================= */
+
+function parseNumber(
+  value
+) {
 
   if (
     typeof value === "number"
@@ -845,9 +971,17 @@ function parseNumber(value) {
 
 
   const texto =
-    String(value)
-      .replace(/\./g, "")
-      .replace(",", ".");
+    String(
+      value || ""
+    )
+    .replace(
+      /\./g,
+      ""
+    )
+    .replace(
+      ",",
+      "."
+    );
 
 
   const numero =
@@ -866,12 +1000,23 @@ function parseNumber(value) {
 }
 
 
-function extraerGB(value) {
+/* =========================================
+   STORAGE A GB
+========================================= */
+
+function extraerGB(
+  value
+) {
 
   const texto =
-    String(value)
-      .toLowerCase()
-      .replace(",", ".");
+    String(
+      value || ""
+    )
+    .toLowerCase()
+    .replace(
+      ",",
+      "."
+    );
 
 
   const match =
@@ -925,15 +1070,20 @@ function extraerGB(value) {
    DINERO
 ========================================= */
 
-function money(value) {
+function money(
+  value
+) {
 
-  return "USD " + value.toLocaleString(
-    "es-AR",
-    {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }
-  );
+  return "USD " +
+    Number(
+      value || 0
+    ).toLocaleString(
+      "es-AR",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    );
 
 }
 
@@ -942,7 +1092,9 @@ function money(value) {
    PRECIO USUARIO
 ========================================= */
 
-function getUserPrice(users) {
+function getUserPrice(
+  users
+) {
 
   if (
     users <= 0
@@ -1088,8 +1240,10 @@ function calculate() {
   warning.style.display =
     "none";
 
+
   info.style.display =
     "none";
+
 
   success.style.display =
     "none";
@@ -1149,7 +1303,9 @@ function calculate() {
 
 
   const storageNeeded =
-    totalKB / 1024 / 1024;
+    totalKB /
+    1024 /
+    1024;
 
 
   let packs;
@@ -1244,7 +1400,9 @@ function calculate() {
   document.getElementById(
     "storageNeeded"
   ).innerText =
-    storageNeeded.toFixed(2) +
+    storageNeeded.toFixed(
+      2
+    ) +
     " GB";
 
 
@@ -1344,7 +1502,7 @@ function calculate() {
 
 
 /* =========================================
-   GUARDAR COTIZACIÓN
+   GUARDAR EN OPORTUNIDAD
 ========================================= */
 
 function saveQuoteToOpportunity() {
@@ -1365,9 +1523,23 @@ function saveQuoteToOpportunity() {
   }
 
 
+  const opportunities =
+    JSON.parse(
+      localStorage.getItem(
+        "preventa_opportunities"
+      )
+    ) || [];
+
+
   const index =
-    findOpportunityIndex(
-      currentOpportunity.id
+    opportunities.findIndex(
+      opportunity =>
+        String(
+          opportunity.id
+        ) ===
+        String(
+          currentOpportunity.id
+        )
     );
 
 
@@ -1384,39 +1556,65 @@ function saveQuoteToOpportunity() {
   }
 
 
-  const quote =
+  /*
+    GUARDAR COTIZACION
+  */
+
+  opportunities[index].quote =
     window.cotizacion;
 
 
-  opportunitiesStorage()[
-    index
-  ].quote =
-    quote;
-
-
-  opportunitiesStorage()[
-    index
-  ].updatedAt =
+  opportunities[index].updatedAt =
     new Date().toISOString();
 
+
+  /*
+    Si todavía estaba en análisis,
+    pasarla automáticamente a cotizando.
+  */
+
+  if (
+    opportunities[index].status ===
+    "analysis"
+  ) {
+
+    opportunities[index].status =
+      "quote";
+
+  }
+
+
+  /*
+    Guardar lista completa.
+  */
 
   localStorage.setItem(
     "preventa_opportunities",
     JSON.stringify(
-      opportunitiesStorage()
+      opportunities
     )
   );
+
+
+  /*
+    Actualizar oportunidad actual.
+  */
+
+  currentOpportunity =
+    opportunities[index];
 
 
   localStorage.setItem(
     "preventa_current_opportunity",
     JSON.stringify(
-      opportunitiesStorage()[
-        index
-      ]
+      currentOpportunity
     )
   );
 
+
+  /*
+    Mensaje de éxito.
+  */
 
   const success =
     document.getElementById(
@@ -1425,41 +1623,32 @@ function saveQuoteToOpportunity() {
 
 
   success.innerText =
-    "✅ Cotización guardada correctamente dentro de la oportunidad.";
+    "✅ Cotización guardada correctamente en la oportunidad.";
 
   success.style.display =
     "block";
 
-}
+
+  /*
+    Actualizar mensaje superior.
+  */
+
+  const connection =
+    document.getElementById(
+      "connection"
+    );
 
 
-/* =========================================
-   OPORTUNIDADES
-========================================= */
-
-function opportunitiesStorage() {
-
-  return JSON.parse(
-    localStorage.getItem(
-      "preventa_opportunities"
-    )
-  ) || [];
-
-}
+  connection.textContent =
+    "🔗 Oportunidad actualizada: " +
+    currentOpportunity.client +
+    " — " +
+    currentOpportunity.project +
+    " · Cotización guardada.";
 
 
-function findOpportunityIndex(id) {
-
-  const list =
-    opportunitiesStorage();
-
-
-  return list.findIndex(
-    opportunity =>
-      String(
-        opportunity.id
-      ) === String(id)
-  );
+  connection.style.display =
+    "block";
 
 }
 
