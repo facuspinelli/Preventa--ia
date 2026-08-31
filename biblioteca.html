@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
@@ -42,7 +43,7 @@ header h1 {
 }
 
 .container {
-  max-width: 1150px;
+  max-width: 1100px;
   margin: 40px auto;
   padding: 0 20px;
 }
@@ -55,33 +56,19 @@ header h1 {
   margin-bottom: 8px;
 }
 
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.top-bar h3 {
-  margin: 0;
-}
-
 .layout {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 20px;
 }
 
-.sidebar,
-.content {
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-}
+/* SIDEBAR */
 
 .sidebar {
+  background: white;
+  border-radius: 14px;
   padding: 20px;
-  height: fit-content;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
 .sidebar h3 {
@@ -93,36 +80,52 @@ header h1 {
   gap: 8px;
 }
 
-.folder-row {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 5px;
-  align-items: center;
-}
-
-.folder {
-  border: none;
-  background: #f9fafb;
+.folder-item {
   padding: 12px;
   border-radius: 8px;
-  text-align: left;
+  background: #f9fafb;
   cursor: pointer;
-  width: 100%;
-  color: #1f2937;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
 }
 
-.folder:hover {
+.folder-item:hover {
   background: #eef2ff;
 }
 
-.folder.active {
+.folder-item.active {
   background: #dbeafe;
-  color: #1e40af;
-  font-weight: bold;
+  border-color: #93c5fd;
 }
 
+.folder-name {
+  font-weight: bold;
+  flex: 1;
+}
+
+.folder-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.folder-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 3px;
+}
+
+/* CONTENIDO */
+
 .content {
+  background: white;
+  border-radius: 14px;
   padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
 .content-header {
@@ -130,69 +133,25 @@ header h1 {
   justify-content: space-between;
   align-items: flex-start;
   gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .content-header h3 {
-  margin: 0;
+  margin: 0 0 5px 0;
 }
 
 .content-header p {
+  margin: 0;
   color: #6b7280;
-  margin: 6px 0 0;
   font-size: 13px;
-}
-
-.files {
-  display: grid;
-  gap: 12px;
-}
-
-.file-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-}
-
-.file-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.file-icon {
-  font-size: 32px;
-}
-
-.file-name {
-  font-weight: bold;
-  word-break: break-word;
-}
-
-.file-meta {
-  color: #6b7280;
-  font-size: 12px;
-  margin-top: 5px;
-  line-height: 1.5;
-}
-
-.file-actions {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
 }
 
 .button {
   border: none;
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 11px 16px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   background: #111827;
   color: white;
 }
@@ -217,19 +176,11 @@ header h1 {
   background: #15803d;
 }
 
-.purple {
-  background: #7c3aed;
-}
-
-.purple:hover {
-  background: #6d28d9;
-}
-
-.danger {
+.red {
   background: #dc2626;
 }
 
-.danger:hover {
+.red:hover {
   background: #b91c1c;
 }
 
@@ -242,69 +193,76 @@ header h1 {
   background: #d1d5db;
 }
 
-.small-button {
-  padding: 8px 10px;
-  font-size: 12px;
+/* PROPUESTA */
+
+.proposal-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  background: #fafafa;
+}
+
+.proposal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.proposal-icon {
+  font-size: 38px;
+}
+
+.proposal-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.proposal-meta {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.proposal-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 .empty {
   text-align: center;
-  padding: 50px 20px;
+  padding: 60px 20px;
   color: #6b7280;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 25px;
-}
-
-.stat {
-  background: white;
-  border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.stat-title {
-  font-size: 11px;
-  color: #6b7280;
-}
-
-.stat-value {
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 5px;
 }
 
 .info {
+  margin-bottom: 20px;
+  padding: 14px;
   background: #eff6ff;
   color: #1e40af;
-  padding: 13px;
   border-radius: 8px;
   font-size: 13px;
-  margin-bottom: 20px;
 }
 
-/* MODALES */
+/* MODAL */
 
 .modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.60);
-  z-index: 1000;
+  background: rgba(0,0,0,0.55);
   justify-content: center;
   align-items: center;
   padding: 20px;
+  z-index: 1000;
 }
 
 .modal-content {
   width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 550px;
   background: white;
   border-radius: 14px;
   padding: 30px;
@@ -314,22 +272,15 @@ header h1 {
   margin-top: 0;
 }
 
-.modal-content p {
-  color: #6b7280;
-  line-height: 1.5;
-  font-size: 13px;
-}
-
 label {
   display: block;
   font-weight: bold;
   font-size: 13px;
-  margin-bottom: 7px;
   margin-top: 15px;
+  margin-bottom: 7px;
 }
 
-input[type="text"],
-input[type="file"] {
+input {
   width: 100%;
   padding: 11px;
   border: 1px solid #d1d5db;
@@ -349,111 +300,62 @@ input:focus {
   flex-wrap: wrap;
 }
 
-/* PREVIEW */
-
-.preview-modal .modal-content {
-  max-width: 1000px;
-  height: 90vh;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  overflow: hidden;
+.warning {
+  margin-top: 15px;
+  padding: 12px;
+  background: #fff7ed;
+  color: #9a3412;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.preview-header {
-  padding: 18px 22px;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-.preview-header h3 {
-  margin: 0;
-}
-
-.preview-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 30px;
-  background: #e5e7eb;
-}
-
-.preview-document {
+.stat {
   background: white;
-  max-width: 800px;
-  min-height: 500px;
-  margin: auto;
-  padding: 45px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-  line-height: 1.6;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
-.preview-document img {
-  max-width: 100%;
+.stat-title {
+  font-size: 12px;
+  color: #6b7280;
 }
 
-.preview-document table {
-  border-collapse: collapse;
-  width: 100%;
+.stat-value {
+  font-size: 26px;
+  font-weight: bold;
+  margin-top: 6px;
 }
 
-.preview-document td,
-.preview-document th {
-  border: 1px solid #999;
-  padding: 8px;
-}
-
-.txt-preview {
-  white-space: pre-wrap;
-  font-family: Arial, sans-serif;
-}
-
-.pdf-page {
-  background: white;
-  max-width: 900px;
-  margin: 0 auto 20px;
-}
-
-.pdf-page canvas {
-  width: 100%;
-  display: block;
-}
-
-@media (max-width: 850px) {
-
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .stats {
-    grid-template-columns: 1fr;
-  }
-
-  .file-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .content-header {
-    flex-direction: column;
-  }
-
-}
-
-@media (max-width: 600px) {
+@media (max-width: 800px) {
 
   header {
     flex-direction: column;
     gap: 15px;
   }
 
-  .folder-row {
+  .layout {
     grid-template-columns: 1fr;
   }
 
-  .preview-document {
-    padding: 25px;
+  .content-header {
+    flex-direction: column;
+  }
+
+  .proposal-header {
+    flex-direction: column;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
   }
 
 }
@@ -490,9 +392,9 @@ class="back"
 <h2>📚 Biblioteca Técnica</h2>
 
 <p>
-  Organizá tus propuestas técnicas base por producto.
-  Estas propuestas serán utilizadas posteriormente
-  para generar propuestas finales para cada oportunidad.
+  Acá guardás las propuestas técnicas originales
+  que después se utilizan como base para generar
+  las propuestas finales de cada oportunidad.
 </p>
 ```
 
@@ -504,7 +406,7 @@ class="back"
 <div class="stat">
 
   <div class="stat-title">
-    PRODUCTOS / CARPETAS
+    PRODUCTOS
   </div>
 
   <div
@@ -520,48 +422,46 @@ class="back"
 <div class="stat">
 
   <div class="stat-title">
-    PROPUESTAS
+    PROPUESTAS ORIGINALES
   </div>
 
   <div
-    id="fileCount"
+    id="proposalCount"
     class="stat-value"
   >
     0
   </div>
 
 </div>
+```
 
-
-<div class="stat">
-
-  <div class="stat-title">
-    ESTADO
   </div>
 
   <div
-    id="libraryStatus"
-    class="stat-value"
-    style="font-size:16px;"
+    id="info"
+    class="info"
   >
-    Cargando...
+    💡 Cada producto puede tener su propuesta técnica original.
+    Esa propuesta se conservará intacta hasta que vos decidas reemplazarla.
   </div>
 
-</div>
+  <div
+    style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:15px;
+    "
+  >
+
 ```
-
-  </div>
-
-  <div class="top-bar">
-
-```
-<h3>
+<h3 style="margin:0;">
   Productos
 </h3>
 
 <button
   class="button primary"
-  onclick="openFolderModal()"
+  onclick="newFolder()"
 >
   + Nueva carpeta
 </button>
@@ -601,7 +501,7 @@ class="back"
       </h3>
 
       <p id="currentFolderDescription">
-        Acá aparecerán las propuestas técnicas base.
+        Acá aparecerá la propuesta técnica original.
       </p>
 
     </div>
@@ -610,26 +510,17 @@ class="back"
     <button
       id="uploadButton"
       class="button primary"
-      onclick="openUploadModal()"
+      onclick="openProposalModal()"
       style="display:none;"
     >
-      📤 Cargar propuesta
+      📄 Cargar propuesta original
     </button>
 
   </div>
 
 
   <div
-    id="infoMessage"
-    class="info"
-  >
-    La Biblioteca Técnica se guarda localmente en este navegador.
-  </div>
-
-
-  <div
-    id="fileList"
-    class="files"
+    id="proposalContainer"
   ></div>
 
 </section>
@@ -639,9 +530,7 @@ class="back"
 
 </main>
 
-<!-- =====================================================
-     MODAL CARPETA
-===================================================== -->
+<!-- MODAL CARPETA -->
 
 <div
   id="folderModal"
@@ -655,13 +544,8 @@ class="back"
   📁 Nueva carpeta
 </h3>
 
-<p>
-  Creá una carpeta para cada producto:
-  Perfil Digital, Thuban, Firmas, Captika, etc.
-</p>
-
-<label for="folderName">
-  Producto
+<label>
+  Nombre del producto
 </label>
 
 <input
@@ -670,14 +554,14 @@ class="back"
   placeholder="Ejemplo: Perfil Digital"
 >
 
-<label for="folderDescription">
+<label>
   Descripción
 </label>
 
 <input
   id="folderDescription"
   type="text"
-  placeholder="Propuestas técnicas de Perfil Digital"
+  placeholder="Propuesta técnica de Perfil Digital"
 >
 
 <div class="modal-buttons">
@@ -703,9 +587,7 @@ class="back"
 
 </div>
 
-<!-- =====================================================
-     MODAL PROPUESTA
-===================================================== -->
+<!-- MODAL PROPUESTA -->
 
 <div
   id="proposalModal"
@@ -716,22 +598,28 @@ class="back"
 
 ```
 <h3 id="proposalModalTitle">
-  📤 Cargar propuesta técnica
+  📄 Propuesta técnica original
 </h3>
 
-<p id="proposalFolderText"></p>
+<p
+  id="proposalFolder"
+  style="
+    color:#6b7280;
+    font-size:13px;
+  "
+></p>
 
-<label for="proposalName">
-  Nombre
+<label>
+  Nombre de la propuesta
 </label>
 
 <input
   id="proposalName"
   type="text"
-  placeholder="Propuesta Técnica Perfil Digital"
+  placeholder="Ejemplo: Propuesta Técnica Perfil Digital"
 >
 
-<label for="proposalVersion">
+<label>
   Versión
 </label>
 
@@ -742,21 +630,23 @@ class="back"
   placeholder="1.0"
 >
 
-<label for="proposalFile">
-  Archivo
+<label>
+  Archivo Word
 </label>
 
 <input
   id="proposalFile"
   type="file"
-  accept=".pdf,.doc,.docx,.txt,.xlsx,.xls"
+  accept=".doc,.docx"
 >
 
-<p>
-  En modo edición podés cambiar solamente el nombre y la
-  versión, o seleccionar un nuevo archivo para reemplazar
-  la propuesta existente.
-</p>
+<div class="warning">
+
+  ⚠️ Este archivo será la propuesta técnica base.
+  Cuando cotices una oportunidad, PREVENTA IA utilizará
+  esta propuesta como original para agregar la propuesta económica.
+
+</div>
 
 <div class="modal-buttons">
 
@@ -781,45 +671,7 @@ class="back"
 
 </div>
 
-<!-- =====================================================
-     MODAL PREVIEW
-===================================================== -->
-
-<div
-  id="previewModal"
-  class="modal preview-modal"
->
-
-  <div class="modal-content">
-
-```
-<div class="preview-header">
-
-  <h3 id="previewTitle">
-    📄 Previsualización
-  </h3>
-
-  <button
-    class="button secondary"
-    onclick="closePreview()"
-  >
-    ✕ Cerrar
-  </button>
-
-</div>
-
-<div
-  id="previewBody"
-  class="preview-body"
-></div>
-```
-
-  </div>
-
-</div>
-
 <script>
-
 
 /* =====================================================
    CONFIGURACIÓN
@@ -834,17 +686,21 @@ const DB_VERSION =
 const STORE =
   "proposals";
 
-let db = null;
+let db =
+  null;
 
-let currentFolder = null;
+let currentFolder =
+  null;
 
-let editingFolderId = null;
+let editingFolder =
+  null;
 
-let editingFileId = null;
+let editingProposal =
+  null;
 
 
 /* =====================================================
-   ABRIR BASE
+   BASE DE DATOS
 ===================================================== */
 
 function openDatabase() {
@@ -857,11 +713,13 @@ function openDatabase() {
         DB_VERSION
       );
 
+
     request.onupgradeneeded =
       function(event) {
 
         const database =
           event.target.result;
+
 
         if (
           !database.objectStoreNames.contains(
@@ -878,6 +736,7 @@ function openDatabase() {
               }
             );
 
+
           store.createIndex(
             "folder",
             "folder",
@@ -890,20 +749,19 @@ function openDatabase() {
 
       };
 
+
     request.onsuccess =
       function(event) {
 
         db =
           event.target.result;
 
-        document.getElementById(
-          "libraryStatus"
-        ).textContent =
-          "✓ Lista";
-
-        resolve(db);
+        resolve(
+          db
+        );
 
       };
+
 
     request.onerror =
       function() {
@@ -920,7 +778,7 @@ function openDatabase() {
 
 
 /* =====================================================
-   CARPETAS EN LOCAL STORAGE
+   CARPETAS
 ===================================================== */
 
 function getFolders() {
@@ -959,68 +817,28 @@ function saveFolders(
 
 
 /* =====================================================
-   CREAR / EDITAR CARPETA
+   NUEVA CARPETA
 ===================================================== */
 
-function openFolderModal(
-  id = null
-) {
+function newFolder() {
 
-  editingFolderId =
-    id;
+  editingFolder =
+    null;
 
-  const title =
-    document.getElementById(
-      "folderModalTitle"
-    );
+  document.getElementById(
+    "folderModalTitle"
+  ).textContent =
+    "📁 Nueva carpeta";
 
-  const name =
-    document.getElementById(
-      "folderName"
-    );
+  document.getElementById(
+    "folderName"
+  ).value =
+    "";
 
-  const description =
-    document.getElementById(
-      "folderDescription"
-    );
-
-  if (id) {
-
-    const folder =
-      getFolders().find(
-        item =>
-          item.id === id
-      );
-
-    if (!folder) {
-
-      return;
-
-    }
-
-    title.textContent =
-      "✏️ Editar producto";
-
-    name.value =
-      folder.name || "";
-
-    description.value =
-      folder.description || "";
-
-  }
-
-  else {
-
-    title.textContent =
-      "📁 Nueva carpeta";
-
-    name.value =
-      "";
-
-    description.value =
-      "";
-
-  }
+  document.getElementById(
+    "folderDescription"
+  ).value =
+    "";
 
   document.getElementById(
     "folderModal"
@@ -1030,18 +848,61 @@ function openFolderModal(
 }
 
 
-function closeFolderModal() {
+/* =====================================================
+   EDITAR CARPETA
+===================================================== */
+
+function editFolder(
+  id
+) {
+
+  const folder =
+    getFolders().find(
+      item =>
+        item.id === id
+    );
+
+
+  if (!folder) {
+
+    return;
+
+  }
+
+
+  editingFolder =
+    id;
+
+
+  document.getElementById(
+    "folderModalTitle"
+  ).textContent =
+    "✏️ Editar producto";
+
+
+  document.getElementById(
+    "folderName"
+  ).value =
+    folder.name || "";
+
+
+  document.getElementById(
+    "folderDescription"
+  ).value =
+    folder.description || "";
+
 
   document.getElementById(
     "folderModal"
   ).style.display =
-    "none";
-
-  editingFolderId =
-    null;
+    "flex";
 
 }
 
+
+/* =====================================================
+   GUARDAR CARPETA
+===================================================== */
 
 function saveFolder() {
 
@@ -1050,10 +911,12 @@ function saveFolder() {
       "folderName"
     ).value.trim();
 
+
   const description =
     document.getElementById(
       "folderDescription"
     ).value.trim();
+
 
   if (!name) {
 
@@ -1065,40 +928,42 @@ function saveFolder() {
 
   }
 
+
   const folders =
     getFolders();
 
-  const duplicate =
-    folders.some(function(folder) {
 
-      return (
-        folder.id !== editingFolderId &&
+  const duplicate =
+    folders.some(
+      folder =>
+        folder.id !== editingFolder &&
         String(
-          folder.name || ""
+          folder.name
         ).toLowerCase() ===
         name.toLowerCase()
-      );
+    );
 
-    });
 
   if (duplicate) {
 
     alert(
-      "Ya existe una carpeta con ese nombre."
+      "Ya existe un producto con ese nombre."
     );
 
     return;
 
   }
 
-  if (editingFolderId) {
+
+  if (editingFolder) {
 
     const index =
       folders.findIndex(
         folder =>
           folder.id ===
-          editingFolderId
+          editingFolder
       );
+
 
     if (index !== -1) {
 
@@ -1107,7 +972,7 @@ function saveFolder() {
 
       folders[index].description =
         description ||
-        "Propuestas técnicas base de " +
+        "Propuestas técnicas de " +
         name;
 
     }
@@ -1127,7 +992,7 @@ function saveFolder() {
 
       description:
         description ||
-        "Propuestas técnicas base de " +
+        "Propuestas técnicas de " +
         name,
 
       createdAt:
@@ -1135,20 +1000,25 @@ function saveFolder() {
 
     };
 
+
     folders.push(
       folder
     );
+
 
     currentFolder =
       folder.id;
 
   }
 
+
   saveFolders(
     folders
   );
 
+
   closeFolderModal();
+
 
   render();
 
@@ -1163,14 +1033,12 @@ async function deleteFolder(
   id
 ) {
 
-  const folders =
-    getFolders();
-
   const folder =
-    folders.find(
+    getFolders().find(
       item =>
         item.id === id
     );
+
 
   if (!folder) {
 
@@ -1178,28 +1046,26 @@ async function deleteFolder(
 
   }
 
-  const files =
-    await getFilesByFolder(
+
+  const proposals =
+    await getFiles(
       id
     );
 
+
   let message =
-    "¿Querés eliminar la carpeta \"" +
+    "¿Querés eliminar el producto \"" +
     folder.name +
     "\"?";
 
-  if (files.length) {
 
-    message =
-      "La carpeta \"" +
-      folder.name +
-      "\" tiene " +
-      files.length +
-      " propuesta(s).\n\n" +
-      "Si la eliminás también se eliminarán sus propuestas.\n\n" +
-      "¿Continuar?";
+  if (proposals.length) {
+
+    message +=
+      "\n\nTambién se eliminará la propuesta técnica original.";
 
   }
+
 
   if (!confirm(message)) {
 
@@ -1207,38 +1073,43 @@ async function deleteFolder(
 
   }
 
+
   try {
 
     for (
-      const file of files
+      const proposal of proposals
     ) {
 
-      await deleteFile(
-        file.id
+      await deleteProposal(
+        proposal.id
       );
 
     }
 
-    const remaining =
-      folders.filter(
+
+    const folders =
+      getFolders().filter(
         item =>
           item.id !== id
       );
 
+
     saveFolders(
-      remaining
+      folders
     );
+
 
     if (
       currentFolder === id
     ) {
 
       currentFolder =
-        remaining.length
-          ? remaining[0].id
+        folders.length
+          ? folders[0].id
           : null;
 
     }
+
 
     await render();
 
@@ -1246,10 +1117,12 @@ async function deleteFolder(
 
   catch(error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     alert(
-      "No se pudo eliminar la carpeta."
+      "No se pudo eliminar el producto."
     );
 
   }
@@ -1258,251 +1131,27 @@ async function deleteFolder(
 
 
 /* =====================================================
-   ARCHIVOS
+   MODALES
 ===================================================== */
 
-function getFilesByFolder(
-  folderId
-) {
-
-  return new Promise(function(resolve, reject) {
-
-    if (!db) {
-
-      resolve([]);
-
-      return;
-
-    }
-
-    const transaction =
-      db.transaction(
-        STORE,
-        "readonly"
-      );
-
-    const store =
-      transaction.objectStore(
-        STORE
-      );
-
-    const index =
-      store.index(
-        "folder"
-      );
-
-    const request =
-      index.getAll(
-        folderId
-      );
-
-    request.onsuccess =
-      function() {
-
-        resolve(
-          request.result || []
-        );
-
-      };
-
-    request.onerror =
-      function() {
-
-        reject(
-          request.error
-        );
-
-      };
-
-  });
-
-}
-
-
-function getFileById(
-  id
-) {
-
-  return new Promise(function(resolve, reject) {
-
-    const transaction =
-      db.transaction(
-        STORE,
-        "readonly"
-      );
-
-    const store =
-      transaction.objectStore(
-        STORE
-      );
-
-    const request =
-      store.get(
-        id
-      );
-
-    request.onsuccess =
-      function() {
-
-        resolve(
-          request.result ||
-          null
-        );
-
-      };
-
-    request.onerror =
-      function() {
-
-        reject(
-          request.error
-        );
-
-      };
-
-  });
-
-}
-
-
-function addFile(
-  data
-) {
-
-  return new Promise(function(resolve, reject) {
-
-    const transaction =
-      db.transaction(
-        STORE,
-        "readwrite"
-      );
-
-    const store =
-      transaction.objectStore(
-        STORE
-      );
-
-    const request =
-      store.add(
-        data
-      );
-
-    request.onsuccess =
-      function() {
-
-        resolve(
-          request.result
-        );
-
-      };
-
-    request.onerror =
-      function() {
-
-        reject(
-          request.error
-        );
-
-      };
-
-  });
-
-}
-
-
-function updateFile(
-  data
-) {
-
-  return new Promise(function(resolve, reject) {
-
-    const transaction =
-      db.transaction(
-        STORE,
-        "readwrite"
-      );
-
-    const store =
-      transaction.objectStore(
-        STORE
-      );
-
-    const request =
-      store.put(
-        data
-      );
-
-    request.onsuccess =
-      function() {
-
-        resolve(
-          request.result
-        );
-
-      };
-
-    request.onerror =
-      function() {
-
-        reject(
-          request.error
-        );
-
-      };
-
-  });
-
-}
-
-
-function deleteFile(
-  id
-) {
-
-  return new Promise(function(resolve, reject) {
-
-    const transaction =
-      db.transaction(
-        STORE,
-        "readwrite"
-      );
-
-    const store =
-      transaction.objectStore(
-        STORE
-      );
-
-    const request =
-      store.delete(
-        id
-      );
-
-    request.onsuccess =
-      function() {
-
-        resolve();
-
-      };
-
-    request.onerror =
-      function() {
-
-        reject(
-          request.error
-        );
-
-      };
-
-  });
+function closeFolderModal() {
+
+  document.getElementById(
+    "folderModal"
+  ).style.display =
+    "none";
+
+  editingFolder =
+    null;
 
 }
 
 
 /* =====================================================
-   MODAL PROPUESTA
+   PROPUESTA
 ===================================================== */
 
-function openUploadModal() {
+function openProposalModal() {
 
   if (!currentFolder) {
 
@@ -1514,8 +1163,10 @@ function openUploadModal() {
 
   }
 
-  editingFileId =
+
+  editingProposal =
     null;
+
 
   const folder =
     getFolders().find(
@@ -1524,34 +1175,40 @@ function openUploadModal() {
         currentFolder
     );
 
+
   document.getElementById(
     "proposalModalTitle"
   ).textContent =
-    "📤 Cargar propuesta técnica";
+    "📄 Propuesta técnica original";
+
 
   document.getElementById(
-    "proposalFolderText"
+    "proposalFolder"
   ).textContent =
     "Producto: " +
     (
       folder?.name ||
-      "Sin definir"
+      ""
     );
+
 
   document.getElementById(
     "proposalName"
   ).value =
     "";
 
+
   document.getElementById(
     "proposalVersion"
   ).value =
     "1.0";
 
+
   document.getElementById(
     "proposalFile"
   ).value =
     "";
+
 
   document.getElementById(
     "proposalModal"
@@ -1561,16 +1218,17 @@ function openUploadModal() {
 }
 
 
-async function openEditFileModal(
+async function editProposal(
   id
 ) {
 
-  const file =
-    await getFileById(
+  const proposal =
+    await getProposal(
       id
     );
 
-  if (!file) {
+
+  if (!proposal) {
 
     alert(
       "No se encontró la propuesta."
@@ -1580,44 +1238,52 @@ async function openEditFileModal(
 
   }
 
-  editingFileId =
+
+  editingProposal =
     id;
+
+
+  document.getElementById(
+    "proposalModalTitle"
+  ).textContent =
+    "✏️ Editar propuesta original";
+
 
   const folder =
     getFolders().find(
       item =>
         item.id ===
-        file.folder
+        proposal.folder
     );
 
-  document.getElementById(
-    "proposalModalTitle"
-  ).textContent =
-    "✏️ Editar propuesta";
 
   document.getElementById(
-    "proposalFolderText"
+    "proposalFolder"
   ).textContent =
     "Producto: " +
     (
       folder?.name ||
-      "Sin definir"
+      ""
     );
+
 
   document.getElementById(
     "proposalName"
   ).value =
-    file.name || "";
+    proposal.name || "";
+
 
   document.getElementById(
     "proposalVersion"
   ).value =
-    file.version || "1.0";
+    proposal.version || "1.0";
+
 
   document.getElementById(
     "proposalFile"
   ).value =
     "";
+
 
   document.getElementById(
     "proposalModal"
@@ -1634,8 +1300,117 @@ function closeProposalModal() {
   ).style.display =
     "none";
 
-  editingFileId =
+  editingProposal =
     null;
+
+}
+
+
+/* =====================================================
+   ARCHIVOS
+===================================================== */
+
+function getFiles(
+  folderId
+) {
+
+  return new Promise(function(resolve, reject) {
+
+    const transaction =
+      db.transaction(
+        STORE,
+        "readonly"
+      );
+
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+
+    const index =
+      store.index(
+        "folder"
+      );
+
+
+    const request =
+      index.getAll(
+        folderId
+      );
+
+
+    request.onsuccess =
+      function() {
+
+        resolve(
+          request.result || []
+        );
+
+      };
+
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
+
+}
+
+
+function getProposal(
+  id
+) {
+
+  return new Promise(function(resolve, reject) {
+
+    const transaction =
+      db.transaction(
+        STORE,
+        "readonly"
+      );
+
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+
+    const request =
+      store.get(
+        id
+      );
+
+
+    request.onsuccess =
+      function() {
+
+        resolve(
+          request.result ||
+          null
+        );
+
+      };
+
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
 
 }
 
@@ -1651,15 +1426,18 @@ async function saveProposal() {
       "proposalName"
     ).value.trim();
 
+
   const version =
     document.getElementById(
       "proposalVersion"
     ).value.trim();
 
+
   const input =
     document.getElementById(
       "proposalFile"
     );
+
 
   if (!name) {
 
@@ -1671,18 +1449,22 @@ async function saveProposal() {
 
   }
 
+
   try {
 
     /* EDITAR */
 
-    if (editingFileId !== null) {
+    if (
+      editingProposal
+    ) {
 
-      const existing =
-        await getFileById(
-          editingFileId
+      const proposal =
+        await getProposal(
+          editingProposal
         );
 
-      if (!existing) {
+
+      if (!proposal) {
 
         alert(
           "La propuesta ya no existe."
@@ -1692,55 +1474,67 @@ async function saveProposal() {
 
       }
 
-      existing.name =
+
+      proposal.name =
         name;
 
-      existing.version =
+
+      proposal.version =
         version ||
-        existing.version ||
         "1.0";
 
-      existing.updatedAt =
+
+      proposal.updatedAt =
         new Date().toISOString();
 
+
       /*
-        Si seleccionás un nuevo archivo,
-        reemplazamos el Word/PDF/etc.
+        Si seleccionaste otro Word,
+        reemplazamos el original.
       */
 
       if (
-        input.files.length > 0
+        input.files.length
       ) {
 
-        const newFile =
+        const file =
           input.files[0];
 
-        existing.blob =
-          newFile;
 
-        existing.originalName =
-          newFile.name;
+        proposal.blob =
+          file;
 
-        existing.type =
-          newFile.type ||
-          "application/octet-stream";
 
-        existing.size =
-          newFile.size;
+        proposal.originalName =
+          file.name;
+
+
+        proposal.type =
+          file.type ||
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+
+        proposal.size =
+          file.size;
 
       }
 
-      await updateFile(
-        existing
+
+      await updateProposal(
+        proposal
       );
+
 
       closeProposalModal();
 
+
       await render();
 
+
       alert(
-        "✅ Propuesta actualizada correctamente."
+        "✅ Propuesta original actualizada."
       );
+
 
       return;
 
@@ -1754,17 +1548,19 @@ async function saveProposal() {
     ) {
 
       alert(
-        "Seleccioná el archivo de la propuesta."
+        "Seleccioná el archivo Word."
       );
 
       return;
 
     }
 
+
     const file =
       input.files[0];
 
-    await addFile({
+
+    await addProposal({
 
       folder:
         currentFolder,
@@ -1781,7 +1577,7 @@ async function saveProposal() {
 
       type:
         file.type ||
-        "application/octet-stream",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 
       size:
         file.size,
@@ -1797,12 +1593,15 @@ async function saveProposal() {
 
     });
 
+
     closeProposalModal();
+
 
     await render();
 
+
     alert(
-      "✅ Propuesta técnica cargada correctamente."
+      "✅ Propuesta técnica original guardada."
     );
 
   }
@@ -1810,9 +1609,9 @@ async function saveProposal() {
   catch(error) {
 
     console.error(
-      "Error guardando propuesta:",
       error
     );
+
 
     alert(
       "No se pudo guardar la propuesta."
@@ -1824,476 +1623,52 @@ async function saveProposal() {
 
 
 /* =====================================================
-   DESCARGAR
+   ADD
 ===================================================== */
 
-async function downloadFile(
-  id
-) {
-
-  try {
-
-    const file =
-      await getFileById(
-        id
-      );
-
-    if (!file) {
-
-      alert(
-        "No se encontró la propuesta."
-      );
-
-      return;
-
-    }
-
-    const url =
-      URL.createObjectURL(
-        file.blob
-      );
-
-    const link =
-      document.createElement(
-        "a"
-      );
-
-    link.href =
-      url;
-
-    link.download =
-      file.originalName ||
-      file.name ||
-      "propuesta";
-
-    document.body.appendChild(
-      link
-    );
-
-    link.click();
-
-    document.body.removeChild(
-      link
-    );
-
-    setTimeout(
-      function() {
-
-        URL.revokeObjectURL(
-          url
-        );
-
-      },
-      1000
-    );
-
-  }
-
-  catch(error) {
-
-    console.error(error);
-
-    alert(
-      "No se pudo descargar el archivo."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   ELIMINAR
-===================================================== */
-
-async function removeFile(
-  id
-) {
-
-  const file =
-    await getFileById(
-      id
-    );
-
-  if (!file) {
-
-    return;
-
-  }
-
-  if (
-    !confirm(
-      "¿Querés eliminar la propuesta \"" +
-      file.name +
-      "\"?"
-    )
-  ) {
-
-    return;
-
-  }
-
-  try {
-
-    await deleteFile(
-      id
-    );
-
-    await render();
-
-  }
-
-  catch(error) {
-
-    console.error(error);
-
-    alert(
-      "No se pudo eliminar la propuesta."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   PREVISUALIZAR
-===================================================== */
-
-async function previewFile(
-  id
-) {
-
-  const file =
-    await getFileById(
-      id
-    );
-
-  if (!file) {
-
-    alert(
-      "No se encontró la propuesta."
-    );
-
-    return;
-
-  }
-
-  const modal =
-    document.getElementById(
-      "previewModal"
-    );
-
-  const title =
-    document.getElementById(
-      "previewTitle"
-    );
-
-  const body =
-    document.getElementById(
-      "previewBody"
-    );
-
-  title.textContent =
-    "📄 " +
-    (
-      file.name ||
-      file.originalName ||
-      "Previsualización"
-    );
-
-  body.innerHTML = `
-    <div class="preview-document">
-      ⏳ Cargando...
-    </div>
-  `;
-
-  modal.style.display =
-    "flex";
-
-  try {
-
-    const extension =
-      String(
-        file.originalName ||
-        ""
-      )
-      .split(".")
-      .pop()
-      .toLowerCase();
-
-    if (
-      extension === "txt"
-    ) {
-
-      const text =
-        await file.blob.text();
-
-      body.innerHTML = `
-        <div class="preview-document">
-          <div class="txt-preview">${escapeHTML(text)}</div>
-        </div>
-      `;
-
-      return;
-
-    }
-
-    if (
-      extension === "pdf"
-    ) {
-
-      await previewPDF(
-        file.blob,
-        body
-      );
-
-      return;
-
-    }
-
-    if (
-      extension === "docx"
-    ) {
-
-      await previewDOCX(
-        file.blob,
-        body
-      );
-
-      return;
-
-    }
-
-    body.innerHTML = `
-      <div class="preview-document">
-
-        <h3>
-          📄 Vista previa no disponible
-        </h3>
-
-        <p>
-          El archivo está correctamente almacenado,
-          pero este formato no puede visualizarse
-          directamente en el navegador.
-        </p>
-
-        <button
-          class="button green"
-          onclick="downloadFile(${file.id})"
-        >
-          📥 Descargar archivo
-        </button>
-
-      </div>
-    `;
-
-  }
-
-  catch(error) {
-
-    console.error(
-      error
-    );
-
-    body.innerHTML = `
-      <div class="preview-document">
-
-        <h3>
-          ⚠️ No se pudo previsualizar
-        </h3>
-
-        <p>
-          El archivo está guardado en la Biblioteca.
-        </p>
-
-        <button
-          class="button green"
-          onclick="downloadFile(${file.id})"
-        >
-          📥 Descargar archivo
-        </button>
-
-      </div>
-    `;
-
-  }
-
-}
-
-
-/* =====================================================
-   PREVIEW WORD
-===================================================== */
-
-async function previewDOCX(
-  blob,
-  container
-) {
-
-  /*
-    Cargar Mammoth únicamente
-    cuando se necesita.
-  */
-
-  if (
-    typeof window.mammoth ===
-    "undefined"
-  ) {
-
-    await loadScript(
-      "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"
-    );
-
-  }
-
-  const arrayBuffer =
-    await blob.arrayBuffer();
-
-  const result =
-    await window.mammoth.convertToHtml({
-
-      arrayBuffer:
-        arrayBuffer
-
-    });
-
-  container.innerHTML = `
-    <div class="preview-document">
-      ${
-        result.value ||
-        "<p>No se pudo mostrar el contenido.</p>"
-      }
-    </div>
-  `;
-
-}
-
-
-/* =====================================================
-   PREVIEW PDF
-===================================================== */
-
-async function previewPDF(
-  blob,
-  container
-) {
-
-  if (
-    !window.pdfjsLibCustom
-  ) {
-
-    await loadPDFJS();
-
-  }
-
-  if (
-    !window.pdfjsLibCustom
-  ) {
-
-    throw new Error(
-      "No se pudo cargar PDF.js."
-    );
-
-  }
-
-  const buffer =
-    await blob.arrayBuffer();
-
-  const pdf =
-    await window.pdfjsLibCustom.getDocument({
-      data:
-        buffer
-    }).promise;
-
-  container.innerHTML =
-    "";
-
-  for (
-    let pageNumber = 1;
-    pageNumber <= pdf.numPages;
-    pageNumber++
-  ) {
-
-    const page =
-      await pdf.getPage(
-        pageNumber
-      );
-
-    const viewport =
-      page.getViewport({
-        scale: 1.35
-      });
-
-    const wrapper =
-      document.createElement(
-        "div"
-      );
-
-    wrapper.className =
-      "pdf-page";
-
-    const canvas =
-      document.createElement(
-        "canvas"
-      );
-
-    canvas.width =
-      viewport.width;
-
-    canvas.height =
-      viewport.height;
-
-    wrapper.appendChild(
-      canvas
-    );
-
-    container.appendChild(
-      wrapper
-    );
-
-    await page.render({
-
-      canvasContext:
-        canvas.getContext("2d"),
-
-      viewport:
-        viewport
-
-    }).promise;
-
-  }
-
-}
-
-
-/* =====================================================
-   CARGAR SCRIPT
-===================================================== */
-
-function loadScript(
-  url
+function addProposal(
+  data
 ) {
 
   return new Promise(function(resolve, reject) {
 
-    const script =
-      document.createElement(
-        "script"
+    const transaction =
+      db.transaction(
+        STORE,
+        "readwrite"
       );
 
-    script.src =
-      url;
 
-    script.onload =
-      resolve;
+    const store =
+      transaction.objectStore(
+        STORE
+      );
 
-    script.onerror =
-      reject;
 
-    document.head.appendChild(
-      script
-    );
+    const request =
+      store.add(
+        data
+      );
+
+
+    request.onsuccess =
+      function() {
+
+        resolve(
+          request.result
+        );
+
+      };
+
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
 
   });
 
@@ -2301,69 +1676,173 @@ function loadScript(
 
 
 /* =====================================================
-   CARGAR PDF JS
+   UPDATE
 ===================================================== */
 
-async function loadPDFJS() {
+function updateProposal(
+  data
+) {
 
-  if (
-    window.pdfjsLoading
-  ) {
+  return new Promise(function(resolve, reject) {
 
-    return window.pdfjsLoading;
+    const transaction =
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
 
-  }
 
-  window.pdfjsLoading =
-    new Promise(async function(resolve, reject) {
+    const store =
+      transaction.objectStore(
+        STORE
+      );
 
-      try {
 
-        const module =
-          await import(
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs"
-          );
+    const request =
+      store.put(
+        data
+      );
 
-        module.GlobalWorkerOptions.workerSrc =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
-        window.pdfjsLibCustom =
-          module;
+    request.onsuccess =
+      function() {
 
         resolve();
 
-      }
+      };
 
-      catch(error) {
+
+    request.onerror =
+      function() {
 
         reject(
-          error
+          request.error
         );
 
-      }
+      };
 
-    });
-
-  return window.pdfjsLoading;
+  });
 
 }
 
 
 /* =====================================================
-   CERRAR PREVIEW
+   DELETE
 ===================================================== */
 
-function closePreview() {
+function deleteProposal(
+  id
+) {
 
-  document.getElementById(
-    "previewModal"
-  ).style.display =
-    "none";
+  return new Promise(function(resolve, reject) {
 
-  document.getElementById(
-    "previewBody"
-  ).innerHTML =
-    "";
+    const transaction =
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
+
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+
+    const request =
+      store.delete(
+        id
+      );
+
+
+    request.onsuccess =
+      function() {
+
+        resolve();
+
+      };
+
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
+
+}
+
+
+/* =====================================================
+   DESCARGAR ORIGINAL
+===================================================== */
+
+async function downloadProposal(
+  id
+) {
+
+  const proposal =
+    await getProposal(
+      id
+    );
+
+
+  if (!proposal) {
+
+    return;
+
+  }
+
+
+  const url =
+    URL.createObjectURL(
+      proposal.blob
+    );
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+
+  link.href =
+    url;
+
+
+  link.download =
+    proposal.originalName ||
+    proposal.name ||
+    "Propuesta_Tecnica.docx";
+
+
+  document.body.appendChild(
+    link
+  );
+
+
+  link.click();
+
+
+  document.body.removeChild(
+    link
+  );
+
+
+  setTimeout(
+    function() {
+
+      URL.revokeObjectURL(
+        url
+      );
+
+    },
+    1000
+  );
 
 }
 
@@ -2379,26 +1858,28 @@ function renderFolders() {
       "folderList"
     );
 
+
   const folders =
     getFolders();
 
+
   container.innerHTML =
     "";
+
 
   if (!folders.length) {
 
     container.innerHTML = `
       <div style="color:#6b7280;font-size:13px;line-height:1.5;">
-        Todavía no tenés productos.
-        Creá una carpeta como
-        Perfil Digital, Thuban,
-        Firmas o Captika.
+        Todavía no hay productos.
+        Creá tu primera carpeta.
       </div>
     `;
 
     return;
 
   }
+
 
   folders.forEach(
     function(folder) {
@@ -2408,28 +1889,32 @@ function renderFolders() {
           "div"
         );
 
+
       row.className =
-        "folder-row";
-
-      const select =
-        document.createElement(
-          "button"
-        );
-
-      select.className =
-        "folder" +
+        "folder-item" +
         (
-          currentFolder ===
-          folder.id
+          currentFolder === folder.id
             ? " active"
             : ""
         );
 
-      select.textContent =
+
+      const name =
+        document.createElement(
+          "div"
+        );
+
+
+      name.className =
+        "folder-name";
+
+
+      name.textContent =
         "📁 " +
         folder.name;
 
-      select.onclick =
+
+      name.onclick =
         function() {
 
           currentFolder =
@@ -2439,9 +1924,20 @@ function renderFolders() {
 
         };
 
+
       row.appendChild(
-        select
+        name
       );
+
+
+      const actions =
+        document.createElement(
+          "div"
+        );
+
+
+      actions.className =
+        "folder-actions";
 
 
       const edit =
@@ -2449,25 +1945,32 @@ function renderFolders() {
           "button"
         );
 
+
       edit.className =
-        "button secondary small-button";
+        "folder-button";
+
 
       edit.textContent =
         "✏️";
 
+
       edit.title =
         "Editar producto";
 
-      edit.onclick =
-        function() {
 
-          openFolderModal(
+      edit.onclick =
+        function(event) {
+
+          event.stopPropagation();
+
+          editFolder(
             folder.id
           );
 
         };
 
-      row.appendChild(
+
+      actions.appendChild(
         edit
       );
 
@@ -2477,17 +1980,23 @@ function renderFolders() {
           "button"
         );
 
+
       remove.className =
-        "button danger small-button";
+        "folder-button";
+
 
       remove.textContent =
         "🗑️";
 
+
       remove.title =
         "Eliminar producto";
 
+
       remove.onclick =
-        function() {
+        function(event) {
+
+          event.stopPropagation();
 
           deleteFolder(
             folder.id
@@ -2495,9 +2004,16 @@ function renderFolders() {
 
         };
 
-      row.appendChild(
+
+      actions.appendChild(
         remove
       );
+
+
+      row.appendChild(
+        actions
+      );
+
 
       container.appendChild(
         row
@@ -2510,25 +2026,27 @@ function renderFolders() {
 
 
 /* =====================================================
-   RENDER ARCHIVOS
+   RENDER PROPUESTA
 ===================================================== */
 
-async function renderFiles() {
+async function renderProposal() {
 
   const container =
     document.getElementById(
-      "fileList"
+      "proposalContainer"
     );
+
 
   container.innerHTML =
     "";
+
 
   if (!currentFolder) {
 
     container.innerHTML = `
       <div class="empty">
 
-        <div style="font-size:45px;">
+        <div style="font-size:50px;">
           📚
         </div>
 
@@ -2537,7 +2055,7 @@ async function renderFiles() {
         </h3>
 
         <p>
-          Elegí una carpeta para ver sus propuestas técnicas.
+          Elegí una carpeta para ver su propuesta técnica original.
         </p>
 
       </div>
@@ -2547,33 +2065,41 @@ async function renderFiles() {
 
   }
 
+
   const files =
-    await getFilesByFolder(
+    await getFiles(
       currentFolder
     );
+
+
+  /*
+    Idealmente tenemos una sola
+    propuesta original por producto.
+  */
 
   if (!files.length) {
 
     container.innerHTML = `
       <div class="empty">
 
-        <div style="font-size:45px;">
+        <div style="font-size:50px;">
           📄
         </div>
 
         <h3>
-          No hay propuestas cargadas
+          No hay propuesta original
         </h3>
 
         <p>
-          Cargá la propuesta técnica base de este producto.
+          Cargá el Word que querés utilizar como base
+          para las futuras propuestas.
         </p>
 
         <button
           class="button primary"
-          onclick="openUploadModal()"
+          onclick="openProposalModal()"
         >
-          📤 Cargar propuesta
+          📄 Cargar propuesta original
         </button>
 
       </div>
@@ -2583,129 +2109,201 @@ async function renderFiles() {
 
   }
 
-  files.sort(function(a, b) {
 
-    return new Date(
-      b.updatedAt ||
-      b.createdAt ||
-      0
-    ) -
-    new Date(
-      a.updatedAt ||
-      a.createdAt ||
-      0
-    );
+  const proposal =
+    files.sort(
+      function(a, b) {
 
-  });
-
-  files.forEach(
-    function(file) {
-
-      const card =
-        document.createElement(
-          "div"
+        return new Date(
+          b.updatedAt ||
+          b.createdAt ||
+          0
+        ) -
+        new Date(
+          a.updatedAt ||
+          a.createdAt ||
+          0
         );
 
-      card.className =
-        "file-card";
+      }
+    )[0];
 
-      card.innerHTML = `
 
-        <div class="file-info">
+  container.innerHTML = `
 
-          <div class="file-icon">
-            ${getFileIcon(
-              file.originalName
+    <div class="proposal-card">
+
+      <div class="proposal-header">
+
+        <div>
+
+          <div class="proposal-name">
+
+            📄 ${escapeHTML(
+              proposal.name ||
+              "Propuesta técnica"
             )}
+
           </div>
 
-          <div>
+          <div class="proposal-meta">
 
-            <div class="file-name">
-              ${escapeHTML(
-                file.name ||
-                "Propuesta sin nombre"
-              )}
-            </div>
-
-            <div class="file-meta">
-
+            <strong>
               Versión:
-              <strong>
-                ${escapeHTML(
-                  file.version ||
-                  "1.0"
-                )}
-              </strong>
+            </strong>
 
-              <br>
+            ${escapeHTML(
+              proposal.version ||
+              "1.0"
+            )}
 
-              Archivo:
-              ${escapeHTML(
-                file.originalName ||
-                ""
-              )}
+            <br>
 
-              ·
-              ${formatBytes(
-                file.size ||
-                0
-              )}
+            <strong>
+              Archivo original:
+            </strong>
 
-              <br>
+            ${escapeHTML(
+              proposal.originalName ||
+              ""
+            )}
 
-              Última actualización:
-              ${formatDate(
-                file.updatedAt ||
-                file.createdAt
-              )}
+            <br>
 
-            </div>
+            <strong>
+              Tamaño:
+            </strong>
+
+            ${formatBytes(
+              proposal.size ||
+              0
+            )}
+
+            <br>
+
+            <strong>
+              Actualizada:
+            </strong>
+
+            ${formatDate(
+              proposal.updatedAt ||
+              proposal.createdAt
+            )}
 
           </div>
 
         </div>
 
-        <div class="file-actions">
-
-          <button
-            class="button purple"
-            onclick="previewFile(${file.id})"
-          >
-            👁️ Ver
-          </button>
-
-          <button
-            class="button secondary"
-            onclick="openEditFileModal(${file.id})"
-          >
-            ✏️ Editar
-          </button>
-
-          <button
-            class="button green"
-            onclick="downloadFile(${file.id})"
-          >
-            📥 Descargar
-          </button>
-
-          <button
-            class="button danger"
-            onclick="removeFile(${file.id})"
-          >
-            🗑️ Eliminar
-          </button>
-
+        <div class="proposal-icon">
+          📘
         </div>
 
-      `;
+      </div>
 
-      container.appendChild(
-        card
-      );
 
-    }
-  );
+      <div class="warning">
+
+        Esta es la propuesta técnica <strong>ORIGINAL</strong>
+        del producto.
+
+        <br><br>
+
+        Cuando utilices este producto desde el Cotizador,
+        PREVENTA IA tomará este Word como base y agregará
+        la propuesta económica correspondiente a la oportunidad.
+
+      </div>
+
+
+      <div class="proposal-actions">
+
+        <button
+          class="button green"
+          onclick="downloadProposal(${proposal.id})"
+        >
+          📥 Descargar original
+        </button>
+
+
+        <button
+          class="button secondary"
+          onclick="editProposal(${proposal.id})"
+        >
+          ✏️ Editar / reemplazar
+        </button>
+
+
+        <button
+          class="button red"
+          onclick="removeProposal(${proposal.id})"
+        >
+          🗑️ Eliminar
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   ELIMINAR PROPUESTA
+===================================================== */
+
+async function removeProposal(
+  id
+) {
+
+  const proposal =
+    await getProposal(
+      id
+    );
+
+
+  if (!proposal) {
+
+    return;
+
+  }
+
+
+  if (
+    !confirm(
+      "¿Querés eliminar la propuesta técnica original?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    await deleteProposal(
+      id
+    );
+
+
+    await render();
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "No se pudo eliminar la propuesta."
+    );
+
+  }
 
 }
 
@@ -2719,6 +2317,34 @@ async function render() {
   const folders =
     getFolders();
 
+
+  if (
+    !folders.length
+  ) {
+
+    currentFolder =
+      null;
+
+  }
+
+
+  if (
+    currentFolder &&
+    !folders.some(
+      folder =>
+        folder.id ===
+        currentFolder
+    )
+  ) {
+
+    currentFolder =
+      folders.length
+        ? folders[0].id
+        : null;
+
+  }
+
+
   if (
     !currentFolder &&
     folders.length
@@ -2729,31 +2355,9 @@ async function render() {
 
   }
 
-  /*
-    Si la carpeta seleccionada
-    ya no existe, seleccionamos
-    la primera disponible.
-  */
-
-  const exists =
-    folders.some(
-      folder =>
-        folder.id ===
-        currentFolder
-    );
-
-  if (
-    !exists
-  ) {
-
-    currentFolder =
-      folders.length
-        ? folders[0].id
-        : null;
-
-  }
 
   renderFolders();
+
 
   const folder =
     folders.find(
@@ -2761,6 +2365,7 @@ async function render() {
         item.id ===
         currentFolder
     );
+
 
   if (folder) {
 
@@ -2770,11 +2375,13 @@ async function render() {
       "📁 " +
       folder.name;
 
+
     document.getElementById(
       "currentFolderDescription"
     ).textContent =
       folder.description ||
-      "Propuestas técnicas base.";
+      "Propuesta técnica original.";
+
 
     document.getElementById(
       "uploadButton"
@@ -2790,10 +2397,12 @@ async function render() {
     ).textContent =
       "Seleccioná un producto";
 
+
     document.getElementById(
       "currentFolderDescription"
     ).textContent =
-      "Acá aparecerán las propuestas técnicas base.";
+      "Acá aparecerá la propuesta técnica original.";
+
 
     document.getElementById(
       "uploadButton"
@@ -2802,7 +2411,9 @@ async function render() {
 
   }
 
-  await renderFiles();
+
+  await renderProposal();
+
 
   await updateStats();
 
@@ -2818,91 +2429,58 @@ async function updateStats() {
   const folders =
     getFolders();
 
-  let count =
+
+  let proposalCount =
     0;
+
 
   for (
     const folder of folders
   ) {
 
     const files =
-      await getFilesByFolder(
+      await getFiles(
         folder.id
       );
 
-    count +=
-      files.length;
+
+    if (files.length) {
+
+      proposalCount++;
+
+    }
 
   }
+
 
   document.getElementById(
     "folderCount"
   ).textContent =
     folders.length;
 
+
   document.getElementById(
-    "fileCount"
+    "proposalCount"
   ).textContent =
-    count;
+    proposalCount;
 
 }
 
 
 /* =====================================================
-   ICONO
-===================================================== */
-
-function getFileIcon(
-  name
-) {
-
-  const extension =
-    String(
-      name ||
-      ""
-    )
-    .split(".")
-    .pop()
-    .toLowerCase();
-
-  if (
-    extension === "pdf"
-  ) {
-
-    return "📕";
-
-  }
-
-  if (
-    extension === "doc" ||
-    extension === "docx"
-  ) {
-
-    return "📘";
-
-  }
-
-  if (
-    extension === "xls" ||
-    extension === "xlsx"
-  ) {
-
-    return "📗";
-
-  }
-
-  return "📄";
-
-}
-
-
-/* =====================================================
-   TAMAÑO
+   UTILIDADES
 ===================================================== */
 
 function formatBytes(
   bytes
 ) {
+
+  if (!bytes) {
+
+    return "0 B";
+
+  }
+
 
   if (
     bytes < 1024
@@ -2913,44 +2491,29 @@ function formatBytes(
 
   }
 
+
   if (
     bytes < 1024 * 1024
   ) {
 
     return (
-      bytes / 1024
+      bytes /
+      1024
     ).toFixed(1) +
     " KB";
 
   }
 
-  if (
-    bytes < 1024 * 1024 * 1024
-  ) {
-
-    return (
-      bytes /
-      1024 /
-      1024
-    ).toFixed(2) +
-    " MB";
-
-  }
 
   return (
     bytes /
     1024 /
-    1024 /
     1024
   ).toFixed(2) +
-  " GB";
+  " MB";
 
 }
 
-
-/* =====================================================
-   FECHA
-===================================================== */
 
 function formatDate(
   value
@@ -2961,6 +2524,7 @@ function formatDate(
     return "Sin fecha";
 
   }
+
 
   try {
 
@@ -2981,10 +2545,6 @@ function formatDate(
 }
 
 
-/* =====================================================
-   SEGURIDAD
-===================================================== */
-
 function escapeHTML(
   value
 ) {
@@ -2993,22 +2553,27 @@ function escapeHTML(
     value ||
     ""
   )
+
   .replace(
     /&/g,
     "&amp;"
   )
+
   .replace(
     /</g,
     "&lt;"
   )
+
   .replace(
     />/g,
     "&gt;"
   )
+
   .replace(
     /"/g,
     "&quot;"
   )
+
   .replace(
     /'/g,
     "&#039;"
@@ -3034,19 +2599,17 @@ function escapeHTML(
   catch(error) {
 
     console.error(
-      "Error inicializando biblioteca:",
+      "Error inicializando Biblioteca Técnica:",
       error
     );
 
     document.getElementById(
       "libraryStatus"
-    ).textContent =
-      "Error";
+    );
 
-    document.getElementById(
-      "infoMessage"
-    ).textContent =
-      "⚠️ No se pudo inicializar la Biblioteca Técnica.";
+    alert(
+      "No se pudo inicializar la Biblioteca Técnica."
+    );
 
   }
 
@@ -3055,4 +2618,5 @@ function escapeHTML(
 </script>
 
 </body>
+
 </html>
