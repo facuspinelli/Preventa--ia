@@ -1,0 +1,429 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Documentos | PREVENTA IA</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #1f2937;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .back {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .welcome {
+      margin-bottom: 30px;
+    }
+
+    .welcome h2 {
+      margin-bottom: 8px;
+    }
+
+    .upload-box {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .upload-box h3 {
+      margin-top: 0;
+    }
+
+    .file-input {
+      margin-top: 20px;
+      padding: 20px;
+      border: 2px dashed #d1d5db;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+    }
+
+    .file-name {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .analysis-box {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      resize: vertical;
+      padding: 15px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 15px;
+      background: #111827;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 22px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background: #374151;
+    }
+
+    .result {
+      margin-top: 25px;
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 20px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .result h4 {
+      margin-top: 0;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e5e7eb;
+      padding: 6px 10px;
+      border-radius: 20px;
+      margin: 4px;
+      font-size: 13px;
+    }
+
+    .warning {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff7ed;
+      border-radius: 8px;
+      color: #9a3412;
+    }
+
+    @media (max-width: 700px) {
+
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <header>
+
+    <h1>📄 PREVENTA IA</h1>
+
+    <a href="index.html" class="back">
+      ← Volver al inicio
+    </a>
+
+  </header>
+
+
+  <main class="container">
+
+    <div class="welcome">
+
+      <h2>📄 Análisis de Documentos</h2>
+
+      <p>
+        Cargá un documento y preparalo para analizarlo desde Preventa IA.
+      </p>
+
+    </div>
+
+
+    <div class="upload-box">
+
+      <h3>1. Seleccioná un documento</h3>
+
+      <p>
+        Podés seleccionar un pliego, propuesta, requerimiento o documento
+        relacionado con una oportunidad comercial.
+      </p>
+
+      <div class="file-input">
+
+        📁 Seleccionar archivo
+
+        <br>
+
+        <input
+          type="file"
+          id="documentFile"
+          accept=".pdf,.doc,.docx,.txt,.xlsx,.xls"
+          onchange="showFileName()"
+        >
+
+        <div
+          id="fileName"
+          class="file-name"
+        >
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="analysis-box">
+
+      <h3>2. ¿Qué querés analizar?</h3>
+
+      <p>
+        Indicá qué necesitás encontrar o entender del documento.
+      </p>
+
+      <textarea
+        id="analysisQuestion"
+        placeholder="Ejemplo: Identificá los requerimientos técnicos, usuarios, volumen documental, OCR, workflows, integraciones y plazos."
+      ></textarea>
+
+
+      <button onclick="analyzeDocument()">
+        🔍 Analizar documento
+      </button>
+
+
+      <div
+        id="result"
+        class="result"
+      ></div>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    function showFileName() {
+
+      const fileInput =
+        document.getElementById("documentFile");
+
+      const fileName =
+        document.getElementById("fileName");
+
+      if (fileInput.files.length > 0) {
+
+        fileName.textContent =
+          "📄 Archivo seleccionado: " +
+          fileInput.files[0].name;
+
+      } else {
+
+        fileName.textContent = "";
+
+      }
+
+    }
+
+
+    function analyzeDocument() {
+
+      const fileInput =
+        document.getElementById("documentFile");
+
+      const question =
+        document.getElementById("analysisQuestion").value.trim();
+
+      const result =
+        document.getElementById("result");
+
+
+      if (fileInput.files.length === 0) {
+
+        alert("Primero seleccioná un documento.");
+
+        return;
+
+      }
+
+
+      if (question === "") {
+
+        alert("Indicá qué querés analizar.");
+
+        return;
+
+      }
+
+
+      const file =
+        fileInput.files[0];
+
+
+      const fileName =
+        file.name.toLowerCase();
+
+
+      let detected = [];
+
+
+      if (
+        fileName.includes("thuban") ||
+        question.toLowerCase().includes("gestión documental") ||
+        question.toLowerCase().includes("gestion documental") ||
+        question.toLowerCase().includes("workflow")
+      ) {
+
+        detected.push("Thuban");
+
+      }
+
+
+      if (
+        question.toLowerCase().includes("ocr") ||
+        question.toLowerCase().includes("digitalización") ||
+        question.toLowerCase().includes("digitalizacion")
+      ) {
+
+        detected.push("Captika");
+
+      }
+
+
+      if (
+        question.toLowerCase().includes("firma")
+      ) {
+
+        detected.push("Firmas Addoc / Edatalia");
+
+      }
+
+
+      if (
+        question.toLowerCase().includes("legajo") ||
+        question.toLowerCase().includes("rrhh") ||
+        question.toLowerCase().includes("recibo")
+      ) {
+
+        detected.push("Perfil Digital");
+
+      }
+
+
+      if (
+        question.toLowerCase().includes("onboarding") ||
+        question.toLowerCase().includes("alta")
+      ) {
+
+        detected.push("Onboarding Addoc");
+
+      }
+
+
+      result.style.display = "block";
+
+
+      let html = "";
+
+      html += "<h4>🔎 Análisis preliminar</h4>";
+
+      html +=
+        "<p><strong>Documento:</strong> " +
+        file.name +
+        "</p>";
+
+      html +=
+        "<p><strong>Consulta:</strong> " +
+        question +
+        "</p>";
+
+
+      if (detected.length > 0) {
+
+        html +=
+          "<p><strong>Soluciones potencialmente relacionadas:</strong></p>";
+
+        detected.forEach(function(item) {
+
+          html +=
+            '<span class="tag">' +
+            item +
+            "</span>";
+
+        });
+
+      } else {
+
+        html +=
+          "<p>No detecté todavía una solución específica.</p>";
+
+      }
+
+
+      html +=
+        '<div class="warning">' +
+        "⚠️ Este análisis es preliminar. " +
+        "La versión actual todavía no lee el contenido interno del documento " +
+        "ni reemplaza una validación técnica." +
+        "</div>";
+
+
+      result.innerHTML = html;
+
+    }
+
+  </script>
+
+</body>
+
+</html>
+```
