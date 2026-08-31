@@ -1,1 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Asistente IA | PREVENTA IA</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #1f2937;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .back {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h2 {
+      margin-bottom: 8px;
+    }
+
+    .chat {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .messages {
+      min-height: 350px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      max-width: 75%;
+      line-height: 1.5;
+    }
+
+    .ia {
+      background: #eef2ff;
+      margin-right: auto;
+    }
+
+    .user {
+      background: #111827;
+      color: white;
+      margin-left: auto;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    textarea {
+      flex: 1;
+      resize: none;
+      height: 55px;
+      padding: 15px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+    }
+
+    button {
+      background: #111827;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0 25px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background: #374151;
+    }
+
+    .tip {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🤖 PREVENTA IA</h1>
+    <a href="index.html" class="back">← Volver al inicio</a>
+  </header>
+
+  <main class="container">
+
+    <div class="welcome">
+      <h2>Asistente IA</h2>
+      <p>
+        Tu asistente para resolver tareas de Preventa.
+      </p>
+    </div>
+
+    <div class="chat">
+
+      <div class="messages" id="messages">
+
+        <div class="message ia">
+          👋 Hola. Soy tu asistente de Preventa IA.
+          <br><br>
+          ¿En qué puedo ayudarte?
+        </div>
+
+      </div>
+
+      <div class="input-area">
+
+        <textarea
+          id="question"
+          placeholder="Escribí tu consulta..."
+        ></textarea>
+
+        <button onclick="sendMessage()">
+          Enviar
+        </button>
+
+      </div>
+
+      <div class="tip">
+        💡 Probá preguntarme algo como:
+        "¿Qué preguntas debería hacerle a un cliente durante un relevamiento?"
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+
+    function sendMessage() {
+
+      const input = document.getElementById("question");
+      const messages = document.getElementById("messages");
+
+      const question = input.value.trim();
+
+      if (question === "") {
+        return;
+      }
+
+      // Mostrar mensaje del usuario
+
+      const userMessage = document.createElement("div");
+
+      userMessage.className = "message user";
+      userMessage.textContent = question;
+
+      messages.appendChild(userMessage);
+
+      // Limpiar campo
+
+      input.value = "";
+
+      // Respuesta temporal de la IA
+
+      setTimeout(function() {
+
+        const iaMessage = document.createElement("div");
+
+        iaMessage.className = "message ia";
+
+        iaMessage.textContent =
+          "Estoy procesando tu consulta. 🤖 Esta es una primera versión del asistente. Más adelante vamos a conectarme con una IA real para poder analizar información, documentos y requerimientos de Preventa.";
+
+        messages.appendChild(iaMessage);
+
+        messages.scrollTop = messages.scrollHeight;
+
+      }, 500);
+
+    }
+
+  </script>
+
+</body>
+</html>
 
