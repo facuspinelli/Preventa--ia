@@ -4,9 +4,7 @@ const client = new OpenAI({
 apiKey: process.env.OPENAI_API_KEY
 });
 
-module.exports = async function handler(req, res) {
-
-res.setHeader("Content-Type", "application/json");
+module.exports = async (req, res) => {
 
 if (req.method !== "POST") {
 return res.status(405).json({
@@ -17,10 +15,8 @@ error: "Método no permitido"
 try {
 
 ```
-const body = req.body || {};
-
-const message = body.message || "";
-const knowledge = body.knowledge || "";
+const message = req.body?.message || "";
+const knowledge = req.body?.knowledge || "";
 
 if (!message.trim()) {
   return res.status(400).json({
@@ -28,26 +24,18 @@ if (!message.trim()) {
   });
 }
 
-if (!process.env.OPENAI_API_KEY) {
-  return res.status(500).json({
-    error: "OPENAI_API_KEY no está configurada en Vercel."
-  });
-}
-
-const systemPrompt = `
+const prompt = `
 ```
 
-Sos PREVENTA IA, un asistente inteligente especializado
-en Preventa Técnica.
+Sos PREVENTA IA, un asistente especializado en Preventa Técnica.
 
-Tu función es ayudar a analizar:
+Ayudás con:
 
-* oportunidades comerciales
 * relevamientos
-* requerimientos técnicos
+* oportunidades
 * propuestas
-* productos Addoc
-* productos Thuban
+* Addoc
+* Thuban
 * gestión documental
 * OCR
 * workflows
@@ -58,61 +46,30 @@ Tu función es ayudar a analizar:
 * integraciones
 * migraciones
 * cotizaciones
-* documentación
+* análisis de documentos
 
-IMPORTANTE:
-
-Tenés una base de conocimiento interna que se incluye debajo.
-
-Usala cuando la consulta esté relacionada con nuestra
-empresa, productos, soluciones o metodología de Preventa.
-
-Además, podés responder preguntas generales utilizando
-tu conocimiento general.
+Podés responder también preguntas generales.
 
 No inventes funcionalidades específicas de productos.
+Si no existe información suficiente, indicá que hay que validarla.
 
-Si la información interna no alcanza para confirmar algo,
-decilo claramente.
+Cuando analices una oportunidad buscá:
+objetivo, alcance, usuarios, documentos, volúmenes, OCR,
+workflows, firmas, storage, infraestructura, integraciones,
+seguridad, migración, soporte, costos, riesgos y datos faltantes.
 
-Cuando analices una oportunidad, tratá de identificar:
+Respondé en español, de forma clara y práctica.
 
-1. Objetivo
-2. Alcance
-3. Usuarios
-4. Documentos
-5. Volúmenes
-6. OCR
-7. Workflows
-8. Firmas
-9. Storage
-10. Infraestructura
-11. Integraciones
-12. Seguridad
-13. Migración
-14. Soporte
-15. Datos necesarios para cotizar
-16. Riesgos
-17. Información faltante
-18. Recomendaciones
-
-Respondé siempre en español y de forma práctica,
-clara y orientada a Preventa.
-
-BASE DE CONOCIMIENTO INTERNA:
+CONOCIMIENTO INTERNO:
 
 ${knowledge}
 `;
 
 ```
 const response = await client.responses.create({
-
   model: "gpt-5.4",
-
-  instructions: systemPrompt,
-
+  instructions: prompt,
   input: message
-
 });
 
 return res.status(200).json({
@@ -123,16 +80,13 @@ return res.status(200).json({
 } catch (error) {
 
 ```
-console.error("ERROR OPENAI:", error);
+console.error(error);
 
 return res.status(500).json({
-  error:
-    error?.message ||
-    "Error desconocido al comunicarse con la IA."
+  error: error.message || "Error de OpenAI"
 });
 ```
 
 }
 
 };
-
