@@ -57,6 +57,16 @@ h2 {
   margin-bottom: 30px;
 }
 
+.connection {
+  display: none;
+  background: #ecfdf5;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
 .card {
   background: white;
   padding: 30px;
@@ -101,6 +111,11 @@ input:focus {
   border-color: #2563eb;
 }
 
+input.prefilled {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
 .buttons {
   display: flex;
   gap: 12px;
@@ -128,6 +143,14 @@ input:focus {
 
 .excel-button:hover {
   background: #15803d;
+}
+
+.save-button {
+  background: #2563eb;
+}
+
+.save-button:hover {
+  background: #1d4ed8;
 }
 
 .results {
@@ -200,6 +223,15 @@ input:focus {
   display: none;
 }
 
+.success {
+  color: #166534;
+  background: #dcfce7;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  display: none;
+}
+
 @media (max-width: 700px) {
 
   header {
@@ -238,7 +270,12 @@ input:focus {
     Calculá automáticamente los costos de implementación y costos mensuales.
   </p>
 
-  <!-- DATOS DE LA COTIZACIÓN -->
+  <div
+    id="connection"
+    class="connection"
+  ></div>
+
+  <!-- DATOS -->
 
   <div class="card">
 
@@ -259,6 +296,7 @@ input:focus {
 
   </div>
 
+
   <div class="field">
 
     <label>Oportunidad</label>
@@ -270,6 +308,7 @@ input:focus {
     >
 
   </div>
+
 
   <div class="field">
 
@@ -288,6 +327,7 @@ input:focus {
 
   </div>
 
+
   <div class="field">
 
     <label>Cantidad de usuarios</label>
@@ -304,6 +344,7 @@ input:focus {
     </small>
 
   </div>
+
 
   <div class="field">
 
@@ -322,6 +363,7 @@ input:focus {
 
   </div>
 
+
   <div class="field">
 
     <label>Peso promedio de una imagen (KB)</label>
@@ -339,6 +381,7 @@ input:focus {
 
   </div>
 
+
   <div class="field">
 
     <label>Cantidad de imágenes</label>
@@ -351,10 +394,11 @@ input:focus {
     >
 
     <small>
-      Se calcula automáticamente el almacenamiento necesario según el peso de las imágenes.
+      Se calcula automáticamente el almacenamiento necesario.
     </small>
 
   </div>
+
 
   <div class="field">
 
@@ -368,10 +412,11 @@ input:focus {
     >
 
     <small>
-      Opcional: 1 pack = 50 GB · 2 packs = 100 GB · 3 packs = 150 GB, etc.
+      Opcional: 1 pack = 50 GB · 2 = 100 GB · 3 = 150 GB.
     </small>
 
   </div>
+
 
   <div class="field">
 
@@ -385,16 +430,20 @@ input:focus {
     >
 
     <small>
-      Costo: USD 25 por hora. Mínimo recomendado: 5 horas.
+      Costo: USD 25 por hora.
     </small>
 
   </div>
 
 </div>
 
+
 <div id="warning" class="warning"></div>
 
 <div id="info" class="info"></div>
+
+<div id="success" class="success"></div>
+
 
 <div class="buttons">
 
@@ -404,6 +453,15 @@ input:focus {
   >
     🧮 Calcular cotización
   </button>
+
+
+  <button
+    class="button save-button"
+    onclick="saveQuoteToOpportunity()"
+  >
+    💾 Guardar en oportunidad
+  </button>
+
 
   <button
     class="button excel-button"
@@ -424,6 +482,7 @@ input:focus {
 ```
 <h3>📊 Resultado</h3>
 
+
 <div class="results">
 
   <div class="result">
@@ -441,6 +500,7 @@ input:focus {
 
   </div>
 
+
   <div class="result">
 
     <div class="result-title">
@@ -456,6 +516,7 @@ input:focus {
 
   </div>
 
+
   <div class="result">
 
     <div class="result-title">
@@ -470,6 +531,7 @@ input:focus {
     </div>
 
   </div>
+
 
   <div class="result">
 
@@ -488,9 +550,11 @@ input:focus {
 
 </div>
 
+
 <div class="storage-box">
 
   <strong>💾 Storage</strong>
+
 
   <p>
     Necesidad calculada:
@@ -499,6 +563,7 @@ input:focus {
     </strong>
   </p>
 
+
   <p>
     Storage a cotizar:
     <strong id="storageQuoted">
@@ -506,12 +571,14 @@ input:focus {
     </strong>
   </p>
 
+
   <p>
     Cantidad de packs:
     <strong id="storagePacks">
       1
     </strong>
   </p>
+
 
   <p>
     Costo Storage:
@@ -521,6 +588,7 @@ input:focus {
   </p>
 
 </div>
+
 
 <div class="total">
 
@@ -536,6 +604,7 @@ input:focus {
 
   </div>
 
+
   <div class="total-row">
 
     <span>
@@ -547,6 +616,7 @@ input:focus {
     </strong>
 
   </div>
+
 
   <div class="total-final">
 
@@ -569,6 +639,292 @@ input:focus {
 
 <script>
 
+
+/* =========================================
+   OPORTUNIDAD ACTUAL
+========================================= */
+
+let currentOpportunity = null;
+
+
+function loadCurrentOpportunity() {
+
+  const stored =
+    localStorage.getItem(
+      "preventa_current_opportunity"
+    );
+
+
+  if (!stored) {
+
+    return;
+
+  }
+
+
+  try {
+
+    currentOpportunity =
+      JSON.parse(stored);
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "No se pudo leer la oportunidad.",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if (!currentOpportunity) {
+
+    return;
+
+  }
+
+
+  /*
+    Cliente
+  */
+
+  const client =
+    document.getElementById(
+      "client"
+    );
+
+
+  if (
+    currentOpportunity.client
+  ) {
+
+    client.value =
+      currentOpportunity.client;
+
+    client.classList.add(
+      "prefilled"
+    );
+
+  }
+
+
+  /*
+    Oportunidad
+  */
+
+  const opportunity =
+    document.getElementById(
+      "opportunity"
+    );
+
+
+  if (
+    currentOpportunity.project
+  ) {
+
+    opportunity.value =
+      currentOpportunity.project;
+
+    opportunity.classList.add(
+      "prefilled"
+    );
+
+  }
+
+
+  /*
+    Usuarios
+  */
+
+  if (
+    currentOpportunity.users
+  ) {
+
+    const usuarios =
+      parseNumber(
+        currentOpportunity.users
+      );
+
+
+    if (
+      usuarios > 0
+    ) {
+
+      document.getElementById(
+        "users"
+      ).value =
+        usuarios;
+
+      document.getElementById(
+        "users"
+      ).classList.add(
+        "prefilled"
+      );
+
+    }
+
+  }
+
+
+  /*
+    Intentar interpretar storage.
+  */
+
+  if (
+    currentOpportunity.storage
+  ) {
+
+    const storageGB =
+      extraerGB(
+        currentOpportunity.storage
+      );
+
+
+    if (
+      storageGB > 0
+    ) {
+
+      const packs =
+        Math.ceil(
+          storageGB / 50
+        );
+
+
+      document.getElementById(
+        "manualPacks"
+      ).value =
+        packs;
+
+      document.getElementById(
+        "manualPacks"
+      ).classList.add(
+        "prefilled"
+      );
+
+    }
+
+  }
+
+
+  const connection =
+    document.getElementById(
+      "connection"
+    );
+
+
+  connection.textContent =
+    "🔗 Cotización vinculada a: " +
+    currentOpportunity.client +
+    " — " +
+    currentOpportunity.project;
+
+
+  connection.style.display =
+    "block";
+
+}
+
+
+/* =========================================
+   HELPERS DE DATOS
+========================================= */
+
+function parseNumber(value) {
+
+  if (
+    typeof value === "number"
+  ) {
+
+    return value;
+
+  }
+
+
+  const texto =
+    String(value)
+      .replace(/\./g, "")
+      .replace(",", ".");
+
+
+  const numero =
+    parseFloat(
+      texto.replace(
+        /[^\d.-]/g,
+        ""
+      )
+    );
+
+
+  return isNaN(numero)
+    ? 0
+    : numero;
+
+}
+
+
+function extraerGB(value) {
+
+  const texto =
+    String(value)
+      .toLowerCase()
+      .replace(",", ".");
+
+
+  const match =
+    texto.match(
+      /([\d.]+)\s*(tb|gb|mb)?/
+    );
+
+
+  if (!match) {
+
+    return 0;
+
+  }
+
+
+  const numero =
+    parseFloat(
+      match[1]
+    );
+
+
+  const unidad =
+    match[2] ||
+    "gb";
+
+
+  if (
+    unidad === "tb"
+  ) {
+
+    return numero * 1024;
+
+  }
+
+
+  if (
+    unidad === "mb"
+  ) {
+
+    return numero / 1024;
+
+  }
+
+
+  return numero;
+
+}
+
+
+/* =========================================
+   DINERO
+========================================= */
+
 function money(value) {
 
   return "USD " + value.toLocaleString(
@@ -582,94 +938,198 @@ function money(value) {
 }
 
 
+/* =========================================
+   PRECIO USUARIO
+========================================= */
+
 function getUserPrice(users) {
 
-  if (users <= 0) return 0;
+  if (
+    users <= 0
+  ) {
+    return 0;
+  }
 
-  if (users <= 11) return 4.17;
 
-  if (users <= 49) return 2.20;
+  if (
+    users <= 11
+  ) {
+    return 4.17;
+  }
 
-  if (users <= 99) return 1.30;
 
-  if (users <= 249) return 1.10;
+  if (
+    users <= 49
+  ) {
+    return 2.20;
+  }
 
-  if (users <= 499) return 0.90;
 
-  if (users <= 999) return 0.90;
+  if (
+    users <= 99
+  ) {
+    return 1.30;
+  }
 
-  if (users <= 3500) return 0.80;
+
+  if (
+    users <= 249
+  ) {
+    return 1.10;
+  }
+
+
+  if (
+    users <= 499
+  ) {
+    return 0.90;
+  }
+
+
+  if (
+    users <= 999
+  ) {
+    return 0.90;
+  }
+
+
+  if (
+    users <= 3500
+  ) {
+    return 0.80;
+  }
+
 
   return 0.80;
 
 }
 
 
+/* =========================================
+   CALCULAR
+========================================= */
+
 function calculate() {
 
   const setup =
-    Number(document.getElementById("setup").value) || 0;
+    Number(
+      document.getElementById(
+        "setup"
+      ).value
+    ) || 0;
+
 
   const users =
-    Number(document.getElementById("users").value) || 0;
+    Number(
+      document.getElementById(
+        "users"
+      ).value
+    ) || 0;
+
 
   const signatures =
-    Number(document.getElementById("signatures").value) || 0;
+    Number(
+      document.getElementById(
+        "signatures"
+      ).value
+    ) || 0;
+
 
   const imageWeight =
-    Number(document.getElementById("imageWeight").value) || 0;
+    Number(
+      document.getElementById(
+        "imageWeight"
+      ).value
+    ) || 0;
+
 
   const images =
-    Number(document.getElementById("images").value) || 0;
+    Number(
+      document.getElementById(
+        "images"
+      ).value
+    ) || 0;
+
 
   const manualPacks =
-    Number(document.getElementById("manualPacks").value) || 0;
+    Number(
+      document.getElementById(
+        "manualPacks"
+      ).value
+    ) || 0;
+
 
   const support =
-    Number(document.getElementById("support").value) || 0;
+    Number(
+      document.getElementById(
+        "support"
+      ).value
+    ) || 0;
 
 
   const warning =
-    document.getElementById("warning");
+    document.getElementById(
+      "warning"
+    );
+
 
   const info =
-    document.getElementById("info");
+    document.getElementById(
+      "info"
+    );
 
 
-  warning.style.display = "none";
-  info.style.display = "none";
+  const success =
+    document.getElementById(
+      "success"
+    );
 
 
-  if (users > 3500) {
+  warning.style.display =
+    "none";
+
+  info.style.display =
+    "none";
+
+  success.style.display =
+    "none";
+
+
+  if (
+    users > 3500
+  ) {
 
     warning.innerText =
       "⚠️ El tarifario actual contempla hasta 3500 usuarios.";
 
-    warning.style.display = "block";
+    warning.style.display =
+      "block";
 
   }
 
 
-  if (support > 0 && support < 5) {
+  if (
+    support > 0 &&
+    support < 5
+  ) {
 
     warning.innerText =
       "⚠️ El soporte tiene un mínimo recomendado de 5 horas.";
 
-    warning.style.display = "block";
+    warning.style.display =
+      "block";
 
   }
 
-
-  /*
-    COSTOS
-  */
 
   const setupCost =
     setup * 25;
 
 
   const userPrice =
-    getUserPrice(users);
+    getUserPrice(
+      users
+    );
 
 
   const usersCost =
@@ -684,13 +1144,6 @@ function calculate() {
     support * 25;
 
 
-  /*
-    STORAGE
-
-    1 MB = 1024 KB
-    1 GB = 1024 MB
-  */
-
   const totalKB =
     imageWeight * images;
 
@@ -699,32 +1152,34 @@ function calculate() {
     totalKB / 1024 / 1024;
 
 
-  /*
-    PACKS DE 50 GB
-
-    Si se cargan packs manualmente,
-    se respeta ese valor.
-
-    Si no, se calculan automáticamente.
-  */
-
   let packs;
 
-  if (manualPacks > 0) {
 
-    packs = manualPacks;
+  if (
+    manualPacks > 0
+  ) {
 
-  } else {
+    packs =
+      manualPacks;
 
-    packs = Math.ceil(
-      storageNeeded / 50
-    );
+  }
+
+  else {
+
+    packs =
+      Math.ceil(
+        storageNeeded / 50
+      );
 
   }
 
 
-  if (packs < 1) {
+  if (
+    packs < 1
+  ) {
+
     packs = 1;
+
   }
 
 
@@ -735,10 +1190,6 @@ function calculate() {
   const storageCost =
     packs * 2;
 
-
-  /*
-    TOTALES
-  */
 
   const totalSetup =
     setupCost;
@@ -753,58 +1204,106 @@ function calculate() {
 
   const totalYear =
     totalSetup +
-    (totalMonthly * 12);
+    (
+      totalMonthly * 12
+    );
 
 
-  /*
-    MOSTRAR RESULTADOS
-  */
+  document.getElementById(
+    "setupCost"
+  ).innerText =
+    money(
+      setupCost
+    );
 
-  document.getElementById("setupCost").innerText =
-    money(setupCost);
 
-  document.getElementById("usersCost").innerText =
-    money(usersCost);
+  document.getElementById(
+    "usersCost"
+  ).innerText =
+    money(
+      usersCost
+    );
 
-  document.getElementById("signatureCost").innerText =
-    money(signatureCost);
 
-  document.getElementById("supportCost").innerText =
-    money(supportCost);
+  document.getElementById(
+    "signatureCost"
+  ).innerText =
+    money(
+      signatureCost
+    );
 
-  document.getElementById("storageNeeded").innerText =
-    storageNeeded.toFixed(2) + " GB";
 
-  document.getElementById("storageQuoted").innerText =
-    storageQuoted + " GB";
+  document.getElementById(
+    "supportCost"
+  ).innerText =
+    money(
+      supportCost
+    );
 
-  document.getElementById("storagePacks").innerText =
+
+  document.getElementById(
+    "storageNeeded"
+  ).innerText =
+    storageNeeded.toFixed(2) +
+    " GB";
+
+
+  document.getElementById(
+    "storageQuoted"
+  ).innerText =
+    storageQuoted +
+    " GB";
+
+
+  document.getElementById(
+    "storagePacks"
+  ).innerText =
     packs;
 
-  document.getElementById("storageCost").innerText =
-    money(storageCost);
 
-  document.getElementById("totalSetup").innerText =
-    money(totalSetup);
-
-  document.getElementById("totalMonthly").innerText =
-    money(totalMonthly);
-
-  document.getElementById("totalYear").innerText =
-    money(totalYear);
+  document.getElementById(
+    "storageCost"
+  ).innerText =
+    money(
+      storageCost
+    );
 
 
-  /*
-    GUARDAR DATOS
-  */
+  document.getElementById(
+    "totalSetup"
+  ).innerText =
+    money(
+      totalSetup
+    );
+
+
+  document.getElementById(
+    "totalMonthly"
+  ).innerText =
+    money(
+      totalMonthly
+    );
+
+
+  document.getElementById(
+    "totalYear"
+  ).innerText =
+    money(
+      totalYear
+    );
+
 
   window.cotizacion = {
 
     client:
-      document.getElementById("client").value,
+      document.getElementById(
+        "client"
+      ).value,
 
     opportunity:
-      document.getElementById("opportunity").value,
+      document.getElementById(
+        "opportunity"
+      ).value,
 
     setup,
     users,
@@ -827,24 +1326,147 @@ function calculate() {
 
     totalSetup,
     totalMonthly,
-    totalYear
+    totalYear,
+
+    createdAt:
+      new Date().toISOString()
 
   };
 
 
   info.innerText =
-    "✅ Cotización calculada correctamente. Ya podés descargarla.";
+    "✅ Cotización calculada correctamente.";
 
-  info.style.display = "block";
+  info.style.display =
+    "block";
 
 }
 
 
-/*
-  DESCARGAR EXCEL
+/* =========================================
+   GUARDAR COTIZACIÓN
+========================================= */
 
-  Se genera un CSV compatible con Excel.
-*/
+function saveQuoteToOpportunity() {
+
+  calculate();
+
+
+  if (
+    !currentOpportunity
+  ) {
+
+    alert(
+      "Esta cotización no está vinculada a una oportunidad. Entrá desde Oportunidades → Cotizar."
+    );
+
+    return;
+
+  }
+
+
+  const index =
+    findOpportunityIndex(
+      currentOpportunity.id
+    );
+
+
+  if (
+    index === -1
+  ) {
+
+    alert(
+      "No encontré la oportunidad original."
+    );
+
+    return;
+
+  }
+
+
+  const quote =
+    window.cotizacion;
+
+
+  opportunitiesStorage()[
+    index
+  ].quote =
+    quote;
+
+
+  opportunitiesStorage()[
+    index
+  ].updatedAt =
+    new Date().toISOString();
+
+
+  localStorage.setItem(
+    "preventa_opportunities",
+    JSON.stringify(
+      opportunitiesStorage()
+    )
+  );
+
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(
+      opportunitiesStorage()[
+        index
+      ]
+    )
+  );
+
+
+  const success =
+    document.getElementById(
+      "success"
+    );
+
+
+  success.innerText =
+    "✅ Cotización guardada correctamente dentro de la oportunidad.";
+
+  success.style.display =
+    "block";
+
+}
+
+
+/* =========================================
+   OPORTUNIDADES
+========================================= */
+
+function opportunitiesStorage() {
+
+  return JSON.parse(
+    localStorage.getItem(
+      "preventa_opportunities"
+    )
+  ) || [];
+
+}
+
+
+function findOpportunityIndex(id) {
+
+  const list =
+    opportunitiesStorage();
+
+
+  return list.findIndex(
+    opportunity =>
+      String(
+        opportunity.id
+      ) === String(id)
+  );
+
+}
+
+
+/* =========================================
+   EXCEL
+========================================= */
 
 function downloadExcel() {
 
@@ -856,24 +1478,40 @@ function downloadExcel() {
 
 
   const client =
-    c.client || "Sin especificar";
+    c.client ||
+    "Sin especificar";
 
 
   const opportunity =
-    c.opportunity || "Sin especificar";
+    c.opportunity ||
+    "Sin especificar";
 
 
   const rows = [
 
-    ["PREVENTA IA - COTIZACIÓN"],
+    [
+      "PREVENTA IA - COTIZACIÓN"
+    ],
 
     [],
 
-    ["Cliente", client],
+    [
+      "Cliente",
+      client
+    ],
 
-    ["Oportunidad", opportunity],
+    [
+      "Oportunidad",
+      opportunity
+    ],
 
-    ["Fecha", new Date().toLocaleDateString("es-AR")],
+    [
+      "Fecha",
+      new Date()
+        .toLocaleDateString(
+          "es-AR"
+        )
+    ],
 
     [],
 
@@ -946,12 +1584,15 @@ function downloadExcel() {
 
     [
       "Storage necesario",
-      c.storageNeeded.toFixed(2) + " GB"
+      c.storageNeeded.toFixed(
+        2
+      ) + " GB"
     ],
 
     [
       "Storage cotizado",
-      c.storageQuoted + " GB"
+      c.storageQuoted +
+      " GB"
     ],
 
     [
@@ -969,35 +1610,42 @@ function downloadExcel() {
   ];
 
 
-  /*
-    Convertir a CSV
-  */
-
   const csv =
-    rows.map(row =>
+    rows.map(
+      row =>
+        row.map(
+          value => {
 
-      row.map(value => {
+            let text =
+              String(
+                value ?? ""
+              );
 
-        let text =
-          String(value ?? "");
 
-        text =
-          text.replace(/"/g, '""');
+            text =
+              text.replace(
+                /"/g,
+                '""'
+              );
 
-        return '"' + text + '"';
 
-      }).join(";")
+            return (
+              '"' +
+              text +
+              '"'
+            );
 
+          }
+        ).join(";")
     ).join("\n");
 
 
-  /*
-    BOM para Excel
-  */
-
   const blob =
     new Blob(
-      ["\ufeff" + csv],
+      [
+        "\ufeff" +
+        csv
+      ],
       {
         type:
           "text/csv;charset=utf-8;"
@@ -1006,11 +1654,15 @@ function downloadExcel() {
 
 
   const url =
-    URL.createObjectURL(blob);
+    URL.createObjectURL(
+      blob
+    );
 
 
   const link =
-    document.createElement("a");
+    document.createElement(
+      "a"
+    );
 
 
   link.href =
@@ -1021,23 +1673,31 @@ function downloadExcel() {
     "Cotizacion_Preventa_IA.csv";
 
 
-  document.body.appendChild(link);
+  document.body.appendChild(
+    link
+  );
 
 
   link.click();
 
 
-  document.body.removeChild(link);
+  document.body.removeChild(
+    link
+  );
 
 
-  URL.revokeObjectURL(url);
+  URL.revokeObjectURL(
+    url
+  );
 
 }
 
 
-/*
-  CALCULAR AUTOMÁTICAMENTE AL ABRIR
-*/
+/* =========================================
+   INICIO
+========================================= */
+
+loadCurrentOpportunity();
 
 calculate();
 
