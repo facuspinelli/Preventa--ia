@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -551,16 +550,11 @@ textarea:focus {
 
   <h1>🗂️ PREVENTA IA</h1>
 
-<a
-href="index.html"
-class="back"
-
->
-
-```
-← Volver al inicio
-```
-
+  <a
+    href="index.html"
+    class="back"
+  >
+    ← Volver al inicio
   </a>
 
 </header>
@@ -569,107 +563,101 @@ class="back"
 
   <div class="welcome">
 
-```
-<h2>🗂️ Repositorio de Preventa</h2>
+    <h2>🗂️ Repositorio de Preventa</h2>
 
-<p>
-  Historial centralizado de oportunidades,
-  cotizaciones y propuestas finales.
-</p>
-```
+    <p>
+      Historial centralizado de oportunidades,
+      cotizaciones y propuestas finales.
+    </p>
 
   </div>
 
   <div class="summary">
 
-```
-<div class="summary-card">
+    <div class="summary-card">
 
-  <div class="summary-title">
-    OPORTUNIDADES
-  </div>
+      <div class="summary-title">
+        OPORTUNIDADES
+      </div>
 
-  <div
-    id="totalOpportunities"
-    class="summary-value"
-  >
-    0
-  </div>
+      <div
+        id="totalOpportunities"
+        class="summary-value"
+      >
+        0
+      </div>
 
-</div>
+    </div>
 
-<div class="summary-card">
+    <div class="summary-card">
 
-  <div class="summary-title">
-    EN ANÁLISIS
-  </div>
+      <div class="summary-title">
+        EN ANÁLISIS
+      </div>
 
-  <div
-    id="analysisCount"
-    class="summary-value"
-  >
-    0
-  </div>
+      <div
+        id="analysisCount"
+        class="summary-value"
+      >
+        0
+      </div>
 
-</div>
+    </div>
 
-<div class="summary-card">
+    <div class="summary-card">
 
-  <div class="summary-title">
-    COTIZADAS
-  </div>
+      <div class="summary-title">
+        COTIZADAS
+      </div>
 
-  <div
-    id="quoteCount"
-    class="summary-value"
-  >
-    0
-  </div>
+      <div
+        id="quoteCount"
+        class="summary-value"
+      >
+        0
+      </div>
 
-</div>
+    </div>
 
-<div class="summary-card">
+    <div class="summary-card">
 
-  <div class="summary-title">
-    GANADAS
-  </div>
+      <div class="summary-title">
+        GANADAS
+      </div>
 
-  <div
-    id="wonCount"
-    class="summary-value"
-  >
-    0
-  </div>
+      <div
+        id="wonCount"
+        class="summary-value"
+      >
+        0
+      </div>
 
-</div>
+    </div>
 
-<div class="summary-card">
+    <div class="summary-card">
 
-  <div class="summary-title">
-    PERDIDAS
-  </div>
+      <div class="summary-title">
+        PERDIDAS
+      </div>
 
-  <div
-    id="lostCount"
-    class="summary-value"
-  >
-    0
-  </div>
+      <div
+        id="lostCount"
+        class="summary-value"
+      >
+        0
+      </div>
 
-</div>
-```
+    </div>
 
   </div>
 
   <div class="search-box">
 
-```
-<input
-  id="search"
-  type="text"
-  placeholder="🔎 Buscar por cliente, oportunidad o solución..."
->
-```
+    <input
+      id="search"
+      type="text"
+      placeholder="🔎 Buscar por cliente, oportunidad o solución..."
+    >
 
   </div>
 
@@ -687,33 +675,31 @@ class="back"
 
   <div class="modal-content">
 
-```
-<div class="modal-header">
+    <div class="modal-header">
 
-  <h3 id="previewTitle">
-    📄 Propuesta final
-  </h3>
+      <h3 id="previewTitle">
+        📄 Propuesta final
+      </h3>
 
-  <button
-    class="close-button"
-    onclick="closePreview()"
-  >
-    ✕ Cerrar
-  </button>
+      <button
+        class="close-button"
+        onclick="closePreview()"
+      >
+        ✕ Cerrar
+      </button>
 
-</div>
+    </div>
 
-<div
-  id="preview"
-  class="preview"
->
+    <div
+      id="preview"
+      class="preview"
+    >
 
-  <div class="document-page">
-    Cargando propuesta...
-  </div>
+      <div class="document-page">
+        Cargando propuesta...
+      </div>
 
-</div>
-```
+    </div>
 
   </div>
 
@@ -726,261 +712,259 @@ class="back"
 
   <div class="modal-content modal-form">
 
-```
-<h3>
-  ✏️ Editar oportunidad
-</h3>
+    <h3>
+      ✏️ Editar oportunidad
+    </h3>
 
-<p style="color:#6b7280;font-size:13px;margin-bottom:25px;">
-  Podés corregir los datos sin modificar la cotización
-  ni la propuesta final asociada.
-</p>
+    <p style="color:#6b7280;font-size:13px;margin-bottom:25px;">
+      Podés corregir los datos sin modificar la cotización
+      ni la propuesta final asociada.
+    </p>
 
-<div class="form-grid">
+    <div class="form-grid">
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Cliente
-    </label>
+        <label>
+          Cliente
+        </label>
 
-    <input
-      id="editClient"
-      type="text"
-    >
+        <input
+          id="editClient"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Oportunidad / Proyecto
-    </label>
+        <label>
+          Oportunidad / Proyecto
+        </label>
 
-    <input
-      id="editProject"
-      type="text"
-    >
+        <input
+          id="editProject"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Solución
-    </label>
+        <label>
+          Solución
+        </label>
 
-    <input
-      id="editSolution"
-      type="text"
-    >
+        <input
+          id="editSolution"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Estado
-    </label>
+        <label>
+          Estado
+        </label>
 
-    <select id="editStatus">
+        <select id="editStatus">
 
-      <option value="analysis">
-        🟡 En análisis
-      </option>
+          <option value="analysis">
+            🟡 En análisis
+          </option>
 
-      <option value="quote">
-        🔵 Cotizando
-      </option>
+          <option value="quote">
+            🔵 Cotizando
+          </option>
 
-      <option value="proposal">
-        🟣 Propuesta
-      </option>
+          <option value="proposal">
+            🟣 Propuesta
+          </option>
 
-      <option value="won">
-        🟢 Ganada
-      </option>
+          <option value="won">
+            🟢 Ganada
+          </option>
 
-      <option value="lost">
-        🔴 Perdida
-      </option>
+          <option value="lost">
+            🔴 Perdida
+          </option>
 
-    </select>
+        </select>
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Usuarios
-    </label>
+        <label>
+          Usuarios
+        </label>
 
-    <input
-      id="editUsers"
-      type="text"
-    >
+        <input
+          id="editUsers"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Storage
-    </label>
+        <label>
+          Storage
+        </label>
 
-    <input
-      id="editStorage"
-      type="text"
-    >
+        <input
+          id="editStorage"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Documentos
-    </label>
+        <label>
+          Documentos
+        </label>
 
-    <input
-      id="editDocuments"
-      type="text"
-    >
+        <input
+          id="editDocuments"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Workflows
-    </label>
+        <label>
+          Workflows
+        </label>
 
-    <input
-      id="editWorkflows"
-      type="text"
-    >
+        <input
+          id="editWorkflows"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      OCR
-    </label>
+        <label>
+          OCR
+        </label>
 
-    <input
-      id="editOcr"
-      type="text"
-    >
+        <input
+          id="editOcr"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Firmas
-    </label>
+        <label>
+          Firmas
+        </label>
 
-    <input
-      id="editSignatures"
-      type="text"
-    >
+        <input
+          id="editSignatures"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Infraestructura
-    </label>
+        <label>
+          Infraestructura
+        </label>
 
-    <input
-      id="editInfrastructure"
-      type="text"
-    >
+        <input
+          id="editInfrastructure"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group">
+      <div class="form-group">
 
-    <label>
-      Plazo
-    </label>
+        <label>
+          Plazo
+        </label>
 
-    <input
-      id="editDeadline"
-      type="text"
-    >
+        <input
+          id="editDeadline"
+          type="text"
+        >
 
-  </div>
+      </div>
 
-  <div class="form-group full">
+      <div class="form-group full">
 
-    <label>
-      Objetivo
-    </label>
+        <label>
+          Objetivo
+        </label>
 
-    <textarea
-      id="editObjective"
-    ></textarea>
+        <textarea
+          id="editObjective"
+        ></textarea>
 
-  </div>
+      </div>
 
-  <div class="form-group full">
+      <div class="form-group full">
 
-    <label>
-      Requerimientos
-    </label>
+        <label>
+          Requerimientos
+        </label>
 
-    <textarea
-      id="editRequirements"
-    ></textarea>
+        <textarea
+          id="editRequirements"
+        ></textarea>
 
-  </div>
+      </div>
 
-  <div class="form-group full">
+      <div class="form-group full">
 
-    <label>
-      Riesgos
-    </label>
+        <label>
+          Riesgos
+        </label>
 
-    <textarea
-      id="editRisks"
-    ></textarea>
+        <textarea
+          id="editRisks"
+        ></textarea>
 
-  </div>
+      </div>
 
-  <div class="form-group full">
+      <div class="form-group full">
 
-    <label>
-      Notas internas
-    </label>
+        <label>
+          Notas internas
+        </label>
 
-    <textarea
-      id="editNotes"
-    ></textarea>
+        <textarea
+          id="editNotes"
+        ></textarea>
 
-  </div>
+      </div>
 
-</div>
+    </div>
 
-<div class="modal-buttons">
+    <div class="modal-buttons">
 
-  <button
-    class="button green"
-    onclick="saveEditedOpportunity()"
-  >
-    💾 Guardar cambios
-  </button>
+      <button
+        class="button green"
+        onclick="saveEditedOpportunity()"
+      >
+        💾 Guardar cambios
+      </button>
 
-  <button
-    class="button secondary"
-    onclick="closeEditModal()"
-  >
-    Cancelar
-  </button>
+      <button
+        class="button secondary"
+        onclick="closeEditModal()"
+      >
+        Cancelar
+      </button>
 
-</div>
-```
+    </div>
 
   </div>
 
@@ -1015,13 +999,19 @@ function getOpportunities() {
       );
 
     if (!data) {
+
       return [];
+
     }
 
     const parsed =
-      JSON.parse(data);
+      JSON.parse(
+        data
+      );
 
-    return Array.isArray(parsed)
+    return Array.isArray(
+      parsed
+    )
       ? parsed
       : [];
 
@@ -1154,6 +1144,7 @@ function getFinalProposal(
       if (!db) {
 
         resolve(null);
+
         return;
 
       }
@@ -1165,6 +1156,7 @@ function getFinalProposal(
       ) {
 
         resolve(null);
+
         return;
 
       }
@@ -1196,17 +1188,20 @@ function getFinalProposal(
         function() {
 
           const results =
-            request.result || [];
+            request.result ||
+            [];
 
           results.sort(
             function(a, b) {
 
               return (
                 new Date(
-                  b.createdAt || 0
+                  b.createdAt ||
+                  0
                 ) -
                 new Date(
-                  a.createdAt || 0
+                  a.createdAt ||
+                  0
                 )
               );
 
@@ -1214,7 +1209,8 @@ function getFinalProposal(
           );
 
           resolve(
-            results[0] || null
+            results[0] ||
+            null
           );
 
         };
@@ -1248,6 +1244,7 @@ function deleteFinalProposals(
       if (!db) {
 
         resolve();
+
         return;
 
       }
@@ -1259,6 +1256,7 @@ function deleteFinalProposals(
       ) {
 
         resolve();
+
         return;
 
       }
@@ -1290,7 +1288,8 @@ function deleteFinalProposals(
         function() {
 
           const results =
-            request.result || [];
+            request.result ||
+            [];
 
           results.forEach(
             function(item) {
@@ -1322,7 +1321,7 @@ function deleteFinalProposals(
 
 
 /* ==========================================
-   ESTADOS
+   ESTADO
 ========================================== */
 
 function getStatusName(
@@ -1350,6 +1349,7 @@ function getStatusName(
 
   return (
     names[status] ||
+    status ||
     "Sin estado"
   );
 
@@ -1374,7 +1374,10 @@ function updateSummary(
   ).textContent =
     opportunities.filter(
       function(item) {
-        return item.status === "analysis";
+
+        return item.status ===
+          "analysis";
+
       }
     ).length;
 
@@ -1383,7 +1386,9 @@ function updateSummary(
   ).textContent =
     opportunities.filter(
       function(item) {
+
         return !!item.quote;
+
       }
     ).length;
 
@@ -1392,7 +1397,10 @@ function updateSummary(
   ).textContent =
     opportunities.filter(
       function(item) {
-        return item.status === "won";
+
+        return item.status ===
+          "won";
+
       }
     ).length;
 
@@ -1401,7 +1409,10 @@ function updateSummary(
   ).textContent =
     opportunities.filter(
       function(item) {
-        return item.status === "lost";
+
+        return item.status ===
+          "lost";
+
       }
     ).length;
 
@@ -1443,19 +1454,23 @@ async function renderRepository() {
         const texto =
           (
             String(
-              opportunity.client || ""
+              opportunity.client ||
+              ""
             ) +
             " " +
             String(
-              opportunity.project || ""
+              opportunity.project ||
+              ""
             ) +
             " " +
             String(
-              opportunity.solution || ""
+              opportunity.solution ||
+              ""
             ) +
             " " +
             String(
-              opportunity.product || ""
+              opportunity.product ||
+              ""
             )
           ).toLowerCase();
 
@@ -1472,6 +1487,7 @@ async function renderRepository() {
 
     container.innerHTML = `
       <div class="empty">
+
         <div style="font-size:45px;">
           🗂️
         </div>
@@ -1483,6 +1499,7 @@ async function renderRepository() {
         <p>
           Las oportunidades que crees aparecerán automáticamente acá.
         </p>
+
       </div>
     `;
 
@@ -1526,9 +1543,9 @@ async function renderRepository() {
 
     }
 
-
     const quoteSection =
       quote
+
         ? `
           <div class="quote-section">
 
@@ -1557,15 +1574,16 @@ async function renderRepository() {
 
           </div>
         `
+
         : `
           <div class="no-quote">
             ⚠️ Esta oportunidad todavía no tiene una cotización guardada.
           </div>
         `;
 
-
     const proposalSection =
       finalProposal
+
         ? `
           <div class="proposal-section">
 
@@ -1625,12 +1643,12 @@ async function renderRepository() {
 
           </div>
         `
+
         : `
           <div class="no-quote">
             📄 Todavía no hay una propuesta final generada para esta oportunidad.
           </div>
         `;
-
 
     card.innerHTML = `
 
@@ -2703,7 +2721,7 @@ async function previewProposal(
 
 
 /* ==========================================
-   DESCARGAR PROPUESTA
+   DESCARGAR
 ========================================== */
 
 async function downloadProposal(
@@ -2719,6 +2737,16 @@ async function downloadProposal(
 
     alert(
       "No se encontró la propuesta final."
+    );
+
+    return;
+
+  }
+
+  if (!proposal.blob) {
+
+    alert(
+      "La propuesta final no contiene un archivo descargable."
     );
 
     return;
