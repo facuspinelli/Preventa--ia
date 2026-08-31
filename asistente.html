@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,16 +8,11 @@
 
 <title>Asistente IA | PREVENTA IA</title>
 
-<!-- =====================================================
-     LIBRERÍAS
-===================================================== -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
 
 <style>
 
@@ -224,9 +218,7 @@ button:disabled {
 
 </head>
 
-
 <body>
-
 
 <header>
 
@@ -241,9 +233,7 @@ button:disabled {
 
 </header>
 
-
 <main class="container">
-
 
   <div class="welcome">
 
@@ -257,14 +247,11 @@ button:disabled {
 
   </div>
 
-
   <div class="chat">
-
 
     <div class="mode">
       🟢 MODO PREVENTA — CONOCIMIENTO INTERNO
     </div>
-
 
     <div
       id="knowledgeStatus"
@@ -272,7 +259,6 @@ button:disabled {
     >
       🔎 Cargando conocimiento...
     </div>
-
 
     <div
       class="messages"
@@ -306,15 +292,15 @@ button:disabled {
         También puedo consultar documentación cargada
         en el Centro de Conocimiento IA.
 
-        Cuando la IA generativa esté disponible,
-        puedo complementar todo este conocimiento con IA.
+        Si la IA generativa está disponible,
+        la utilizo para complementar y relacionar
+        el conocimiento interno.
 
         ¿En qué puedo ayudarte?
 
       </div>
 
     </div>
-
 
     <div class="input-area">
 
@@ -332,7 +318,6 @@ button:disabled {
 
     </div>
 
-
     <div class="tip">
 
       💡 Probá preguntarme:
@@ -349,10 +334,9 @@ button:disabled {
 
       "¿Qué dice la documentación sobre DocIntro?"
 
-      "Busca en documento interno qué hace DocIntro"
+      "Buscá en el documento qué hace DocIntro"
 
     </div>
-
 
     <div
       id="status"
@@ -361,22 +345,17 @@ button:disabled {
       🔎 Cargando base de conocimiento...
     </div>
 
-
   </div>
 
 </main>
 
-
 <script>
-
 
 /* =====================================================
    CONFIGURACIÓN PDF.JS
 ===================================================== */
 
-if (
-  typeof pdfjsLib !== "undefined"
-) {
+if (typeof pdfjsLib !== "undefined") {
 
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
@@ -396,7 +375,7 @@ let documentosTextoCache = new Map();
 
 
 /* =====================================================
-   CONFIGURACIÓN CENTRO DE CONOCIMIENTO
+   BASE DE DATOS DEL CENTRO DE CONOCIMIENTO
 ===================================================== */
 
 const KNOWLEDGE_DB_NAME =
@@ -418,34 +397,25 @@ let knowledgeDB = null;
 async function cargarConocimiento() {
 
   const status =
-    document.getElementById(
-      "status"
-    );
+    document.getElementById("status");
 
   const knowledgeStatus =
-    document.getElementById(
-      "knowledgeStatus"
-    );
+    document.getElementById("knowledgeStatus");
 
-
-  status.className =
-    "status";
+  status.className = "status";
 
   status.textContent =
     "🔎 Cargando base de conocimiento...";
-
 
   try {
 
     const response =
       await fetch(
-        "./conocimiento.json?version=" +
-        Date.now(),
+        "./conocimiento.json?version=" + Date.now(),
         {
           cache: "no-store"
         }
       );
-
 
     if (!response.ok) {
 
@@ -456,10 +426,8 @@ async function cargarConocimiento() {
 
     }
 
-
     const texto =
       await response.text();
-
 
     if (!texto.trim()) {
 
@@ -469,12 +437,8 @@ async function cargarConocimiento() {
 
     }
 
-
     conocimiento =
-      JSON.parse(
-        texto
-      );
-
+      JSON.parse(texto);
 
     status.className =
       "status success-status";
@@ -482,17 +446,14 @@ async function cargarConocimiento() {
     status.textContent =
       "🟢 Base estructurada cargada correctamente.";
 
-
     knowledgeStatus.textContent =
       "🟢 Base estructurada disponible. Cargando documentación adicional...";
-
 
     console.log(
       "PREVENTA IA - conocimiento.json cargado."
     );
 
   }
-
 
   catch(error) {
 
@@ -501,19 +462,14 @@ async function cargarConocimiento() {
       error
     );
 
-
-    conocimiento =
-      null;
-
+    conocimiento = null;
 
     status.className =
       "status error-status";
 
-
     status.textContent =
       "🔴 No se pudo cargar conocimiento.json. " +
       error.message;
-
 
     knowledgeStatus.textContent =
       "⚠️ La base estructurada no está disponible.";
@@ -524,7 +480,7 @@ async function cargarConocimiento() {
 
 
 /* =====================================================
-   BASE DE DATOS DEL CENTRO DE CONOCIMIENTO
+   BASE DE DATOS INDEXEDDB
 ===================================================== */
 
 function openKnowledgeDatabase() {
@@ -538,13 +494,11 @@ function openKnowledgeDatabase() {
           KNOWLEDGE_DB_VERSION
         );
 
-
       request.onupgradeneeded =
         function(event) {
 
           const database =
             event.target.result;
-
 
           if (
             !database.objectStoreNames.contains(
@@ -561,7 +515,6 @@ function openKnowledgeDatabase() {
                 }
               );
 
-
             store.createIndex(
               "category",
               "category",
@@ -569,7 +522,6 @@ function openKnowledgeDatabase() {
                 unique: false
               }
             );
-
 
             store.createIndex(
               "createdAt",
@@ -583,7 +535,6 @@ function openKnowledgeDatabase() {
 
         };
 
-
       request.onsuccess =
         function(event) {
 
@@ -595,7 +546,6 @@ function openKnowledgeDatabase() {
           );
 
         };
-
 
       request.onerror =
         function() {
@@ -629,36 +579,19 @@ function getKnowledgeDocuments() {
 
       }
 
-
-      if (
-        !knowledgeDB.objectStoreNames.contains(
-          KNOWLEDGE_STORE
-        )
-      ) {
-
-        resolve([]);
-
-        return;
-
-      }
-
-
       const transaction =
         knowledgeDB.transaction(
           KNOWLEDGE_STORE,
           "readonly"
         );
 
-
       const store =
         transaction.objectStore(
           KNOWLEDGE_STORE
         );
 
-
       const request =
         store.getAll();
-
 
       request.onsuccess =
         function() {
@@ -668,7 +601,6 @@ function getKnowledgeDocuments() {
           );
 
         };
-
 
       request.onerror =
         function() {
@@ -689,28 +621,69 @@ function getKnowledgeDocuments() {
    NORMALIZAR TEXTO
 ===================================================== */
 
-function normalizarTexto(
-  texto
-) {
+function normalizarTexto(texto) {
 
-  return String(
-    texto || ""
-  )
-  .toLowerCase()
-  .normalize("NFD")
-  .replace(
-    /[\u0300-\u036f]/g,
-    ""
-  )
-  .replace(
-    /[^a-z0-9\s]/g,
-    " "
-  )
-  .replace(
-    /\s+/g,
-    " "
-  )
-  .trim();
+  return String(texto || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /[^a-z0-9\s]/g,
+      " "
+    )
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim();
+
+}
+
+
+/* =====================================================
+   DETECTAR INTENCIÓN DOCUMENTAL
+===================================================== */
+
+function preguntaPideDocumento(pregunta) {
+
+  const texto =
+    normalizarTexto(
+      pregunta
+    );
+
+  const indicadores = [
+
+    "busca en documento",
+    "buscar en documento",
+    "buscame en documento",
+    "buscame en el documento",
+    "busca en el documento",
+    "buscar en el documento",
+    "dice el documento",
+    "dice la documentacion",
+    "documentacion sobre",
+    "documentacion de",
+    "segun el documento",
+    "segun la documentacion",
+    "pdf",
+    "archivo cargado",
+    "documento interno",
+    "documento cargado"
+
+  ];
+
+  return indicadores.some(
+    function(indicador) {
+
+      return texto.includes(
+        indicador
+      );
+
+    }
+  );
 
 }
 
@@ -719,15 +692,12 @@ function normalizarTexto(
    PALABRAS IMPORTANTES
 ===================================================== */
 
-function obtenerPalabras(
-  pregunta
-) {
+function obtenerPalabras(pregunta) {
 
   const texto =
     normalizarTexto(
       pregunta
     );
-
 
   const stopWords = [
 
@@ -775,10 +745,11 @@ function obtenerPalabras(
     "busca",
     "buscar",
     "interno",
-    "internos"
+    "interna",
+    "json",
+    "pdf"
 
   ];
-
 
   return texto
     .split(" ")
@@ -799,12 +770,73 @@ function obtenerPalabras(
 
 
 /* =====================================================
+   PRODUCTOS / TEMAS CONOCIDOS
+===================================================== */
+
+const temasConocimiento = [
+
+  "perfil digital",
+  "onboarding addoc",
+  "firmas addoc",
+  "visualizador addoc",
+  "islas",
+  "thuban",
+  "captika",
+  "edatalia",
+  "documenta",
+  "adea",
+  "workflow",
+  "full text",
+  "ocr",
+  "storage",
+  "multicliente"
+
+];
+
+
+/* =====================================================
+   DETECTAR SI LA PREGUNTA ES SOBRE
+   UN TEMA CONOCIDO
+===================================================== */
+
+function detectarTemaConocido(pregunta) {
+
+  const texto =
+    normalizarTexto(
+      pregunta
+    );
+
+  for (
+    const tema of temasConocimiento
+  ) {
+
+    const temaNormalizado =
+      normalizarTexto(
+        tema
+      );
+
+    if (
+      texto.includes(
+        temaNormalizado
+      )
+    ) {
+
+      return tema;
+
+    }
+
+  }
+
+  return null;
+
+}
+
+
+/* =====================================================
    PREGUNTAS FRECUENTES
 ===================================================== */
 
-function buscarPreguntaFrecuente(
-  pregunta
-) {
+function buscarPreguntaFrecuente(pregunta) {
 
   if (
     !conocimiento ||
@@ -815,16 +847,13 @@ function buscarPreguntaFrecuente(
 
   }
 
-
   const texto =
     normalizarTexto(
       pregunta
     );
 
-
   const preguntas =
     conocimiento.preguntas_frecuentes;
-
 
   const equivalencias = [
 
@@ -905,7 +934,6 @@ function buscarPreguntaFrecuente(
 
   ];
 
-
   for (
     const equivalencia of equivalencias
   ) {
@@ -922,7 +950,6 @@ function buscarPreguntaFrecuente(
 
         }
       );
-
 
     if (
       coincide &&
@@ -951,7 +978,6 @@ function buscarPreguntaFrecuente(
 
   }
 
-
   return null;
 
 }
@@ -961,9 +987,7 @@ function buscarPreguntaFrecuente(
    BUSCAR EN CATÁLOGO
 ===================================================== */
 
-function buscarEnCatalogo(
-  pregunta
-) {
+function buscarEnCatalogo(pregunta) {
 
   if (!conocimiento) {
 
@@ -971,15 +995,12 @@ function buscarEnCatalogo(
 
   }
 
-
   const palabras =
     obtenerPalabras(
       pregunta
     );
 
-
   const resultados = [];
-
 
   function analizarObjeto(
     grupo,
@@ -995,7 +1016,6 @@ function buscarEnCatalogo(
 
     }
 
-
     Object.keys(
       grupo
     ).forEach(
@@ -1003,7 +1023,6 @@ function buscarEnCatalogo(
 
         const item =
           grupo[nombre];
-
 
         if (
           !item ||
@@ -1014,7 +1033,6 @@ function buscarEnCatalogo(
 
         }
 
-
         const textoBase =
           normalizarTexto(
             nombre +
@@ -1022,10 +1040,7 @@ function buscarEnCatalogo(
             JSON.stringify(item)
           );
 
-
-        let coincidencias =
-          0;
-
+        let coincidencias = 0;
 
         palabras.forEach(
           function(palabra) {
@@ -1043,12 +1058,10 @@ function buscarEnCatalogo(
           }
         );
 
-
         const nombreNormalizado =
           normalizarTexto(
             nombre
           );
-
 
         if (
           normalizarTexto(
@@ -1061,7 +1074,6 @@ function buscarEnCatalogo(
           coincidencias += 10;
 
         }
-
 
         if (
           coincidencias > 0
@@ -1090,18 +1102,15 @@ function buscarEnCatalogo(
 
   }
 
-
   analizarObjeto(
     conocimiento.productos_propios,
     "Producto propio"
   );
 
-
   analizarObjeto(
     conocimiento.partners,
     "Partner"
   );
-
 
   resultados.sort(
     function(a, b) {
@@ -1113,7 +1122,6 @@ function buscarEnCatalogo(
 
     }
   );
-
 
   return resultados.slice(
     0,
@@ -1127,19 +1135,15 @@ function buscarEnCatalogo(
    RESPUESTA PRODUCTO
 ===================================================== */
 
-function construirRespuestaProducto(
-  resultado
-) {
+function construirRespuestaProducto(resultado) {
 
   const datos =
     resultado.datos || {};
-
 
   let respuesta =
     "🟢 Información interna sobre " +
     resultado.nombre +
     "\n\n";
-
 
   if (datos.definicion) {
 
@@ -1157,7 +1161,6 @@ function construirRespuestaProducto(
 
   }
 
-
   if (datos.categoria) {
 
     respuesta +=
@@ -1167,7 +1170,6 @@ function construirRespuestaProducto(
 
   }
 
-
   if (datos.tipo) {
 
     respuesta +=
@@ -1176,7 +1178,6 @@ function construirRespuestaProducto(
       "\n\n";
 
   }
-
 
   if (
     datos.funcionalidades &&
@@ -1188,12 +1189,8 @@ function construirRespuestaProducto(
     respuesta +=
       "Principales funcionalidades:\n";
 
-
     datos.funcionalidades
-      .slice(
-        0,
-        12
-      )
+      .slice(0, 12)
       .forEach(
         function(item) {
 
@@ -1205,12 +1202,9 @@ function construirRespuestaProducto(
         }
       );
 
-
-    respuesta +=
-      "\n";
+    respuesta += "\n";
 
   }
-
 
   if (
     datos.cuando_usarlo &&
@@ -1222,12 +1216,8 @@ function construirRespuestaProducto(
     respuesta +=
       "¿Cuándo considerarlo?\n";
 
-
     datos.cuando_usarlo
-      .slice(
-        0,
-        8
-      )
+      .slice(0, 8)
       .forEach(
         function(item) {
 
@@ -1239,12 +1229,9 @@ function construirRespuestaProducto(
         }
       );
 
-
-    respuesta +=
-      "\n";
+    respuesta += "\n";
 
   }
-
 
   if (
     datos.diferencia_thuban
@@ -1257,7 +1244,6 @@ function construirRespuestaProducto(
 
   }
 
-
   if (
     datos.diferencia_visualizador
   ) {
@@ -1268,7 +1254,6 @@ function construirRespuestaProducto(
       "\n\n";
 
   }
-
 
   if (
     datos.consideracion
@@ -1281,7 +1266,6 @@ function construirRespuestaProducto(
 
   }
 
-
   if (
     datos.consideraciones_preventa &&
     Array.isArray(
@@ -1292,12 +1276,8 @@ function construirRespuestaProducto(
     respuesta +=
       "Consideraciones de Preventa:\n";
 
-
     datos.consideraciones_preventa
-      .slice(
-        0,
-        8
-      )
+      .slice(0, 8)
       .forEach(
         function(item) {
 
@@ -1309,17 +1289,13 @@ function construirRespuestaProducto(
         }
       );
 
-
-    respuesta +=
-      "\n";
+    respuesta += "\n";
 
   }
-
 
   respuesta +=
     "━━━━━━━━━━━━━━━━━━\n" +
     "💡 Respuesta basada en conocimiento interno.";
-
 
   return respuesta;
 
@@ -1330,9 +1306,7 @@ function construirRespuestaProducto(
    EXTRAER TEXTO DOCX
 ===================================================== */
 
-async function extraerTextoDOCX(
-  blob
-) {
+async function extraerTextoDOCX(blob) {
 
   try {
 
@@ -1345,22 +1319,18 @@ async function extraerTextoDOCX(
 
     }
 
-
     const arrayBuffer =
       await blob.arrayBuffer();
-
 
     const zip =
       await JSZip.loadAsync(
         arrayBuffer
       );
 
-
     const documentFile =
       zip.file(
         "word/document.xml"
       );
-
 
     if (!documentFile) {
 
@@ -1368,23 +1338,19 @@ async function extraerTextoDOCX(
 
     }
 
-
     const xml =
       await documentFile.async(
         "string"
       );
 
-
     const parser =
       new DOMParser();
-
 
     const xmlDoc =
       parser.parseFromString(
         xml,
         "application/xml"
       );
-
 
     const paragraphs =
       Array.from(
@@ -1393,9 +1359,7 @@ async function extraerTextoDOCX(
         )
       );
 
-
     const textos = [];
-
 
     paragraphs.forEach(
       function(parrafo) {
@@ -1407,7 +1371,6 @@ async function extraerTextoDOCX(
             )
           );
 
-
         const texto =
           nodos
             .map(
@@ -1418,7 +1381,6 @@ async function extraerTextoDOCX(
               }
             )
             .join("");
-
 
         if (
           texto.trim()
@@ -1433,13 +1395,11 @@ async function extraerTextoDOCX(
       }
     );
 
-
     return textos.join(
       "\n"
     );
 
   }
-
 
   catch(error) {
 
@@ -1447,7 +1407,6 @@ async function extraerTextoDOCX(
       "Error leyendo DOCX:",
       error
     );
-
 
     return "";
 
@@ -1460,9 +1419,7 @@ async function extraerTextoDOCX(
    EXTRAER TEXTO PDF
 ===================================================== */
 
-async function extraerTextoPDF(
-  blob
-) {
+async function extraerTextoPDF(blob) {
 
   try {
 
@@ -1475,20 +1432,12 @@ async function extraerTextoPDF(
         "PDF.js no está disponible."
       );
 
-
       return "";
 
     }
 
-
     const arrayBuffer =
       await blob.arrayBuffer();
-
-
-    console.log(
-      "📄 Abriendo PDF..."
-    );
-
 
     const pdf =
       await pdfjsLib.getDocument(
@@ -1498,22 +1447,13 @@ async function extraerTextoPDF(
         }
       ).promise;
 
-
-    console.log(
-      "📄 PDF abierto. Páginas:",
-      pdf.numPages
-    );
-
-
     const paginas = [];
-
 
     const maxPaginas =
       Math.min(
         pdf.numPages,
         100
       );
-
 
     for (
       let paginaNumero = 1;
@@ -1526,10 +1466,8 @@ async function extraerTextoPDF(
           paginaNumero
         );
 
-
       const content =
         await pagina.getTextContent();
-
 
       const textoPagina =
         content.items
@@ -1541,7 +1479,6 @@ async function extraerTextoPDF(
             }
           )
           .join(" ");
-
 
       if (
         textoPagina.trim()
@@ -1558,24 +1495,11 @@ async function extraerTextoPDF(
 
     }
 
-
-    const textoFinal =
-      paginas.join(
-        "\n\n"
-      );
-
-
-    console.log(
-      "📄 Texto extraído del PDF:",
-      textoFinal.length,
-      "caracteres"
+    return paginas.join(
+      "\n\n"
     );
 
-
-    return textoFinal;
-
   }
-
 
   catch(error) {
 
@@ -1583,7 +1507,6 @@ async function extraerTextoPDF(
       "❌ Error leyendo PDF:",
       error
     );
-
 
     return "";
 
@@ -1596,9 +1519,7 @@ async function extraerTextoPDF(
    EXTRAER TEXTO EXCEL
 ===================================================== */
 
-async function extraerTextoExcel(
-  blob
-) {
+async function extraerTextoExcel(blob) {
 
   try {
 
@@ -1611,10 +1532,8 @@ async function extraerTextoExcel(
 
     }
 
-
     const arrayBuffer =
       await blob.arrayBuffer();
-
 
     const workbook =
       XLSX.read(
@@ -1624,9 +1543,7 @@ async function extraerTextoExcel(
         }
       );
 
-
     const partes = [];
-
 
     workbook.SheetNames.forEach(
       function(sheetName) {
@@ -1636,7 +1553,6 @@ async function extraerTextoExcel(
             sheetName
           ];
 
-
         const texto =
           XLSX.utils.sheet_to_csv(
             worksheet,
@@ -1644,7 +1560,6 @@ async function extraerTextoExcel(
               FS: " | "
             }
           );
-
 
         if (
           texto.trim()
@@ -1662,13 +1577,11 @@ async function extraerTextoExcel(
       }
     );
 
-
     return partes.join(
       "\n\n"
     );
 
   }
-
 
   catch(error) {
 
@@ -1676,7 +1589,6 @@ async function extraerTextoExcel(
       "Error leyendo Excel:",
       error
     );
-
 
     return "";
 
@@ -1686,7 +1598,7 @@ async function extraerTextoExcel(
 
 
 /* =====================================================
-   EXTRAER TEXTO DEL DOCUMENTO
+   EXTRAER TEXTO DOCUMENTO
 ===================================================== */
 
 async function extraerTextoDocumento(
@@ -1702,7 +1614,6 @@ async function extraerTextoDocumento(
 
   }
 
-
   if (
     documentosTextoCache.has(
       documento.id
@@ -1715,7 +1626,6 @@ async function extraerTextoDocumento(
 
   }
 
-
   const nombre =
     normalizarTexto(
       documento.originalName ||
@@ -1723,16 +1633,13 @@ async function extraerTextoDocumento(
       ""
     );
 
-
   const type =
     String(
       documento.type ||
       ""
     ).toLowerCase();
 
-
   let texto = "";
-
 
   try {
 
@@ -1748,7 +1655,6 @@ async function extraerTextoDocumento(
 
     }
 
-
     else if (
       nombre.endsWith(".docx") ||
       type.includes("wordprocessingml")
@@ -1761,7 +1667,6 @@ async function extraerTextoDocumento(
 
     }
 
-
     else if (
       nombre.endsWith(".pdf") ||
       type.includes("pdf")
@@ -1773,7 +1678,6 @@ async function extraerTextoDocumento(
         );
 
     }
-
 
     else if (
       nombre.endsWith(".xlsx") ||
@@ -1791,7 +1695,6 @@ async function extraerTextoDocumento(
 
   }
 
-
   catch(error) {
 
     console.error(
@@ -1800,23 +1703,19 @@ async function extraerTextoDocumento(
       error
     );
 
-
     texto = "";
 
   }
-
 
   texto =
     String(
       texto || ""
     ).trim();
 
-
   documentosTextoCache.set(
     documento.id,
     texto
   );
-
 
   return texto;
 
@@ -1824,7 +1723,7 @@ async function extraerTextoDocumento(
 
 
 /* =====================================================
-   OBTENER FRAGMENTOS RELEVANTES
+   FRAGMENTOS RELEVANTES
 ===================================================== */
 
 function obtenerFragmentosRelevantes(
@@ -1838,32 +1737,24 @@ function obtenerFragmentosRelevantes(
 
   }
 
-
   const palabras =
     obtenerPalabras(
       pregunta
     );
-
 
   const normalizado =
     normalizarTexto(
       texto
     );
 
-
   const fragmentos = [];
-
 
   palabras.forEach(
     function(palabra) {
 
-      let posicion =
-        0;
+      let posicion = 0;
 
-
-      let encontrados =
-        0;
-
+      let encontrados = 0;
 
       while (
         encontrados < 3
@@ -1875,7 +1766,6 @@ function obtenerFragmentosRelevantes(
             posicion
           );
 
-
         if (
           posicion === -1
         ) {
@@ -1884,20 +1774,17 @@ function obtenerFragmentosRelevantes(
 
         }
 
-
         const inicio =
           Math.max(
             0,
             posicion - 350
           );
 
-
         const fin =
           Math.min(
             texto.length,
             posicion + 850
           );
-
 
         fragmentos.push(
           texto.substring(
@@ -1906,10 +1793,8 @@ function obtenerFragmentosRelevantes(
           )
         );
 
-
         posicion +=
           palabra.length;
-
 
         encontrados++;
 
@@ -1917,7 +1802,6 @@ function obtenerFragmentosRelevantes(
 
     }
   );
-
 
   return fragmentos.slice(
     0,
@@ -1943,15 +1827,12 @@ async function buscarEnDocumentos(
 
   }
 
-
   const palabras =
     obtenerPalabras(
       pregunta
     );
 
-
   const resultados = [];
-
 
   for (
     const documento of
@@ -1963,15 +1844,11 @@ async function buscarEnDocumentos(
         documento
       );
 
-
-    if (
-      !texto
-    ) {
+    if (!texto) {
 
       continue;
 
     }
-
 
     const textoBusqueda =
       normalizarTexto(
@@ -1993,10 +1870,7 @@ async function buscarEnDocumentos(
         texto
       );
 
-
-    let coincidencias =
-      0;
-
+    let coincidencias = 0;
 
     palabras.forEach(
       function(palabra) {
@@ -2014,14 +1888,12 @@ async function buscarEnDocumentos(
       }
     );
 
-
     const nombreDocumento =
       normalizarTexto(
         documento.name ||
         documento.originalName ||
         ""
       );
-
 
     if (
       nombreDocumento &&
@@ -2036,7 +1908,6 @@ async function buscarEnDocumentos(
 
     }
 
-
     if (
       coincidencias > 0
     ) {
@@ -2046,7 +1917,6 @@ async function buscarEnDocumentos(
           texto,
           pregunta
         );
-
 
       resultados.push({
 
@@ -2081,7 +1951,6 @@ async function buscarEnDocumentos(
 
   }
 
-
   resultados.sort(
     function(a, b) {
 
@@ -2092,7 +1961,6 @@ async function buscarEnDocumentos(
 
     }
   );
-
 
   return resultados.slice(
     0,
@@ -2107,13 +1975,11 @@ async function buscarEnDocumentos(
 ===================================================== */
 
 function construirRespuestaDocumental(
-  documentos,
-  pregunta
+  documentos
 ) {
 
   let respuesta =
     "🟢 Encontré información en la documentación cargada:\n\n";
-
 
   documentos.forEach(
     function(item) {
@@ -2131,11 +1997,10 @@ function construirRespuestaDocumental(
     }
   );
 
-
   respuesta +=
     "━━━━━━━━━━━━━━━━━━\n" +
-    "📚 La información anterior fue extraída directamente de los documentos cargados en el Centro de Conocimiento IA.";
-
+    "📚 La información anterior fue extraída directamente de los documentos cargados en el Centro de Conocimiento IA.\n\n" +
+    "💡 Modo básico: búsqueda documental local.";
 
   return respuesta;
 
@@ -2143,67 +2008,204 @@ function construirRespuestaDocumental(
 
 
 /* =====================================================
-   RESPUESTA LOCAL COMPLETA
+   BÚSQUEDA GENERAL EN conocimiento.json
+===================================================== */
+
+function buscarGeneralEnConocimiento(
+  pregunta
+) {
+
+  if (!conocimiento) {
+
+    return [];
+
+  }
+
+  const palabras =
+    obtenerPalabras(
+      pregunta
+    );
+
+  const resultados = [];
+
+  function buscar(
+    objeto,
+    ruta = ""
+  ) {
+
+    if (
+      typeof objeto ===
+      "string"
+    ) {
+
+      const texto =
+        normalizarTexto(
+          objeto
+        );
+
+      let coincidencias = 0;
+
+      palabras.forEach(
+        function(palabra) {
+
+          if (
+            texto.includes(
+              palabra
+            )
+          ) {
+
+            coincidencias++;
+
+          }
+
+        }
+      );
+
+      if (
+        coincidencias > 0
+      ) {
+
+        resultados.push({
+
+          texto:
+            objeto,
+
+          ruta:
+            ruta,
+
+          coincidencias:
+            coincidencias
+
+        });
+
+      }
+
+      return;
+
+    }
+
+    if (
+      Array.isArray(
+        objeto
+      )
+    ) {
+
+      objeto.forEach(
+        function(item) {
+
+          buscar(
+            item,
+            ruta
+          );
+
+        }
+      );
+
+      return;
+
+    }
+
+    if (
+      typeof objeto ===
+      "object" &&
+      objeto !== null
+    ) {
+
+      Object.keys(
+        objeto
+      ).forEach(
+        function(clave) {
+
+          const nuevaRuta =
+            ruta
+              ? ruta +
+                " → " +
+                clave
+              : clave;
+
+          buscar(
+            objeto[clave],
+            nuevaRuta
+          );
+
+        }
+      );
+
+    }
+
+  }
+
+  buscar(
+    conocimiento
+  );
+
+  resultados.sort(
+    function(a, b) {
+
+      return (
+        b.coincidencias -
+        a.coincidencias
+      );
+
+    }
+  );
+
+  return resultados.slice(
+    0,
+    6
+  );
+
+}
+
+
+/* =====================================================
+   RESPUESTA LOCAL
+   NUEVA PRIORIDAD
 ===================================================== */
 
 async function buscarLocalmente(
   pregunta
 ) {
 
-  const preguntaNormalizada =
-    normalizarTexto(
+  const pideDocumento =
+    preguntaPideDocumento(
+      pregunta
+    );
+
+  const tema =
+    detectarTemaConocido(
       pregunta
     );
 
 
-  /*
-    =====================================================
-    DETECTAR SI EL USUARIO PIDE DOCUMENTACIÓN
-    =====================================================
-  */
+  console.log(
+    "PREVENTA IA - pregunta:",
+    pregunta
+  );
 
-  const quiereDocumento =
-    preguntaNormalizada.includes(
-      "documento interno"
-    ) ||
-    preguntaNormalizada.includes(
-      "documentos internos"
-    ) ||
-    preguntaNormalizada.includes(
-      "buscar documento"
-    ) ||
-    preguntaNormalizada.includes(
-      "buscar en documento"
-    ) ||
-    preguntaNormalizada.includes(
-      "buscar en documentos"
-    ) ||
-    preguntaNormalizada.includes(
-      "documentacion interna"
-    ) ||
-    preguntaNormalizada.includes(
-      "documentacion cargada"
-    ) ||
-    preguntaNormalizada.includes(
-      "pdf interno"
-    ) ||
-    preguntaNormalizada.includes(
-      "archivo interno"
-    ) ||
-    preguntaNormalizada.includes(
-      "buscar pdf"
-    );
+  console.log(
+    "PREVENTA IA - pide documento:",
+    pideDocumento
+  );
+
+  console.log(
+    "PREVENTA IA - tema detectado:",
+    tema
+  );
 
 
   /*
-    =====================================================
-    1. SI PIDE DOCUMENTACIÓN,
-       BUSCAR DIRECTAMENTE EN DOCUMENTOS
-    =====================================================
+    ===================================================
+    CASO 1
+    EL USUARIO PIDIÓ EXPLÍCITAMENTE DOCUMENTACIÓN
+
+    Ejemplo:
+    "busca en el documento qué hace DocIntro"
+    ===================================================
   */
 
   if (
-    quiereDocumento
+    pideDocumento
   ) {
 
     const documentos =
@@ -2211,14 +2213,12 @@ async function buscarLocalmente(
         pregunta
       );
 
-
     if (
       documentos.length
     ) {
 
       return construirRespuestaDocumental(
-        documentos,
-        pregunta
+        documentos
       );
 
     }
@@ -2227,12 +2227,19 @@ async function buscarLocalmente(
 
 
   /*
-    =====================================================
-    2. FAQ DE conocimiento.json
-    =====================================================
+    ===================================================
+    CASO 2
+    PREGUNTA SOBRE UN TEMA QUE YA EXISTE
+    EN conocimiento.json
+
+    Ejemplo:
+    "qué es Perfil Digital"
+    "qué hace Onboarding Addoc"
+    ===================================================
   */
 
   if (
+    tema &&
     conocimiento
   ) {
 
@@ -2240,7 +2247,6 @@ async function buscarLocalmente(
       buscarPreguntaFrecuente(
         pregunta
       );
-
 
     if (
       faq
@@ -2251,255 +2257,46 @@ async function buscarLocalmente(
         faq.texto +
         "\n\n" +
         "━━━━━━━━━━━━━━━━━━\n" +
-        "💡 Modo básico: respuesta basada en conocimiento interno."
+        "💡 Respuesta basada en conocimiento interno."
       );
 
     }
 
-  }
 
-
-  /*
-    =====================================================
-    3. CATÁLOGO
-    =====================================================
-  */
-
-  const catalogo =
-    buscarEnCatalogo(
-      pregunta
-    );
-
-
-  if (
-    catalogo.length &&
-    catalogo[0].coincidencias >= 5
-  ) {
-
-    return construirRespuestaProducto(
-      catalogo[0]
-    );
-
-  }
-
-
-  /*
-    =====================================================
-    4. BÚSQUEDA GENERAL EN conocimiento.json
-    =====================================================
-  */
-
-  if (
-    conocimiento
-  ) {
-
-    const palabras =
-      obtenerPalabras(
+    const catalogo =
+      buscarEnCatalogo(
         pregunta
       );
 
-
-    const resultados = [];
-
-
-    function buscar(
-      objeto,
-      ruta = ""
+    if (
+      catalogo.length &&
+      catalogo[0].coincidencias >= 3
     ) {
 
-      if (
-        typeof objeto ===
-        "string"
-      ) {
-
-        const texto =
-          normalizarTexto(
-            objeto
-          );
-
-
-        let coincidencias =
-          0;
-
-
-        palabras.forEach(
-          function(palabra) {
-
-            if (
-              texto.includes(
-                palabra
-              )
-            ) {
-
-              coincidencias++;
-
-            }
-
-          }
-        );
-
-
-        if (
-          coincidencias > 0
-        ) {
-
-          resultados.push({
-
-            texto:
-              objeto,
-
-            ruta:
-              ruta,
-
-            coincidencias:
-              coincidencias
-
-          });
-
-        }
-
-
-        return;
-
-      }
-
-
-      if (
-        Array.isArray(
-          objeto
-        )
-      ) {
-
-        objeto.forEach(
-          function(item) {
-
-            buscar(
-              item,
-              ruta
-            );
-
-          }
-        );
-
-
-        return;
-
-      }
-
-
-      if (
-        typeof objeto ===
-        "object" &&
-        objeto !== null
-      ) {
-
-        Object.keys(
-          objeto
-        ).forEach(
-          function(clave) {
-
-            const nuevaRuta =
-              ruta
-                ? ruta +
-                  " → " +
-                  clave
-                : clave;
-
-
-            const claveTexto =
-              normalizarTexto(
-                clave
-              );
-
-
-            let coincidenciasClave =
-              0;
-
-
-            palabras.forEach(
-              function(palabra) {
-
-                if (
-                  claveTexto.includes(
-                    palabra
-                  )
-                ) {
-
-                  coincidenciasClave++;
-
-                }
-
-              }
-            );
-
-
-            if (
-              coincidenciasClave > 0
-            ) {
-
-              resultados.push({
-
-                texto:
-                  "Tema: " +
-                  clave,
-
-                ruta:
-                  nuevaRuta,
-
-                coincidencias:
-                  coincidenciasClave
-
-              });
-
-            }
-
-
-            buscar(
-              objeto[clave],
-              nuevaRuta
-            );
-
-          }
-        );
-
-      }
+      return construirRespuestaProducto(
+        catalogo[0]
+      );
 
     }
 
 
-    buscar(
-      conocimiento
-    );
+    /*
+      Búsqueda general dentro de conocimiento.json
+    */
 
-
-    resultados.sort(
-      function(a, b) {
-
-        return (
-          b.coincidencias -
-          a.coincidencias
-        );
-
-      }
-    );
-
-
-    const mejores =
-      resultados.slice(
-        0,
-        6
+    const resultadosJSON =
+      buscarGeneralEnConocimiento(
+        pregunta
       );
 
-
     if (
-      mejores.length
+      resultadosJSON.length
     ) {
 
       let respuesta =
         "🟢 Encontré información relacionada en nuestra base interna:\n\n";
 
-
-      mejores.forEach(
+      resultadosJSON.forEach(
         function(resultado) {
 
           respuesta +=
@@ -2510,11 +2307,9 @@ async function buscarLocalmente(
         }
       );
 
-
       respuesta +=
         "━━━━━━━━━━━━━━━━━━\n" +
-        "💡 Modo básico: respuesta basada en conocimiento interno.";
-
+        "💡 Respuesta basada en conocimiento interno.";
 
       return respuesta;
 
@@ -2524,10 +2319,11 @@ async function buscarLocalmente(
 
 
   /*
-    =====================================================
-    5. SI conocimiento.json NO RESPONDE,
-       BUSCAR EN DOCUMENTOS COMO RESPALDO
-    =====================================================
+    ===================================================
+    CASO 3
+    SI NO HAY TEMA CONOCIDO,
+    BUSCAMOS EN LOS DOCUMENTOS
+    ===================================================
   */
 
   const documentos =
@@ -2535,30 +2331,79 @@ async function buscarLocalmente(
       pregunta
     );
 
-
   if (
     documentos.length
   ) {
 
-    return construirRespuestaDocumental(
-      documentos,
-      pregunta
-    );
+    /*
+      Exigimos una coincidencia razonable.
+      Esto evita que cualquier palabra suelta
+      del PDF gane la búsqueda.
+    */
+
+    if (
+      documentos[0].coincidencias >= 2
+    ) {
+
+      return construirRespuestaDocumental(
+        documentos
+      );
+
+    }
 
   }
 
 
   /*
-    =====================================================
-    6. SIN RESULTADOS
-    =====================================================
+    ===================================================
+    CASO 4
+    ÚLTIMO INTENTO EN conocimiento.json
+    ===================================================
+  */
+
+  const resultadosFinales =
+    buscarGeneralEnConocimiento(
+      pregunta
+    );
+
+  if (
+    resultadosFinales.length
+  ) {
+
+    let respuesta =
+      "🟢 Encontré información relacionada en nuestra base interna:\n\n";
+
+    resultadosFinales.forEach(
+      function(resultado) {
+
+        respuesta +=
+          "• " +
+          resultado.texto +
+          "\n\n";
+
+      }
+    );
+
+    respuesta +=
+      "━━━━━━━━━━━━━━━━━━\n" +
+      "💡 Respuesta basada en conocimiento interno.";
+
+    return respuesta;
+
+  }
+
+
+  /*
+    ===================================================
+    SIN RESULTADOS
+    ===================================================
   */
 
   return (
     "🟢 Modo básico activo.\n\n" +
     "No encontré una respuesta específica en la base de conocimiento interna ni en los documentos cargados.\n\n" +
     "Podés preguntarme sobre Perfil Digital, Onboarding Addoc, Firmas Addoc, Islas, Visualizador Addoc, Thuban, Captika, Edatalia, OCR, Full Text, workflows, relevamiento, cotización, migraciones, integraciones o gestión documental.\n\n" +
-    "💡 Cuando tengamos créditos de IA, podremos complementar esta consulta con IA generativa."
+    "💡 Cuando la IA generativa esté disponible, podrá complementar esta consulta."
   );
 
 }
@@ -2574,9 +2419,7 @@ function prepararConocimiento(
   ruta = ""
 ) {
 
-  let resultado =
-    "";
-
+  let resultado = "";
 
   if (
     typeof objeto ===
@@ -2593,7 +2436,6 @@ function prepararConocimiento(
       "\n";
 
   }
-
 
   else if (
     Array.isArray(
@@ -2618,7 +2460,6 @@ function prepararConocimiento(
 
   }
 
-
   else if (
     typeof objeto ===
     "object" &&
@@ -2637,7 +2478,6 @@ function prepararConocimiento(
               clave
             : clave;
 
-
         resultado +=
           prepararConocimiento(
             objeto[
@@ -2650,7 +2490,6 @@ function prepararConocimiento(
     );
 
   }
-
 
   return resultado;
 
@@ -2671,7 +2510,6 @@ async function prepararDocumentosParaIA(
       pregunta
     );
 
-
   if (
     !resultados.length
   ) {
@@ -2680,10 +2518,8 @@ async function prepararDocumentosParaIA(
 
   }
 
-
   let texto =
     "\n\nDOCUMENTACIÓN INTERNA RELEVANTE:\n\n";
-
 
   resultados.forEach(
     function(item, index) {
@@ -2707,7 +2543,6 @@ async function prepararDocumentosParaIA(
     }
   );
 
-
   return texto;
 
 }
@@ -2729,12 +2564,10 @@ async function intentarIA(
         )
       : "";
 
-
   const documentText =
     await prepararDocumentosParaIA(
       pregunta
     );
-
 
   const combinedKnowledge =
     (
@@ -2744,7 +2577,6 @@ async function intentarIA(
       0,
       120000
     );
-
 
   const response =
     await fetch(
@@ -2775,10 +2607,7 @@ async function intentarIA(
       }
     );
 
-
-  let data =
-    null;
-
+  let data = null;
 
   try {
 
@@ -2787,7 +2616,6 @@ async function intentarIA(
 
   }
 
-
   catch(error) {
 
     throw new Error(
@@ -2795,7 +2623,6 @@ async function intentarIA(
     );
 
   }
-
 
   if (
     !response.ok
@@ -2808,7 +2635,6 @@ async function intentarIA(
 
   }
 
-
   if (
     !data ||
     !data.answer
@@ -2819,7 +2645,6 @@ async function intentarIA(
     );
 
   }
-
 
   return data.answer;
 
@@ -2840,30 +2665,24 @@ function agregarMensaje(
       "messages"
     );
 
-
   const message =
     document.createElement(
       "div"
     );
 
-
   message.className =
     "message " +
     tipo;
 
-
   message.textContent =
     texto;
-
 
   messages.appendChild(
     message
   );
 
-
   messages.scrollTop =
     messages.scrollHeight;
-
 
   return message;
 
@@ -2871,7 +2690,7 @@ function agregarMensaje(
 
 
 /* =====================================================
-   ACTUALIZAR ESTADO DOCUMENTAL
+   ACTUALIZAR ESTADO DOCUMENTOS
 ===================================================== */
 
 async function actualizarEstadoDocumentos() {
@@ -2881,12 +2700,10 @@ async function actualizarEstadoDocumentos() {
       "knowledgeStatus"
     );
 
-
   try {
 
     documentosConocimiento =
       await getKnowledgeDocuments();
-
 
     if (
       conocimiento &&
@@ -2900,7 +2717,6 @@ async function actualizarEstadoDocumentos() {
 
     }
 
-
     else if (
       conocimiento
     ) {
@@ -2909,7 +2725,6 @@ async function actualizarEstadoDocumentos() {
         "🟢 Base estructurada disponible. Todavía no hay documentos adicionales cargados.";
 
     }
-
 
     else if (
       documentosConocimiento.length
@@ -2924,7 +2739,6 @@ async function actualizarEstadoDocumentos() {
 
   }
 
-
   catch(error) {
 
     console.error(
@@ -2932,10 +2746,7 @@ async function actualizarEstadoDocumentos() {
       error
     );
 
-
-    documentosConocimiento =
-      [];
-
+    documentosConocimiento = [];
 
     element.textContent =
       "⚠️ No se pudieron leer los documentos del Centro de Conocimiento.";
@@ -2956,87 +2767,72 @@ async function sendMessage() {
       "question"
     );
 
-
   const button =
     document.getElementById(
       "sendButton"
     );
-
 
   const status =
     document.getElementById(
       "status"
     );
 
-
   const question =
     input.value.trim();
 
-
-  if (
-    !question
-  ) {
+  if (!question) {
 
     return;
 
   }
-
 
   agregarMensaje(
     question,
     "user"
   );
 
+  input.value = "";
 
-  input.value =
-    "";
-
-
-  button.disabled =
-    true;
-
+  button.disabled = true;
 
   const loading =
     agregarMensaje(
-      "🔎 Buscando en PREVENTA IA...",
+      "🧠 Consultando PREVENTA IA...",
       "ia loading"
     );
-
 
   try {
 
     /*
       ===================================================
       IA REAL
-      SE INTENTA PRIMERO.
-      NO SE ELIMINA.
+      SE INTENTA SIEMPRE PRIMERO
       ===================================================
     */
+
+    console.log(
+      "PREVENTA IA - intentando IA real..."
+    );
 
     const respuestaIA =
       await intentarIA(
         question
       );
 
-
     loading.remove();
-
 
     agregarMensaje(
       respuestaIA,
       "ia"
     );
 
-
     status.className =
       "status success-status";
-
 
     status.textContent =
       "🧠 Respuesta generada por IA utilizando conocimiento interno y documentación relevante.";
 
   }
-
 
   catch(error) {
 
@@ -3045,32 +2841,30 @@ async function sendMessage() {
       error
     );
 
-
     /*
       ===================================================
       FALLBACK LOCAL
-      NO CONSUME API.
+      NO CONSUME API
       ===================================================
     */
+
+    loading.textContent =
+      "🔎 Buscando en conocimiento interno...";
 
     const respuestaLocal =
       await buscarLocalmente(
         question
       );
 
-
     loading.remove();
-
 
     agregarMensaje(
       respuestaLocal,
       "ia"
     );
 
-
     status.className =
       "status";
-
 
     if (
       conocimiento &&
@@ -3082,7 +2876,6 @@ async function sendMessage() {
 
     }
 
-
     else if (
       conocimiento
     ) {
@@ -3092,12 +2885,10 @@ async function sendMessage() {
 
     }
 
-
     else {
 
       status.className =
         "status error-status";
-
 
       status.textContent =
         "🔴 No está disponible la base de conocimiento.";
@@ -3106,10 +2897,7 @@ async function sendMessage() {
 
   }
 
-
-  button.disabled =
-    false;
-
+  button.disabled = false;
 
   input.focus();
 
@@ -3155,7 +2943,6 @@ document
 
   }
 
-
   catch(error) {
 
     console.error(
@@ -3164,13 +2951,11 @@ document
 
   }
 
-
   try {
 
     await openKnowledgeDatabase();
 
   }
-
 
   catch(error) {
 
@@ -3181,7 +2966,6 @@ document
 
   }
 
-
   await actualizarEstadoDocumentos();
 
 })();
@@ -3191,4 +2975,3 @@ document
 </body>
 
 </html>
-```
