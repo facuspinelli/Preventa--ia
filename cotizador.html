@@ -348,22 +348,47 @@ input:focus {
       </div>
 
 
-      <div class="field">
+     ```html
+<div class="field">
 
-        <label>Cantidad de imágenes</label>
+  <label>
+    Cantidad de imágenes
+  </label>
 
-        <input
-          type="number"
-          id="images"
-          value="0"
-          min="0"
-        >
+  <input
+    type="number"
+    id="images"
+    value="0"
+    min="0"
+  >
 
-        <small>
-          Se calcula automáticamente el almacenamiento necesario.
-        </small>
+  <small>
+    Se calcula automáticamente el almacenamiento necesario según el peso de las imágenes.
+  </small>
 
-      </div>
+</div>
+
+
+<div class="field">
+
+  <label>
+    Packs de Storage
+  </label>
+
+  <input
+    type="number"
+    id="manualPacks"
+    value="0"
+    min="0"
+  >
+
+  <small>
+    Opcional: 1 pack = 50 GB · 2 packs = 100 GB · 3 packs = 150 GB, etc.
+  </small>
+
+</div>
+```
+
 
 
       <div class="field">
@@ -625,6 +650,10 @@ function calculate() {
 
   const images =
     Number(document.getElementById("images").value) || 0;
+  const manualPacks =
+  Number(
+    document.getElementById("manualPacks").value
+  );
 
   const support =
     Number(document.getElementById("support").value) || 0;
@@ -713,8 +742,25 @@ function calculate() {
     etc.
   */
 
-  let packs =
-    Math.ceil(storageNeeded / 50);
+ let packs;
+
+if (manualPacks > 0) {
+
+  // Si el usuario indica packs manualmente,
+  // se utiliza esa cantidad.
+
+  packs = manualPacks;
+
+} else {
+
+  // Si no indica packs,
+  // se calculan automáticamente según las imágenes.
+
+  packs = Math.ceil(
+    storageNeeded / 50
+  );
+
+}
 
 
   if (packs < 1) {
