@@ -101,8 +101,14 @@ input:focus {
   border-color: #2563eb;
 }
 
-.button {
+.buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
   margin-top: 25px;
+}
+
+.button {
   background: #111827;
   color: white;
   border: none;
@@ -114,6 +120,14 @@ input:focus {
 
 .button:hover {
   background: #374151;
+}
+
+.excel-button {
+  background: #166534;
+}
+
+.excel-button:hover {
+  background: #15803d;
 }
 
 .results {
@@ -177,6 +191,15 @@ input:focus {
   display: none;
 }
 
+.info {
+  color: #1e40af;
+  background: #dbeafe;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  display: none;
+}
+
 @media (max-width: 700px) {
 
   header {
@@ -214,7 +237,7 @@ input:focus {
   <h2>💰 Cotizador</h2>
 
   <p class="subtitle">
-    Calculá automáticamente costos de implementación y costos mensuales.
+    Calculá automáticamente los costos de implementación y costos mensuales.
   </p>
 
 
@@ -229,9 +252,33 @@ input:focus {
 
       <div class="field">
 
-        <label>
-          Horas de parametrización / Setup
-        </label>
+        <label>Cliente</label>
+
+        <input
+          type="text"
+          id="client"
+          placeholder="Nombre del cliente"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Oportunidad</label>
+
+        <input
+          type="text"
+          id="opportunity"
+          placeholder="Nombre de la oportunidad"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Horas de parametrización / Setup</label>
 
         <input
           type="number"
@@ -249,9 +296,7 @@ input:focus {
 
       <div class="field">
 
-        <label>
-          Cantidad de usuarios
-        </label>
+        <label>Cantidad de usuarios</label>
 
         <input
           type="number"
@@ -269,9 +314,7 @@ input:focus {
 
       <div class="field">
 
-        <label>
-          Firmas por mes
-        </label>
+        <label>Firmas por mes</label>
 
         <input
           type="number"
@@ -289,9 +332,7 @@ input:focus {
 
       <div class="field">
 
-        <label>
-          Peso promedio de una imagen (KB)
-        </label>
+        <label>Peso promedio de una imagen (KB)</label>
 
         <input
           type="number"
@@ -309,9 +350,7 @@ input:focus {
 
       <div class="field">
 
-        <label>
-          Cantidad de imágenes
-        </label>
+        <label>Cantidad de imágenes</label>
 
         <input
           type="number"
@@ -329,9 +368,7 @@ input:focus {
 
       <div class="field">
 
-        <label>
-          Horas de soporte Addoc
-        </label>
+        <label>Horas de soporte Addoc</label>
 
         <input
           type="number"
@@ -349,19 +386,28 @@ input:focus {
     </div>
 
 
-    <div
-      id="warning"
-      class="warning"
-    >
+    <div id="warning" class="warning"></div>
+
+    <div id="info" class="info"></div>
+
+
+    <div class="buttons">
+
+      <button
+        class="button"
+        onclick="calculate()"
+      >
+        🧮 Calcular cotización
+      </button>
+
+      <button
+        class="button excel-button"
+        onclick="downloadExcel()"
+      >
+        📥 Descargar Excel
+      </button>
+
     </div>
-
-
-    <button
-      class="button"
-      onclick="calculate()"
-    >
-      🧮 Calcular cotización
-    </button>
 
   </div>
 
@@ -542,37 +588,21 @@ function money(value) {
 
 function getUserPrice(users) {
 
-  if (users <= 0) {
-    return 0;
-  }
+  if (users <= 0) return 0;
 
-  if (users <= 11) {
-    return 4.17;
-  }
+  if (users <= 11) return 4.17;
 
-  if (users <= 49) {
-    return 2.20;
-  }
+  if (users <= 49) return 2.20;
 
-  if (users <= 99) {
-    return 1.30;
-  }
+  if (users <= 99) return 1.30;
 
-  if (users <= 249) {
-    return 1.10;
-  }
+  if (users <= 249) return 1.10;
 
-  if (users <= 499) {
-    return 0.90;
-  }
+  if (users <= 499) return 0.90;
 
-  if (users <= 999) {
-    return 0.90;
-  }
+  if (users <= 999) return 0.90;
 
-  if (users <= 3500) {
-    return 0.80;
-  }
+  if (users <= 3500) return 0.80;
 
   return 0.80;
 
@@ -581,48 +611,34 @@ function getUserPrice(users) {
 
 function calculate() {
 
-
   const setup =
-    Number(
-      document.getElementById("setup").value
-    );
-
+    Number(document.getElementById("setup").value) || 0;
 
   const users =
-    Number(
-      document.getElementById("users").value
-    );
-
+    Number(document.getElementById("users").value) || 0;
 
   const signatures =
-    Number(
-      document.getElementById("signatures").value
-    );
-
+    Number(document.getElementById("signatures").value) || 0;
 
   const imageWeight =
-    Number(
-      document.getElementById("imageWeight").value
-    );
-
+    Number(document.getElementById("imageWeight").value) || 0;
 
   const images =
-    Number(
-      document.getElementById("images").value
-    );
-
+    Number(document.getElementById("images").value) || 0;
 
   const support =
-    Number(
-      document.getElementById("support").value
-    );
+    Number(document.getElementById("support").value) || 0;
 
 
   const warning =
     document.getElementById("warning");
 
+  const info =
+    document.getElementById("info");
+
 
   warning.style.display = "none";
+  info.style.display = "none";
 
 
   if (users > 3500) {
@@ -649,7 +665,6 @@ function calculate() {
     COSTOS
   */
 
-
   const setupCost =
     setup * 25;
 
@@ -672,16 +687,14 @@ function calculate() {
 
   /*
     STORAGE
-  */
-
-
-  /*
-    KB → GB
 
     1 MB = 1024 KB
     1 GB = 1024 MB
-  */
 
+    Por eso:
+
+    KB / 1024 / 1024 = GB
+  */
 
   const totalKB =
     imageWeight * images;
@@ -692,24 +705,16 @@ function calculate() {
 
 
   /*
-    Siempre se cotizan packs de 50 GB.
+    PACKS DE 50 GB
 
-    1 a 50 GB   = 1 pack
-    51 a 100    = 2 packs
-    101 a 150   = 3 packs
+    Hasta 50 GB = 1 pack
+    Hasta 100 GB = 2 packs
+    Hasta 150 GB = 3 packs
     etc.
   */
 
-
   let packs =
-    Math.ceil(
-      storageNeeded / 50
-    );
-
-
-  /*
-    Mínimo 1 pack
-  */
+    Math.ceil(storageNeeded / 50);
 
 
   if (packs < 1) {
@@ -729,7 +734,6 @@ function calculate() {
     TOTALES
   */
 
-
   const totalSetup =
     setupCost;
 
@@ -747,81 +751,289 @@ function calculate() {
 
 
   /*
-    MOSTRAR RESULTADOS
+    MOSTRAR
   */
 
-
-  document.getElementById(
-    "setupCost"
-  ).innerText =
+  document.getElementById("setupCost").innerText =
     money(setupCost);
 
-
-  document.getElementById(
-    "usersCost"
-  ).innerText =
+  document.getElementById("usersCost").innerText =
     money(usersCost);
 
-
-  document.getElementById(
-    "signatureCost"
-  ).innerText =
+  document.getElementById("signatureCost").innerText =
     money(signatureCost);
 
-
-  document.getElementById(
-    "supportCost"
-  ).innerText =
+  document.getElementById("supportCost").innerText =
     money(supportCost);
 
-
-  document.getElementById(
-    "storageNeeded"
-  ).innerText =
+  document.getElementById("storageNeeded").innerText =
     storageNeeded.toFixed(2) + " GB";
 
-
-  document.getElementById(
-    "storageQuoted"
-  ).innerText =
+  document.getElementById("storageQuoted").innerText =
     storageQuoted + " GB";
 
-
-  document.getElementById(
-    "storagePacks"
-  ).innerText =
+  document.getElementById("storagePacks").innerText =
     packs;
 
-
-  document.getElementById(
-    "storageCost"
-  ).innerText =
+  document.getElementById("storageCost").innerText =
     money(storageCost);
 
-
-  document.getElementById(
-    "totalSetup"
-  ).innerText =
+  document.getElementById("totalSetup").innerText =
     money(totalSetup);
 
-
-  document.getElementById(
-    "totalMonthly"
-  ).innerText =
+  document.getElementById("totalMonthly").innerText =
     money(totalMonthly);
 
-
-  document.getElementById(
-    "totalYear"
-  ).innerText =
+  document.getElementById("totalYear").innerText =
     money(totalYear);
+
+
+  /*
+    Guardamos los datos
+    para utilizarlos al exportar.
+  */
+
+  window.cotizacion = {
+
+    client:
+      document.getElementById("client").value,
+
+    opportunity:
+      document.getElementById("opportunity").value,
+
+    setup,
+    users,
+    signatures,
+    imageWeight,
+    images,
+    support,
+
+    userPrice,
+    setupCost,
+    usersCost,
+    signatureCost,
+    supportCost,
+
+    storageNeeded,
+    storageQuoted,
+    packs,
+    storageCost,
+
+    totalSetup,
+    totalMonthly,
+    totalYear
+
+  };
+
+
+  info.innerText =
+    "✅ Cotización calculada correctamente. Ya podés descargarla.";
+
+  info.style.display = "block";
+
+}
+
+
+/*
+  DESCARGAR EXCEL
+
+  Generamos un archivo CSV compatible
+  con Excel.
+
+  No requiere instalar nada.
+*/
+
+function downloadExcel() {
+
+  calculate();
+
+
+  const c =
+    window.cotizacion;
+
+
+  const client =
+    c.client || "Sin especificar";
+
+
+  const opportunity =
+    c.opportunity || "Sin especificar";
+
+
+  const rows = [
+
+    ["PREVENTA IA - COTIZACIÓN"],
+
+    [],
+
+    ["Cliente", client],
+
+    ["Oportunidad", opportunity],
+
+    ["Fecha", new Date().toLocaleDateString("es-AR")],
+
+    [],
+
+    [
+      "Solución",
+      "Unidad",
+      "Cantidad",
+      "Precio Unitario USD",
+      "Total Único USD",
+      "Total Mensual USD"
+    ],
+
+    [
+      "Parametrización / Setup",
+      "Horas",
+      c.setup,
+      25,
+      c.setupCost,
+      ""
+    ],
+
+    [
+      "Usuarios",
+      "Usuario",
+      c.users,
+      c.userPrice,
+      "",
+      c.usersCost
+    ],
+
+    [
+      "Firmas",
+      "Firmas",
+      c.signatures,
+      0.20,
+      "",
+      c.signatureCost
+    ],
+
+    [
+      "Storage",
+      "GB",
+      c.storageQuoted,
+      2,
+      "",
+      c.storageCost
+    ],
+
+    [
+      "Soporte Addoc",
+      "Horas",
+      c.support,
+      25,
+      "",
+      c.supportCost
+    ],
+
+    [],
+
+    [
+      "TOTAL",
+      "",
+      "",
+      "",
+      c.totalSetup,
+      c.totalMonthly
+    ],
+
+    [],
+
+    [
+      "Storage necesario",
+      c.storageNeeded.toFixed(2) + " GB"
+    ],
+
+    [
+      "Storage cotizado",
+      c.storageQuoted + " GB"
+    ],
+
+    [
+      "Cantidad de packs",
+      c.packs
+    ],
+
+    [],
+
+    [
+      "Costo total primer año",
+      c.totalYear
+    ]
+
+  ];
+
+
+  /*
+    Convertimos la información
+    en CSV compatible con Excel.
+  */
+
+  const csv =
+    rows.map(row =>
+      row.map(value => {
+
+        let text =
+          String(value ?? "");
+
+        text =
+          text.replace(/"/g, '""');
+
+        return '"' + text + '"';
+
+      }).join(";")
+    ).join("\n");
+
+
+  /*
+    BOM para que Excel reconozca
+    correctamente acentos y ñ.
+  */
+
+  const blob =
+    new Blob(
+      ["\ufeff" + csv],
+      {
+        type:
+          "text/csv;charset=utf-8;"
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(blob);
+
+
+  const link =
+    document.createElement("a");
+
+
+  link.href = url;
+
+
+  link.download =
+    "Cotizacion_Preventa_IA.csv";
+
+
+  document.body.appendChild(link);
+
+
+  link.click();
+
+
+  document.body.removeChild(link);
+
+
+  URL.revokeObjectURL(url);
 
 }
 
 
 /*
   Calcular automáticamente
-  al abrir la página.
+  al abrir.
 */
 
 calculate();
