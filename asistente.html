@@ -9,6 +9,14 @@
 
 <title>Asistente IA | PREVENTA IA</title>
 
+<!-- Librerías para leer documentos cargados en el Centro de Conocimiento -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs" type="module"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <style>
 
 * {
@@ -178,6 +186,16 @@ button:disabled {
   color: #166534;
 }
 
+.knowledge-status {
+  margin-bottom: 15px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 12px;
+}
+
 @media (max-width: 700px) {
 
   header {
@@ -247,11 +265,19 @@ class="back"
 </div>
 
 <div
+  id="knowledgeStatus"
+  class="knowledge-status"
+>
+  🔎 Cargando conocimiento...
+</div>
+
+<div
   class="messages"
   id="messages"
 >
 
   <div class="message ia">
+
     👋 Hola. Soy PREVENTA IA.
 
     Tengo información interna sobre:
@@ -274,9 +300,14 @@ class="back"
     • Integraciones
     • Propuestas técnicas
 
-    También puedo utilizar IA generativa cuando esté disponible.
+    También puedo consultar documentación cargada
+    en el Centro de Conocimiento IA.
+
+    Cuando la IA generativa esté disponible,
+    puedo complementar todo este conocimiento con IA.
 
     ¿En qué puedo ayudarte?
+
   </div>
 
 </div>
@@ -311,6 +342,8 @@ class="back"
 
   "¿Qué hace Onboarding Addoc?"
 
+  "Buscá en la documentación qué información hay sobre workflows."
+
 </div>
 
 <div
@@ -328,10 +361,32 @@ class="back"
 <script>
 
 /* =====================================================
-   VARIABLE PRINCIPAL
+   VARIABLES
 ===================================================== */
 
 let conocimiento = null;
+
+let documentosConocimiento = [];
+
+let documentosTextoCache = new Map();
+
+
+/* =====================================================
+   CONFIGURACIÓN CENTRO DE CONOCIMIENTO
+===================================================== */
+
+const KNOWLEDGE_DB_NAME =
+  "preventa_ia_conocimiento";
+
+const KNOWLEDGE_DB_VERSION =
+  1;
+
+const KNOWLEDGE_STORE =
+  "documents";
+
+
+let knowledgeDB =
+  null;
 
 
 /* =====================================================
@@ -341,7 +396,14 @@ let conocimiento = null;
 async function cargarConocimiento() {
 
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
+
+  const knowledgeStatus =
+    document.getElementById(
+      "knowledgeStatus"
+    );
 
   status.className =
     "status";
@@ -363,8 +425,7 @@ async function cargarConocimiento() {
     if (!response.ok) {
 
       throw new Error(
-        "No se pudo cargar conocimiento.json. " +
-        "Código HTTP: " +
+        "No se pudo cargar conocimiento.json. Código HTTP: " +
         response.status
       );
 
@@ -384,11 +445,17 @@ async function cargarConocimiento() {
     try {
 
       conocimiento =
-        JSON.parse(texto);
+        JSON.parse(
+          texto
+        );
 
     }
 
     catch(error) {
+
+      console.error(
+        error
+      );
 
       throw new Error(
         "conocimiento.json no contiene un JSON válido."
@@ -400,10 +467,13 @@ async function cargarConocimiento() {
       "status success-status";
 
     status.textContent =
-      "🟢 Base de conocimiento cargada correctamente.";
+      "🟢 Base estructurada cargada correctamente.";
+
+    knowledgeStatus.textContent =
+      "🟢 Base estructurada disponible. Cargando documentación adicional...";
 
     console.log(
-      "PREVENTA IA - conocimiento cargado correctamente."
+      "PREVENTA IA - conocimiento.json cargado."
     );
 
   }
@@ -425,7 +495,160 @@ async function cargarConocimiento() {
       "🔴 No se pudo cargar conocimiento.json. " +
       error.message;
 
+    knowledgeStatus.textContent =
+      "⚠️ La base estructurada no está disponible.";
+
   }
+
+}
+
+
+/* =====================================================
+   BASE DE DATOS DEL CENTRO DE CONOCIMIENTO
+===================================================== */
+
+function openKnowledgeDatabase() {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      const request =
+        indexedDB.open(
+          KNOWLEDGE_DB_NAME,
+          KNOWLEDGE_DB_VERSION
+        );
+
+      request.onupgradeneeded =
+        function(event) {
+
+          const database =
+            event.target.result;
+
+          if (
+            !database.objectStoreNames.contains(
+              KNOWLEDGE_STORE
+            )
+          ) {
+
+            const store =
+              database.createObjectStore(
+                KNOWLEDGE_STORE,
+                {
+                  keyPath: "id",
+                  autoIncrement: true
+                }
+              );
+
+            store.createIndex(
+              "category",
+              "category",
+              {
+                unique: false
+              }
+            );
+
+            store.createIndex(
+              "createdAt",
+              "createdAt",
+              {
+                unique: false
+              }
+            );
+
+          }
+
+        };
+
+      request.onsuccess =
+        function(event) {
+
+          knowledgeDB =
+            event.target.result;
+
+          resolve(
+            knowledgeDB
+          );
+
+        };
+
+      request.onerror =
+        function() {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   OBTENER DOCUMENTOS
+===================================================== */
+
+function getKnowledgeDocuments() {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      if (!knowledgeDB) {
+
+        resolve([]);
+
+        return;
+
+      }
+
+      if (
+        !knowledgeDB.objectStoreNames.contains(
+          KNOWLEDGE_STORE
+        )
+      ) {
+
+        resolve([]);
+
+        return;
+
+      }
+
+      const transaction =
+        knowledgeDB.transaction(
+          KNOWLEDGE_STORE,
+          "readonly"
+        );
+
+      const store =
+        transaction.objectStore(
+          KNOWLEDGE_STORE
+        );
+
+      const request =
+        store.getAll();
+
+      request.onsuccess =
+        function() {
+
+          resolve(
+            request.result || []
+          );
+
+        };
+
+      request.onerror =
+        function() {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
 
 }
 
@@ -473,6 +696,53 @@ function obtenerPalabras(
       pregunta
     );
 
+  const stopWords = [
+
+    "que",
+    "como",
+    "cual",
+    "cuales",
+    "para",
+    "donde",
+    "cuando",
+    "quiero",
+    "necesito",
+    "hace",
+    "hacen",
+    "son",
+    "una",
+    "uno",
+    "del",
+    "los",
+    "las",
+    "por",
+    "con",
+    "entre",
+    "sobre",
+    "hay",
+    "esta",
+    "este",
+    "esa",
+    "eso",
+    "esto",
+    "tambien",
+    "puede",
+    "pueden",
+    "usar",
+    "usarías",
+    "usarías",
+    "decime",
+    "decir",
+    "diferencia",
+    "informacion",
+    "información",
+    "quiero",
+    "pregunta",
+    "preguntar"
+
+  ];
+
+
   return texto
     .split(" ")
     .filter(
@@ -480,34 +750,9 @@ function obtenerPalabras(
 
         return (
           palabra.length >= 3 &&
-          ![
-            "que",
-            "como",
-            "cual",
-            "cuales",
-            "para",
-            "donde",
-            "cuando",
-            "quiero",
-            "necesito",
-            "hace",
-            "hacen",
-            "son",
-            "una",
-            "uno",
-            "del",
-            "los",
-            "las",
-            "por",
-            "con",
-            "entre",
-            "sobre",
-            "hay",
-            "esta",
-            "este",
-            "esa",
-            "eso"
-          ].includes(palabra)
+          !stopWords.includes(
+            palabra
+          )
         );
 
       }
@@ -517,7 +762,7 @@ function obtenerPalabras(
 
 
 /* =====================================================
-   BUSQUEDA EXACTA EN PREGUNTAS FRECUENTES
+   PREGUNTAS FRECUENTES
 ===================================================== */
 
 function buscarPreguntaFrecuente(
@@ -541,10 +786,6 @@ function buscarPreguntaFrecuente(
   const preguntas =
     conocimiento.preguntas_frecuentes;
 
-
-  /*
-    Detectar nombres directos
-  */
 
   const equivalencias = [
 
@@ -695,7 +936,9 @@ function buscarPreguntaFrecuente(
 
     if (
       coincide &&
-      preguntas[equivalencia.clave]
+      preguntas[
+        equivalencia.clave
+      ]
     ) {
 
       return {
@@ -727,7 +970,7 @@ function buscarPreguntaFrecuente(
 
 
 /* =====================================================
-   BUSQUEDA EN PRODUCTOS Y PARTNERS
+   BUSCAR EN PRODUCTOS Y PARTNERS
 ===================================================== */
 
 function buscarEnCatalogo(
@@ -740,10 +983,12 @@ function buscarEnCatalogo(
 
   }
 
+
   const palabras =
     obtenerPalabras(
       pregunta
     );
+
 
   const resultados = [];
 
@@ -812,12 +1057,6 @@ function buscarEnCatalogo(
           }
         );
 
-
-        /*
-          Dar prioridad fuerte
-          cuando pregunta por nombre
-          de producto.
-        */
 
         const nombreNormalizado =
           normalizarTexto(
@@ -893,14 +1132,14 @@ function buscarEnCatalogo(
 
   return resultados.slice(
     0,
-    4
+    5
   );
 
 }
 
 
 /* =====================================================
-   OBTENER TEXTO ÚTIL DEL PRODUCTO
+   CONSTRUIR RESPUESTA DE PRODUCTO
 ===================================================== */
 
 function construirRespuestaProducto(
@@ -976,7 +1215,7 @@ function construirRespuestaProducto(
     datos.funcionalidades
       .slice(
         0,
-        8
+        12
       )
       .forEach(
         function(item) {
@@ -1010,7 +1249,7 @@ function construirRespuestaProducto(
     datos.cuando_usarlo
       .slice(
         0,
-        6
+        8
       )
       .forEach(
         function(item) {
@@ -1035,7 +1274,7 @@ function construirRespuestaProducto(
   ) {
 
     respuesta +=
-      "Diferencia / consideración:\n" +
+      "Consideración:\n" +
       datos.diferencia_thuban +
       "\n\n";
 
@@ -1047,7 +1286,7 @@ function construirRespuestaProducto(
   ) {
 
     respuesta +=
-      "Diferencia / consideración:\n" +
+      "Consideración:\n" +
       datos.diferencia_visualizador +
       "\n\n";
 
@@ -1080,7 +1319,7 @@ function construirRespuestaProducto(
     datos.consideraciones_preventa
       .slice(
         0,
-        6
+        8
       )
       .forEach(
         function(item) {
@@ -1102,7 +1341,7 @@ function construirRespuestaProducto(
 
   respuesta +=
     "━━━━━━━━━━━━━━━━━━\n" +
-    "💡 Respuesta basada en la base de conocimiento interna.";
+    "💡 Respuesta basada en conocimiento interno.";
 
   return respuesta;
 
@@ -1110,26 +1349,673 @@ function construirRespuestaProducto(
 
 
 /* =====================================================
-   BUSQUEDA GENERAL LOCAL
+   EXTRAER TEXTO DE DOCX
 ===================================================== */
 
-function buscarLocalmente(
+async function extraerTextoDOCX(
+  blob
+) {
+
+  if (
+    typeof JSZip ===
+    "undefined"
+  ) {
+
+    return "";
+
+  }
+
+
+  const arrayBuffer =
+    await blob.arrayBuffer();
+
+
+  const zip =
+    await JSZip.loadAsync(
+      arrayBuffer
+    );
+
+
+  const documentFile =
+    zip.file(
+      "word/document.xml"
+    );
+
+
+  if (!documentFile) {
+
+    return "";
+
+  }
+
+
+  const xml =
+    await documentFile.async(
+      "string"
+    );
+
+
+  const parser =
+    new DOMParser();
+
+
+  const xmlDoc =
+    parser.parseFromString(
+      xml,
+      "application/xml"
+    );
+
+
+  const paragraphs =
+    Array.from(
+      xmlDoc.getElementsByTagName(
+        "w:p"
+      )
+    );
+
+
+  const textos = [];
+
+
+  paragraphs.forEach(
+    function(parrafo) {
+
+      const nodos =
+        Array.from(
+          parrafo.getElementsByTagName(
+            "w:t"
+          )
+        );
+
+
+      const texto =
+        nodos
+          .map(
+            function(nodo) {
+              return nodo.textContent || "";
+            }
+          )
+          .join("");
+
+
+      if (
+        texto.trim()
+      ) {
+
+        textos.push(
+          texto.trim()
+        );
+
+      }
+
+    }
+  );
+
+
+  return textos.join(
+    "\n"
+  );
+
+}
+
+
+/* =====================================================
+   EXTRAER TEXTO DE PDF
+===================================================== */
+
+async function extraerTextoPDF(
+  blob
+) {
+
+  try {
+
+    if (
+      typeof window.pdfjsLib ===
+      "undefined"
+    ) {
+
+      return "";
+
+    }
+
+
+    const arrayBuffer =
+      await blob.arrayBuffer();
+
+
+    const pdf =
+      await window.pdfjsLib.getDocument(
+        {
+          data:
+            arrayBuffer
+        }
+      ).promise;
+
+
+    const paginas = [];
+
+
+    const maxPaginas =
+      Math.min(
+        pdf.numPages,
+        30
+      );
+
+
+    for (
+      let paginaNumero = 1;
+      paginaNumero <= maxPaginas;
+      paginaNumero++
+    ) {
+
+      const pagina =
+        await pdf.getPage(
+          paginaNumero
+        );
+
+
+      const content =
+        await pagina.getTextContent();
+
+
+      const texto =
+        content.items
+          .map(
+            function(item) {
+              return item.str || "";
+            }
+          )
+          .join(" ");
+
+
+      if (
+        texto.trim()
+      ) {
+
+        paginas.push(
+          texto.trim()
+        );
+
+      }
+
+    }
+
+
+    return paginas.join(
+      "\n"
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error leyendo PDF:",
+      error
+    );
+
+    return "";
+
+  }
+
+}
+
+
+/* =====================================================
+   EXTRAER TEXTO DE EXCEL
+===================================================== */
+
+async function extraerTextoExcel(
+  blob
+) {
+
+  try {
+
+    if (
+      typeof XLSX ===
+      "undefined"
+    ) {
+
+      return "";
+
+    }
+
+
+    const arrayBuffer =
+      await blob.arrayBuffer();
+
+
+    const workbook =
+      XLSX.read(
+        arrayBuffer,
+        {
+          type:
+            "array"
+        }
+      );
+
+
+    const partes = [];
+
+
+    workbook.SheetNames.forEach(
+      function(sheetName) {
+
+        const worksheet =
+          workbook.Sheets[
+            sheetName
+          ];
+
+
+        const texto =
+          XLSX.utils.sheet_to_csv(
+            worksheet,
+            {
+              FS: " | "
+            }
+          );
+
+
+        if (
+          texto.trim()
+        ) {
+
+          partes.push(
+            "Hoja: " +
+            sheetName +
+            "\n" +
+            texto
+          );
+
+        }
+
+      }
+    );
+
+
+    return partes.join(
+      "\n\n"
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error leyendo Excel:",
+      error
+    );
+
+    return "";
+
+  }
+
+}
+
+
+/* =====================================================
+   EXTRAER TEXTO GENÉRICO
+===================================================== */
+
+async function extraerTextoDocumento(
+  documento
+) {
+
+  if (
+    !documento ||
+    !documento.blob
+  ) {
+
+    return "";
+
+  }
+
+
+  if (
+    documentosTextoCache.has(
+      documento.id
+    )
+  ) {
+
+    return documentosTextoCache.get(
+      documento.id
+    );
+
+  }
+
+
+  const nombre =
+    normalizarTexto(
+      documento.originalName ||
+      documento.name ||
+      ""
+    );
+
+
+  const type =
+    String(
+      documento.type ||
+      ""
+    ).toLowerCase();
+
+
+  let texto =
+    "";
+
+
+  try {
+
+    if (
+      type.includes(
+        "text/"
+      ) ||
+      nombre.endsWith(
+        ".txt"
+      ) ||
+      nombre.endsWith(
+        ".json"
+      ) ||
+      type.includes(
+        "json"
+      )
+    ) {
+
+      texto =
+        await documento.blob.text();
+
+    }
+
+    else if (
+      nombre.endsWith(
+        ".docx"
+      ) ||
+      type.includes(
+        "wordprocessingml"
+      )
+    ) {
+
+      texto =
+        await extraerTextoDOCX(
+          documento.blob
+        );
+
+    }
+
+    else if (
+      nombre.endsWith(
+        ".pdf"
+      ) ||
+      type.includes(
+        "pdf"
+      )
+    ) {
+
+      texto =
+        await extraerTextoPDF(
+          documento.blob
+        );
+
+    }
+
+    else if (
+      nombre.endsWith(
+        ".xlsx"
+      ) ||
+      nombre.endsWith(
+        ".xls"
+      ) ||
+      type.includes(
+        "spreadsheet"
+      ) ||
+      type.includes(
+        "excel"
+      )
+    ) {
+
+      texto =
+        await extraerTextoExcel(
+          documento.blob
+        );
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error extrayendo documento:",
+      documento.name,
+      error
+    );
+
+    texto =
+      "";
+
+  }
+
+
+  texto =
+    String(
+      texto || ""
+    ).trim();
+
+
+  documentosTextoCache.set(
+    documento.id,
+    texto
+  );
+
+
+  return texto;
+
+}
+
+
+/* =====================================================
+   BUSCAR DOCUMENTOS
+===================================================== */
+
+async function buscarEnDocumentos(
+  pregunta
+) {
+
+  if (
+    !documentosConocimiento.length
+  ) {
+
+    return [];
+
+  }
+
+
+  const palabras =
+    obtenerPalabras(
+      pregunta
+    );
+
+
+  const resultados = [];
+
+
+  for (
+    const documento of
+    documentosConocimiento
+  ) {
+
+    const texto =
+      await extraerTextoDocumento(
+        documento
+      );
+
+
+    const textoBusqueda =
+      normalizarTexto(
+        (
+          documento.name ||
+          ""
+        ) +
+        " " +
+        (
+          documento.category ||
+          ""
+        ) +
+        " " +
+        (
+          documento.notes ||
+          ""
+        ) +
+        " " +
+        texto
+      );
+
+
+    let coincidencias =
+      0;
+
+
+    palabras.forEach(
+      function(palabra) {
+
+        if (
+          textoBusqueda.includes(
+            palabra
+          )
+        ) {
+
+          coincidencias++;
+
+        }
+
+      }
+    );
+
+
+    if (
+      coincidencias > 0
+    ) {
+
+      const normalizado =
+        normalizarTexto(
+          texto
+        );
+
+
+      let posicion =
+        -1;
+
+
+      for (
+        const palabra of
+        palabras
+      ) {
+
+        posicion =
+          normalizado.indexOf(
+            palabra
+          );
+
+        if (
+          posicion >= 0
+        ) {
+
+          break;
+
+        }
+
+      }
+
+
+      let fragmento =
+        texto;
+
+
+      if (
+        posicion >= 0
+      ) {
+
+        const inicio =
+          Math.max(
+            0,
+            posicion -
+            300
+          );
+
+
+        fragmento =
+          texto.substring(
+            inicio,
+            inicio +
+            1200
+          );
+
+      }
+
+
+      resultados.push({
+
+        documento:
+          documento.name ||
+          documento.originalName ||
+          "Documento",
+
+        categoria:
+          documento.category ||
+          "Sin categoría",
+
+        texto:
+          fragmento,
+
+        coincidencias:
+          coincidencias
+
+      });
+
+    }
+
+  }
+
+
+  resultados.sort(
+    function(a, b) {
+
+      return (
+        b.coincidencias -
+        a.coincidencias
+      );
+
+    }
+  );
+
+
+  return resultados.slice(
+    0,
+    5
+  );
+
+}
+
+
+/* =====================================================
+   RESPUESTA LOCAL COMPLETA
+===================================================== */
+
+async function buscarLocalmente(
   pregunta
 ) {
 
   if (!conocimiento) {
 
     return (
-      "🔴 La base de conocimiento no está disponible.\n\n" +
-      "Verificá que el archivo conocimiento.json " +
-      "esté en la misma carpeta que asistente.html."
+      "🔴 La base de conocimiento estructurada no está disponible.\n\n" +
+      "Verificá que conocimiento.json esté en la misma carpeta que asistente.html."
     );
 
   }
 
 
   /*
-    1. Preguntas frecuentes
+    1. FAQ
   */
 
   const faq =
@@ -1140,19 +2026,54 @@ function buscarLocalmente(
 
   if (faq) {
 
-    return (
+    const documentos =
+      await buscarEnDocumentos(
+        pregunta
+      );
+
+
+    let respuesta =
       "🟢 " +
       faq.texto +
-      "\n\n" +
+      "\n\n";
+
+
+    if (
+      documentos.length
+    ) {
+
+      respuesta +=
+        "📄 Además encontré información relacionada en documentos del Centro de Conocimiento:\n\n";
+
+
+      documentos.forEach(
+        function(item) {
+
+          respuesta +=
+            "📌 " +
+            item.documento +
+            "\n" +
+            item.texto +
+            "\n\n";
+
+        }
+      );
+
+    }
+
+
+    respuesta +=
       "━━━━━━━━━━━━━━━━━━\n" +
-      "💡 Respuesta basada en conocimiento interno."
-    );
+      "💡 Modo básico: respuesta basada en conocimiento interno.\n" +
+      "Cuando tengamos créditos de IA, podremos complementar la respuesta con IA generativa.";
+
+    return respuesta;
 
   }
 
 
   /*
-    2. Productos y partners
+    2. CATÁLOGO
   */
 
   const catalogo =
@@ -1161,31 +2082,111 @@ function buscarLocalmente(
     );
 
 
+  /*
+    3. DOCUMENTOS
+  */
+
+  const documentos =
+    await buscarEnDocumentos(
+      pregunta
+    );
+
+
+  /*
+    Si encontramos producto fuerte
+    y no hay una necesidad de
+    búsqueda documental específica.
+  */
+
   if (
-    catalogo.length
+    catalogo.length &&
+    catalogo[0].coincidencias >= 5
   ) {
 
-    /*
-      Si el primer resultado
-      tiene una coincidencia fuerte,
-      responder principalmente sobre él.
-    */
-
-    if (
-      catalogo[0].coincidencias >= 5
-    ) {
-
-      return construirRespuestaProducto(
+    let respuesta =
+      construirRespuestaProducto(
         catalogo[0]
       );
 
+
+    if (
+      documentos.length
+    ) {
+
+      respuesta +=
+        "\n\n📄 Documentación relacionada encontrada:\n\n";
+
+
+      documentos.slice(
+        0,
+        3
+      ).forEach(
+        function(item) {
+
+          respuesta +=
+            "📌 " +
+            item.documento +
+            "\n" +
+            item.texto +
+            "\n\n";
+
+        }
+      );
+
     }
+
+
+    respuesta +=
+      "\n━━━━━━━━━━━━━━━━━━\n" +
+      "💡 Modo básico: respuesta basada en conocimiento interno.\n" +
+      "Cuando tengamos créditos de IA, podremos hacer un análisis más profundo.";
+
+    return respuesta;
 
   }
 
 
   /*
-    3. Búsqueda general
+    4. DOCUMENTOS SIN PRODUCTO
+  */
+
+  if (
+    documentos.length
+  ) {
+
+    let respuesta =
+      "🟢 Encontré información relacionada en la documentación interna:\n\n";
+
+
+    documentos.forEach(
+      function(item) {
+
+        respuesta +=
+          "📄 " +
+          item.documento +
+          "\n" +
+          "Categoría: " +
+          item.categoria +
+          "\n\n" +
+          item.texto +
+          "\n\n";
+
+      }
+    );
+
+
+    respuesta +=
+      "━━━━━━━━━━━━━━━━━━\n" +
+      "💡 Modo básico: información obtenida de documentos del Centro de Conocimiento.\n" +
+      "Cuando tengamos créditos de IA, podremos analizar estos documentos de forma más avanzada.";
+
+    return respuesta;
+
+  }
+
+
+  /*
+    5. BÚSQUEDA GENERAL
   */
 
   const palabras =
@@ -1203,7 +2204,8 @@ function buscarLocalmente(
   ) {
 
     if (
-      typeof objeto === "string"
+      typeof objeto ===
+      "string"
     ) {
 
       const texto =
@@ -1275,13 +2277,15 @@ function buscarLocalmente(
         }
       );
 
+
       return;
 
     }
 
 
     if (
-      typeof objeto === "object" &&
+      typeof objeto ===
+      "object" &&
       objeto !== null
     ) {
 
@@ -1297,11 +2301,6 @@ function buscarLocalmente(
                 clave
               : clave;
 
-
-          /*
-            También analizamos el
-            nombre de la clave.
-          */
 
           const claveTexto =
             normalizarTexto(
@@ -1389,49 +2388,298 @@ function buscarLocalmente(
 
 
   if (
-    mejores.length === 0
+    mejores.length
   ) {
 
-    return (
-      "🟢 Modo básico activo.\n\n" +
-      "No encontré una respuesta específica en " +
-      "la base de conocimiento interna.\n\n" +
-      "Podés preguntarme sobre Perfil Digital, " +
-      "Onboarding Addoc, Firmas Addoc, Islas, " +
-      "Visualizador Addoc, Thuban, Captika, " +
-      "Edatalia, OCR, Full Text, workflows, " +
-      "cotización, relevamiento, migraciones, " +
-      "integraciones o gestión documental.\n\n" +
-      "💡 Cuando tengamos créditos de IA, " +
-      "podremos complementar esta respuesta " +
-      "con IA generativa."
+    let respuesta =
+      "🟢 Encontré información relacionada en nuestra base interna:\n\n";
+
+
+    mejores.forEach(
+      function(resultado) {
+
+        respuesta +=
+          "• " +
+          resultado.texto +
+          "\n\n";
+
+      }
+    );
+
+
+    respuesta +=
+      "━━━━━━━━━━━━━━━━━━\n" +
+      "💡 Modo básico: respuesta basada en conocimiento interno.\n" +
+      "Cuando tengamos créditos de IA, podremos complementar esta respuesta con IA generativa.";
+
+    return respuesta;
+
+  }
+
+
+  return (
+    "🟢 Modo básico activo.\n\n" +
+    "No encontré una respuesta específica en la base de conocimiento interna ni en los documentos cargados.\n\n" +
+    "Podés preguntarme sobre Perfil Digital, Onboarding Addoc, Firmas Addoc, Islas, Visualizador Addoc, Thuban, Captika, Edatalia, OCR, Full Text, workflows, relevamiento, cotización, migraciones, integraciones o gestión documental.\n\n" +
+    "💡 Cuando tengamos créditos de IA, podremos complementar esta consulta con IA generativa."
+  );
+
+}
+
+
+/* =====================================================
+   PREPARAR CONOCIMIENTO PARA IA
+===================================================== */
+
+function prepararConocimiento(
+  objeto,
+  ruta = ""
+) {
+
+  let resultado =
+    "";
+
+
+  if (
+    typeof objeto ===
+    "string"
+  ) {
+
+    resultado +=
+      (
+        ruta
+          ? ruta +
+            ": "
+          : ""
+      ) +
+      objeto +
+      "\n";
+
+  }
+
+  else if (
+    Array.isArray(
+      objeto
+    )
+  ) {
+
+    objeto.forEach(
+      function(item, index) {
+
+        resultado +=
+          prepararConocimiento(
+            item,
+            ruta +
+            " [" +
+            index +
+            "]"
+          );
+
+      }
+    );
+
+  }
+
+  else if (
+    typeof objeto ===
+    "object" &&
+    objeto !== null
+  ) {
+
+    Object.keys(
+      objeto
+    ).forEach(
+      function(clave) {
+
+        const nuevaRuta =
+          ruta
+            ? ruta +
+              " → " +
+              clave
+            : clave;
+
+
+        resultado +=
+          prepararConocimiento(
+            objeto[
+              clave
+            ],
+            nuevaRuta
+          );
+
+      }
     );
 
   }
 
 
-  let respuesta =
-    "🟢 Encontré información relacionada " +
-    "en nuestra base interna:\n\n";
+  return resultado;
+
+}
 
 
-  mejores.forEach(
-    function(resultado) {
+/* =====================================================
+   PREPARAR DOCUMENTOS PARA IA
+===================================================== */
 
-      respuesta +=
-        "• " +
-        resultado.texto +
+async function prepararDocumentosParaIA(
+  pregunta
+) {
+
+  const resultados =
+    await buscarEnDocumentos(
+      pregunta
+    );
+
+
+  if (
+    !resultados.length
+  ) {
+
+    return "";
+
+  }
+
+
+  let texto =
+    "\n\nDOCUMENTACIÓN INTERNA RELEVANTE:\n\n";
+
+
+  resultados.forEach(
+    function(item, index) {
+
+      texto +=
+        "DOCUMENTO " +
+        (
+          index + 1
+        ) +
+        "\n" +
+        "Nombre: " +
+        item.documento +
+        "\n" +
+        "Categoría: " +
+        item.categoria +
+        "\n" +
+        "Contenido relevante:\n" +
+        item.texto +
         "\n\n";
 
     }
   );
 
 
-  respuesta +=
-    "━━━━━━━━━━━━━━━━━━\n" +
-    "💡 Modo básico: respuesta basada en conocimiento interno.";
+  return texto;
 
-  return respuesta;
+}
+
+
+/* =====================================================
+   INTENTAR IA REAL
+===================================================== */
+
+async function intentarIA(
+  pregunta
+) {
+
+  const knowledgeText =
+    conocimiento
+      ? prepararConocimiento(
+          conocimiento
+        )
+      : "";
+
+
+  const documentText =
+    await prepararDocumentosParaIA(
+      pregunta
+    );
+
+
+  const combinedKnowledge =
+    (
+      knowledgeText +
+      documentText
+    ).substring(
+      0,
+      120000
+    );
+
+
+  const response =
+    await fetch(
+      "/api/chat",
+      {
+
+        method:
+          "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify(
+            {
+
+              message:
+                pregunta,
+
+              knowledge:
+                combinedKnowledge
+
+            }
+          )
+
+      }
+    );
+
+
+  let data =
+    null;
+
+
+  try {
+
+    data =
+      await response.json();
+
+  }
+
+  catch(error) {
+
+    throw new Error(
+      "El servidor no devolvió una respuesta válida."
+    );
+
+  }
+
+
+  if (
+    !response.ok
+  ) {
+
+    throw new Error(
+      data?.error ||
+      "Error del servidor."
+    );
+
+  }
+
+
+  if (
+    !data ||
+    !data.answer
+  ) {
+
+    throw new Error(
+      "La IA no devolvió una respuesta."
+    );
+
+  }
+
+
+  return data.answer;
 
 }
 
@@ -1481,181 +2729,73 @@ function agregarMensaje(
 
 
 /* =====================================================
-   INTENTAR IA REAL
+   ACTUALIZAR ESTADO DOCUMENTAL
 ===================================================== */
 
-async function intentarIA(
-  pregunta
-) {
+async function actualizarEstadoDocumentos() {
 
-  const knowledgeText =
-    conocimiento
-      ? prepararConocimiento(
-          conocimiento
-        )
-      : "";
-
-
-  const response =
-    await fetch(
-      "/api/chat",
-      {
-
-        method:
-          "POST",
-
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify(
-            {
-
-              message:
-                pregunta,
-
-              knowledge:
-                knowledgeText
-
-            }
-          )
-
-      }
+  const element =
+    document.getElementById(
+      "knowledgeStatus"
     );
-
-
-  let data = null;
 
 
   try {
 
-    data =
-      await response.json();
+    documentosConocimiento =
+      await getKnowledgeDocuments();
+
+
+    if (
+      conocimiento &&
+      documentosConocimiento.length
+    ) {
+
+      element.textContent =
+        "🟢 Base estructurada disponible + " +
+        documentosConocimiento.length +
+        " documento(s) del Centro de Conocimiento.";
+
+    }
+
+    else if (
+      conocimiento
+    ) {
+
+      element.textContent =
+        "🟢 Base estructurada disponible. Todavía no hay documentos adicionales cargados.";
+
+    }
+
+    else if (
+      documentosConocimiento.length
+    ) {
+
+      element.textContent =
+        "🟡 Hay " +
+        documentosConocimiento.length +
+        " documento(s) cargado(s), pero no está disponible conocimiento.json.";
+
+    }
 
   }
 
   catch(error) {
 
-    throw new Error(
-      "El servidor no devolvió una respuesta válida."
+    console.error(
+      "No se pudieron cargar los documentos:",
+      error
     );
 
-  }
+
+    documentosConocimiento =
+      [];
 
 
-  if (
-    !response.ok
-  ) {
-
-    throw new Error(
-      data?.error ||
-      "Error del servidor."
-    );
+    element.textContent =
+      "⚠️ No se pudieron leer los documentos del Centro de Conocimiento.";
 
   }
-
-
-  if (
-    !data ||
-    !data.answer
-  ) {
-
-    throw new Error(
-      "La IA no devolvió una respuesta."
-    );
-
-  }
-
-
-  return data.answer;
-
-}
-
-
-/* =====================================================
-   PREPARAR CONOCIMIENTO PARA IA
-===================================================== */
-
-function prepararConocimiento(
-  objeto,
-  ruta = ""
-) {
-
-  let resultado =
-    "";
-
-
-  if (
-    typeof objeto === "string"
-  ) {
-
-    resultado +=
-      (
-        ruta
-          ? ruta + ": "
-          : ""
-      ) +
-      objeto +
-      "\n";
-
-  }
-
-  else if (
-    Array.isArray(
-      objeto
-    )
-  ) {
-
-    objeto.forEach(
-      function(item, index) {
-
-        resultado +=
-          prepararConocimiento(
-            item,
-            ruta +
-            " [" +
-            index +
-            "]"
-          );
-
-      }
-    );
-
-  }
-
-  else if (
-    typeof objeto === "object" &&
-    objeto !== null
-  ) {
-
-    Object.keys(
-      objeto
-    ).forEach(
-      function(clave) {
-
-        const nuevaRuta =
-          ruta
-            ? ruta +
-              " → " +
-              clave
-            : clave;
-
-
-        resultado +=
-          prepararConocimiento(
-            objeto[clave],
-            nuevaRuta
-          );
-
-      }
-    );
-
-  }
-
-
-  return resultado;
 
 }
 
@@ -1719,7 +2859,8 @@ async function sendMessage() {
   try {
 
     /*
-      Primero intentamos IA REAL.
+      Primero seguimos intentando
+      la IA REAL exactamente como antes.
     */
 
     const respuestaIA =
@@ -1742,7 +2883,7 @@ async function sendMessage() {
 
 
     status.textContent =
-      "🧠 Respuesta generada por IA.";
+      "🧠 Respuesta generada por IA utilizando conocimiento interno y documentación relevante.";
 
   }
 
@@ -1760,7 +2901,7 @@ async function sendMessage() {
     */
 
     const respuestaLocal =
-      buscarLocalmente(
+      await buscarLocalmente(
         question
       );
 
@@ -1778,10 +2919,35 @@ async function sendMessage() {
       "status";
 
 
-    status.textContent =
+    if (
+      conocimiento &&
+      documentosConocimiento.length
+    ) {
+
+      status.textContent =
+        "🟢 Modo básico activo — conocimiento interno + documentos del Centro de Conocimiento.";
+
+    }
+
+    else if (
       conocimiento
-        ? "🟢 Modo básico activo — respuesta basada en conocimiento interno."
-        : "🔴 La base de conocimiento no está disponible.";
+    ) {
+
+      status.textContent =
+        "🟢 Modo básico activo — respuesta basada en conocimiento interno.";
+
+    }
+
+    else {
+
+      status.className =
+        "status error-status";
+
+
+      status.textContent =
+        "🔴 No está disponible la base de conocimiento.";
+
+    }
 
   }
 
@@ -1826,7 +2992,42 @@ document
    INICIO
 ===================================================== */
 
-cargarConocimiento();
+(async function() {
+
+  try {
+
+    await cargarConocimiento();
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  try {
+
+    await openKnowledgeDatabase();
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "No se pudo abrir el Centro de Conocimiento:",
+      error
+    );
+
+  }
+
+
+  await actualizarEstadoDocumentos();
+
+})();
 
 </script>
 
