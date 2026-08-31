@@ -1,5 +1,5 @@
+```html
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -14,8 +14,6 @@
 ===================================================== -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
-<!-- PDF.JS EN VERSIÓN CLÁSICA PARA PODER USARLO DESDE EL SCRIPT -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
@@ -231,16 +229,11 @@ button:disabled {
 
   <h1>🤖 PREVENTA IA</h1>
 
-<a
-href="index.html"
-class="back"
-
->
-
-```
-← Volver al inicio
-```
-
+  <a
+    href="index.html"
+    class="back"
+  >
+    ← Volver al inicio
   </a>
 
 </header>
@@ -249,126 +242,116 @@ class="back"
 
   <div class="welcome">
 
-```
-<h2>
-  Asistente IA
-</h2>
+    <h2>
+      Asistente IA
+    </h2>
 
-<p>
-  Tu asistente inteligente para tareas de Preventa.
-</p>
-```
+    <p>
+      Tu asistente inteligente para tareas de Preventa.
+    </p>
 
   </div>
 
   <div class="chat">
 
-```
-<div class="mode">
-  🟢 MODO PREVENTA — CONOCIMIENTO INTERNO
-</div>
+    <div class="mode">
+      🟢 MODO PREVENTA — CONOCIMIENTO INTERNO
+    </div>
 
+    <div
+      id="knowledgeStatus"
+      class="knowledge-status"
+    >
+      🔎 Cargando conocimiento...
+    </div>
 
-<div
-  id="knowledgeStatus"
-  class="knowledge-status"
->
-  🔎 Cargando conocimiento...
-</div>
+    <div
+      class="messages"
+      id="messages"
+    >
 
+      <div class="message ia">
 
-<div
-  class="messages"
-  id="messages"
->
+        👋 Hola. Soy PREVENTA IA.
 
-  <div class="message ia">
+        Tengo información interna sobre:
 
-    👋 Hola. Soy PREVENTA IA.
+        • Perfil Digital
+        • Onboarding Addoc
+        • Firmas Addoc
+        • Visualizador Addoc
+        • Islas
+        • Thuban
+        • Captika
+        • Edatalia
+        • Gestión documental
+        • OCR
+        • Full Text
+        • Workflows
+        • Relevamiento
+        • Cotizaciones
+        • Migraciones
+        • Integraciones
+        • Propuestas técnicas
 
-    Tengo información interna sobre:
+        También puedo consultar documentación cargada
+        en el Centro de Conocimiento IA.
 
-    • Perfil Digital
-    • Onboarding Addoc
-    • Firmas Addoc
-    • Visualizador Addoc
-    • Islas
-    • Thuban
-    • Captika
-    • Edatalia
-    • Gestión documental
-    • OCR
-    • Full Text
-    • Workflows
-    • Relevamiento
-    • Cotizaciones
-    • Migraciones
-    • Integraciones
-    • Propuestas técnicas
+        Cuando la IA generativa esté disponible,
+        puedo complementar todo este conocimiento con IA.
 
-    También puedo consultar documentación cargada
-    en el Centro de Conocimiento IA.
+        ¿En qué puedo ayudarte?
 
-    Cuando la IA generativa esté disponible,
-    puedo complementar todo este conocimiento con IA.
+      </div>
 
-    ¿En qué puedo ayudarte?
+    </div>
 
-  </div>
+    <div class="input-area">
 
-</div>
+      <textarea
+        id="question"
+        placeholder="Escribí tu consulta..."
+      ></textarea>
 
+      <button
+        id="sendButton"
+        onclick="sendMessage()"
+      >
+        Enviar
+      </button>
 
-<div class="input-area">
+    </div>
 
-  <textarea
-    id="question"
-    placeholder="Escribí tu consulta..."
-  ></textarea>
+    <div class="tip">
 
-  <button
-    id="sendButton"
-    onclick="sendMessage()"
-  >
-    Enviar
-  </button>
+      💡 Probá preguntarme:
 
-</div>
+      "¿Qué es Perfil Digital?"
 
+      "¿Qué diferencia hay entre Thuban y Captika?"
 
-<div class="tip">
+      "¿Qué tengo que relevar para cotizar Thuban?"
 
-  💡 Probá preguntarme:
+      "¿Cuándo conviene usar Edatalia?"
 
-  "¿Qué es Perfil Digital?"
+      "¿Qué hace Onboarding Addoc?"
 
-  "¿Qué diferencia hay entre Thuban y Captika?"
+      "¿Qué dice la documentación sobre DocIntro?"
 
-  "¿Qué tengo que relevar para cotizar Thuban?"
+    </div>
 
-  "¿Cuándo conviene usar Edatalia?"
-
-  "¿Qué hace Onboarding Addoc?"
-
-  "¿Qué dice la documentación sobre DocIntro?"
-
-</div>
-
-
-<div
-  id="status"
-  class="status"
->
-  🔎 Cargando base de conocimiento...
-</div>
-```
+    <div
+      id="status"
+      class="status"
+    >
+      🔎 Cargando base de conocimiento...
+    </div>
 
   </div>
 
 </main>
 
 <script>
-
 
 /* =====================================================
    CONFIGURACIÓN PDF.JS
@@ -559,7 +542,6 @@ function openKnowledgeDatabase() {
 
         };
 
-
       request.onsuccess =
         function(event) {
 
@@ -571,7 +553,6 @@ function openKnowledgeDatabase() {
           );
 
         };
-
 
       request.onerror =
         function() {
@@ -744,7 +725,6 @@ function obtenerPalabras(
 
   ];
 
-
   return texto
     .split(" ")
     .filter(
@@ -787,7 +767,6 @@ function buscarPreguntaFrecuente(
 
   const preguntas =
     conocimiento.preguntas_frecuentes;
-
 
   const equivalencias = [
 
@@ -868,7 +847,6 @@ function buscarPreguntaFrecuente(
 
   ];
 
-
   for (
     const equivalencia of equivalencias
   ) {
@@ -885,7 +863,6 @@ function buscarPreguntaFrecuente(
 
         }
       );
-
 
     if (
       coincide &&
@@ -914,7 +891,6 @@ function buscarPreguntaFrecuente(
 
   }
 
-
   return null;
 
 }
@@ -941,7 +917,6 @@ function buscarEnCatalogo(
 
   const resultados = [];
 
-
   function analizarObjeto(
     grupo,
     tipo
@@ -955,7 +930,6 @@ function buscarEnCatalogo(
       return;
 
     }
-
 
     Object.keys(
       grupo
@@ -974,7 +948,6 @@ function buscarEnCatalogo(
 
         }
 
-
         const textoBase =
           normalizarTexto(
             nombre +
@@ -982,9 +955,7 @@ function buscarEnCatalogo(
             JSON.stringify(item)
           );
 
-
         let coincidencias = 0;
-
 
         palabras.forEach(
           function(palabra) {
@@ -1002,12 +973,10 @@ function buscarEnCatalogo(
           }
         );
 
-
         const nombreNormalizado =
           normalizarTexto(
             nombre
           );
-
 
         if (
           normalizarTexto(
@@ -1020,7 +989,6 @@ function buscarEnCatalogo(
           coincidencias += 10;
 
         }
-
 
         if (
           coincidencias > 0
@@ -1049,18 +1017,15 @@ function buscarEnCatalogo(
 
   }
 
-
   analizarObjeto(
     conocimiento.productos_propios,
     "Producto propio"
   );
 
-
   analizarObjeto(
     conocimiento.partners,
     "Partner"
   );
-
 
   resultados.sort(
     function(a, b) {
@@ -1072,7 +1037,6 @@ function buscarEnCatalogo(
 
     }
   );
-
 
   return resultados.slice(
     0,
@@ -1098,7 +1062,6 @@ function construirRespuestaProducto(
     resultado.nombre +
     "\n\n";
 
-
   if (datos.definicion) {
 
     respuesta +=
@@ -1115,7 +1078,6 @@ function construirRespuestaProducto(
 
   }
 
-
   if (datos.categoria) {
 
     respuesta +=
@@ -1125,10 +1087,7 @@ function construirRespuestaProducto(
 
   }
 
-
-  if (
-    datos.tipo
-  ) {
+  if (datos.tipo) {
 
     respuesta +=
       "Tipo: " +
@@ -1136,7 +1095,6 @@ function construirRespuestaProducto(
       "\n\n";
 
   }
-
 
   if (
     datos.funcionalidades &&
@@ -1166,7 +1124,6 @@ function construirRespuestaProducto(
 
   }
 
-
   if (
     datos.cuando_usarlo &&
     Array.isArray(
@@ -1195,7 +1152,6 @@ function construirRespuestaProducto(
 
   }
 
-
   if (
     datos.diferencia_thuban
   ) {
@@ -1206,7 +1162,6 @@ function construirRespuestaProducto(
       "\n\n";
 
   }
-
 
   if (
     datos.diferencia_visualizador
@@ -1219,7 +1174,6 @@ function construirRespuestaProducto(
 
   }
 
-
   if (
     datos.consideracion
   ) {
@@ -1230,7 +1184,6 @@ function construirRespuestaProducto(
       "\n\n";
 
   }
-
 
   if (
     datos.consideraciones_preventa &&
@@ -1260,7 +1213,6 @@ function construirRespuestaProducto(
 
   }
 
-
   respuesta +=
     "━━━━━━━━━━━━━━━━━━\n" +
     "💡 Respuesta basada en conocimiento interno.";
@@ -1289,22 +1241,18 @@ async function extraerTextoDOCX(
 
     }
 
-
     const arrayBuffer =
       await blob.arrayBuffer();
-
 
     const zip =
       await JSZip.loadAsync(
         arrayBuffer
       );
 
-
     const documentFile =
       zip.file(
         "word/document.xml"
       );
-
 
     if (!documentFile) {
 
@@ -1312,23 +1260,19 @@ async function extraerTextoDOCX(
 
     }
 
-
     const xml =
       await documentFile.async(
         "string"
       );
 
-
     const parser =
       new DOMParser();
-
 
     const xmlDoc =
       parser.parseFromString(
         xml,
         "application/xml"
       );
-
 
     const paragraphs =
       Array.from(
@@ -1337,9 +1281,7 @@ async function extraerTextoDOCX(
         )
       );
 
-
     const textos = [];
-
 
     paragraphs.forEach(
       function(parrafo) {
@@ -1351,7 +1293,6 @@ async function extraerTextoDOCX(
             )
           );
 
-
         const texto =
           nodos
             .map(
@@ -1362,7 +1303,6 @@ async function extraerTextoDOCX(
               }
             )
             .join("");
-
 
         if (
           texto.trim()
@@ -1376,7 +1316,6 @@ async function extraerTextoDOCX(
 
       }
     );
-
 
     return textos.join(
       "\n"
@@ -1421,15 +1360,12 @@ async function extraerTextoPDF(
 
     }
 
-
     const arrayBuffer =
       await blob.arrayBuffer();
-
 
     console.log(
       "📄 Abriendo PDF..."
     );
-
 
     const pdf =
       await pdfjsLib.getDocument(
@@ -1439,27 +1375,18 @@ async function extraerTextoPDF(
         }
       ).promise;
 
-
     console.log(
       "📄 PDF abierto. Páginas:",
       pdf.numPages
     );
 
-
     const paginas = [];
-
-
-    /*
-      Permitimos hasta 100 páginas.
-      Más adelante podemos hacerlo configurable.
-    */
 
     const maxPaginas =
       Math.min(
         pdf.numPages,
         100
       );
-
 
     for (
       let paginaNumero = 1;
@@ -1472,10 +1399,8 @@ async function extraerTextoPDF(
           paginaNumero
         );
 
-
       const content =
         await pagina.getTextContent();
-
 
       const textoPagina =
         content.items
@@ -1487,7 +1412,6 @@ async function extraerTextoPDF(
             }
           )
           .join(" ");
-
 
       if (
         textoPagina.trim()
@@ -1504,19 +1428,16 @@ async function extraerTextoPDF(
 
     }
 
-
     const textoFinal =
       paginas.join(
         "\n\n"
       );
-
 
     console.log(
       "📄 Texto extraído del PDF:",
       textoFinal.length,
       "caracteres"
     );
-
 
     return textoFinal;
 
@@ -1555,10 +1476,8 @@ async function extraerTextoExcel(
 
     }
 
-
     const arrayBuffer =
       await blob.arrayBuffer();
-
 
     const workbook =
       XLSX.read(
@@ -1568,9 +1487,7 @@ async function extraerTextoExcel(
         }
       );
 
-
     const partes = [];
-
 
     workbook.SheetNames.forEach(
       function(sheetName) {
@@ -1580,7 +1497,6 @@ async function extraerTextoExcel(
             sheetName
           ];
 
-
         const texto =
           XLSX.utils.sheet_to_csv(
             worksheet,
@@ -1588,7 +1504,6 @@ async function extraerTextoExcel(
               FS: " | "
             }
           );
-
 
         if (
           texto.trim()
@@ -1605,7 +1520,6 @@ async function extraerTextoExcel(
 
       }
     );
-
 
     return partes.join(
       "\n\n"
@@ -1644,7 +1558,6 @@ async function extraerTextoDocumento(
 
   }
 
-
   if (
     documentosTextoCache.has(
       documento.id
@@ -1657,7 +1570,6 @@ async function extraerTextoDocumento(
 
   }
 
-
   const nombre =
     normalizarTexto(
       documento.originalName ||
@@ -1665,16 +1577,13 @@ async function extraerTextoDocumento(
       ""
     );
 
-
   const type =
     String(
       documento.type ||
       ""
     ).toLowerCase();
 
-
   let texto = "";
-
 
   try {
 
@@ -1742,18 +1651,15 @@ async function extraerTextoDocumento(
 
   }
 
-
   texto =
     String(
       texto || ""
     ).trim();
 
-
   documentosTextoCache.set(
     documento.id,
     texto
   );
-
 
   return texto;
 
@@ -1775,21 +1681,17 @@ function obtenerFragmentosRelevantes(
 
   }
 
-
   const palabras =
     obtenerPalabras(
       pregunta
     );
-
 
   const normalizado =
     normalizarTexto(
       texto
     );
 
-
   const fragmentos = [];
-
 
   palabras.forEach(
     function(palabra) {
@@ -1797,10 +1699,8 @@ function obtenerFragmentosRelevantes(
       let posicion =
         0;
 
-
       let encontrados =
         0;
-
 
       while (
         encontrados < 3
@@ -1812,7 +1712,6 @@ function obtenerFragmentosRelevantes(
             posicion
           );
 
-
         if (
           posicion === -1
         ) {
@@ -1821,20 +1720,17 @@ function obtenerFragmentosRelevantes(
 
         }
 
-
         const inicio =
           Math.max(
             0,
             posicion - 350
           );
 
-
         const fin =
           Math.min(
             texto.length,
             posicion + 850
           );
-
 
         fragmentos.push(
           texto.substring(
@@ -1843,10 +1739,8 @@ function obtenerFragmentosRelevantes(
           )
         );
 
-
         posicion +=
           palabra.length;
-
 
         encontrados++;
 
@@ -1855,17 +1749,10 @@ function obtenerFragmentosRelevantes(
     }
   );
 
-
-  /*
-    Si encontramos demasiados fragmentos,
-    nos quedamos con los primeros.
-  */
-
-  return fragmentos
-    .slice(
-      0,
-      6
-    );
+  return fragmentos.slice(
+    0,
+    6
+  );
 
 }
 
@@ -1886,12 +1773,10 @@ async function buscarEnDocumentos(
 
   }
 
-
   const palabras =
     obtenerPalabras(
       pregunta
     );
-
 
   const resultados = [];
 
@@ -1906,12 +1791,6 @@ async function buscarEnDocumentos(
         documento
       );
 
-
-    /*
-      Si el documento no pudo ser leído,
-      no lo tratamos como encontrado.
-    */
-
     if (
       !texto
     ) {
@@ -1919,7 +1798,6 @@ async function buscarEnDocumentos(
       continue;
 
     }
-
 
     const textoBusqueda =
       normalizarTexto(
@@ -1941,10 +1819,8 @@ async function buscarEnDocumentos(
         texto
       );
 
-
     let coincidencias =
       0;
-
 
     palabras.forEach(
       function(palabra) {
@@ -1962,20 +1838,12 @@ async function buscarEnDocumentos(
       }
     );
 
-
-    /*
-      Si el nombre del documento
-      coincide con la consulta,
-      le damos mayor prioridad.
-    */
-
     const nombreDocumento =
       normalizarTexto(
         documento.name ||
         documento.originalName ||
         ""
       );
-
 
     if (
       nombreDocumento &&
@@ -1990,7 +1858,6 @@ async function buscarEnDocumentos(
 
     }
 
-
     if (
       coincidencias > 0
     ) {
@@ -2000,7 +1867,6 @@ async function buscarEnDocumentos(
           texto,
           pregunta
         );
-
 
       resultados.push({
 
@@ -2068,7 +1934,6 @@ function construirRespuestaDocumental(
   let respuesta =
     "🟢 Encontré información en la documentación cargada:\n\n";
 
-
   documentos.forEach(
     function(item) {
 
@@ -2085,13 +1950,11 @@ function construirRespuestaDocumental(
     }
   );
 
-
   respuesta +=
     "━━━━━━━━━━━━━━━━━━\n" +
     "📚 La información anterior fue extraída directamente de los documentos cargados en el Centro de Conocimiento IA.\n\n" +
     "💡 Modo básico: búsqueda documental local. " +
     "Cuando la IA generativa esté disponible, podrá interpretar y relacionar esta información de forma más avanzada.";
-
 
   return respuesta;
 
@@ -2100,6 +1963,12 @@ function construirRespuestaDocumental(
 
 /* =====================================================
    RESPUESTA LOCAL COMPLETA
+   ORDEN:
+
+   1. conocimiento.json / FAQ
+   2. catálogo
+   3. documentos
+   4. búsqueda general
 ===================================================== */
 
 async function buscarLocalmente(
@@ -2107,37 +1976,9 @@ async function buscarLocalmente(
 ) {
 
   /*
-    1. PRIMERO BUSCAMOS EN LOS DOCUMENTOS
-    cuando la consulta parece específica
-    o contiene palabras que pueden estar
-    dentro de la documentación.
-  */
-
-  const documentos =
-    await buscarEnDocumentos(
-      pregunta
-    );
-
-
-  /*
-    Si encontramos documentación relevante,
-    damos prioridad al PDF/Word/Excel.
-  */
-
-  if (
-    documentos.length
-  ) {
-
-    return construirRespuestaDocumental(
-      documentos,
-      pregunta
-    );
-
-  }
-
-
-  /*
-    2. FAQ
+    ===================================================
+    1. PRIMERO: PREGUNTAS FRECUENTES
+    ===================================================
   */
 
   if (
@@ -2149,8 +1990,9 @@ async function buscarLocalmente(
         pregunta
       );
 
-
-    if (faq) {
+    if (
+      faq
+    ) {
 
       return (
         "🟢 " +
@@ -2166,14 +2008,15 @@ async function buscarLocalmente(
 
 
   /*
-    3. CATÁLOGO
+    ===================================================
+    2. SEGUNDO: CATÁLOGO
+    ===================================================
   */
 
   const catalogo =
     buscarEnCatalogo(
       pregunta
     );
-
 
   if (
     catalogo.length &&
@@ -2188,7 +2031,38 @@ async function buscarLocalmente(
 
 
   /*
-    4. BÚSQUEDA GENERAL EN conocimiento.json
+    ===================================================
+    3. TERCERO: DOCUMENTOS
+    ===================================================
+
+    Recién llegamos acá si la información
+    estructurada no pudo responder.
+
+    Esto evita que un PDF de Thuban responda
+    incorrectamente una pregunta sobre Perfil Digital.
+  */
+
+  const documentos =
+    await buscarEnDocumentos(
+      pregunta
+    );
+
+  if (
+    documentos.length
+  ) {
+
+    return construirRespuestaDocumental(
+      documentos,
+      pregunta
+    );
+
+  }
+
+
+  /*
+    ===================================================
+    4. CUARTO: BÚSQUEDA GENERAL EN conocimiento.json
+    ===================================================
   */
 
   if (!conocimiento) {
@@ -2204,7 +2078,6 @@ async function buscarLocalmente(
     obtenerPalabras(
       pregunta
     );
-
 
   const resultados = [];
 
@@ -2224,10 +2097,8 @@ async function buscarLocalmente(
           objeto
         );
 
-
       let coincidencias =
         0;
-
 
       palabras.forEach(
         function(palabra) {
@@ -2244,7 +2115,6 @@ async function buscarLocalmente(
 
         }
       );
-
 
       if (
         coincidencias > 0
@@ -2264,7 +2134,6 @@ async function buscarLocalmente(
         });
 
       }
-
 
       return;
 
@@ -2287,7 +2156,6 @@ async function buscarLocalmente(
 
         }
       );
-
 
       return;
 
@@ -2312,16 +2180,13 @@ async function buscarLocalmente(
                 clave
               : clave;
 
-
           const claveTexto =
             normalizarTexto(
               clave
             );
 
-
           let coincidenciasClave =
             0;
-
 
           palabras.forEach(
             function(palabra) {
@@ -2338,7 +2203,6 @@ async function buscarLocalmente(
 
             }
           );
-
 
           if (
             coincidenciasClave > 0
@@ -2359,7 +2223,6 @@ async function buscarLocalmente(
             });
 
           }
-
 
           buscar(
             objeto[clave],
@@ -2405,7 +2268,6 @@ async function buscarLocalmente(
     let respuesta =
       "🟢 Encontré información relacionada en nuestra base interna:\n\n";
 
-
     mejores.forEach(
       function(resultado) {
 
@@ -2417,7 +2279,6 @@ async function buscarLocalmente(
       }
     );
 
-
     respuesta +=
       "━━━━━━━━━━━━━━━━━━\n" +
       "💡 Modo básico: respuesta basada en conocimiento interno.";
@@ -2426,6 +2287,12 @@ async function buscarLocalmente(
 
   }
 
+
+  /*
+    ===================================================
+    5. SIN RESULTADOS
+    ===================================================
+  */
 
   return (
     "🟢 Modo básico activo.\n\n" +
@@ -2449,7 +2316,6 @@ function prepararConocimiento(
 
   let resultado =
     "";
-
 
   if (
     typeof objeto ===
@@ -2508,7 +2374,6 @@ function prepararConocimiento(
               clave
             : clave;
 
-
         resultado +=
           prepararConocimiento(
             objeto[
@@ -2521,7 +2386,6 @@ function prepararConocimiento(
     );
 
   }
-
 
   return resultado;
 
@@ -2542,7 +2406,6 @@ async function prepararDocumentosParaIA(
       pregunta
     );
 
-
   if (
     !resultados.length
   ) {
@@ -2551,10 +2414,8 @@ async function prepararDocumentosParaIA(
 
   }
 
-
   let texto =
     "\n\nDOCUMENTACIÓN INTERNA RELEVANTE:\n\n";
-
 
   resultados.forEach(
     function(item, index) {
@@ -2578,7 +2439,6 @@ async function prepararDocumentosParaIA(
     }
   );
 
-
   return texto;
 
 }
@@ -2600,12 +2460,10 @@ async function intentarIA(
         )
       : "";
 
-
   const documentText =
     await prepararDocumentosParaIA(
       pregunta
     );
-
 
   const combinedKnowledge =
     (
@@ -2615,7 +2473,6 @@ async function intentarIA(
       0,
       120000
     );
-
 
   const response =
     await fetch(
@@ -2646,10 +2503,8 @@ async function intentarIA(
       }
     );
 
-
   let data =
     null;
-
 
   try {
 
@@ -2666,7 +2521,6 @@ async function intentarIA(
 
   }
 
-
   if (
     !response.ok
   ) {
@@ -2678,7 +2532,6 @@ async function intentarIA(
 
   }
 
-
   if (
     !data ||
     !data.answer
@@ -2689,7 +2542,6 @@ async function intentarIA(
     );
 
   }
-
 
   return data.answer;
 
@@ -2710,30 +2562,24 @@ function agregarMensaje(
       "messages"
     );
 
-
   const message =
     document.createElement(
       "div"
     );
 
-
   message.className =
     "message " +
     tipo;
 
-
   message.textContent =
     texto;
-
 
   messages.appendChild(
     message
   );
 
-
   messages.scrollTop =
     messages.scrollHeight;
-
 
   return message;
 
@@ -2751,12 +2597,10 @@ async function actualizarEstadoDocumentos() {
       "knowledgeStatus"
     );
 
-
   try {
 
     documentosConocimiento =
       await getKnowledgeDocuments();
-
 
     if (
       conocimiento &&
@@ -2799,10 +2643,8 @@ async function actualizarEstadoDocumentos() {
       error
     );
 
-
     documentosConocimiento =
       [];
-
 
     element.textContent =
       "⚠️ No se pudieron leer los documentos del Centro de Conocimiento.";
@@ -2823,22 +2665,18 @@ async function sendMessage() {
       "question"
     );
 
-
   const button =
     document.getElementById(
       "sendButton"
     );
-
 
   const status =
     document.getElementById(
       "status"
     );
 
-
   const question =
     input.value.trim();
-
 
   if (!question) {
 
@@ -2846,20 +2684,16 @@ async function sendMessage() {
 
   }
 
-
   agregarMensaje(
     question,
     "user"
   );
 
-
   input.value =
     "";
 
-
   button.disabled =
     true;
-
 
   const loading =
     agregarMensaje(
@@ -2874,7 +2708,11 @@ async function sendMessage() {
       ===================================================
       IA REAL
       SE INTENTA PRIMERO.
-      NO SE MODIFICA.
+
+      NO BORRAR.
+
+      Si hay créditos y la API funciona,
+      responde la IA real.
       ===================================================
     */
 
@@ -2883,19 +2721,15 @@ async function sendMessage() {
         question
       );
 
-
     loading.remove();
-
 
     agregarMensaje(
       respuestaIA,
       "ia"
     );
 
-
     status.className =
       "status success-status";
-
 
     status.textContent =
       "🧠 Respuesta generada por IA utilizando conocimiento interno y documentación relevante.";
@@ -2923,15 +2757,12 @@ async function sendMessage() {
         question
       );
 
-
     loading.remove();
-
 
     agregarMensaje(
       respuestaLocal,
       "ia"
     );
-
 
     status.className =
       "status";
@@ -2961,7 +2792,6 @@ async function sendMessage() {
       status.className =
         "status error-status";
 
-
       status.textContent =
         "🔴 No está disponible la base de conocimiento.";
 
@@ -2972,7 +2802,6 @@ async function sendMessage() {
 
   button.disabled =
     false;
-
 
   input.focus();
 
@@ -3026,7 +2855,6 @@ document
 
   }
 
-
   try {
 
     await openKnowledgeDatabase();
@@ -3042,7 +2870,6 @@ document
 
   }
 
-
   await actualizarEstadoDocumentos();
 
 })();
@@ -3052,3 +2879,4 @@ document
 </body>
 
 </html>
+```
