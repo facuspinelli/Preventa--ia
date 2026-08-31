@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>PREVENTA IA</title>
 
 <style>
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -379,7 +375,6 @@ footer {
 }
 
 @media (max-width: 800px) {
-
   header {
     flex-direction: column;
     gap: 15px;
@@ -401,7 +396,6 @@ footer {
 }
 
 @media (max-width: 600px) {
-
   .metrics {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -418,7 +412,6 @@ footer {
     grid-template-columns: 1fr;
   }
 }
-
 </style>
 
 </head>
@@ -462,82 +455,78 @@ footer {
 
   <div class="metrics">
 
-```
-<div class="metric">
-  <div class="metric-title">OPORTUNIDADES</div>
-  <div id="totalOpportunities" class="metric-value">0</div>
-</div>
+    <div class="metric">
+      <div class="metric-title">OPORTUNIDADES</div>
+      <div id="totalOpportunities" class="metric-value">0</div>
+    </div>
 
-<div class="metric">
-  <div class="metric-title">EN ANÁLISIS</div>
-  <div id="analysisCount" class="metric-value">0</div>
-</div>
+    <div class="metric">
+      <div class="metric-title">EN ANÁLISIS</div>
+      <div id="analysisCount" class="metric-value">0</div>
+    </div>
 
-<div class="metric">
-  <div class="metric-title">COTIZADAS</div>
-  <div id="quoteCount" class="metric-value">0</div>
-</div>
+    <div class="metric">
+      <div class="metric-title">COTIZADAS</div>
+      <div id="quoteCount" class="metric-value">0</div>
+    </div>
 
-<div class="metric">
-  <div class="metric-title">GANADAS</div>
-  <div id="wonCount" class="metric-value">0</div>
-</div>
+    <div class="metric">
+      <div class="metric-title">GANADAS</div>
+      <div id="wonCount" class="metric-value">0</div>
+    </div>
 
-<div class="metric">
-  <div class="metric-title">VALOR 1ER AÑO COTIZADO</div>
-  <div id="totalQuoted" class="metric-value">USD 0</div>
-</div>
-```
+    <div class="metric">
+      <div class="metric-title">VALOR 1ER AÑO COTIZADO</div>
+      <div id="totalQuoted" class="metric-value">USD 0</div>
+    </div>
 
   </div>
 
   <div class="charts">
 
-```
-<div class="chart-card">
+    <div class="chart-card">
 
-  <h3>
-    📊 Estado de oportunidades
-  </h3>
+      <h3>
+        📊 Estado de oportunidades
+      </h3>
 
-  <div class="chart-area">
+      <div class="chart-area">
 
-    <div id="statusDonut" class="donut">
+        <div id="statusDonut" class="donut">
 
-      <div id="statusCenter" class="donut-center">
-        0
+          <div id="statusCenter" class="donut-center">
+            0
+          </div>
+
+        </div>
+
+        <div id="statusLegend" class="legend"></div>
+
       </div>
 
     </div>
 
-    <div id="statusLegend" class="legend"></div>
+    <div class="chart-card">
 
-  </div>
+      <h3>
+        💰 Oportunidades cotizadas
+      </h3>
 
-</div>
+      <div class="chart-area">
 
-<div class="chart-card">
+        <div id="quoteDonut" class="donut">
 
-  <h3>
-    💰 Oportunidades cotizadas
-  </h3>
+          <div id="quoteCenter" class="donut-center">
+            0%
+          </div>
 
-  <div class="chart-area">
+        </div>
 
-    <div id="quoteDonut" class="donut">
+        <div id="quoteLegend" class="legend"></div>
 
-      <div id="quoteCenter" class="donut-center">
-        0%
       </div>
 
     </div>
-
-    <div id="quoteLegend" class="legend"></div>
-
-  </div>
-
-</div>
-```
 
   </div>
 
@@ -547,204 +536,198 @@ footer {
 
   <div class="cards">
 
-```
-<div class="card">
-  <div class="icon">🤖</div>
+    <div class="card">
+      <div class="icon">🤖</div>
 
-  <h3>
-    Asistente IA
-  </h3>
+      <h3>
+        Asistente IA
+      </h3>
 
-  <p>
-    Consultá información y obtené ayuda
-    para tus tareas de Preventa.
-  </p>
+      <p>
+        Consultá información y obtené ayuda
+        para tus tareas de Preventa.
+      </p>
 
-  <a href="asistente.html" class="button">
-    Abrir asistente
-  </a>
-</div>
+      <a href="asistente.html" class="button">
+        Abrir asistente
+      </a>
+    </div>
 
-<div class="card">
-  <div class="icon">📄</div>
+    <div class="card">
+      <div class="icon">📄</div>
 
-  <h3>
-    Documentos
-  </h3>
+      <h3>
+        Documentos
+      </h3>
 
-  <p>
-    Subí pliegos y documentos para extraer
-    información relevante.
-  </p>
+      <p>
+        Subí pliegos y documentos para extraer
+        información relevante.
+      </p>
 
-  <a href="documentos.html" class="button">
-    Analizar documento
-  </a>
-</div>
+      <a href="documentos.html" class="button">
+        Analizar documento
+      </a>
+    </div>
 
-<div class="card">
-  <div class="icon">🎯</div>
+    <div class="card">
+      <div class="icon">🎯</div>
 
-  <h3>
-    Análisis
-  </h3>
+      <h3>
+        Análisis
+      </h3>
 
-  <p>
-    Revisá requerimientos, riesgos,
-    datos faltantes y soluciones sugeridas.
-  </p>
+      <p>
+        Revisá requerimientos, riesgos,
+        datos faltantes y soluciones sugeridas.
+      </p>
 
-  <a href="analisis.html" class="button">
-    Abrir análisis
-  </a>
-</div>
+      <a href="analisis.html" class="button">
+        Abrir análisis
+      </a>
+    </div>
 
-<div class="card">
-  <div class="icon">💼</div>
+    <div class="card">
+      <div class="icon">💼</div>
 
-  <h3>
-    Oportunidades
-  </h3>
+      <h3>
+        Oportunidades
+      </h3>
 
-  <p>
-    Gestioná clientes, proyectos,
-    estados, requerimientos y cotizaciones.
-  </p>
+      <p>
+        Gestioná clientes, proyectos,
+        estados, requerimientos y cotizaciones.
+      </p>
 
-  <a href="oportunidades.html" class="button">
-    Ver oportunidades
-  </a>
-</div>
+      <a href="oportunidades.html" class="button">
+        Ver oportunidades
+      </a>
+    </div>
 
-<div class="card">
-  <div class="icon">💰</div>
+    <div class="card">
+      <div class="icon">💰</div>
 
-  <h3>
-    Cotizador
-  </h3>
+      <h3>
+        Cotizador
+      </h3>
 
-  <p>
-    Calculá setup, usuarios, storage,
-    firmas, soporte y costo anual.
-  </p>
+      <p>
+        Calculá setup, usuarios, storage,
+        firmas, soporte y costo anual.
+      </p>
 
-  <a href="cotizador.html" class="button">
-    Abrir cotizador
-  </a>
-</div>
+      <a href="cotizador.html" class="button">
+        Abrir cotizador
+      </a>
+    </div>
 
-<div class="card">
-  <div class="icon">🗂️</div>
+    <div class="card">
+      <div class="icon">🗂️</div>
 
-  <h3>
-    Repositorio
-  </h3>
+      <h3>
+        Repositorio
+      </h3>
 
-  <p>
-    Consultá oportunidades, cotizaciones
-    y propuestas finales generadas.
-  </p>
+      <p>
+        Consultá oportunidades, cotizaciones
+        y propuestas finales generadas.
+      </p>
 
-  <a href="repositorio.html" class="button">
-    Abrir repositorio
-  </a>
-</div>
+      <a href="repositorio.html" class="button">
+        Abrir repositorio
+      </a>
+    </div>
 
-<div class="card">
-  <div class="icon">📚</div>
+    <div class="card">
+      <div class="icon">📚</div>
 
-  <h3>
-    Biblioteca Técnica
-  </h3>
+      <h3>
+        Biblioteca Técnica
+      </h3>
 
-  <p>
-    Administrá las propuestas técnicas originales
-    que utilizarás como base para futuras oportunidades.
-  </p>
+      <p>
+        Administrá las propuestas técnicas originales
+        que utilizarás como base para futuras oportunidades.
+      </p>
 
-  <a href="biblioteca.html" class="button">
-    Abrir biblioteca
-  </a>
-</div>
-```
+      <a href="biblioteca.html" class="button">
+        Abrir biblioteca
+      </a>
+    </div>
 
   </div>
 
   <section class="library-highlight">
 
-```
-<div class="library-highlight-header">
+    <div class="library-highlight-header">
 
-  <div>
+      <div>
 
-    <h3>
-      📚 Biblioteca Técnica
-    </h3>
+        <h3>
+          📚 Biblioteca Técnica
+        </h3>
 
-    <p>
-      Resumen de tus propuestas técnicas base.
-    </p>
+        <p>
+          Resumen de tus propuestas técnicas base.
+        </p>
 
-  </div>
+      </div>
 
-  <a href="biblioteca.html" class="button">
-    Administrar biblioteca
-  </a>
+      <a href="biblioteca.html" class="button">
+        Administrar biblioteca
+      </a>
 
-</div>
-
-<div class="library-data">
-
-  <div class="library-box">
-
-    <div class="library-box-title">
-      PRODUCTOS
     </div>
 
-    <div id="libraryFolders" class="library-box-value">
-      0
+    <div class="library-data">
+
+      <div class="library-box">
+
+        <div class="library-box-title">
+          PRODUCTOS
+        </div>
+
+        <div id="libraryFolders" class="library-box-value">
+          0
+        </div>
+
+      </div>
+
+      <div class="library-box">
+
+        <div class="library-box-title">
+          PROPUESTAS BASE
+        </div>
+
+        <div id="libraryProposals" class="library-box-value">
+          0
+        </div>
+
+      </div>
+
     </div>
-
-  </div>
-
-  <div class="library-box">
-
-    <div class="library-box-title">
-      PROPUESTAS BASE
-    </div>
-
-    <div id="libraryProposals" class="library-box-value">
-      0
-    </div>
-
-  </div>
-
-</div>
-```
 
   </section>
 
   <section class="recent">
 
-```
-<div class="recent-card">
+    <div class="recent-card">
 
-  <div class="recent-header">
+      <div class="recent-header">
 
-    <h3>
-      🕐 Últimas oportunidades
-    </h3>
+        <h3>
+          🕐 Últimas oportunidades
+        </h3>
 
-    <a href="repositorio.html">
-      Ver repositorio →
-    </a>
+        <a href="repositorio.html">
+          Ver repositorio →
+        </a>
 
-  </div>
+      </div>
 
-  <div id="recentOpportunities"></div>
+      <div id="recentOpportunities"></div>
 
-</div>
-```
+    </div>
 
   </section>
 
@@ -766,15 +749,17 @@ function getOpportunities() {
       )
     ) || [];
 
-  }
-
-  catch(error) {
+  } catch(error) {
 
     return [];
 
   }
 
 }
+
+/* ==========================================
+   BIBLIOTECA
+========================================== */
 
 const LIBRARY_DB_NAME =
   "preventa_ia_biblioteca";
@@ -795,9 +780,7 @@ function getLibraryFolders() {
       )
     ) || [];
 
-  }
-
-  catch(error) {
+  } catch(error) {
 
     return [];
 
@@ -815,24 +798,6 @@ function openLibraryDatabase() {
           LIBRARY_DB_NAME,
           LIBRARY_DB_VERSION
         );
-
-      request.onsuccess =
-        function(event) {
-
-          resolve(
-            event.target.result
-          );
-
-        };
-
-      request.onerror =
-        function() {
-
-          resolve(
-            null
-          );
-
-        };
 
       request.onupgradeneeded =
         function(event) {
@@ -864,6 +829,22 @@ function openLibraryDatabase() {
             );
 
           }
+
+        };
+
+      request.onsuccess =
+        function(event) {
+
+          resolve(
+            event.target.result
+          );
+
+        };
+
+      request.onerror =
+        function() {
+
+          resolve(null);
 
         };
 
@@ -930,9 +911,7 @@ function countLibraryProposals() {
 
           };
 
-      }
-
-      catch(error) {
+      } catch(error) {
 
         resolve(0);
 
@@ -962,6 +941,10 @@ async function updateLibrarySummary() {
     proposals;
 
 }
+
+/* ==========================================
+   DINERO
+========================================== */
 
 function toNumber(value) {
 
@@ -1018,6 +1001,10 @@ function money(value) {
 
 }
 
+/* ==========================================
+   ESTADOS
+========================================== */
+
 function statusName(status) {
 
   const names = {
@@ -1045,6 +1032,10 @@ function statusName(status) {
   );
 
 }
+
+/* ==========================================
+   METRICAS
+========================================== */
 
 function updateMetrics(opportunities) {
 
@@ -1074,7 +1065,9 @@ function updateMetrics(opportunities) {
       function(total, opportunity) {
 
         if (!opportunity.quote) {
+
           return total;
+
         }
 
         return total +
@@ -1114,6 +1107,10 @@ function updateMetrics(opportunities) {
     );
 
 }
+
+/* ==========================================
+   GRAFICO ESTADOS
+========================================== */
 
 function renderStatusChart(opportunities) {
 
@@ -1221,9 +1218,7 @@ function renderStatusChart(opportunities) {
     donut.style.background =
       "#e5e7eb";
 
-  }
-
-  else {
+  } else {
 
     donut.style.background =
       "conic-gradient(" +
@@ -1266,15 +1261,34 @@ function renderStatusChart(opportunities) {
       div.className =
         "legend-item";
 
-      div.innerHTML = `
-        <span
-          class="legend-dot"
-          style="background:${colors[key]}"
-        ></span>
-        <span>
-          ${statusName(key)} · ${counts[key]}
-        </span>
-      `;
+      const dot =
+        document.createElement(
+          "span"
+        );
+
+      dot.className =
+        "legend-dot";
+
+      dot.style.background =
+        colors[key];
+
+      const text =
+        document.createElement(
+          "span"
+        );
+
+      text.textContent =
+        statusName(key) +
+        " · " +
+        counts[key];
+
+      div.appendChild(
+        dot
+      );
+
+      div.appendChild(
+        text
+      );
 
       legend.appendChild(
         div
@@ -1295,6 +1309,10 @@ function renderStatusChart(opportunities) {
   }
 
 }
+
+/* ==========================================
+   GRAFICO COTIZACIONES
+========================================== */
 
 function renderQuoteChart(opportunities) {
 
@@ -1328,9 +1346,7 @@ function renderQuoteChart(opportunities) {
     ).textContent =
       "0%";
 
-  }
-
-  else {
+  } else {
 
     const porcentaje =
       (
@@ -1363,37 +1379,36 @@ function renderQuoteChart(opportunities) {
       "quoteLegend"
     );
 
-  legend.innerHTML = `
+  legend.innerHTML =
+    "<div class='legend-item'>" +
 
-    <div class="legend-item">
+      "<span class='legend-dot' " +
+      "style='background:#22c55e'></span>" +
 
-      <span
-        class="legend-dot"
-        style="background:#22c55e"
-      ></span>
+      "<span>" +
+      "Cotizadas · " +
+      quoted +
+      "</span>" +
 
-      <span>
-        Cotizadas · ${quoted}
-      </span>
+    "</div>" +
 
-    </div>
+    "<div class='legend-item'>" +
 
-    <div class="legend-item">
+      "<span class='legend-dot' " +
+      "style='background:#d1d5db'></span>" +
 
-      <span
-        class="legend-dot"
-        style="background:#d1d5db"
-      ></span>
+      "<span>" +
+      "Pendientes · " +
+      pending +
+      "</span>" +
 
-      <span>
-        Pendientes · ${pending}
-      </span>
-
-    </div>
-
-  `;
+    "</div>";
 
 }
+
+/* ==========================================
+   ULTIMAS OPORTUNIDADES
+========================================== */
 
 function renderRecent(opportunities) {
 
@@ -1409,26 +1424,20 @@ function renderRecent(opportunities) {
     opportunities.length === 0
   ) {
 
-    container.innerHTML = `
+    container.innerHTML =
+      "<div class='empty'>" +
 
-      <div class="empty">
+        "<p>" +
+        "Todavía no hay oportunidades creadas." +
+        "</p>" +
 
-        <p>
-          Todavía no hay oportunidades creadas.
-        </p>
+        "<br>" +
 
-        <br>
+        "<a href='oportunidades.html' class='button'>" +
+        "Crear oportunidad" +
+        "</a>" +
 
-        <a
-          href="oportunidades.html"
-          class="button"
-        >
-          Crear oportunidad
-        </a>
-
-      </div>
-
-    `;
+      "</div>";
 
     return;
 
@@ -1453,60 +1462,103 @@ function renderRecent(opportunities) {
         const quote =
           opportunity.quote;
 
-        item.innerHTML = `
+        const info =
+          document.createElement(
+            "div"
+          );
 
-          <div class="recent-info">
+        info.className =
+          "recent-info";
 
-            <h4>
-              ${escapeHTML(
-                opportunity.project ||
-                "Sin nombre"
-              )}
-            </h4>
+        const title =
+          document.createElement(
+            "h4"
+          );
 
-            <p>
-              👤 ${escapeHTML(
-                opportunity.client ||
-                "Sin cliente"
-              )}
-            </p>
+        title.textContent =
+          opportunity.project ||
+          "Sin nombre";
 
-            <p>
-              ${escapeHTML(
-                statusName(
-                  opportunity.status
-                )
-              )}
-            </p>
+        const client =
+          document.createElement(
+            "p"
+          );
 
-          </div>
+        client.textContent =
+          "👤 " +
+          (
+            opportunity.client ||
+            "Sin cliente"
+          );
 
-          <div class="recent-value">
+        const status =
+          document.createElement(
+            "p"
+          );
 
-            <small>
-              ${
-                quote
-                  ? "PRIMER AÑO"
-                  : "COTIZACIÓN"
-              }
-            </small>
+        status.textContent =
+          statusName(
+            opportunity.status
+          );
 
-            <strong>
-              ${
-                quote
-                  ? escapeHTML(
-                      String(
-                        quote.totalYear ||
-                        "USD 0"
-                      )
-                    )
-                  : "Pendiente"
-              }
-            </strong>
+        info.appendChild(
+          title
+        );
 
-          </div>
+        info.appendChild(
+          client
+        );
 
-        `;
+        info.appendChild(
+          status
+        );
+
+        const value =
+          document.createElement(
+            "div"
+          );
+
+        value.className =
+          "recent-value";
+
+        const small =
+          document.createElement(
+            "small"
+          );
+
+        small.textContent =
+          quote
+            ? "PRIMER AÑO"
+            : "COTIZACIÓN";
+
+        const strong =
+          document.createElement(
+            "strong"
+          );
+
+        strong.textContent =
+          quote
+            ? (
+                quote.totalYear ||
+                "USD 0"
+              )
+            : "Pendiente";
+
+        value.appendChild(
+          small
+        );
+
+        value.appendChild(
+          strong
+        );
+
+        item.appendChild(
+          info
+        );
+
+        item.appendChild(
+          value
+        );
 
         container.appendChild(
           item
@@ -1517,33 +1569,9 @@ function renderRecent(opportunities) {
 
 }
 
-function escapeHTML(value) {
-
-  return String(
-    value || ""
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
-
-}
+/* ==========================================
+   INICIO
+========================================== */
 
 (async function() {
 
