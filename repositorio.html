@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -183,6 +182,7 @@ header h1 {
 .data-value {
   font-weight: bold;
   font-size: 14px;
+  white-space: pre-wrap;
 }
 
 .quote-section {
@@ -254,6 +254,30 @@ button:hover {
   background: #374151;
 }
 
+.edit {
+  background: #2563eb;
+}
+
+.edit:hover {
+  background: #1d4ed8;
+}
+
+.green {
+  background: #166534;
+}
+
+.green:hover {
+  background: #15803d;
+}
+
+.red {
+  background: #dc2626;
+}
+
+.red:hover {
+  background: #b91c1c;
+}
+
 .secondary {
   background: #e5e7eb;
   color: #1f2937;
@@ -261,14 +285,6 @@ button:hover {
 
 .secondary:hover {
   background: #d1d5db;
-}
-
-.empty {
-  background: white;
-  border-radius: 12px;
-  padding: 50px;
-  text-align: center;
-  color: #6b7280;
 }
 
 .detail {
@@ -295,6 +311,95 @@ button:hover {
   font-size: 14px;
 }
 
+.empty {
+  background: white;
+  border-radius: 12px;
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* =========================
+   MODAL EDITAR
+========================= */
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 850px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 14px;
+  padding: 30px;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+}
+
+.modal-subtitle {
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
 @media (max-width: 800px) {
 
   header {
@@ -307,7 +412,8 @@ button:hover {
   }
 
   .data-grid,
-  .quote-grid {
+  .quote-grid,
+  .form-grid {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -321,8 +427,13 @@ button:hover {
 
   .summary,
   .data-grid,
-  .quote-grid {
+  .quote-grid,
+  .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
   }
 
 }
@@ -337,124 +448,117 @@ button:hover {
 
   <h1>🗂️ PREVENTA IA</h1>
 
-<a
-href="index.html"
-class="back"
-
->
-
-```
-← Volver al inicio
-```
-
+  <a
+    href="index.html"
+    class="back"
+  >
+    ← Volver al inicio
   </a>
 
 </header>
+
 
 <main class="container">
 
   <div class="welcome">
 
-```
-<h2>
-  🗂️ Repositorio de Preventa
-</h2>
+    <h2>
+      🗂️ Repositorio de Preventa
+    </h2>
 
-<p>
-  Historial centralizado de oportunidades,
-  análisis y cotizaciones.
-</p>
-```
+    <p>
+      Historial centralizado de oportunidades,
+      análisis y cotizaciones.
+    </p>
 
   </div>
 
-  <!-- RESUMEN GENERAL -->
+
+  <!-- RESUMEN -->
 
   <div class="summary">
 
-```
-<div class="summary-card">
+    <div class="summary-card">
 
-  <div class="summary-title">
-    OPORTUNIDADES
-  </div>
+      <div class="summary-title">
+        OPORTUNIDADES
+      </div>
 
-  <div
-    class="summary-value"
-    id="totalOpportunities"
-  >
-    0
-  </div>
+      <div
+        class="summary-value"
+        id="totalOpportunities"
+      >
+        0
+      </div>
 
-</div>
-
-
-<div class="summary-card">
-
-  <div class="summary-title">
-    EN ANÁLISIS
-  </div>
-
-  <div
-    class="summary-value"
-    id="analysisCount"
-  >
-    0
-  </div>
-
-</div>
+    </div>
 
 
-<div class="summary-card">
+    <div class="summary-card">
 
-  <div class="summary-title">
-    COTIZADAS
-  </div>
+      <div class="summary-title">
+        EN ANÁLISIS
+      </div>
 
-  <div
-    class="summary-value"
-    id="quoteCount"
-  >
-    0
-  </div>
+      <div
+        class="summary-value"
+        id="analysisCount"
+      >
+        0
+      </div>
 
-</div>
+    </div>
 
 
-<div class="summary-card">
+    <div class="summary-card">
 
-  <div class="summary-title">
-    GANADAS
-  </div>
+      <div class="summary-title">
+        COTIZADAS
+      </div>
 
-  <div
-    class="summary-value"
-    id="wonCount"
-  >
-    0
-  </div>
+      <div
+        class="summary-value"
+        id="quoteCount"
+      >
+        0
+      </div>
 
-</div>
-```
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-title">
+        GANADAS
+      </div>
+
+      <div
+        class="summary-value"
+        id="wonCount"
+      >
+        0
+      </div>
+
+    </div>
 
   </div>
+
 
   <!-- BUSQUEDA -->
 
   <div class="search-box">
 
-```
-<input
-  id="search"
-  type="text"
-  placeholder="🔎 Buscar por cliente, oportunidad o solución..."
-  oninput="renderRepository()"
->
-```
+    <input
+      id="search"
+      type="text"
+      placeholder="🔎 Buscar por cliente, oportunidad o solución..."
+      oninput="renderRepository()"
+    >
 
   </div>
 
-  <!-- OPORTUNIDADES -->
+
+  <!-- LISTA -->
 
   <div
     id="opportunities"
@@ -462,6 +566,318 @@ class="back"
   ></div>
 
 </main>
+
+
+<!-- =========================
+     MODAL EDITAR
+========================= -->
+
+<div
+  id="editModal"
+  class="modal"
+>
+
+  <div class="modal-content">
+
+    <h3>
+      ✏️ Editar oportunidad
+    </h3>
+
+    <p class="modal-subtitle">
+      Modificá los datos y guardá los cambios.
+      La cotización existente no se perderá.
+    </p>
+
+
+    <div class="form-grid">
+
+
+      <div>
+
+        <label>
+          Cliente
+        </label>
+
+        <input
+          id="editClient"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Oportunidad / Proyecto
+        </label>
+
+        <input
+          id="editProject"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Solución
+        </label>
+
+        <input
+          id="editSolution"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Estado
+        </label>
+
+        <select id="editStatus">
+
+          <option value="analysis">
+            🟡 En análisis
+          </option>
+
+          <option value="quote">
+            🔵 Cotizando
+          </option>
+
+          <option value="proposal">
+            🟣 Propuesta
+          </option>
+
+          <option value="won">
+            🟢 Ganada
+          </option>
+
+          <option value="lost">
+            🔴 Perdida
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Usuarios
+        </label>
+
+        <input
+          id="editUsers"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Storage
+        </label>
+
+        <input
+          id="editStorage"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Documentos
+        </label>
+
+        <input
+          id="editDocuments"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Workflows
+        </label>
+
+        <input
+          id="editWorkflows"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          OCR
+        </label>
+
+        <select id="editOcr">
+
+          <option value="No definido">
+            No definido
+          </option>
+
+          <option value="No requerido">
+            No requerido
+          </option>
+
+          <option value="Requerido">
+            Requerido
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Firmas
+        </label>
+
+        <select id="editSignatures">
+
+          <option value="No definido">
+            No definido
+          </option>
+
+          <option value="No requerido">
+            No requerido
+          </option>
+
+          <option value="Requerido">
+            Requerido
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Infraestructura
+        </label>
+
+        <input
+          id="editInfrastructure"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Plazo
+        </label>
+
+        <input
+          id="editDeadline"
+          type="text"
+        >
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Objetivo
+        </label>
+
+        <textarea
+          id="editObjective"
+        ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Requerimientos
+        </label>
+
+        <textarea
+          id="editRequirements"
+        ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Riesgos
+        </label>
+
+        <textarea
+          id="editRisks"
+        ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Notas
+        </label>
+
+        <textarea
+          id="editNotes"
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-buttons">
+
+      <button
+        class="green"
+        onclick="saveEditedOpportunity()"
+      >
+        💾 Guardar cambios
+      </button>
+
+
+      <button
+        class="secondary"
+        onclick="closeEditModal()"
+      >
+        Cancelar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 
 <script>
 
@@ -472,11 +888,41 @@ class="back"
 
 function getOpportunities() {
 
-  return JSON.parse(
-    localStorage.getItem(
-      "preventa_opportunities"
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "preventa_opportunities"
+      )
+    ) || [];
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    return [];
+
+  }
+
+}
+
+
+/* ==========================================
+   GUARDAR
+========================================== */
+
+function saveOpportunities(
+  opportunities
+) {
+
+  localStorage.setItem(
+    "preventa_opportunities",
+    JSON.stringify(
+      opportunities
     )
-  ) || [];
+  );
 
 }
 
@@ -511,7 +957,6 @@ function getStatusName(
 
   return (
     names[status] ||
-    status ||
     "Sin estado"
   );
 
@@ -519,7 +964,43 @@ function getStatusName(
 
 
 /* ==========================================
-   RESUMEN GENERAL
+   ESTADO CSS
+========================================== */
+
+function getStatusClass(
+  status
+) {
+
+  const classes = {
+
+    analysis:
+      "analysis",
+
+    quote:
+      "quote",
+
+    proposal:
+      "proposal",
+
+    won:
+      "won",
+
+    lost:
+      "lost"
+
+  };
+
+
+  return (
+    classes[status] ||
+    "analysis"
+  );
+
+}
+
+
+/* ==========================================
+   RESUMEN
 ========================================== */
 
 function updateSummary(
@@ -536,8 +1017,8 @@ function updateSummary(
     "analysisCount"
   ).textContent =
     opportunities.filter(
-      opportunity =>
-        opportunity.status === "analysis"
+      item =>
+        item.status === "analysis"
     ).length;
 
 
@@ -545,8 +1026,8 @@ function updateSummary(
     "quoteCount"
   ).textContent =
     opportunities.filter(
-      opportunity =>
-        opportunity.quote
+      item =>
+        !!item.quote
     ).length;
 
 
@@ -554,8 +1035,8 @@ function updateSummary(
     "wonCount"
   ).textContent =
     opportunities.filter(
-      opportunity =>
-        opportunity.status === "won"
+      item =>
+        item.status === "won"
     ).length;
 
 }
@@ -577,13 +1058,12 @@ function renderRepository() {
 
 
   const search =
-    document
-      .getElementById(
-        "search"
-      )
-      .value
-      .toLowerCase()
-      .trim();
+    document.getElementById(
+      "search"
+    )
+    .value
+    .toLowerCase()
+    .trim();
 
 
   const container =
@@ -599,7 +1079,7 @@ function renderRepository() {
     opportunities.filter(
       function(opportunity) {
 
-        const texto = (
+        const texto =
 
           String(
             opportunity.client ||
@@ -618,14 +1098,14 @@ function renderRepository() {
           String(
             opportunity.solution ||
             ""
-          )
-
-        ).toLowerCase();
+          );
 
 
-        return texto.includes(
-          search
-        );
+        return texto
+          .toLowerCase()
+          .includes(
+            search
+          );
 
       }
     );
@@ -644,12 +1124,11 @@ function renderRepository() {
         </div>
 
         <h3>
-          No hay oportunidades en el repositorio
+          No hay oportunidades
         </h3>
 
         <p>
-          Las oportunidades que crees aparecerán
-          automáticamente acá.
+          Las oportunidades que crees aparecerán automáticamente acá.
         </p>
 
       </div>
@@ -686,14 +1165,16 @@ function renderRepository() {
 
             <h3>
               ${escapeHTML(
-                opportunity.project
+                opportunity.project ||
+                "Sin nombre"
               )}
             </h3>
 
             <p>
               👤 Cliente:
               ${escapeHTML(
-                opportunity.client
+                opportunity.client ||
+                "Sin definir"
               )}
             </p>
 
@@ -706,10 +1187,9 @@ function renderRepository() {
             </p>
 
             <span
-              class="status ${
-                opportunity.status ||
-                "analysis"
-              }"
+              class="status ${getStatusClass(
+                opportunity.status
+              )}"
             >
               ${getStatusName(
                 opportunity.status
@@ -720,8 +1200,6 @@ function renderRepository() {
 
         </div>
 
-
-        <!-- DATOS PRINCIPALES -->
 
         <div class="data-grid">
 
@@ -768,16 +1246,15 @@ function renderRepository() {
         </div>
 
 
-        <!-- COTIZACION -->
-
         ${
           quote
+
             ? `
 
               <div class="quote-section">
 
                 <div class="quote-title">
-                  💰 Cotización asociada
+                  💰 Cotización guardada
                 </div>
 
                 <div class="quote-grid">
@@ -802,11 +1279,11 @@ function renderRepository() {
               </div>
 
             `
+
             : `
 
               <div class="no-quote">
-                ⚠️ Esta oportunidad todavía no tiene
-                una cotización guardada.
+                ⚠️ Esta oportunidad todavía no tiene una cotización guardada.
               </div>
 
             `
@@ -816,54 +1293,103 @@ function renderRepository() {
         <div class="actions">
 
           <button
+            class="edit"
+            onclick="editOpportunity('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            ✏️ Editar
+          </button>
+
+
+          <button
             onclick="toggleDetail(this)"
           >
             👁️ Ver resumen
           </button>
 
+
+          <button
+            class="green"
+            onclick="openQuote('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            💰 ${
+              quote
+                ? "Editar cotización"
+                : "Cotizar"
+            }
+          </button>
+
+
           ${
-            quote
+            opportunity.status !== "won"
+
               ? `
+
                 <button
-                  class="secondary"
-                  onclick="openQuote('${escapeAttribute(
+                  class="green"
+                  onclick="markWon('${escapeAttribute(
                     opportunity.id
                   )}')"
                 >
-                  💰 Ver cotización
+                  🟢 Ganada
                 </button>
+
               `
-              : `
-                <button
-                  onclick="openQuote('${escapeAttribute(
-                    opportunity.id
-                  )}')"
-                >
-                  💰 Ir al cotizador
-                </button>
-              `
+
+              : ""
+
           }
+
+
+          ${
+            opportunity.status !== "lost"
+
+              ? `
+
+                <button
+                  class="red"
+                  onclick="markLost('${escapeAttribute(
+                    opportunity.id
+                  )}')"
+                >
+                  🔴 Perdida
+                </button>
+
+              `
+
+              : ""
+
+          }
+
+
+          <button
+            class="secondary"
+            onclick="deleteOpportunity('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            🗑️ Eliminar
+          </button>
 
         </div>
 
-
-        <!-- DETALLE -->
 
         <div class="detail">
 
           <div class="detail-section">
 
             <h4>
-              📝 Resumen / Objetivo
+              🎯 Objetivo
             </h4>
 
             <div class="detail-text">
-
               ${escapeHTML(
                 opportunity.objective ||
-                "No hay resumen u objetivo cargado."
+                "No hay objetivo cargado."
               )}
-
             </div>
 
           </div>
@@ -876,12 +1402,10 @@ function renderRepository() {
             </h4>
 
             <div class="detail-text">
-
               ${escapeHTML(
                 opportunity.requirements ||
                 "No hay requerimientos cargados."
               )}
-
             </div>
 
           </div>
@@ -890,16 +1414,14 @@ function renderRepository() {
           <div class="detail-section">
 
             <h4>
-              ⚠️ Riesgos / puntos de atención
+              ⚠️ Riesgos
             </h4>
 
             <div class="detail-text">
-
               ${escapeHTML(
                 opportunity.risks ||
                 "No hay riesgos cargados."
               )}
-
             </div>
 
           </div>
@@ -912,12 +1434,26 @@ function renderRepository() {
             </h4>
 
             <div class="detail-text">
-
               ${escapeHTML(
                 opportunity.notes ||
                 "Sin notas."
               )}
+            </div>
 
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              📄 Documento de origen
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.sourceDocument ||
+                "No asociado"
+              )}
             </div>
 
           </div>
@@ -951,18 +1487,18 @@ function dataCard(
     <div class="data-card">
 
       <div class="data-label">
-        ${escapeHTML(label)}
+        ${escapeHTML(
+          label
+        )}
       </div>
 
       <div class="data-value">
-
         ${escapeHTML(
           String(
             value ||
             "No definido"
           )
         )}
-
       </div>
 
     </div>
@@ -986,18 +1522,18 @@ function quoteCard(
     <div class="quote-card">
 
       <div class="quote-label">
-        ${escapeHTML(label)}
+        ${escapeHTML(
+          label
+        )}
       </div>
 
       <div class="quote-value">
-
         ${escapeHTML(
           String(
             value ||
             "USD 0,00"
           )
         )}
-
       </div>
 
     </div>
@@ -1008,7 +1544,599 @@ function quoteCard(
 
 
 /* ==========================================
-   VER RESUMEN
+   EDITAR
+========================================== */
+
+function editOpportunity(
+  id
+) {
+
+  const opportunities =
+    getOpportunities();
+
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
+
+
+  if (!opportunity) {
+
+    alert(
+      "No encontré la oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "editModal"
+  ).dataset.id =
+    opportunity.id;
+
+
+  setValue(
+    "editClient",
+    opportunity.client
+  );
+
+  setValue(
+    "editProject",
+    opportunity.project
+  );
+
+  setValue(
+    "editSolution",
+    opportunity.solution
+  );
+
+  setValue(
+    "editStatus",
+    opportunity.status
+  );
+
+  setValue(
+    "editUsers",
+    opportunity.users
+  );
+
+  setValue(
+    "editStorage",
+    opportunity.storage
+  );
+
+  setValue(
+    "editDocuments",
+    opportunity.documents
+  );
+
+  setValue(
+    "editWorkflows",
+    opportunity.workflows
+  );
+
+  setValue(
+    "editOcr",
+    opportunity.ocr ||
+    "No definido"
+  );
+
+  setValue(
+    "editSignatures",
+    opportunity.signatures ||
+    "No definido"
+  );
+
+  setValue(
+    "editInfrastructure",
+    opportunity.infrastructure
+  );
+
+  setValue(
+    "editDeadline",
+    opportunity.deadline
+  );
+
+  setValue(
+    "editObjective",
+    opportunity.objective
+  );
+
+  setValue(
+    "editRequirements",
+    opportunity.requirements
+  );
+
+  setValue(
+    "editRisks",
+    opportunity.risks
+  );
+
+  setValue(
+    "editNotes",
+    opportunity.notes
+  );
+
+
+  document.getElementById(
+    "editModal"
+  ).style.display =
+    "flex";
+
+}
+
+
+/* ==========================================
+   GUARDAR EDICION
+========================================== */
+
+function saveEditedOpportunity() {
+
+  const modal =
+    document.getElementById(
+      "editModal"
+    );
+
+
+  const id =
+    modal.dataset.id;
+
+
+  const opportunities =
+    getOpportunities();
+
+
+  const index =
+    opportunities.findIndex(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
+
+
+  if (
+    index === -1
+  ) {
+
+    alert(
+      "No encontré la oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  const anterior =
+    opportunities[index];
+
+
+  const client =
+    getValue(
+      "editClient"
+    );
+
+
+  const project =
+    getValue(
+      "editProject"
+    );
+
+
+  if (
+    !client ||
+    !project
+  ) {
+
+    alert(
+      "Completá Cliente y Oportunidad / Proyecto."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Actualizamos solamente
+    los datos editables.
+
+    La cotización queda intacta.
+  */
+
+  opportunities[index] = {
+
+    ...anterior,
+
+    client:
+      client,
+
+    project:
+      project,
+
+    solution:
+      getValue(
+        "editSolution"
+      ) ||
+      "Por definir",
+
+    status:
+      getValue(
+        "editStatus"
+      ) ||
+      "analysis",
+
+    users:
+      getValue(
+        "editUsers"
+      ),
+
+    storage:
+      getValue(
+        "editStorage"
+      ),
+
+    documents:
+      getValue(
+        "editDocuments"
+      ),
+
+    workflows:
+      getValue(
+        "editWorkflows"
+      ),
+
+    ocr:
+      getValue(
+        "editOcr"
+      ),
+
+    signatures:
+      getValue(
+        "editSignatures"
+      ),
+
+    infrastructure:
+      getValue(
+        "editInfrastructure"
+      ),
+
+    deadline:
+      getValue(
+        "editDeadline"
+      ),
+
+    objective:
+      getValue(
+        "editObjective"
+      ),
+
+    requirements:
+      getValue(
+        "editRequirements"
+      ),
+
+    risks:
+      getValue(
+        "editRisks"
+      ),
+
+    notes:
+      getValue(
+        "editNotes"
+      ),
+
+    updatedAt:
+      new Date().toISOString()
+
+  };
+
+
+  saveOpportunities(
+    opportunities
+  );
+
+
+  /*
+    Actualizar oportunidad actual
+  */
+
+  const current =
+    JSON.parse(
+      localStorage.getItem(
+        "preventa_current_opportunity"
+      ) ||
+      "null"
+    );
+
+
+  if (
+    current &&
+    String(
+      current.id
+    ) ===
+    String(id)
+  ) {
+
+    localStorage.setItem(
+      "preventa_current_opportunity",
+      JSON.stringify(
+        opportunities[index]
+      )
+    );
+
+  }
+
+
+  closeEditModal();
+
+
+  renderRepository();
+
+}
+
+
+/* ==========================================
+   GANADA
+========================================== */
+
+function markWon(
+  id
+) {
+
+  changeStatus(
+    id,
+    "won"
+  );
+
+}
+
+
+/* ==========================================
+   PERDIDA
+========================================== */
+
+function markLost(
+  id
+) {
+
+  changeStatus(
+    id,
+    "lost"
+  );
+
+}
+
+
+/* ==========================================
+   CAMBIAR ESTADO
+========================================== */
+
+function changeStatus(
+  id,
+  status
+) {
+
+  const opportunities =
+    getOpportunities();
+
+
+  const index =
+    opportunities.findIndex(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
+
+
+  if (
+    index === -1
+  ) {
+
+    alert(
+      "No encontré la oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  const nombre =
+    opportunities[index].project ||
+    "esta oportunidad";
+
+
+  const mensaje =
+    status === "won"
+
+      ? "¿Querés marcar '" +
+        nombre +
+        "' como GANADA?"
+
+      : "¿Querés marcar '" +
+        nombre +
+        "' como PERDIDA?";
+
+
+  if (
+    !confirm(
+      mensaje
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  opportunities[index].status =
+    status;
+
+
+  opportunities[index].updatedAt =
+    new Date().toISOString();
+
+
+  saveOpportunities(
+    opportunities
+  );
+
+
+  renderRepository();
+
+}
+
+
+/* ==========================================
+   ELIMINAR
+========================================== */
+
+function deleteOpportunity(
+  id
+) {
+
+  const opportunities =
+    getOpportunities();
+
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
+
+
+  if (!opportunity) {
+
+    return;
+
+  }
+
+
+  if (
+    !confirm(
+      "¿Querés eliminar '" +
+      (
+        opportunity.project ||
+        "esta oportunidad"
+      ) +
+      "'?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  const nuevas =
+    opportunities.filter(
+      item =>
+        String(
+          item.id
+        ) !==
+        String(id)
+    );
+
+
+  saveOpportunities(
+    nuevas
+  );
+
+
+  const current =
+    JSON.parse(
+      localStorage.getItem(
+        "preventa_current_opportunity"
+      ) ||
+      "null"
+    );
+
+
+  if (
+    current &&
+    String(
+      current.id
+    ) ===
+    String(id)
+  ) {
+
+    localStorage.removeItem(
+      "preventa_current_opportunity"
+    );
+
+  }
+
+
+  renderRepository();
+
+}
+
+
+/* ==========================================
+   COTIZADOR
+========================================== */
+
+function openQuote(
+  id
+) {
+
+  const opportunities =
+    getOpportunities();
+
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
+
+
+  if (!opportunity) {
+
+    alert(
+      "No encontré la oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(
+      opportunity
+    )
+  );
+
+
+  window.location.href =
+    "cotizador.html";
+
+}
+
+
+/* ==========================================
+   DETALLE
 ========================================== */
 
 function toggleDetail(
@@ -1054,53 +2182,49 @@ function toggleDetail(
 
 
 /* ==========================================
-   ABRIR COTIZADOR
+   MODAL
 ========================================== */
 
-function openQuote(
+function closeEditModal() {
+
+  document.getElementById(
+    "editModal"
+  ).style.display =
+    "none";
+
+}
+
+
+function getValue(
   id
 ) {
 
-  const opportunities =
-    getOpportunities();
-
-
-  const opportunity =
-    opportunities.find(
-      item =>
-        String(
-          item.id
-        ) === String(id)
-    );
-
-
-  if (!opportunity) {
-
-    alert(
-      "No se encontró la oportunidad."
-    );
-
-    return;
-
-  }
-
-
-  localStorage.setItem(
-    "preventa_current_opportunity",
-    JSON.stringify(
-      opportunity
+  return document
+    .getElementById(
+      id
     )
-  );
+    .value
+    .trim();
+
+}
 
 
-  window.location.href =
-    "cotizador.html";
+function setValue(
+  id,
+  value
+) {
+
+  document.getElementById(
+    id
+  ).value =
+    value ||
+    "";
 
 }
 
 
 /* ==========================================
-   SEGURIDAD
+   ESCAPE
 ========================================== */
 
 function escapeHTML(
@@ -1108,7 +2232,8 @@ function escapeHTML(
 ) {
 
   return String(
-    value || ""
+    value ||
+    ""
   )
 
   .replace(
@@ -1144,7 +2269,8 @@ function escapeAttribute(
 ) {
 
   return String(
-    value || ""
+    value ||
+    ""
   )
   .replace(
     /'/g,
