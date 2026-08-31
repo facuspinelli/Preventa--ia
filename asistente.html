@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -41,6 +42,10 @@ header h1 {
   font-size: 14px;
 }
 
+.back:hover {
+  text-decoration: underline;
+}
+
 .container {
   max-width: 900px;
   margin: 40px auto;
@@ -53,6 +58,10 @@ header h1 {
 
 .welcome h2 {
   margin-bottom: 8px;
+}
+
+.welcome p {
+  color: #6b7280;
 }
 
 .chat {
@@ -77,6 +86,7 @@ header h1 {
   max-width: 80%;
   line-height: 1.5;
   white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .ia {
@@ -139,12 +149,14 @@ button:disabled {
   margin-top: 20px;
   font-size: 13px;
   color: #6b7280;
+  line-height: 1.6;
 }
 
 .status {
   margin-top: 15px;
   font-size: 13px;
   color: #6b7280;
+  line-height: 1.5;
 }
 
 .mode {
@@ -156,6 +168,14 @@ button:disabled {
   color: #166534;
   font-size: 12px;
   font-weight: bold;
+}
+
+.error-status {
+  color: #b91c1c;
+}
+
+.success-status {
+  color: #166534;
 }
 
 @media (max-width: 700px) {
@@ -189,8 +209,16 @@ button:disabled {
 
   <h1>🤖 PREVENTA IA</h1>
 
-  <a href="index.html" class="back">
-    ← Volver al inicio
+<a
+href="index.html"
+class="back"
+
+>
+
+```
+← Volver al inicio
+```
+
   </a>
 
 </header>
@@ -199,84 +227,99 @@ button:disabled {
 
   <div class="welcome">
 
-    <h2>Asistente IA</h2>
+```
+<h2>
+  Asistente IA
+</h2>
 
-    <p>
-      Tu asistente inteligente para tareas de Preventa.
-    </p>
+<p>
+  Tu asistente inteligente para tareas de Preventa.
+</p>
+```
 
   </div>
 
   <div class="chat">
 
-    <div class="mode">
-      🟢 MODO PREVENTA — CONOCIMIENTO INTERNO
-    </div>
+```
+<div class="mode">
+  🟢 MODO PREVENTA — CONOCIMIENTO INTERNO
+</div>
 
-    <div class="messages" id="messages">
+<div
+  class="messages"
+  id="messages"
+>
 
-      <div class="message ia">
+  <div class="message ia">
+    👋 Hola. Soy PREVENTA IA.
 
-        👋 Hola. Soy PREVENTA IA.
+    Tengo información interna sobre:
 
-        Puedo ayudarte con:
+    • Perfil Digital
+    • Onboarding Addoc
+    • Firmas Addoc
+    • Visualizador Addoc
+    • Islas
+    • Thuban
+    • Captika
+    • Edatalia
+    • Gestión documental
+    • OCR
+    • Full Text
+    • Workflows
+    • Relevamiento
+    • Cotizaciones
+    • Migraciones
+    • Integraciones
+    • Propuestas técnicas
 
-        • Relevamientos
-        • Oportunidades
-        • Addoc
-        • Thuban
-        • Gestión documental
-        • OCR
-        • Workflows
-        • Firmas
-        • Usuarios
-        • Storage
-        • Infraestructura
-        • Migraciones
-        • Cotizaciones
-        • Propuestas técnicas
+    También puedo utilizar IA generativa cuando esté disponible.
 
-        También puedo buscar información dentro de nuestra
-        base de conocimiento.
+    ¿En qué puedo ayudarte?
+  </div>
 
-        ¿En qué puedo ayudarte?
+</div>
 
-      </div>
+<div class="input-area">
 
-    </div>
+  <textarea
+    id="question"
+    placeholder="Escribí tu consulta..."
+  ></textarea>
 
-    <div class="input-area">
+  <button
+    id="sendButton"
+    onclick="sendMessage()"
+  >
+    Enviar
+  </button>
 
-      <textarea
-        id="question"
-        placeholder="Escribí tu consulta..."
-      ></textarea>
+</div>
 
-      <button
-        id="sendButton"
-        onclick="sendMessage()"
-      >
-        Enviar
-      </button>
+<div class="tip">
 
-    </div>
+  💡 Probá preguntarme:
 
-    <div class="tip">
+  "¿Qué es Perfil Digital?"
 
-      💡 Probá preguntarme:
+  "¿Qué diferencia hay entre Thuban y Captika?"
 
-      "¿Qué debería relevar en un proyecto de gestión documental?"
+  "¿Qué tengo que relevar para cotizar Thuban?"
 
-      "¿Qué información necesito para cotizar una solución?"
+  "¿Cuándo conviene usar Edatalia?"
 
-      "¿Qué diferencia hay entre OCR y búsqueda full text?"
+  "¿Qué hace Onboarding Addoc?"
 
-    </div>
+</div>
 
-    <div
-      id="status"
-      class="status"
-    ></div>
+<div
+  id="status"
+  class="status"
+>
+  🔎 Cargando base de conocimiento...
+</div>
+```
 
   </div>
 
@@ -284,312 +327,1243 @@ button:disabled {
 
 <script>
 
+/* =====================================================
+   VARIABLE PRINCIPAL
+===================================================== */
+
 let conocimiento = null;
 
 
-/* ================================
-   CARGAR CONOCIMIENTO
-================================ */
+/* =====================================================
+   CARGAR CONOCIMIENTO.JSON
+===================================================== */
 
 async function cargarConocimiento() {
+
+  const status =
+    document.getElementById("status");
+
+  status.className =
+    "status";
+
+  status.textContent =
+    "🔎 Cargando base de conocimiento...";
 
   try {
 
     const response =
-      await fetch("conocimiento.json");
+      await fetch(
+        "./conocimiento.json?version=" +
+        Date.now(),
+        {
+          cache: "no-store"
+        }
+      );
 
     if (!response.ok) {
-      throw new Error("No se pudo cargar conocimiento.json");
+
+      throw new Error(
+        "No se pudo cargar conocimiento.json. " +
+        "Código HTTP: " +
+        response.status
+      );
+
     }
 
+    const texto =
+      await response.text();
+
+    if (!texto.trim()) {
+
+      throw new Error(
+        "conocimiento.json está vacío."
+      );
+
+    }
+
+    try {
+
+      conocimiento =
+        JSON.parse(texto);
+
+    }
+
+    catch(error) {
+
+      throw new Error(
+        "conocimiento.json no contiene un JSON válido."
+      );
+
+    }
+
+    status.className =
+      "status success-status";
+
+    status.textContent =
+      "🟢 Base de conocimiento cargada correctamente.";
+
+    console.log(
+      "PREVENTA IA - conocimiento cargado correctamente."
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error cargando conocimiento:",
+      error
+    );
+
     conocimiento =
-      await response.json();
+      null;
 
-    document.getElementById("status").textContent =
-      "🟢 Base de conocimiento cargada.";
+    status.className =
+      "status error-status";
 
-  } catch (error) {
-
-    console.error(error);
-
-    conocimiento = null;
-
-    document.getElementById("status").textContent =
-      "⚠️ No se pudo cargar la base de conocimiento.";
+    status.textContent =
+      "🔴 No se pudo cargar conocimiento.json. " +
+      error.message;
 
   }
 
 }
 
 
-/* ================================
-   CONVERTIR JSON EN TEXTO
-================================ */
+/* =====================================================
+   NORMALIZAR TEXTO
+===================================================== */
 
-function prepararConocimiento(objeto, ruta = "") {
+function normalizarTexto(
+  texto
+) {
 
-  let resultado = "";
+  return String(
+    texto || ""
+  )
+  .toLowerCase()
+  .normalize("NFD")
+  .replace(
+    /[\u0300-\u036f]/g,
+    ""
+  )
+  .replace(
+    /[^a-z0-9\s]/g,
+    " "
+  )
+  .replace(
+    /\s+/g,
+    " "
+  )
+  .trim();
 
-  if (typeof objeto === "string") {
+}
 
-    resultado +=
-      ruta + ": " + objeto + "\n";
 
-  }
+/* =====================================================
+   PALABRAS IMPORTANTES
+===================================================== */
 
-  else if (Array.isArray(objeto)) {
+function obtenerPalabras(
+  pregunta
+) {
 
-    objeto.forEach(function(item, index) {
+  const texto =
+    normalizarTexto(
+      pregunta
+    );
 
-      resultado +=
-        prepararConocimiento(
-          item,
-          ruta + " [" + index + "]"
+  return texto
+    .split(" ")
+    .filter(
+      function(palabra) {
+
+        return (
+          palabra.length >= 3 &&
+          ![
+            "que",
+            "como",
+            "cual",
+            "cuales",
+            "para",
+            "donde",
+            "cuando",
+            "quiero",
+            "necesito",
+            "hace",
+            "hacen",
+            "son",
+            "una",
+            "uno",
+            "del",
+            "los",
+            "las",
+            "por",
+            "con",
+            "entre",
+            "sobre",
+            "hay",
+            "esta",
+            "este",
+            "esa",
+            "eso"
+          ].includes(palabra)
         );
 
-    });
+      }
+    );
 
-  }
+}
 
-  else if (
-    typeof objeto === "object" &&
-    objeto !== null
+
+/* =====================================================
+   BUSQUEDA EXACTA EN PREGUNTAS FRECUENTES
+===================================================== */
+
+function buscarPreguntaFrecuente(
+  pregunta
+) {
+
+  if (
+    !conocimiento ||
+    !conocimiento.preguntas_frecuentes
   ) {
 
-    Object.keys(objeto).forEach(function(clave) {
-
-      const nuevaRuta =
-        ruta
-          ? ruta + " → " + clave
-          : clave;
-
-      resultado +=
-        prepararConocimiento(
-          objeto[clave],
-          nuevaRuta
-        );
-
-    });
+    return null;
 
   }
 
-  return resultado;
+  const texto =
+    normalizarTexto(
+      pregunta
+    );
+
+  const preguntas =
+    conocimiento.preguntas_frecuentes;
+
+
+  /*
+    Detectar nombres directos
+  */
+
+  const equivalencias = [
+
+    {
+      palabras: [
+        "perfil",
+        "digital"
+      ],
+      clave:
+        "que_es_perfil_digital"
+    },
+
+    {
+      palabras: [
+        "thuban"
+      ],
+      clave:
+        "que_es_thuban"
+    },
+
+    {
+      palabras: [
+        "captika"
+      ],
+      clave:
+        "que_es_captika"
+    },
+
+    {
+      palabras: [
+        "edatalia"
+      ],
+      clave:
+        "que_es_edatalia"
+    },
+
+    {
+      palabras: [
+        "onboarding"
+      ],
+      clave:
+        "que_es_onboarding"
+    },
+
+    {
+      palabras: [
+        "firmas",
+        "addoc"
+      ],
+      clave:
+        "que_es_firmas_addoc"
+    },
+
+    {
+      palabras: [
+        "islas"
+      ],
+      clave:
+        "que_es_islas"
+    },
+
+    {
+      palabras: [
+        "visualizador",
+        "addoc"
+      ],
+      clave:
+        "que_es_visualizador_addoc"
+    },
+
+    {
+      palabras: [
+        "documenta"
+      ],
+      clave:
+        "que_es_documenta"
+    },
+
+    {
+      palabras: [
+        "adea"
+      ],
+      clave:
+        "que_es_adea_doc"
+    },
+
+    {
+      palabras: [
+        "workflow"
+      ],
+      clave:
+        "que_es_workflow"
+    },
+
+    {
+      palabras: [
+        "full",
+        "text"
+      ],
+      clave:
+        "que_es_full_text"
+    },
+
+    {
+      palabras: [
+        "ocr"
+      ],
+      clave:
+        "que_es_ocr"
+    },
+
+    {
+      palabras: [
+        "storage"
+      ],
+      clave:
+        "que_es_storage"
+    },
+
+    {
+      palabras: [
+        "multicliente"
+      ],
+      clave:
+        "que_es_multicliente"
+    }
+
+  ];
+
+
+  for (
+    const equivalencia of equivalencias
+  ) {
+
+    const coincide =
+      equivalencia.palabras.every(
+        function(palabra) {
+
+          return texto.includes(
+            normalizarTexto(
+              palabra
+            )
+          );
+
+        }
+      );
+
+
+    if (
+      coincide &&
+      preguntas[equivalencia.clave]
+    ) {
+
+      return {
+
+        tipo:
+          "faq",
+
+        titulo:
+          equivalencia.clave,
+
+        texto:
+          preguntas[
+            equivalencia.clave
+          ],
+
+        puntuacion:
+          100
+
+      };
+
+    }
+
+  }
+
+
+  return null;
 
 }
 
 
-/* ================================
-   BUSCAR INFORMACIÓN LOCAL
-================================ */
+/* =====================================================
+   BUSQUEDA EN PRODUCTOS Y PARTNERS
+===================================================== */
 
-function buscarLocalmente(pregunta) {
+function buscarEnCatalogo(
+  pregunta
+) {
 
   if (!conocimiento) {
 
-    return "No tengo disponible la base de conocimiento interna.";
+    return [];
 
   }
 
   const palabras =
-    pregunta
-      .toLowerCase()
-      .replace(/[¿?¡!,.;:()]/g, " ")
-      .split(/\s+/)
-      .filter(p => p.length >= 4);
-
+    obtenerPalabras(
+      pregunta
+    );
 
   const resultados = [];
 
 
-  function buscar(objeto, ruta = "") {
+  function analizarObjeto(
+    grupo,
+    tipo
+  ) {
 
-    if (typeof objeto === "string") {
-
-      const texto =
-        objeto.toLowerCase();
-
-      let coincidencias = 0;
-
-      palabras.forEach(function(palabra) {
-
-        if (texto.includes(palabra)) {
-          coincidencias++;
-        }
-
-      });
-
-      if (coincidencias > 0) {
-
-        resultados.push({
-          texto: objeto,
-          ruta: ruta,
-          coincidencias: coincidencias
-        });
-
-      }
-
-    }
-
-    else if (Array.isArray(objeto)) {
-
-      objeto.forEach(function(item) {
-
-        buscar(item, ruta);
-
-      });
-
-    }
-
-    else if (
-      typeof objeto === "object" &&
-      objeto !== null
+    if (
+      !grupo ||
+      typeof grupo !== "object"
     ) {
 
-      Object.keys(objeto).forEach(function(clave) {
-
-        const nuevaRuta =
-          ruta
-            ? ruta + " → " + clave
-            : clave;
-
-        buscar(
-          objeto[clave],
-          nuevaRuta
-        );
-
-      });
+      return;
 
     }
 
-  }
+
+    Object.keys(
+      grupo
+    ).forEach(
+      function(nombre) {
+
+        const item =
+          grupo[nombre];
 
 
-  buscar(conocimiento);
+        if (
+          !item ||
+          typeof item !== "object"
+        ) {
+
+          return;
+
+        }
 
 
-  resultados.sort(function(a, b) {
+        const textoBase =
+          normalizarTexto(
+            nombre +
+            " " +
+            JSON.stringify(
+              item
+            )
+          );
 
-    return b.coincidencias - a.coincidencias;
 
-  });
-
-
-  const mejores =
-    resultados.slice(0, 6);
+        let coincidencias =
+          0;
 
 
-  if (mejores.length === 0) {
+        palabras.forEach(
+          function(palabra) {
 
-    return (
-      "🟢 Modo básico activo.\n\n" +
+            if (
+              textoBase.includes(
+                palabra
+              )
+            ) {
 
-      "No encontré una respuesta específica en " +
-      "nuestra base de conocimiento para esa consulta.\n\n" +
+              coincidencias++;
 
-      "Puedo ayudarte mejor si preguntás sobre " +
-      "Preventa, Addoc, Thuban, gestión documental, " +
-      "OCR, workflows, firmas, usuarios, storage, " +
-      "infraestructura, migraciones, propuestas o cotizaciones.\n\n" +
+            }
 
-      "💡 Cuando tengamos créditos de IA, esta misma " +
-      "consulta podrá ser respondida mediante IA generativa."
+          }
+        );
+
+
+        /*
+          Dar prioridad fuerte
+          cuando pregunta por nombre
+          de producto.
+        */
+
+        const nombreNormalizado =
+          normalizarTexto(
+            nombre
+          );
+
+
+        if (
+          normalizarTexto(
+            pregunta
+          ).includes(
+            nombreNormalizado
+          )
+        ) {
+
+          coincidencias +=
+            10;
+
+        }
+
+
+        if (
+          coincidencias > 0
+        ) {
+
+          resultados.push({
+
+            nombre:
+              nombre,
+
+            tipo:
+              tipo,
+
+            datos:
+              item,
+
+            coincidencias:
+              coincidencias
+
+          });
+
+        }
+
+      }
     );
 
   }
 
 
+  analizarObjeto(
+    conocimiento.productos_propios,
+    "Producto propio"
+  );
+
+
+  analizarObjeto(
+    conocimiento.partners,
+    "Partner"
+  );
+
+
+  resultados.sort(
+    function(a, b) {
+
+      return (
+        b.coincidencias -
+        a.coincidencias
+      );
+
+    }
+  );
+
+
+  return resultados.slice(
+    0,
+    4
+  );
+
+}
+
+
+/* =====================================================
+   OBTENER TEXTO ÚTIL DEL PRODUCTO
+===================================================== */
+
+function construirRespuestaProducto(
+  resultado
+) {
+
+  const datos =
+    resultado.datos || {};
+
+
   let respuesta =
-    "🟢 Encontré información relacionada en nuestra base interna:\n\n";
+    "🟢 Información interna sobre " +
+    resultado.nombre +
+    "\n\n";
 
 
-  mejores.forEach(function(resultado) {
+  if (
+    datos.definicion
+  ) {
 
     respuesta +=
-      "• " + resultado.texto + "\n\n";
+      datos.definicion +
+      "\n\n";
 
-  });
+  }
+
+  else if (
+    datos.descripcion
+  ) {
+
+    respuesta +=
+      datos.descripcion +
+      "\n\n";
+
+  }
+
+
+  if (
+    datos.categoria
+  ) {
+
+    respuesta +=
+      "Categoría: " +
+      datos.categoria +
+      "\n\n";
+
+  }
+
+
+  if (
+    datos.tipo
+  ) {
+
+    respuesta +=
+      "Tipo: " +
+      datos.tipo +
+      "\n\n";
+
+  }
+
+
+  if (
+    datos.funcionalidades &&
+    Array.isArray(
+      datos.funcionalidades
+    )
+  ) {
+
+    respuesta +=
+      "Principales funcionalidades:\n";
+
+
+    datos.funcionalidades
+      .slice(
+        0,
+        8
+      )
+      .forEach(
+        function(item) {
+
+          respuesta +=
+            "• " +
+            item +
+            "\n";
+
+        }
+      );
+
+
+    respuesta +=
+      "\n";
+
+  }
+
+
+  if (
+    datos.cuando_usarlo &&
+    Array.isArray(
+      datos.cuando_usarlo
+    )
+  ) {
+
+    respuesta +=
+      "¿Cuándo considerarlo?\n";
+
+
+    datos.cuando_usarlo
+      .slice(
+        0,
+        6
+      )
+      .forEach(
+        function(item) {
+
+          respuesta +=
+            "• " +
+            item +
+            "\n";
+
+        }
+      );
+
+
+    respuesta +=
+      "\n";
+
+  }
+
+
+  if (
+    datos.diferencia_thuban
+  ) {
+
+    respuesta +=
+      "Diferencia / consideración:\n" +
+      datos.diferencia_thuban +
+      "\n\n";
+
+  }
+
+
+  if (
+    datos.diferencia_visualizador
+  ) {
+
+    respuesta +=
+      "Diferencia / consideración:\n" +
+      datos.diferencia_visualizador +
+      "\n\n";
+
+  }
+
+
+  if (
+    datos.consideracion
+  ) {
+
+    respuesta +=
+      "Consideración Preventa:\n" +
+      datos.consideracion +
+      "\n\n";
+
+  }
+
+
+  if (
+    datos.consideraciones_preventa &&
+    Array.isArray(
+      datos.consideraciones_preventa
+    )
+  ) {
+
+    respuesta +=
+      "Consideraciones de Preventa:\n";
+
+
+    datos.consideraciones_preventa
+      .slice(
+        0,
+        6
+      )
+      .forEach(
+        function(item) {
+
+          respuesta +=
+            "• " +
+            item +
+            "\n";
+
+        }
+      );
+
+
+    respuesta +=
+      "\n";
+
+  }
 
 
   respuesta +=
     "━━━━━━━━━━━━━━━━━━\n" +
-    "💡 Modo básico: respuesta basada en el conocimiento interno.\n" +
-    "Cuando haya IA disponible, podremos hacer un análisis más profundo.";
-
+    "💡 Respuesta basada en la base de conocimiento interna.";
 
   return respuesta;
 
 }
 
 
-/* ================================
-   AGREGAR MENSAJE
-================================ */
+/* =====================================================
+   BUSQUEDA GENERAL LOCAL
+===================================================== */
 
-function agregarMensaje(texto, tipo) {
+function buscarLocalmente(
+  pregunta
+) {
+
+  if (!conocimiento) {
+
+    return (
+      "🔴 La base de conocimiento no está disponible.\n\n" +
+      "Verificá que el archivo conocimiento.json " +
+      "esté en la misma carpeta que asistente.html."
+    );
+
+  }
+
+
+  /*
+    1. Preguntas frecuentes
+  */
+
+  const faq =
+    buscarPreguntaFrecuente(
+      pregunta
+    );
+
+
+  if (faq) {
+
+    return (
+      "🟢 " +
+      faq.texto +
+      "\n\n" +
+      "━━━━━━━━━━━━━━━━━━\n" +
+      "💡 Respuesta basada en conocimiento interno."
+    );
+
+  }
+
+
+  /*
+    2. Productos y partners
+  */
+
+  const catalogo =
+    buscarEnCatalogo(
+      pregunta
+    );
+
+
+  if (
+    catalogo.length
+  ) {
+
+    /*
+      Si el primer resultado
+      tiene una coincidencia fuerte,
+      responder principalmente sobre él.
+    */
+
+    if (
+      catalogo[0].coincidencias >= 5
+    ) {
+
+      return construirRespuestaProducto(
+        catalogo[0]
+      );
+
+    }
+
+  }
+
+
+  /*
+    3. Búsqueda general
+  */
+
+  const palabras =
+    obtenerPalabras(
+      pregunta
+    );
+
+
+  const resultados = [];
+
+
+  function buscar(
+    objeto,
+    ruta = ""
+  ) {
+
+    if (
+      typeof objeto === "string"
+    ) {
+
+      const texto =
+        normalizarTexto(
+          objeto
+        );
+
+
+      let coincidencias =
+        0;
+
+
+      palabras.forEach(
+        function(palabra) {
+
+          if (
+            texto.includes(
+              palabra
+            )
+          ) {
+
+            coincidencias++;
+
+          }
+
+        }
+      );
+
+
+      if (
+        coincidencias > 0
+      ) {
+
+        resultados.push({
+
+          texto:
+            objeto,
+
+          ruta:
+            ruta,
+
+          coincidencias:
+            coincidencias
+
+        });
+
+      }
+
+
+      return;
+
+    }
+
+
+    if (
+      Array.isArray(
+        objeto
+      )
+    ) {
+
+      objeto.forEach(
+        function(item) {
+
+          buscar(
+            item,
+            ruta
+          );
+
+        }
+      );
+
+      return;
+
+    }
+
+
+    if (
+      typeof objeto === "object" &&
+      objeto !== null
+    ) {
+
+      Object.keys(
+        objeto
+      ).forEach(
+        function(clave) {
+
+          const nuevaRuta =
+            ruta
+              ? ruta +
+                " → " +
+                clave
+              : clave;
+
+
+          /*
+            También analizamos el
+            nombre de la clave.
+          */
+
+          const claveTexto =
+            normalizarTexto(
+              clave
+            );
+
+
+          let coincidenciasClave =
+            0;
+
+
+          palabras.forEach(
+            function(palabra) {
+
+              if (
+                claveTexto.includes(
+                  palabra
+                )
+              ) {
+
+                coincidenciasClave++;
+
+              }
+
+            }
+          );
+
+
+          if (
+            coincidenciasClave > 0
+          ) {
+
+            resultados.push({
+
+              texto:
+                "Tema: " +
+                clave,
+
+              ruta:
+                nuevaRuta,
+
+              coincidencias:
+                coincidenciasClave
+
+            });
+
+          }
+
+
+          buscar(
+            objeto[clave],
+            nuevaRuta
+          );
+
+        }
+      );
+
+    }
+
+  }
+
+
+  buscar(
+    conocimiento
+  );
+
+
+  resultados.sort(
+    function(a, b) {
+
+      return (
+        b.coincidencias -
+        a.coincidencias
+      );
+
+    }
+  );
+
+
+  const mejores =
+    resultados.slice(
+      0,
+      6
+    );
+
+
+  if (
+    mejores.length === 0
+  ) {
+
+    return (
+      "🟢 Modo básico activo.\n\n" +
+      "No encontré una respuesta específica en " +
+      "la base de conocimiento interna.\n\n" +
+      "Podés preguntarme sobre Perfil Digital, " +
+      "Onboarding Addoc, Firmas Addoc, Islas, " +
+      "Visualizador Addoc, Thuban, Captika, " +
+      "Edatalia, OCR, Full Text, workflows, " +
+      "cotización, relevamiento, migraciones, " +
+      "integraciones o gestión documental.\n\n" +
+      "💡 Cuando tengamos créditos de IA, " +
+      "podremos complementar esta respuesta " +
+      "con IA generativa."
+    );
+
+  }
+
+
+  let respuesta =
+    "🟢 Encontré información relacionada " +
+    "en nuestra base interna:\n\n";
+
+
+  mejores.forEach(
+    function(resultado) {
+
+      respuesta +=
+        "• " +
+        resultado.texto +
+        "\n\n";
+
+    }
+  );
+
+
+  respuesta +=
+    "━━━━━━━━━━━━━━━━━━\n" +
+    "💡 Modo básico: respuesta basada en conocimiento interno.";
+
+  return respuesta;
+
+}
+
+
+/* =====================================================
+   AGREGAR MENSAJE
+===================================================== */
+
+function agregarMensaje(
+  texto,
+  tipo
+) {
 
   const messages =
-    document.getElementById("messages");
+    document.getElementById(
+      "messages"
+    );
+
 
   const message =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   message.className =
-    "message " + tipo;
+    "message " +
+    tipo;
+
 
   message.textContent =
     texto;
 
-  messages.appendChild(message);
+
+  messages.appendChild(
+    message
+  );
+
 
   messages.scrollTop =
     messages.scrollHeight;
+
 
   return message;
 
 }
 
 
-/* ================================
+/* =====================================================
    INTENTAR IA REAL
-================================ */
+===================================================== */
 
-async function intentarIA(pregunta) {
+async function intentarIA(
+  pregunta
+) {
 
   const knowledgeText =
     conocimiento
-      ? prepararConocimiento(conocimiento)
+      ? prepararConocimiento(
+          conocimiento
+        )
       : "";
 
 
   const response =
-    await fetch("/api/chat", {
+    await fetch(
+      "/api/chat",
+      {
 
-      method: "POST",
+        method:
+          "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
-      body: JSON.stringify({
+        body:
+          JSON.stringify(
+            {
 
-        message: pregunta,
+              message:
+                pregunta,
 
-        knowledge: knowledgeText
+              knowledge:
+                knowledgeText
 
-      })
+            }
+          )
 
-    });
-
-
-  const data =
-    await response.json();
+      }
+    );
 
 
-  if (!response.ok) {
+  let data = null;
+
+
+  try {
+
+    data =
+      await response.json();
+
+  }
+
+  catch(error) {
 
     throw new Error(
-      data.error ||
-      "Error del servidor"
+      "El servidor no devolvió una respuesta válida."
+    );
+
+  }
+
+
+  if (
+    !response.ok
+  ) {
+
+    throw new Error(
+      data?.error ||
+      "Error del servidor."
+    );
+
+  }
+
+
+  if (
+    !data ||
+    !data.answer
+  ) {
+
+    throw new Error(
+      "La IA no devolvió una respuesta."
     );
 
   }
@@ -600,27 +1574,124 @@ async function intentarIA(pregunta) {
 }
 
 
-/* ================================
+/* =====================================================
+   PREPARAR CONOCIMIENTO PARA IA
+===================================================== */
+
+function prepararConocimiento(
+  objeto,
+  ruta = ""
+) {
+
+  let resultado =
+    "";
+
+
+  if (
+    typeof objeto === "string"
+  ) {
+
+    resultado +=
+      (
+        ruta
+          ? ruta + ": "
+          : ""
+      ) +
+      objeto +
+      "\n";
+
+  }
+
+  else if (
+    Array.isArray(
+      objeto
+    )
+  ) {
+
+    objeto.forEach(
+      function(item, index) {
+
+        resultado +=
+          prepararConocimiento(
+            item,
+            ruta +
+            " [" +
+            index +
+            "]"
+          );
+
+      }
+    );
+
+  }
+
+  else if (
+    typeof objeto === "object" &&
+    objeto !== null
+  ) {
+
+    Object.keys(
+      objeto
+    ).forEach(
+      function(clave) {
+
+        const nuevaRuta =
+          ruta
+            ? ruta +
+              " → " +
+              clave
+            : clave;
+
+
+        resultado +=
+          prepararConocimiento(
+            objeto[clave],
+            nuevaRuta
+          );
+
+      }
+    );
+
+  }
+
+
+  return resultado;
+
+}
+
+
+/* =====================================================
    ENVIAR MENSAJE
-================================ */
+===================================================== */
 
 async function sendMessage() {
 
   const input =
-    document.getElementById("question");
+    document.getElementById(
+      "question"
+    );
+
 
   const button =
-    document.getElementById("sendButton");
+    document.getElementById(
+      "sendButton"
+    );
+
 
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
+
 
   const question =
     input.value.trim();
 
 
   if (!question) {
+
     return;
+
   }
 
 
@@ -630,9 +1701,12 @@ async function sendMessage() {
   );
 
 
-  input.value = "";
+  input.value =
+    "";
 
-  button.disabled = true;
+
+  button.disabled =
+    true;
 
 
   const loading =
@@ -649,7 +1723,9 @@ async function sendMessage() {
     */
 
     const respuestaIA =
-      await intentarIA(question);
+      await intentarIA(
+        question
+      );
 
 
     loading.remove();
@@ -661,13 +1737,16 @@ async function sendMessage() {
     );
 
 
+    status.className =
+      "status success-status";
+
+
     status.textContent =
       "🧠 Respuesta generada por IA.";
 
   }
 
-
-  catch (error) {
+  catch(error) {
 
     console.log(
       "IA no disponible. Activando modo básico.",
@@ -676,12 +1755,14 @@ async function sendMessage() {
 
 
     /*
-      Si no hay créditos o falla OpenAI,
-      usamos automáticamente nuestro conocimiento.
+      Fallback local.
+      NO consume API.
     */
 
     const respuestaLocal =
-      buscarLocalmente(question);
+      buscarLocalmente(
+        question
+      );
 
 
     loading.remove();
@@ -693,25 +1774,35 @@ async function sendMessage() {
     );
 
 
+    status.className =
+      "status";
+
+
     status.textContent =
-      "🟢 Modo básico activo — sin consumo de API.";
+      conocimiento
+        ? "🟢 Modo básico activo — respuesta basada en conocimiento interno."
+        : "🔴 La base de conocimiento no está disponible.";
 
   }
 
 
-  button.disabled = false;
+  button.disabled =
+    false;
+
 
   input.focus();
 
 }
 
 
-/* ================================
-   CTRL + ENTER
-================================ */
+/* =====================================================
+   ENTER / CTRL + ENTER
+===================================================== */
 
 document
-  .getElementById("question")
+  .getElementById(
+    "question"
+  )
   .addEventListener(
     "keydown",
     function(event) {
@@ -731,9 +1822,9 @@ document
   );
 
 
-/* ================================
+/* =====================================================
    INICIO
-================================ */
+===================================================== */
 
 cargarConocimiento();
 
