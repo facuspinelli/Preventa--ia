@@ -1,564 +1,743 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Asistente IA | PREVENTA IA</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>Asistente IA | PREVENTA IA</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #1f2937;
-    }
+<style>
 
-    header {
-      background: #111827;
-      color: white;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 22px;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
 
-    .back {
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-    }
+header {
+  background: #111827;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
 
-    .welcome {
-      margin-bottom: 25px;
-    }
+.back {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
 
-    .welcome h2 {
-      margin-bottom: 8px;
-    }
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
 
-    .chat {
-      background: white;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
+.welcome {
+  margin-bottom: 25px;
+}
 
-    .messages {
-      min-height: 350px;
-      max-height: 550px;
-      overflow-y: auto;
-      padding: 10px;
-      margin-bottom: 20px;
-    }
+.welcome h2 {
+  margin-bottom: 8px;
+}
 
-    .message {
-      padding: 14px 18px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      max-width: 80%;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
+.chat {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
 
-    .ia {
-      background: #eef2ff;
-      margin-right: auto;
-    }
+.messages {
+  min-height: 350px;
+  max-height: 550px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+}
 
-    .user {
-      background: #111827;
-      color: white;
-      margin-left: auto;
-    }
+.message {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  max-width: 80%;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
 
-    .loading {
-      opacity: 0.7;
-      font-style: italic;
-    }
+.ia {
+  background: #eef2ff;
+  margin-right: auto;
+}
 
-    .input-area {
-      display: flex;
-      gap: 10px;
-    }
+.user {
+  background: #111827;
+  color: white;
+  margin-left: auto;
+}
 
-    textarea {
-      flex: 1;
-      resize: none;
-      height: 55px;
-      padding: 15px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-family: Arial, sans-serif;
-      font-size: 15px;
-    }
+.loading {
+  opacity: 0.7;
+  font-style: italic;
+}
 
-    textarea:focus {
-      outline: none;
-      border-color: #2563eb;
-    }
+.input-area {
+  display: flex;
+  gap: 10px;
+}
 
-    button {
-      background: #111827;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0 25px;
-      cursor: pointer;
-      font-size: 15px;
-    }
+textarea {
+  flex: 1;
+  resize: none;
+  height: 55px;
+  padding: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+}
 
-    button:hover {
-      background: #374151;
-    }
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+button {
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 25px;
+  cursor: pointer;
+  font-size: 15px;
+}
 
-    .tip {
-      margin-top: 20px;
-      font-size: 13px;
-      color: #6b7280;
-    }
+button:hover {
+  background: #374151;
+}
 
-    .status {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #6b7280;
-    }
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
-    @media (max-width: 700px) {
+.tip {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #6b7280;
+}
 
-      header {
-        flex-direction: column;
-        gap: 15px;
-      }
+.status {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #6b7280;
+}
 
-      .input-area {
-        flex-direction: column;
-      }
+.mode {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 12px;
+  font-weight: bold;
+}
 
-      button {
-        height: 45px;
-      }
+@media (max-width: 700px) {
 
-      .message {
-        max-width: 95%;
-      }
-    }
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
 
-  </style>
+  .input-area {
+    flex-direction: column;
+  }
+
+  button {
+    height: 45px;
+  }
+
+  .message {
+    max-width: 95%;
+  }
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-  <header>
+<header>
 
-```
-<h1>🤖 PREVENTA IA</h1>
+  <h1>🤖 PREVENTA IA</h1>
 
-<a href="index.html" class="back">
-  ← Volver al inicio
-</a>
-```
+  <a href="index.html" class="back">
+    ← Volver al inicio
+  </a>
 
-  </header>
+</header>
 
-  <main class="container">
+<main class="container">
 
-```
-<div class="welcome">
+  <div class="welcome">
 
-  <h2>Asistente IA</h2>
+    <h2>Asistente IA</h2>
 
-  <p>
-    Tu asistente inteligente para tareas de Preventa.
-  </p>
+    <p>
+      Tu asistente inteligente para tareas de Preventa.
+    </p>
 
-</div>
+  </div>
 
+  <div class="chat">
 
-<div class="chat">
-
-  <div class="messages" id="messages">
-
-    <div class="message ia">
-      👋 Hola. Soy tu asistente de PREVENTA IA.
-
-      Puedo ayudarte con relevamientos, propuestas,
-      productos Addoc, Thuban, documentos, cotizaciones,
-      workflows, usuarios, storage, infraestructura y
-      análisis de oportunidades.
-
-      También puedo responder preguntas generales.
-
-      ¿En qué puedo ayudarte?
+    <div class="mode">
+      🟢 MODO PREVENTA — CONOCIMIENTO INTERNO
     </div>
 
+    <div class="messages" id="messages">
+
+      <div class="message ia">
+
+        👋 Hola. Soy PREVENTA IA.
+
+        Puedo ayudarte con:
+
+        • Relevamientos
+        • Oportunidades
+        • Addoc
+        • Thuban
+        • Gestión documental
+        • OCR
+        • Workflows
+        • Firmas
+        • Usuarios
+        • Storage
+        • Infraestructura
+        • Migraciones
+        • Cotizaciones
+        • Propuestas técnicas
+
+        También puedo buscar información dentro de nuestra
+        base de conocimiento.
+
+        ¿En qué puedo ayudarte?
+
+      </div>
+
+    </div>
+
+    <div class="input-area">
+
+      <textarea
+        id="question"
+        placeholder="Escribí tu consulta..."
+      ></textarea>
+
+      <button
+        id="sendButton"
+        onclick="sendMessage()"
+      >
+        Enviar
+      </button>
+
+    </div>
+
+    <div class="tip">
+
+      💡 Probá preguntarme:
+
+      "¿Qué debería relevar en un proyecto de gestión documental?"
+
+      "¿Qué información necesito para cotizar una solución?"
+
+      "¿Qué diferencia hay entre OCR y búsqueda full text?"
+
+    </div>
+
+    <div
+      id="status"
+      class="status"
+    ></div>
+
   </div>
 
+</main>
 
-  <div class="input-area">
+<script>
 
-    <textarea
-      id="question"
-      placeholder="Escribí tu consulta..."
-    ></textarea>
-
-    <button
-      id="sendButton"
-      onclick="sendMessage()"
-    >
-      Enviar
-    </button>
-
-  </div>
+let conocimiento = null;
 
 
-  <div class="tip">
+/* ================================
+   CARGAR CONOCIMIENTO
+================================ */
 
-    💡 Ejemplos:
+async function cargarConocimiento() {
 
-    "¿Qué preguntas debería hacerle a un cliente
-    durante un relevamiento?"
+  try {
 
-    "¿Qué diferencia hay entre OCR y full text?"
+    const response =
+      await fetch("conocimiento.json");
 
-    "Necesito analizar una oportunidad para 500 usuarios."
+    if (!response.ok) {
+      throw new Error("No se pudo cargar conocimiento.json");
+    }
 
-  </div>
+    conocimiento =
+      await response.json();
+
+    document.getElementById("status").textContent =
+      "🟢 Base de conocimiento cargada.";
+
+  } catch (error) {
+
+    console.error(error);
+
+    conocimiento = null;
+
+    document.getElementById("status").textContent =
+      "⚠️ No se pudo cargar la base de conocimiento.";
+
+  }
+
+}
 
 
-  <div
-    id="status"
-    class="status"
-  ></div>
+/* ================================
+   CONVERTIR JSON EN TEXTO
+================================ */
 
-</div>
-```
+function prepararConocimiento(objeto, ruta = "") {
 
-  </main>
+  let resultado = "";
 
-  <script>
+  if (typeof objeto === "string") {
 
-    let conocimiento = null;
+    resultado +=
+      ruta + ": " + objeto + "\n";
+
+  }
+
+  else if (Array.isArray(objeto)) {
+
+    objeto.forEach(function(item, index) {
+
+      resultado +=
+        prepararConocimiento(
+          item,
+          ruta + " [" + index + "]"
+        );
+
+    });
+
+  }
+
+  else if (
+    typeof objeto === "object" &&
+    objeto !== null
+  ) {
+
+    Object.keys(objeto).forEach(function(clave) {
+
+      const nuevaRuta =
+        ruta
+          ? ruta + " → " + clave
+          : clave;
+
+      resultado +=
+        prepararConocimiento(
+          objeto[clave],
+          nuevaRuta
+        );
+
+    });
+
+  }
+
+  return resultado;
+
+}
 
 
-    /*
-      Cargar nuestra base de conocimiento interna.
-    */
+/* ================================
+   BUSCAR INFORMACIÓN LOCAL
+================================ */
 
-    async function cargarConocimiento() {
+function buscarLocalmente(pregunta) {
 
-      try {
+  if (!conocimiento) {
 
-        const response =
-          await fetch("conocimiento.json");
+    return "No tengo disponible la base de conocimiento interna.";
 
-        if (!response.ok) {
-          throw new Error("No se pudo cargar conocimiento.json");
+  }
+
+  const palabras =
+    pregunta
+      .toLowerCase()
+      .replace(/[¿?¡!,.;:()]/g, " ")
+      .split(/\s+/)
+      .filter(p => p.length >= 4);
+
+
+  const resultados = [];
+
+
+  function buscar(objeto, ruta = "") {
+
+    if (typeof objeto === "string") {
+
+      const texto =
+        objeto.toLowerCase();
+
+      let coincidencias = 0;
+
+      palabras.forEach(function(palabra) {
+
+        if (texto.includes(palabra)) {
+          coincidencias++;
         }
 
-        conocimiento =
-          await response.json();
+      });
 
-      } catch (error) {
+      if (coincidencias > 0) {
 
-        console.error(error);
-
-        conocimiento = null;
+        resultados.push({
+          texto: objeto,
+          ruta: ruta,
+          coincidencias: coincidencias
+        });
 
       }
 
     }
 
+    else if (Array.isArray(objeto)) {
+
+      objeto.forEach(function(item) {
+
+        buscar(item, ruta);
+
+      });
+
+    }
+
+    else if (
+      typeof objeto === "object" &&
+      objeto !== null
+    ) {
+
+      Object.keys(objeto).forEach(function(clave) {
+
+        const nuevaRuta =
+          ruta
+            ? ruta + " → " + clave
+            : clave;
+
+        buscar(
+          objeto[clave],
+          nuevaRuta
+        );
+
+      });
+
+    }
+
+  }
+
+
+  buscar(conocimiento);
+
+
+  resultados.sort(function(a, b) {
+
+    return b.coincidencias - a.coincidencias;
+
+  });
+
+
+  const mejores =
+    resultados.slice(0, 6);
+
+
+  if (mejores.length === 0) {
+
+    return (
+      "🟢 Modo básico activo.\n\n" +
+
+      "No encontré una respuesta específica en " +
+      "nuestra base de conocimiento para esa consulta.\n\n" +
+
+      "Puedo ayudarte mejor si preguntás sobre " +
+      "Preventa, Addoc, Thuban, gestión documental, " +
+      "OCR, workflows, firmas, usuarios, storage, " +
+      "infraestructura, migraciones, propuestas o cotizaciones.\n\n" +
+
+      "💡 Cuando tengamos créditos de IA, esta misma " +
+      "consulta podrá ser respondida mediante IA generativa."
+    );
+
+  }
+
+
+  let respuesta =
+    "🟢 Encontré información relacionada en nuestra base interna:\n\n";
+
+
+  mejores.forEach(function(resultado) {
+
+    respuesta +=
+      "• " + resultado.texto + "\n\n";
+
+  });
+
+
+  respuesta +=
+    "━━━━━━━━━━━━━━━━━━\n" +
+    "💡 Modo básico: respuesta basada en el conocimiento interno.\n" +
+    "Cuando haya IA disponible, podremos hacer un análisis más profundo.";
+
+
+  return respuesta;
+
+}
+
+
+/* ================================
+   AGREGAR MENSAJE
+================================ */
+
+function agregarMensaje(texto, tipo) {
+
+  const messages =
+    document.getElementById("messages");
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    "message " + tipo;
+
+  message.textContent =
+    texto;
+
+  messages.appendChild(message);
+
+  messages.scrollTop =
+    messages.scrollHeight;
+
+  return message;
+
+}
+
+
+/* ================================
+   INTENTAR IA REAL
+================================ */
+
+async function intentarIA(pregunta) {
+
+  const knowledgeText =
+    conocimiento
+      ? prepararConocimiento(conocimiento)
+      : "";
+
+
+  const response =
+    await fetch("/api/chat", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+
+        message: pregunta,
+
+        knowledge: knowledgeText
+
+      })
+
+    });
+
+
+  const data =
+    await response.json();
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      data.error ||
+      "Error del servidor"
+    );
+
+  }
+
+
+  return data.answer;
+
+}
+
+
+/* ================================
+   ENVIAR MENSAJE
+================================ */
+
+async function sendMessage() {
+
+  const input =
+    document.getElementById("question");
+
+  const button =
+    document.getElementById("sendButton");
+
+  const status =
+    document.getElementById("status");
+
+  const question =
+    input.value.trim();
+
+
+  if (!question) {
+    return;
+  }
+
+
+  agregarMensaje(
+    question,
+    "user"
+  );
+
+
+  input.value = "";
+
+  button.disabled = true;
+
+
+  const loading =
+    agregarMensaje(
+      "🔎 Buscando en PREVENTA IA...",
+      "ia loading"
+    );
+
+
+  try {
 
     /*
-      Convertir el JSON de conocimiento
-      en texto para enviarlo a la IA.
+      Primero intentamos IA REAL.
     */
 
-    function prepararConocimiento(objeto, ruta = "") {
+    const respuestaIA =
+      await intentarIA(question);
 
-      let resultado = "";
 
-      if (typeof objeto === "string") {
+    loading.remove();
 
-        resultado +=
-          ruta + ": " + objeto + "\n";
 
-      }
+    agregarMensaje(
+      respuestaIA,
+      "ia"
+    );
 
-      else if (Array.isArray(objeto)) {
 
-        objeto.forEach(function(item, index) {
+    status.textContent =
+      "🧠 Respuesta generada por IA.";
 
-          resultado +=
-            prepararConocimiento(
-              item,
-              ruta + " [" + index + "]"
-            );
+  }
 
-        });
 
-      }
+  catch (error) {
 
-      else if (
-        typeof objeto === "object" &&
-        objeto !== null
+    console.log(
+      "IA no disponible. Activando modo básico.",
+      error
+    );
+
+
+    /*
+      Si no hay créditos o falla OpenAI,
+      usamos automáticamente nuestro conocimiento.
+    */
+
+    const respuestaLocal =
+      buscarLocalmente(question);
+
+
+    loading.remove();
+
+
+    agregarMensaje(
+      respuestaLocal,
+      "ia"
+    );
+
+
+    status.textContent =
+      "🟢 Modo básico activo — sin consumo de API.";
+
+  }
+
+
+  button.disabled = false;
+
+  input.focus();
+
+}
+
+
+/* ================================
+   CTRL + ENTER
+================================ */
+
+document
+  .getElementById("question")
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter" &&
+        event.ctrlKey
       ) {
 
-        Object.keys(objeto).forEach(function(clave) {
+        event.preventDefault();
 
-          const nuevaRuta =
-            ruta
-              ? ruta + " → " + clave
-              : clave;
-
-          resultado +=
-            prepararConocimiento(
-              objeto[clave],
-              nuevaRuta
-            );
-
-        });
+        sendMessage();
 
       }
 
-      return resultado;
-
     }
+  );
 
 
-    /*
-      Agregar mensaje al chat.
-    */
+/* ================================
+   INICIO
+================================ */
 
-    function agregarMensaje(texto, tipo) {
+cargarConocimiento();
 
-      const messages =
-        document.getElementById("messages");
-
-      const message =
-        document.createElement("div");
-
-      message.className =
-        "message " + tipo;
-
-      message.textContent =
-        texto;
-
-      messages.appendChild(message);
-
-      messages.scrollTop =
-        messages.scrollHeight;
-
-      return message;
-
-    }
-
-
-    /*
-      Enviar pregunta a la IA.
-    */
-
-    async function sendMessage() {
-
-      const input =
-        document.getElementById("question");
-
-      const button =
-        document.getElementById("sendButton");
-
-      const status =
-        document.getElementById("status");
-
-      const question =
-        input.value.trim();
-
-
-      if (!question) {
-        return;
-      }
-
-
-      agregarMensaje(
-        question,
-        "user"
-      );
-
-
-      input.value = "";
-
-      button.disabled = true;
-
-      status.textContent =
-        "🧠 Analizando tu consulta...";
-
-
-      const loading =
-        agregarMensaje(
-          "Estoy analizando la consulta...",
-          "ia loading"
-        );
-
-
-      try {
-
-        /*
-          Preparar conocimiento interno.
-        */
-
-        let knowledgeText =
-          "No hay conocimiento interno disponible.";
-
-        if (conocimiento) {
-
-          knowledgeText =
-            prepararConocimiento(
-              conocimiento
-            );
-
-        }
-
-
-        /*
-          Enviar consulta a nuestro backend
-          de Vercel.
-        */
-
-        const response =
-          await fetch("/api/chat", {
-
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-              message: question,
-
-              knowledge: knowledgeText
-
-            })
-
-          });
-
-
-        const data =
-          await response.json();
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            data.error ||
-            "Error en el servidor"
-          );
-
-        }
-
-
-        loading.remove();
-
-
-        agregarMensaje(
-          data.answer ||
-          "No recibí una respuesta de la IA.",
-          "ia"
-        );
-
-
-        status.textContent =
-          "✅ Respuesta generada por PREVENTA IA";
-
-
-      } catch (error) {
-
-        console.error(error);
-
-        loading.remove();
-
-
-        agregarMensaje(
-
-          "⚠️ No pude comunicarme con la IA.\n\n" +
-          "El backend todavía puede estar desplegándose " +
-          "o puede haber un problema de configuración.\n\n" +
-          "Error: " + error.message,
-
-          "ia"
-
-        );
-
-
-        status.textContent =
-          "⚠️ Error al conectar con la IA.";
-
-      }
-
-
-      button.disabled = false;
-
-      input.focus();
-
-    }
-
-
-    /*
-      Permitir enviar con Ctrl + Enter.
-    */
-
-    document
-      .getElementById("question")
-      .addEventListener(
-        "keydown",
-        function(event) {
-
-          if (
-            event.key === "Enter" &&
-            event.ctrlKey
-          ) {
-
-            event.preventDefault();
-
-            sendMessage();
-
-          }
-
-        }
-      );
-
-
-    /*
-      Cargar conocimiento al abrir.
-    */
-
-    cargarConocimiento();
-
-  </script>
+</script>
 
 </body>
 
