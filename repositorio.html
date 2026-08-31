@@ -99,13 +99,13 @@ header h1 {
 
 .opportunities {
   display: grid;
-  gap: 16px;
+  gap: 18px;
 }
 
 .opportunity {
   background: white;
   border-radius: 14px;
-  padding: 22px;
+  padding: 24px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
@@ -118,6 +118,7 @@ header h1 {
 
 .opportunity-title h3 {
   margin: 0 0 7px 0;
+  font-size: 20px;
 }
 
 .opportunity-title p {
@@ -169,7 +170,7 @@ header h1 {
 
 .data-card {
   background: #f9fafb;
-  padding: 12px;
+  padding: 14px;
   border-radius: 8px;
 }
 
@@ -185,37 +186,51 @@ header h1 {
 }
 
 .quote-section {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+  margin-top: 22px;
+  padding: 18px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
 }
 
 .quote-title {
   font-weight: bold;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
+  color: #166534;
 }
 
 .quote-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 .quote-card {
-  padding: 15px;
+  padding: 16px;
   border-radius: 8px;
-  background: #f0fdf4;
+  background: white;
+  border: 1px solid #dcfce7;
 }
 
 .quote-label {
   font-size: 11px;
-  color: #166534;
+  color: #6b7280;
 }
 
 .quote-value {
   font-weight: bold;
-  font-size: 17px;
-  margin-top: 4px;
+  font-size: 19px;
+  margin-top: 5px;
+  color: #166534;
+}
+
+.no-quote {
+  margin-top: 22px;
+  padding: 14px;
+  border-radius: 8px;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 13px;
 }
 
 .actions {
@@ -258,8 +273,8 @@ button:hover {
 
 .detail {
   display: none;
-  margin-top: 18px;
-  padding-top: 18px;
+  margin-top: 20px;
+  padding-top: 20px;
   border-top: 1px solid #e5e7eb;
 }
 
@@ -341,16 +356,19 @@ class="back"
   <div class="welcome">
 
 ```
-<h2>🗂️ Repositorio de Preventa</h2>
+<h2>
+  🗂️ Repositorio de Preventa
+</h2>
 
 <p>
-  Historial centralizado de oportunidades, análisis y cotizaciones.
+  Historial centralizado de oportunidades,
+  análisis y cotizaciones.
 </p>
 ```
 
   </div>
 
-  <!-- RESUMEN -->
+  <!-- RESUMEN GENERAL -->
 
   <div class="summary">
 
@@ -436,7 +454,7 @@ class="back"
 
   </div>
 
-  <!-- LISTA -->
+  <!-- OPORTUNIDADES -->
 
   <div
     id="opportunities"
@@ -464,7 +482,7 @@ function getOpportunities() {
 
 
 /* ==========================================
-   ESTADO
+   ESTADOS
 ========================================== */
 
 function getStatusName(
@@ -501,7 +519,7 @@ function getStatusName(
 
 
 /* ==========================================
-   RESUMEN
+   RESUMEN GENERAL
 ========================================== */
 
 function updateSummary(
@@ -518,8 +536,8 @@ function updateSummary(
     "analysisCount"
   ).textContent =
     opportunities.filter(
-      x =>
-        x.status === "analysis"
+      opportunity =>
+        opportunity.status === "analysis"
     ).length;
 
 
@@ -527,8 +545,8 @@ function updateSummary(
     "quoteCount"
   ).textContent =
     opportunities.filter(
-      x =>
-        x.quote
+      opportunity =>
+        opportunity.quote
     ).length;
 
 
@@ -536,8 +554,8 @@ function updateSummary(
     "wonCount"
   ).textContent =
     opportunities.filter(
-      x =>
-        x.status === "won"
+      opportunity =>
+        opportunity.status === "won"
     ).length;
 
 }
@@ -581,15 +599,28 @@ function renderRepository() {
     opportunities.filter(
       function(opportunity) {
 
-        const texto =
-          (
-            opportunity.client +
-            " " +
-            opportunity.project +
-            " " +
-            opportunity.solution
+        const texto = (
+
+          String(
+            opportunity.client ||
+            ""
+          ) +
+
+          " " +
+
+          String(
+            opportunity.project ||
+            ""
+          ) +
+
+          " " +
+
+          String(
+            opportunity.solution ||
+            ""
           )
-          .toLowerCase();
+
+        ).toLowerCase();
 
 
         return texto.includes(
@@ -617,8 +648,8 @@ function renderRepository() {
         </h3>
 
         <p>
-          Las oportunidades que crees y sus cotizaciones
-          aparecerán automáticamente acá.
+          Las oportunidades que crees aparecerán
+          automáticamente acá.
         </p>
 
       </div>
@@ -660,20 +691,25 @@ function renderRepository() {
             </h3>
 
             <p>
-              👤 ${escapeHTML(
+              👤 Cliente:
+              ${escapeHTML(
                 opportunity.client
               )}
             </p>
 
             <p>
-              🧩 ${escapeHTML(
+              🧩 Solución:
+              ${escapeHTML(
                 opportunity.solution ||
                 "Por definir"
               )}
             </p>
 
             <span
-              class="status ${opportunity.status}"
+              class="status ${
+                opportunity.status ||
+                "analysis"
+              }"
             >
               ${getStatusName(
                 opportunity.status
@@ -685,58 +721,54 @@ function renderRepository() {
         </div>
 
 
+        <!-- DATOS PRINCIPALES -->
+
         <div class="data-grid">
 
           ${dataCard(
             "👥 Usuarios",
-            opportunity.users ||
-            "No definido"
+            opportunity.users
           )}
 
           ${dataCard(
             "💾 Storage",
-            opportunity.storage ||
-            "No definido"
+            opportunity.storage
           )}
 
           ${dataCard(
             "📑 Documentos",
-            opportunity.documents ||
-            "No definido"
+            opportunity.documents
           )}
 
           ${dataCard(
             "🔄 Workflows",
-            opportunity.workflows ||
-            "No definido"
+            opportunity.workflows
           )}
 
           ${dataCard(
             "🔎 OCR",
-            opportunity.ocr ||
-            "No definido"
+            opportunity.ocr
           )}
 
           ${dataCard(
             "✍️ Firmas",
-            opportunity.signatures ||
-            "No definido"
+            opportunity.signatures
           )}
 
           ${dataCard(
             "🏗️ Infraestructura",
-            opportunity.infrastructure ||
-            "No definido"
+            opportunity.infrastructure
           )}
 
           ${dataCard(
             "📅 Plazo",
-            opportunity.deadline ||
-            "No definido"
+            opportunity.deadline
           )}
 
         </div>
 
+
+        <!-- COTIZACION -->
 
         ${
           quote
@@ -751,17 +783,17 @@ function renderRepository() {
                 <div class="quote-grid">
 
                   ${quoteCard(
-                    "Setup",
+                    "SETUP",
                     quote.totalSetup
                   )}
 
                   ${quoteCard(
-                    "Mensual",
+                    "MENSUAL",
                     quote.totalMonthly
                   )}
 
                   ${quoteCard(
-                    "Primer año",
+                    "PRIMER AÑO",
                     quote.totalYear
                   )}
 
@@ -772,8 +804,9 @@ function renderRepository() {
             `
             : `
 
-              <div class="warning">
-                Esta oportunidad todavía no tiene cotización.
+              <div class="no-quote">
+                ⚠️ Esta oportunidad todavía no tiene
+                una cotización guardada.
               </div>
 
             `
@@ -785,19 +818,28 @@ function renderRepository() {
           <button
             onclick="toggleDetail(this)"
           >
-            👁️ Ver análisis
+            👁️ Ver resumen
           </button>
 
           ${
             quote
-              ? ""
-              : `
+              ? `
                 <button
-                  onclick="goToQuote('${escapeAttribute(
+                  class="secondary"
+                  onclick="openQuote('${escapeAttribute(
                     opportunity.id
                   )}')"
                 >
-                  💰 Cotizar
+                  💰 Ver cotización
+                </button>
+              `
+              : `
+                <button
+                  onclick="openQuote('${escapeAttribute(
+                    opportunity.id
+                  )}')"
+                >
+                  💰 Ir al cotizador
                 </button>
               `
           }
@@ -805,19 +847,21 @@ function renderRepository() {
         </div>
 
 
+        <!-- DETALLE -->
+
         <div class="detail">
 
           <div class="detail-section">
 
             <h4>
-              🎯 Objetivo
+              📝 Resumen / Objetivo
             </h4>
 
             <div class="detail-text">
 
               ${escapeHTML(
                 opportunity.objective ||
-                "No definido"
+                "No hay resumen u objetivo cargado."
               )}
 
             </div>
@@ -835,7 +879,7 @@ function renderRepository() {
 
               ${escapeHTML(
                 opportunity.requirements ||
-                "No definidos"
+                "No hay requerimientos cargados."
               )}
 
             </div>
@@ -846,14 +890,14 @@ function renderRepository() {
           <div class="detail-section">
 
             <h4>
-              ⚠️ Riesgos
+              ⚠️ Riesgos / puntos de atención
             </h4>
 
             <div class="detail-text">
 
               ${escapeHTML(
                 opportunity.risks ||
-                "No definidos"
+                "No hay riesgos cargados."
               )}
 
             </div>
@@ -871,7 +915,7 @@ function renderRepository() {
 
               ${escapeHTML(
                 opportunity.notes ||
-                "Sin notas"
+                "Sin notas."
               )}
 
             </div>
@@ -911,12 +955,14 @@ function dataCard(
       </div>
 
       <div class="data-value">
+
         ${escapeHTML(
           String(
             value ||
             "No definido"
           )
         )}
+
       </div>
 
     </div>
@@ -944,12 +990,14 @@ function quoteCard(
       </div>
 
       <div class="quote-value">
+
         ${escapeHTML(
           String(
             value ||
             "USD 0,00"
           )
         )}
+
       </div>
 
     </div>
@@ -960,7 +1008,7 @@ function quoteCard(
 
 
 /* ==========================================
-   VER DETALLE
+   VER RESUMEN
 ========================================== */
 
 function toggleDetail(
@@ -988,7 +1036,7 @@ function toggleDetail(
       "none";
 
     button.textContent =
-      "👁️ Ver análisis";
+      "👁️ Ver resumen";
 
   }
 
@@ -998,7 +1046,7 @@ function toggleDetail(
       "block";
 
     button.textContent =
-      "🔼 Ocultar análisis";
+      "🔼 Ocultar resumen";
 
   }
 
@@ -1006,10 +1054,10 @@ function toggleDetail(
 
 
 /* ==========================================
-   COTIZADOR
+   ABRIR COTIZADOR
 ========================================== */
 
-function goToQuote(
+function openQuote(
   id
 ) {
 
@@ -1052,7 +1100,7 @@ function goToQuote(
 
 
 /* ==========================================
-   ESCAPE HTML
+   SEGURIDAD
 ========================================== */
 
 function escapeHTML(
