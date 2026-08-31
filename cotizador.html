@@ -1,5 +1,5 @@
-```html
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -218,7 +218,6 @@ input:focus {
 
 </head>
 
-
 <body>
 
 <header>
@@ -231,7 +230,6 @@ input:focus {
 
 </header>
 
-
 <main class="container">
 
   <h2>💰 Cotizador</h2>
@@ -240,363 +238,336 @@ input:focus {
     Calculá automáticamente los costos de implementación y costos mensuales.
   </p>
 
-
-  <!-- DATOS -->
+  <!-- DATOS DE LA COTIZACIÓN -->
 
   <div class="card">
 
-    <h3>📋 Datos de la cotización</h3>
+```
+<h3>📋 Datos de la cotización</h3>
 
-    <div class="fields">
+<div class="fields">
 
+  <div class="field">
 
-      <div class="field">
+    <label>Cliente</label>
 
-        <label>Cliente</label>
+    <input
+      type="text"
+      id="client"
+      placeholder="Nombre del cliente"
+    >
 
-        <input
-          type="text"
-          id="client"
-          placeholder="Nombre del cliente"
-        >
+  </div>
 
-      </div>
+  <div class="field">
 
+    <label>Oportunidad</label>
 
-      <div class="field">
+    <input
+      type="text"
+      id="opportunity"
+      placeholder="Nombre de la oportunidad"
+    >
 
-        <label>Oportunidad</label>
+  </div>
 
-        <input
-          type="text"
-          id="opportunity"
-          placeholder="Nombre de la oportunidad"
-        >
+  <div class="field">
 
-      </div>
+    <label>Horas de parametrización / Setup</label>
 
+    <input
+      type="number"
+      id="setup"
+      value="8"
+      min="0"
+    >
 
-      <div class="field">
+    <small>
+      Costo: USD 25 por hora.
+    </small>
 
-        <label>Horas de parametrización / Setup</label>
+  </div>
 
-        <input
-          type="number"
-          id="setup"
-          value="8"
-          min="0"
-        >
+  <div class="field">
 
-        <small>
-          Costo: USD 25 por hora
-        </small>
+    <label>Cantidad de usuarios</label>
 
-      </div>
+    <input
+      type="number"
+      id="users"
+      value="10"
+      min="0"
+    >
 
+    <small>
+      El precio depende del tramo de usuarios.
+    </small>
 
-      <div class="field">
+  </div>
 
-        <label>Cantidad de usuarios</label>
+  <div class="field">
 
-        <input
-          type="number"
-          id="users"
-          value="10"
-          min="0"
-        >
+    <label>Firmas por mes</label>
 
-        <small>
-          El precio depende del tramo de usuarios.
-        </small>
+    <input
+      type="number"
+      id="signatures"
+      value="0"
+      min="0"
+    >
 
-      </div>
+    <small>
+      Costo: USD 0,20 por firma.
+    </small>
 
+  </div>
 
-      <div class="field">
+  <div class="field">
 
-        <label>Firmas por mes</label>
+    <label>Peso promedio de una imagen (KB)</label>
 
-        <input
-          type="number"
-          id="signatures"
-          value="0"
-          min="0"
-        >
+    <input
+      type="number"
+      id="imageWeight"
+      value="70"
+      min="0"
+    >
 
-        <small>
-          Costo: USD 0,20 por firma.
-        </small>
+    <small>
+      Referencia habitual: 70 KB por imagen.
+    </small>
 
-      </div>
+  </div>
 
+  <div class="field">
 
-      <div class="field">
+    <label>Cantidad de imágenes</label>
 
-        <label>Peso promedio de una imagen (KB)</label>
+    <input
+      type="number"
+      id="images"
+      value="0"
+      min="0"
+    >
 
-        <input
-          type="number"
-          id="imageWeight"
-          value="70"
-          min="0"
-        >
+    <small>
+      Se calcula automáticamente el almacenamiento necesario según el peso de las imágenes.
+    </small>
 
-        <small>
-          Referencia habitual: 70 KB por imagen.
-        </small>
+  </div>
 
-      </div>
+  <div class="field">
 
+    <label>Packs de Storage</label>
 
-     ```html
-<div class="field">
+    <input
+      type="number"
+      id="manualPacks"
+      value="0"
+      min="0"
+    >
 
-  <label>
-    Cantidad de imágenes
-  </label>
+    <small>
+      Opcional: 1 pack = 50 GB · 2 packs = 100 GB · 3 packs = 150 GB, etc.
+    </small>
 
-  <input
-    type="number"
-    id="images"
-    value="0"
-    min="0"
-  >
+  </div>
 
-  <small>
-    Se calcula automáticamente el almacenamiento necesario según el peso de las imágenes.
-  </small>
+  <div class="field">
+
+    <label>Horas de soporte Addoc</label>
+
+    <input
+      type="number"
+      id="support"
+      value="5"
+      min="0"
+    >
+
+    <small>
+      Costo: USD 25 por hora. Mínimo recomendado: 5 horas.
+    </small>
+
+  </div>
 
 </div>
 
+<div id="warning" class="warning"></div>
 
-<div class="field">
+<div id="info" class="info"></div>
 
-  <label>
-    Packs de Storage
-  </label>
+<div class="buttons">
 
-  <input
-    type="number"
-    id="manualPacks"
-    value="0"
-    min="0"
+  <button
+    class="button"
+    onclick="calculate()"
   >
+    🧮 Calcular cotización
+  </button>
 
-  <small>
-    Opcional: 1 pack = 50 GB · 2 packs = 100 GB · 3 packs = 150 GB, etc.
-  </small>
+  <button
+    class="button excel-button"
+    onclick="downloadExcel()"
+  >
+    📥 Descargar Excel
+  </button>
 
 </div>
 ```
 
-
-
-      <div class="field">
-
-        <label>Horas de soporte Addoc</label>
-
-        <input
-          type="number"
-          id="support"
-          value="5"
-          min="0"
-        >
-
-        <small>
-          Costo: USD 25 por hora. Mínimo recomendado: 5 horas.
-        </small>
-
-      </div>
-
-    </div>
-
-
-    <div id="warning" class="warning"></div>
-
-    <div id="info" class="info"></div>
-
-
-    <div class="buttons">
-
-      <button
-        class="button"
-        onclick="calculate()"
-      >
-        🧮 Calcular cotización
-      </button>
-
-      <button
-        class="button excel-button"
-        onclick="downloadExcel()"
-      >
-        📥 Descargar Excel
-      </button>
-
-    </div>
-
   </div>
-
 
   <!-- RESULTADOS -->
 
   <div class="card">
 
-    <h3>📊 Resultado</h3>
+```
+<h3>📊 Resultado</h3>
 
+<div class="results">
 
-    <div class="results">
+  <div class="result">
 
-
-      <div class="result">
-
-        <div class="result-title">
-          Costo Setup
-        </div>
-
-        <div
-          class="result-value"
-          id="setupCost"
-        >
-          USD 0,00
-        </div>
-
-      </div>
-
-
-      <div class="result">
-
-        <div class="result-title">
-          Costo Usuarios
-        </div>
-
-        <div
-          class="result-value"
-          id="usersCost"
-        >
-          USD 0,00
-        </div>
-
-      </div>
-
-
-      <div class="result">
-
-        <div class="result-title">
-          Costo Firmas
-        </div>
-
-        <div
-          class="result-value"
-          id="signatureCost"
-        >
-          USD 0,00
-        </div>
-
-      </div>
-
-
-      <div class="result">
-
-        <div class="result-title">
-          Costo Soporte
-        </div>
-
-        <div
-          class="result-value"
-          id="supportCost"
-        >
-          USD 0,00
-        </div>
-
-      </div>
-
+    <div class="result-title">
+      Costo Setup
     </div>
 
-
-    <div class="storage-box">
-
-      <strong>💾 Storage</strong>
-
-      <p>
-        Necesidad calculada:
-        <strong id="storageNeeded">
-          0 GB
-        </strong>
-      </p>
-
-      <p>
-        Storage a cotizar:
-        <strong id="storageQuoted">
-          50 GB
-        </strong>
-      </p>
-
-      <p>
-        Cantidad de packs:
-        <strong id="storagePacks">
-          1
-        </strong>
-      </p>
-
-      <p>
-        Costo Storage:
-        <strong id="storageCost">
-          USD 2,00
-        </strong>
-      </p>
-
+    <div
+      class="result-value"
+      id="setupCost"
+    >
+      USD 0,00
     </div>
 
+  </div>
 
-    <div class="total">
+  <div class="result">
 
-      <div class="total-row">
-
-        <span>
-          Total único / Setup
-        </span>
-
-        <strong id="totalSetup">
-          USD 0,00
-        </strong>
-
-      </div>
-
-
-      <div class="total-row">
-
-        <span>
-          Total mensual
-        </span>
-
-        <strong id="totalMonthly">
-          USD 0,00
-        </strong>
-
-      </div>
-
-
-      <div class="total-final">
-
-        <div>
-          Costo total primer año
-        </div>
-
-        <div id="totalYear">
-          USD 0,00
-        </div>
-
-      </div>
-
+    <div class="result-title">
+      Costo Usuarios
     </div>
+
+    <div
+      class="result-value"
+      id="usersCost"
+    >
+      USD 0,00
+    </div>
+
+  </div>
+
+  <div class="result">
+
+    <div class="result-title">
+      Costo Firmas
+    </div>
+
+    <div
+      class="result-value"
+      id="signatureCost"
+    >
+      USD 0,00
+    </div>
+
+  </div>
+
+  <div class="result">
+
+    <div class="result-title">
+      Costo Soporte
+    </div>
+
+    <div
+      class="result-value"
+      id="supportCost"
+    >
+      USD 0,00
+    </div>
+
+  </div>
+
+</div>
+
+<div class="storage-box">
+
+  <strong>💾 Storage</strong>
+
+  <p>
+    Necesidad calculada:
+    <strong id="storageNeeded">
+      0 GB
+    </strong>
+  </p>
+
+  <p>
+    Storage a cotizar:
+    <strong id="storageQuoted">
+      50 GB
+    </strong>
+  </p>
+
+  <p>
+    Cantidad de packs:
+    <strong id="storagePacks">
+      1
+    </strong>
+  </p>
+
+  <p>
+    Costo Storage:
+    <strong id="storageCost">
+      USD 2,00
+    </strong>
+  </p>
+
+</div>
+
+<div class="total">
+
+  <div class="total-row">
+
+    <span>
+      Total único / Setup
+    </span>
+
+    <strong id="totalSetup">
+      USD 0,00
+    </strong>
+
+  </div>
+
+  <div class="total-row">
+
+    <span>
+      Total mensual
+    </span>
+
+    <strong id="totalMonthly">
+      USD 0,00
+    </strong>
+
+  </div>
+
+  <div class="total-final">
+
+    <div>
+      Costo total primer año
+    </div>
+
+    <div id="totalYear">
+      USD 0,00
+    </div>
+
+  </div>
+
+</div>
+```
 
   </div>
 
 </main>
 
-
 <script>
-
 
 function money(value) {
 
@@ -650,10 +621,9 @@ function calculate() {
 
   const images =
     Number(document.getElementById("images").value) || 0;
+
   const manualPacks =
-  Number(
-    document.getElementById("manualPacks").value
-  );
+    Number(document.getElementById("manualPacks").value) || 0;
 
   const support =
     Number(document.getElementById("support").value) || 0;
@@ -719,10 +689,6 @@ function calculate() {
 
     1 MB = 1024 KB
     1 GB = 1024 MB
-
-    Por eso:
-
-    KB / 1024 / 1024 = GB
   */
 
   const totalKB =
@@ -736,31 +702,25 @@ function calculate() {
   /*
     PACKS DE 50 GB
 
-    Hasta 50 GB = 1 pack
-    Hasta 100 GB = 2 packs
-    Hasta 150 GB = 3 packs
-    etc.
+    Si se cargan packs manualmente,
+    se respeta ese valor.
+
+    Si no, se calculan automáticamente.
   */
 
- let packs;
+  let packs;
 
-if (manualPacks > 0) {
+  if (manualPacks > 0) {
 
-  // Si el usuario indica packs manualmente,
-  // se utiliza esa cantidad.
+    packs = manualPacks;
 
-  packs = manualPacks;
+  } else {
 
-} else {
+    packs = Math.ceil(
+      storageNeeded / 50
+    );
 
-  // Si no indica packs,
-  // se calculan automáticamente según las imágenes.
-
-  packs = Math.ceil(
-    storageNeeded / 50
-  );
-
-}
+  }
 
 
   if (packs < 1) {
@@ -797,7 +757,7 @@ if (manualPacks > 0) {
 
 
   /*
-    MOSTRAR
+    MOSTRAR RESULTADOS
   */
 
   document.getElementById("setupCost").innerText =
@@ -835,8 +795,7 @@ if (manualPacks > 0) {
 
 
   /*
-    Guardamos los datos
-    para utilizarlos al exportar.
+    GUARDAR DATOS
   */
 
   window.cotizacion = {
@@ -852,6 +811,7 @@ if (manualPacks > 0) {
     signatures,
     imageWeight,
     images,
+    manualPacks,
     support,
 
     userPrice,
@@ -883,10 +843,7 @@ if (manualPacks > 0) {
 /*
   DESCARGAR EXCEL
 
-  Generamos un archivo CSV compatible
-  con Excel.
-
-  No requiere instalar nada.
+  Se genera un CSV compatible con Excel.
 */
 
 function downloadExcel() {
@@ -1013,12 +970,12 @@ function downloadExcel() {
 
 
   /*
-    Convertimos la información
-    en CSV compatible con Excel.
+    Convertir a CSV
   */
 
   const csv =
     rows.map(row =>
+
       row.map(value => {
 
         let text =
@@ -1030,12 +987,12 @@ function downloadExcel() {
         return '"' + text + '"';
 
       }).join(";")
+
     ).join("\n");
 
 
   /*
-    BOM para que Excel reconozca
-    correctamente acentos y ñ.
+    BOM para Excel
   */
 
   const blob =
@@ -1056,7 +1013,8 @@ function downloadExcel() {
     document.createElement("a");
 
 
-  link.href = url;
+  link.href =
+    url;
 
 
   link.download =
@@ -1078,16 +1036,13 @@ function downloadExcel() {
 
 
 /*
-  Calcular automáticamente
-  al abrir.
+  CALCULAR AUTOMÁTICAMENTE AL ABRIR
 */
 
 calculate();
 
 </script>
 
-
 </body>
 
 </html>
-```
