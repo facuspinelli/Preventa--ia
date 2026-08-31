@@ -1,5 +1,5 @@
-```html
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -9,7 +9,6 @@
 
 <title>Repositorio | PREVENTA IA</title>
 
-<!-- MAMMOTH: permite previsualizar archivos Word -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 
 <style>
@@ -59,14 +58,9 @@ header h1 {
   margin-bottom: 8px;
 }
 
-
-/* ==========================================
-   RESUMEN
-========================================== */
-
 .summary {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 15px;
   margin-bottom: 25px;
 }
@@ -89,11 +83,6 @@ header h1 {
   font-weight: bold;
 }
 
-
-/* ==========================================
-   BUSQUEDA
-========================================== */
-
 .search-box {
   background: white;
   border-radius: 12px;
@@ -109,11 +98,6 @@ header h1 {
   border-radius: 8px;
   font-size: 15px;
 }
-
-
-/* ==========================================
-   OPORTUNIDADES
-========================================== */
 
 .opportunities {
   display: grid;
@@ -144,11 +128,6 @@ header h1 {
   color: #6b7280;
   font-size: 14px;
 }
-
-
-/* ==========================================
-   ESTADOS
-========================================== */
 
 .status {
   display: inline-block;
@@ -184,11 +163,6 @@ header h1 {
   color: #991b1b;
 }
 
-
-/* ==========================================
-   DATOS
-========================================== */
-
 .data-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -212,11 +186,6 @@ header h1 {
   font-weight: bold;
   font-size: 14px;
 }
-
-
-/* ==========================================
-   COTIZACION
-========================================== */
 
 .quote-section {
   margin-top: 22px;
@@ -266,11 +235,6 @@ header h1 {
   font-size: 13px;
 }
 
-
-/* ==========================================
-   PROPUESTA FINAL
-========================================== */
-
 .proposal-section {
   margin-top: 22px;
   padding: 18px;
@@ -290,11 +254,6 @@ header h1 {
   color: #6b7280;
   line-height: 1.5;
 }
-
-
-/* ==========================================
-   BOTONES
-========================================== */
 
 .actions {
   margin-top: 20px;
@@ -350,10 +309,13 @@ button:hover {
   background: #b91c1c;
 }
 
+.orange {
+  background: #d97706;
+}
 
-/* ==========================================
-   DETALLE
-========================================== */
+.orange:hover {
+  background: #b45309;
+}
 
 .detail {
   display: none;
@@ -379,11 +341,6 @@ button:hover {
   font-size: 14px;
 }
 
-
-/* ==========================================
-   VACIO
-========================================== */
-
 .empty {
   background: white;
   border-radius: 12px;
@@ -391,11 +348,6 @@ button:hover {
   text-align: center;
   color: #6b7280;
 }
-
-
-/* ==========================================
-   MODAL PREVIEW
-========================================== */
 
 .modal {
   display: none;
@@ -411,12 +363,19 @@ button:hover {
 .modal-content {
   width: 100%;
   max-width: 1000px;
-  height: 92vh;
+  max-height: 92vh;
   background: white;
   border-radius: 14px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+.modal-form {
+  max-width: 800px;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 30px;
 }
 
 .modal-header {
@@ -473,19 +432,74 @@ button:hover {
   color: #1f2937;
 }
 
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
 
-/* ==========================================
-   RESPONSIVE
-========================================== */
+.form-group.full {
+  grid-column: 1 / -1;
+}
 
-@media (max-width: 900px) {
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+@media (max-width: 1000px) {
 
   .summary {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .data-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 800px) {
+
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .opportunity-header {
+    flex-direction: column;
   }
 
   .quote-grid {
@@ -496,13 +510,16 @@ button:hover {
 
 @media (max-width: 700px) {
 
-  header {
-    flex-direction: column;
-    gap: 15px;
+  .summary {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .opportunity-header {
-    flex-direction: column;
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full {
+    grid-column: auto;
   }
 
 }
@@ -528,147 +545,145 @@ button:hover {
 
 </head>
 
-
 <body>
-
 
 <header>
 
-  <h1>
-    🗂️ PREVENTA IA
-  </h1>
+  <h1>🗂️ PREVENTA IA</h1>
 
-  <a
-    href="index.html"
-    class="back"
-  >
-    ← Volver al inicio
+<a
+href="index.html"
+class="back"
+
+>
+
+```
+← Volver al inicio
+```
+
   </a>
 
 </header>
 
-
 <main class="container">
-
 
   <div class="welcome">
 
-    <h2>
-      🗂️ Repositorio de Preventa
-    </h2>
+```
+<h2>
+  🗂️ Repositorio de Preventa
+</h2>
 
-    <p>
-      Historial centralizado de oportunidades,
-      análisis, cotizaciones y propuestas finales.
-    </p>
+<p>
+  Historial centralizado de oportunidades,
+  cotizaciones y propuestas finales.
+</p>
+```
 
   </div>
-
-
-  <!-- ==========================================
-       RESUMEN
-  ========================================== -->
 
   <div class="summary">
 
-    <div class="summary-card">
+```
+<div class="summary-card">
 
-      <div class="summary-title">
-        OPORTUNIDADES
-      </div>
-
-      <div
-        id="totalOpportunities"
-        class="summary-value"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="summary-card">
-
-      <div class="summary-title">
-        EN ANÁLISIS
-      </div>
-
-      <div
-        id="analysisCount"
-        class="summary-value"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="summary-card">
-
-      <div class="summary-title">
-        COTIZADAS
-      </div>
-
-      <div
-        id="quoteCount"
-        class="summary-value"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="summary-card">
-
-      <div class="summary-title">
-        GANADAS
-      </div>
-
-      <div
-        id="wonCount"
-        class="summary-value"
-      >
-        0
-      </div>
-
-    </div>
-
+  <div class="summary-title">
+    OPORTUNIDADES
   </div>
 
+  <div
+    id="totalOpportunities"
+    class="summary-value"
+  >
+    0
+  </div>
 
-  <!-- ==========================================
-       BUSQUEDA
-  ========================================== -->
+</div>
+
+<div class="summary-card">
+
+  <div class="summary-title">
+    EN ANÁLISIS
+  </div>
+
+  <div
+    id="analysisCount"
+    class="summary-value"
+  >
+    0
+  </div>
+
+</div>
+
+<div class="summary-card">
+
+  <div class="summary-title">
+    COTIZADAS
+  </div>
+
+  <div
+    id="quoteCount"
+    class="summary-value"
+  >
+    0
+  </div>
+
+</div>
+
+<div class="summary-card">
+
+  <div class="summary-title">
+    GANADAS
+  </div>
+
+  <div
+    id="wonCount"
+    class="summary-value"
+  >
+    0
+  </div>
+
+</div>
+
+<div class="summary-card">
+
+  <div class="summary-title">
+    PERDIDAS
+  </div>
+
+  <div
+    id="lostCount"
+    class="summary-value"
+  >
+    0
+  </div>
+
+</div>
+```
+
+  </div>
 
   <div class="search-box">
 
-    <input
-      id="search"
-      type="text"
-      placeholder="🔎 Buscar por cliente, oportunidad o solución..."
-      oninput="renderRepository()"
-    >
+```
+<input
+  id="search"
+  type="text"
+  placeholder="🔎 Buscar por cliente, oportunidad o solución..."
+  oninput="renderRepository()"
+>
+```
 
   </div>
-
-
-  <!-- ==========================================
-       LISTA
-  ========================================== -->
 
   <div
     id="opportunities"
     class="opportunities"
   ></div>
 
-
 </main>
 
-
-<!-- ==========================================
-     MODAL PREVISUALIZACION
-========================================== -->
+<!-- MODAL PREVISUALIZACION -->
 
 <div
   id="previewModal"
@@ -677,43 +692,307 @@ button:hover {
 
   <div class="modal-content">
 
+```
+<div class="modal-header">
 
-    <div class="modal-header">
+  <h3 id="previewTitle">
+    📄 Propuesta final
+  </h3>
 
-      <h3 id="previewTitle">
-        📄 Propuesta final
-      </h3>
+  <button
+    class="close-button"
+    onclick="closePreview()"
+  >
+    ✕ Cerrar
+  </button>
 
-      <button
-        class="close-button"
-        onclick="closePreview()"
-      >
-        ✕ Cerrar
-      </button>
+</div>
 
-    </div>
+<div
+  id="preview"
+  class="preview"
+>
 
+  <div class="document-page">
+    Cargando propuesta...
+  </div>
 
-    <div
-      id="preview"
-      class="preview"
-    >
-
-      <div class="document-page">
-
-        Cargando propuesta...
-
-      </div>
-
-    </div>
+</div>
+```
 
   </div>
 
 </div>
 
+<!-- MODAL EDITAR OPORTUNIDAD -->
+
+<div
+  id="editModal"
+  class="modal"
+>
+
+  <div class="modal-content modal-form">
+
+```
+<h3>
+  ✏️ Editar oportunidad
+</h3>
+
+<p style="color:#6b7280;font-size:13px;margin-bottom:25px;">
+  Podés corregir los datos de la oportunidad sin modificar la cotización ni la propuesta final.
+</p>
+
+<div class="form-grid">
+
+  <div class="form-group">
+
+    <label>
+      Cliente
+    </label>
+
+    <input
+      id="editClient"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Oportunidad / Proyecto
+    </label>
+
+    <input
+      id="editProject"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Solución
+    </label>
+
+    <input
+      id="editSolution"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Estado
+    </label>
+
+    <select id="editStatus">
+
+      <option value="analysis">
+        🟡 En análisis
+      </option>
+
+      <option value="quote">
+        🔵 Cotizando
+      </option>
+
+      <option value="proposal">
+        🟣 Propuesta
+      </option>
+
+      <option value="won">
+        🟢 Ganada
+      </option>
+
+      <option value="lost">
+        🔴 Perdida
+      </option>
+
+    </select>
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Usuarios
+    </label>
+
+    <input
+      id="editUsers"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Storage
+    </label>
+
+    <input
+      id="editStorage"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Documentos
+    </label>
+
+    <input
+      id="editDocuments"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Workflows
+    </label>
+
+    <input
+      id="editWorkflows"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      OCR
+    </label>
+
+    <input
+      id="editOcr"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Firmas
+    </label>
+
+    <input
+      id="editSignatures"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Infraestructura
+    </label>
+
+    <input
+      id="editInfrastructure"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group">
+
+    <label>
+      Plazo
+    </label>
+
+    <input
+      id="editDeadline"
+      type="text"
+    >
+
+  </div>
+
+  <div class="form-group full">
+
+    <label>
+      Objetivo
+    </label>
+
+    <textarea
+      id="editObjective"
+    ></textarea>
+
+  </div>
+
+  <div class="form-group full">
+
+    <label>
+      Requerimientos
+    </label>
+
+    <textarea
+      id="editRequirements"
+    ></textarea>
+
+  </div>
+
+  <div class="form-group full">
+
+    <label>
+      Riesgos
+    </label>
+
+    <textarea
+      id="editRisks"
+    ></textarea>
+
+  </div>
+
+  <div class="form-group full">
+
+    <label>
+      Notas internas
+    </label>
+
+    <textarea
+      id="editNotes"
+    ></textarea>
+
+  </div>
+
+</div>
+
+<div class="modal-buttons">
+
+  <button
+    class="button green"
+    onclick="saveEditedOpportunity()"
+  >
+    💾 Guardar cambios
+  </button>
+
+  <button
+    class="button secondary"
+    onclick="closeEditModal()"
+  >
+    Cancelar
+  </button>
+
+</div>
+```
+
+  </div>
+
+</div>
 
 <script>
-
 
 /* =====================================================
    CONFIGURACION
@@ -722,14 +1001,11 @@ button:hover {
 const DB_NAME =
   "preventa_ia_biblioteca";
 
-
 const DB_VERSION =
   2;
 
-
 const FINAL_STORE =
   "finalProposals";
-
 
 let db =
   null;
@@ -763,6 +1039,19 @@ function getOpportunities() {
 
 }
 
+function saveOpportunities(
+  opportunities
+) {
+
+  localStorage.setItem(
+    "preventa_opportunities",
+    JSON.stringify(
+      opportunities
+    )
+  );
+
+}
+
 
 /* =====================================================
    BASE DE DATOS
@@ -779,13 +1068,11 @@ function openDatabase() {
           DB_VERSION
         );
 
-
       request.onupgradeneeded =
         function(event) {
 
           const database =
             event.target.result;
-
 
           if (
             !database.objectStoreNames.contains(
@@ -801,7 +1088,6 @@ function openDatabase() {
                 }
               );
 
-
             store.createIndex(
               "opportunityId",
               "opportunityId",
@@ -809,7 +1095,6 @@ function openDatabase() {
                 unique: false
               }
             );
-
 
             store.createIndex(
               "createdAt",
@@ -823,20 +1108,17 @@ function openDatabase() {
 
         };
 
-
       request.onsuccess =
         function(event) {
 
           db =
             event.target.result;
 
-
           resolve(
             db
           );
 
         };
-
 
       request.onerror =
         function() {
@@ -854,7 +1136,7 @@ function openDatabase() {
 
 
 /* =====================================================
-   OBTENER PROPUESTA FINAL
+   PROPUESTA FINAL
 ===================================================== */
 
 function getFinalProposal(
@@ -867,11 +1149,9 @@ function getFinalProposal(
       if (!db) {
 
         resolve(null);
-
         return;
 
       }
-
 
       if (
         !db.objectStoreNames.contains(
@@ -880,11 +1160,9 @@ function getFinalProposal(
       ) {
 
         resolve(null);
-
         return;
 
       }
-
 
       const transaction =
         db.transaction(
@@ -892,18 +1170,15 @@ function getFinalProposal(
           "readonly"
         );
 
-
       const store =
         transaction.objectStore(
           FINAL_STORE
         );
 
-
       const index =
         store.index(
           "opportunityId"
         );
-
 
       const request =
         index.getAll(
@@ -912,13 +1187,11 @@ function getFinalProposal(
           )
         );
 
-
       request.onsuccess =
         function() {
 
           const results =
             request.result || [];
-
 
           results.sort(
             function(a, b) {
@@ -935,14 +1208,12 @@ function getFinalProposal(
             }
           );
 
-
           resolve(
             results[0] ||
             null
           );
 
         };
-
 
       request.onerror =
         function() {
@@ -960,7 +1231,94 @@ function getFinalProposal(
 
 
 /* =====================================================
-   ESTADO
+   ELIMINAR PROPUESTA FINAL
+===================================================== */
+
+function deleteFinalProposals(
+  opportunityId
+) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      if (!db) {
+
+        resolve();
+        return;
+
+      }
+
+      if (
+        !db.objectStoreNames.contains(
+          FINAL_STORE
+        )
+      ) {
+
+        resolve();
+        return;
+
+      }
+
+      const transaction =
+        db.transaction(
+          FINAL_STORE,
+          "readwrite"
+        );
+
+      const store =
+        transaction.objectStore(
+          FINAL_STORE
+        );
+
+      const index =
+        store.index(
+          "opportunityId"
+        );
+
+      const request =
+        index.getAll(
+          String(
+            opportunityId
+          )
+        );
+
+      request.onsuccess =
+        function() {
+
+          const results =
+            request.result || [];
+
+          results.forEach(
+            function(item) {
+
+              store.delete(
+                item.id
+              );
+
+            }
+          );
+
+          resolve();
+
+        };
+
+      request.onerror =
+        function() {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   ESTADOS
 ===================================================== */
 
 function getStatusName(
@@ -986,10 +1344,8 @@ function getStatusName(
 
   };
 
-
   return (
     names[status] ||
-    status ||
     "Sin estado"
   );
 
@@ -1009,16 +1365,13 @@ function updateSummary(
   ).textContent =
     opportunities.length;
 
-
   document.getElementById(
     "analysisCount"
   ).textContent =
     opportunities.filter(
       x =>
-        x.status ===
-        "analysis"
+        x.status === "analysis"
     ).length;
-
 
   document.getElementById(
     "quoteCount"
@@ -1028,14 +1381,20 @@ function updateSummary(
         !!x.quote
     ).length;
 
-
   document.getElementById(
     "wonCount"
   ).textContent =
     opportunities.filter(
       x =>
-        x.status ===
-        "won"
+        x.status === "won"
+    ).length;
+
+  document.getElementById(
+    "lostCount"
+  ).textContent =
+    opportunities.filter(
+      x =>
+        x.status === "lost"
     ).length;
 
 }
@@ -1050,11 +1409,9 @@ async function renderRepository() {
   const opportunities =
     getOpportunities();
 
-
   updateSummary(
     opportunities
   );
-
 
   const search =
     document.getElementById(
@@ -1063,16 +1420,13 @@ async function renderRepository() {
       .toLowerCase()
       .trim();
 
-
   const container =
     document.getElementById(
       "opportunities"
     );
 
-
   container.innerHTML =
     "";
-
 
   const filtered =
     opportunities.filter(
@@ -1093,10 +1447,14 @@ async function renderRepository() {
             String(
               opportunity.solution ||
               ""
+            ) +
+            " " +
+            String(
+              opportunity.product ||
+              ""
             )
           )
           .toLowerCase();
-
 
         return texto.includes(
           search
@@ -1104,7 +1462,6 @@ async function renderRepository() {
 
       }
     );
-
 
   if (
     filtered.length === 0
@@ -1119,12 +1476,11 @@ async function renderRepository() {
         </div>
 
         <h3>
-          No hay oportunidades en el repositorio
+          No hay oportunidades
         </h3>
 
         <p>
-          Las oportunidades que crees aparecerán
-          automáticamente acá.
+          Las oportunidades que crees aparecerán automáticamente acá.
         </p>
 
       </div>
@@ -1135,7 +1491,6 @@ async function renderRepository() {
 
   }
 
-
   for (
     const opportunity of filtered
   ) {
@@ -1145,18 +1500,14 @@ async function renderRepository() {
         "div"
       );
 
-
     card.className =
       "opportunity";
-
 
     const quote =
       opportunity.quote;
 
-
     let finalProposal =
       null;
-
 
     try {
 
@@ -1170,12 +1521,11 @@ async function renderRepository() {
     catch(error) {
 
       console.error(
-        "Error leyendo propuesta:",
+        "Error leyendo propuesta final:",
         error
       );
 
     }
-
 
     card.innerHTML = `
 
@@ -1190,7 +1540,6 @@ async function renderRepository() {
             )}
           </h3>
 
-
           <p>
             👤 Cliente:
             ${escapeHTML(
@@ -1198,7 +1547,6 @@ async function renderRepository() {
               "Sin cliente"
             )}
           </p>
-
 
           <p>
             🧩 Solución:
@@ -1208,7 +1556,6 @@ async function renderRepository() {
               "Por definir"
             )}
           </p>
-
 
           <span
             class="status ${
@@ -1225,8 +1572,6 @@ async function renderRepository() {
 
       </div>
 
-
-      <!-- DATOS -->
 
       <div class="data-grid">
 
@@ -1272,8 +1617,6 @@ async function renderRepository() {
 
       </div>
 
-
-      <!-- COTIZACION -->
 
       ${
         quote
@@ -1322,8 +1665,6 @@ async function renderRepository() {
       }
 
 
-      <!-- PROPUESTA FINAL -->
-
       ${
         finalProposal
 
@@ -1332,11 +1673,8 @@ async function renderRepository() {
             <div class="proposal-section">
 
               <div class="proposal-title">
-
                 📄 Propuesta final
-
               </div>
-
 
               <div class="proposal-file">
 
@@ -1366,7 +1704,6 @@ async function renderRepository() {
 
               </div>
 
-
               <div class="actions">
 
                 <button
@@ -1377,7 +1714,6 @@ async function renderRepository() {
                 >
                   👁️ Previsualizar
                 </button>
-
 
                 <button
                   class="green"
@@ -1407,8 +1743,6 @@ async function renderRepository() {
       }
 
 
-      <!-- ACCIONES -->
-
       <div class="actions">
 
         <button
@@ -1416,7 +1750,6 @@ async function renderRepository() {
         >
           👁️ Ver resumen
         </button>
-
 
         <button
           class="secondary"
@@ -1431,13 +1764,46 @@ async function renderRepository() {
           }
         </button>
 
+        <button
+          class="orange"
+          onclick="setOpportunityStatus('${escapeAttribute(
+            opportunity.id
+          )}','won')"
+        >
+          🟢 Ganada
+        </button>
+
+        <button
+          class="orange"
+          onclick="setOpportunityStatus('${escapeAttribute(
+            opportunity.id
+          )}','lost')"
+        >
+          🔴 Perdida
+        </button>
+
+        <button
+          class="secondary"
+          onclick="editOpportunity('${escapeAttribute(
+            opportunity.id
+          )}')"
+        >
+          ✏️ Editar
+        </button>
+
+        <button
+          class="red"
+          onclick="deleteOpportunity('${escapeAttribute(
+            opportunity.id
+          )}')"
+        >
+          🗑️ Eliminar
+        </button>
+
       </div>
 
 
-      <!-- DETALLE -->
-
       <div class="detail">
-
 
         <div class="detail-section">
 
@@ -1510,11 +1876,9 @@ async function renderRepository() {
 
         </div>
 
-
       </div>
 
     `;
-
 
     container.appendChild(
       card
@@ -1539,11 +1903,9 @@ function dataCard(
     <div class="data-card">
 
       <div class="data-label">
-
         ${escapeHTML(
           label
         )}
-
       </div>
 
       <div class="data-value">
@@ -1578,11 +1940,9 @@ function quoteCard(
     <div class="quote-card">
 
       <div class="quote-label">
-
         ${escapeHTML(
           label
         )}
-
       </div>
 
       <div class="quote-value">
@@ -1615,12 +1975,10 @@ function toggleDetail(
       ".opportunity"
     );
 
-
   const detail =
     card.querySelector(
       ".detail"
     );
-
 
   if (
     detail.style.display ===
@@ -1629,7 +1987,6 @@ function toggleDetail(
 
     detail.style.display =
       "none";
-
 
     button.textContent =
       "👁️ Ver resumen";
@@ -1641,7 +1998,6 @@ function toggleDetail(
     detail.style.display =
       "block";
 
-
     button.textContent =
       "🔼 Ocultar resumen";
 
@@ -1651,7 +2007,7 @@ function toggleDetail(
 
 
 /* =====================================================
-   COTIZADOR
+   ABRIR COTIZADOR
 ===================================================== */
 
 function openQuote(
@@ -1660,7 +2016,6 @@ function openQuote(
 
   const opportunities =
     getOpportunities();
-
 
   const opportunity =
     opportunities.find(
@@ -1673,6 +2028,125 @@ function openQuote(
         )
     );
 
+  if (!opportunity) {
+
+    alert(
+      "No se encontró la oportunidad."
+    );
+
+    return;
+
+  }
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(
+      opportunity
+    )
+  );
+
+  window.location.href =
+    "cotizador.html";
+
+}
+
+
+/* =====================================================
+   CAMBIAR ESTADO
+===================================================== */
+
+function setOpportunityStatus(
+  id,
+  status
+) {
+
+  const opportunities =
+    getOpportunities();
+
+  const index =
+    opportunities.findIndex(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(
+          id
+        )
+    );
+
+  if (
+    index === -1
+  ) {
+
+    alert(
+      "No se encontró la oportunidad."
+    );
+
+    return;
+
+  }
+
+  const opportunity =
+    opportunities[index];
+
+  const mensaje =
+    status === "won"
+      ? "¿Querés marcar esta oportunidad como GANADA?"
+      : "¿Querés marcar esta oportunidad como PERDIDA?";
+
+  if (
+    !confirm(
+      mensaje
+    )
+  ) {
+
+    return;
+
+  }
+
+  opportunity.status =
+    status;
+
+  opportunity.updatedAt =
+    new Date().toISOString();
+
+  saveOpportunities(
+    opportunities
+  );
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(
+      opportunity
+    )
+  );
+
+  renderRepository();
+
+}
+
+
+/* =====================================================
+   EDITAR OPORTUNIDAD
+===================================================== */
+
+function editOpportunity(
+  id
+) {
+
+  const opportunities =
+    getOpportunities();
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(
+          id
+        )
+    );
 
   if (!opportunity) {
 
@@ -1684,6 +2158,265 @@ function openQuote(
 
   }
 
+  document.getElementById(
+    "editModal"
+  ).dataset.id =
+    opportunity.id;
+
+
+  document.getElementById(
+    "editClient"
+  ).value =
+    opportunity.client ||
+    "";
+
+  document.getElementById(
+    "editProject"
+  ).value =
+    opportunity.project ||
+    "";
+
+  document.getElementById(
+    "editSolution"
+  ).value =
+    opportunity.solution ||
+    opportunity.product ||
+    "";
+
+  document.getElementById(
+    "editStatus"
+  ).value =
+    opportunity.status ||
+    "analysis";
+
+  document.getElementById(
+    "editUsers"
+  ).value =
+    opportunity.users ||
+    "";
+
+  document.getElementById(
+    "editStorage"
+  ).value =
+    opportunity.storage ||
+    "";
+
+  document.getElementById(
+    "editDocuments"
+  ).value =
+    opportunity.documents ||
+    "";
+
+  document.getElementById(
+    "editWorkflows"
+  ).value =
+    opportunity.workflows ||
+    "";
+
+  document.getElementById(
+    "editOcr"
+  ).value =
+    opportunity.ocr ||
+    "";
+
+  document.getElementById(
+    "editSignatures"
+  ).value =
+    opportunity.signatures ||
+    "";
+
+  document.getElementById(
+    "editInfrastructure"
+  ).value =
+    opportunity.infrastructure ||
+    "";
+
+  document.getElementById(
+    "editDeadline"
+  ).value =
+    opportunity.deadline ||
+    "";
+
+  document.getElementById(
+    "editObjective"
+  ).value =
+    opportunity.objective ||
+    "";
+
+  document.getElementById(
+    "editRequirements"
+  ).value =
+    opportunity.requirements ||
+    "";
+
+  document.getElementById(
+    "editRisks"
+  ).value =
+    opportunity.risks ||
+    "";
+
+  document.getElementById(
+    "editNotes"
+  ).value =
+    opportunity.notes ||
+    "";
+
+  document.getElementById(
+    "editModal"
+  ).style.display =
+    "flex";
+
+}
+
+
+/* =====================================================
+   GUARDAR EDICION
+===================================================== */
+
+function saveEditedOpportunity() {
+
+  const modal =
+    document.getElementById(
+      "editModal"
+    );
+
+  const id =
+    modal.dataset.id;
+
+  const opportunities =
+    getOpportunities();
+
+  const index =
+    opportunities.findIndex(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(
+          id
+        )
+    );
+
+  if (
+    index === -1
+  ) {
+
+    alert(
+      "No se encontró la oportunidad."
+    );
+
+    return;
+
+  }
+
+  const client =
+    document.getElementById(
+      "editClient"
+    ).value.trim();
+
+  const project =
+    document.getElementById(
+      "editProject"
+    ).value.trim();
+
+  if (
+    !client ||
+    !project
+  ) {
+
+    alert(
+      "Completá al menos Cliente y Oportunidad / Proyecto."
+    );
+
+    return;
+
+  }
+
+  const opportunity =
+    opportunities[index];
+
+  opportunity.client =
+    client;
+
+  opportunity.project =
+    project;
+
+  opportunity.solution =
+    document.getElementById(
+      "editSolution"
+    ).value.trim();
+
+  opportunity.status =
+    document.getElementById(
+      "editStatus"
+    ).value;
+
+  opportunity.users =
+    document.getElementById(
+      "editUsers"
+    ).value.trim();
+
+  opportunity.storage =
+    document.getElementById(
+      "editStorage"
+    ).value.trim();
+
+  opportunity.documents =
+    document.getElementById(
+      "editDocuments"
+    ).value.trim();
+
+  opportunity.workflows =
+    document.getElementById(
+      "editWorkflows"
+    ).value.trim();
+
+  opportunity.ocr =
+    document.getElementById(
+      "editOcr"
+    ).value.trim();
+
+  opportunity.signatures =
+    document.getElementById(
+      "editSignatures"
+    ).value.trim();
+
+  opportunity.infrastructure =
+    document.getElementById(
+      "editInfrastructure"
+    ).value.trim();
+
+  opportunity.deadline =
+    document.getElementById(
+      "editDeadline"
+    ).value.trim();
+
+  opportunity.objective =
+    document.getElementById(
+      "editObjective"
+    ).value.trim();
+
+  opportunity.requirements =
+    document.getElementById(
+      "editRequirements"
+    ).value.trim();
+
+  opportunity.risks =
+    document.getElementById(
+      "editRisks"
+    ).value.trim();
+
+  opportunity.notes =
+    document.getElementById(
+      "editNotes"
+    ).value.trim();
+
+  opportunity.updatedAt =
+    new Date().toISOString();
+
+  saveOpportunities(
+    opportunities
+  );
 
   localStorage.setItem(
     "preventa_current_opportunity",
@@ -1692,15 +2425,169 @@ function openQuote(
     )
   );
 
+  closeEditModal();
 
-  window.location.href =
-    "cotizador.html";
+  renderRepository();
 
 }
 
 
 /* =====================================================
-   PREVISUALIZAR PROPUESTA
+   CERRAR EDITAR
+===================================================== */
+
+function closeEditModal() {
+
+  document.getElementById(
+    "editModal"
+  ).style.display =
+    "none";
+
+}
+
+
+/* =====================================================
+   ELIMINAR OPORTUNIDAD
+===================================================== */
+
+async function deleteOpportunity(
+  id
+) {
+
+  const opportunities =
+    getOpportunities();
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(
+          id
+        )
+    );
+
+  if (!opportunity) {
+
+    alert(
+      "No se encontró la oportunidad."
+    );
+
+    return;
+
+  }
+
+  let mensaje =
+    "¿Querés eliminar definitivamente la oportunidad:\n\n" +
+    (
+      opportunity.project ||
+      "Sin nombre"
+    ) +
+    "\n" +
+    (
+      opportunity.client ||
+      "Sin cliente"
+    );
+
+  if (
+    opportunity.quote
+  ) {
+
+    mensaje +=
+      "\n\nTambién se eliminará la cotización asociada.";
+
+  }
+
+  mensaje +=
+    "\nLa propuesta final asociada también dejará de estar vinculada.";
+
+  if (
+    !confirm(
+      mensaje
+    )
+  ) {
+
+    return;
+
+  }
+
+  try {
+
+    await deleteFinalProposals(
+      opportunity.id
+    );
+
+  }
+
+  catch(error) {
+
+    console.warn(
+      "No se pudo eliminar la propuesta final asociada:",
+      error
+    );
+
+  }
+
+  const remaining =
+    opportunities.filter(
+      item =>
+        String(
+          item.id
+        ) !==
+        String(
+          id
+        )
+    );
+
+  saveOpportunities(
+    remaining
+  );
+
+  const current =
+    localStorage.getItem(
+      "preventa_current_opportunity"
+    );
+
+  if (current) {
+
+    try {
+
+      const currentOpportunity =
+        JSON.parse(
+          current
+        );
+
+      if (
+        String(
+          currentOpportunity.id
+        ) ===
+        String(
+          id
+        )
+      ) {
+
+        localStorage.removeItem(
+          "preventa_current_opportunity"
+        );
+
+      }
+
+    }
+
+    catch(error) {
+
+    }
+
+  }
+
+  await renderRepository();
+
+}
+
+
+/* =====================================================
+   PREVISUALIZAR
 ===================================================== */
 
 async function previewProposal(
@@ -1712,7 +2599,6 @@ async function previewProposal(
       opportunityId
     );
 
-
   if (!proposal) {
 
     alert(
@@ -1722,7 +2608,6 @@ async function previewProposal(
     return;
 
   }
-
 
   if (
     typeof mammoth ===
@@ -1737,24 +2622,20 @@ async function previewProposal(
 
   }
 
-
   const modal =
     document.getElementById(
       "previewModal"
     );
-
 
   const title =
     document.getElementById(
       "previewTitle"
     );
 
-
   const preview =
     document.getElementById(
       "preview"
     );
-
 
   title.textContent =
     "📄 " +
@@ -1762,7 +2643,6 @@ async function previewProposal(
       proposal.fileName ||
       "Propuesta final"
     );
-
 
   preview.innerHTML = `
 
@@ -1774,16 +2654,13 @@ async function previewProposal(
 
   `;
 
-
   modal.style.display =
     "flex";
-
 
   try {
 
     const arrayBuffer =
       await proposal.blob.arrayBuffer();
-
 
     const result =
       await mammoth.convertToHtml(
@@ -1792,7 +2669,6 @@ async function previewProposal(
             arrayBuffer
         }
       );
-
 
     preview.innerHTML =
 
@@ -1813,7 +2689,6 @@ async function previewProposal(
       error
     );
 
-
     preview.innerHTML = `
 
       <div class="document-page">
@@ -1824,13 +2699,7 @@ async function previewProposal(
 
         <p>
           El archivo está guardado correctamente,
-          pero no se pudo mostrar su contenido
-          en el visor.
-        </p>
-
-        <p>
-          Podés descargar el Word desde
-          la oportunidad.
+          pero no se pudo mostrar su contenido.
         </p>
 
       </div>
@@ -1843,7 +2712,7 @@ async function previewProposal(
 
 
 /* =====================================================
-   DESCARGAR
+   DESCARGAR PROPUESTA
 ===================================================== */
 
 async function downloadProposal(
@@ -1855,7 +2724,6 @@ async function downloadProposal(
       opportunityId
     );
 
-
   if (!proposal) {
 
     alert(
@@ -1866,40 +2734,32 @@ async function downloadProposal(
 
   }
 
-
   const url =
     URL.createObjectURL(
       proposal.blob
     );
-
 
   const link =
     document.createElement(
       "a"
     );
 
-
   link.href =
     url;
-
 
   link.download =
     proposal.fileName ||
     "Propuesta_Preventa_IA.docx";
 
-
   document.body.appendChild(
     link
   );
 
-
   link.click();
-
 
   document.body.removeChild(
     link
   );
-
 
   setTimeout(
     function() {
@@ -1916,7 +2776,7 @@ async function downloadProposal(
 
 
 /* =====================================================
-   CERRAR
+   CERRAR PREVIEW
 ===================================================== */
 
 function closePreview() {
@@ -1942,7 +2802,6 @@ function formatDate(
     return "Sin fecha";
 
   }
-
 
   try {
 
@@ -1979,7 +2838,6 @@ function formatMoney(
     return value;
 
   }
-
 
   return (
     "USD " +
@@ -2047,6 +2905,10 @@ function escapeAttribute(
     ""
   )
   .replace(
+    /\\/g,
+    "\\\\"
+  )
+  .replace(
     /'/g,
     "\\'"
   );
@@ -2075,7 +2937,6 @@ function escapeAttribute(
 
   }
 
-
   await renderRepository();
 
 })();
@@ -2085,4 +2946,3 @@ function escapeAttribute(
 </body>
 
 </html>
-```
