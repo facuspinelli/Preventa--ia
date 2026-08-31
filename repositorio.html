@@ -570,9 +570,7 @@ class="back"
   <div class="welcome">
 
 ```
-<h2>
-  🗂️ Repositorio de Preventa
-</h2>
+<h2>🗂️ Repositorio de Preventa</h2>
 
 <p>
   Historial centralizado de oportunidades,
@@ -670,7 +668,6 @@ class="back"
   id="search"
   type="text"
   placeholder="🔎 Buscar por cliente, oportunidad o solución..."
-  oninput="renderRepository()"
 >
 ```
 
@@ -682,8 +679,6 @@ class="back"
   ></div>
 
 </main>
-
-<!-- MODAL PREVISUALIZACION -->
 
 <div
   id="previewModal"
@@ -724,8 +719,6 @@ class="back"
 
 </div>
 
-<!-- MODAL EDITAR OPORTUNIDAD -->
-
 <div
   id="editModal"
   class="modal"
@@ -739,7 +732,8 @@ class="back"
 </h3>
 
 <p style="color:#6b7280;font-size:13px;margin-bottom:25px;">
-  Podés corregir los datos de la oportunidad sin modificar la cotización ni la propuesta final.
+  Podés corregir los datos sin modificar la cotización
+  ni la propuesta final asociada.
 </p>
 
 <div class="form-grid">
@@ -994,10 +988,6 @@ class="back"
 
 <script>
 
-/* =====================================================
-   CONFIGURACION
-===================================================== */
-
 const DB_NAME =
   "preventa_ia_biblioteca";
 
@@ -1011,25 +1001,36 @@ let db =
   null;
 
 
-/* =====================================================
+/* ==========================================
    OPORTUNIDADES
-===================================================== */
+========================================== */
 
 function getOpportunities() {
 
   try {
 
-    return JSON.parse(
+    const data =
       localStorage.getItem(
         "preventa_opportunities"
-      )
-    ) || [];
+      );
+
+    if (!data) {
+      return [];
+    }
+
+    const parsed =
+      JSON.parse(data);
+
+    return Array.isArray(parsed)
+      ? parsed
+      : [];
 
   }
 
   catch(error) {
 
     console.error(
+      "Error leyendo oportunidades:",
       error
     );
 
@@ -1038,6 +1039,7 @@ function getOpportunities() {
   }
 
 }
+
 
 function saveOpportunities(
   opportunities
@@ -1053,9 +1055,9 @@ function saveOpportunities(
 }
 
 
-/* =====================================================
+/* ==========================================
    BASE DE DATOS
-===================================================== */
+========================================== */
 
 function openDatabase() {
 
@@ -1084,7 +1086,8 @@ function openDatabase() {
               database.createObjectStore(
                 FINAL_STORE,
                 {
-                  keyPath: "id"
+                  keyPath:
+                    "id"
                 }
               );
 
@@ -1092,7 +1095,8 @@ function openDatabase() {
               "opportunityId",
               "opportunityId",
               {
-                unique: false
+                unique:
+                  false
               }
             );
 
@@ -1100,7 +1104,8 @@ function openDatabase() {
               "createdAt",
               "createdAt",
               {
-                unique: false
+                unique:
+                  false
               }
             );
 
@@ -1135,9 +1140,9 @@ function openDatabase() {
 }
 
 
-/* =====================================================
-   PROPUESTA FINAL
-===================================================== */
+/* ==========================================
+   OBTENER PROPUESTA FINAL
+========================================== */
 
 function getFinalProposal(
   opportunityId
@@ -1209,8 +1214,7 @@ function getFinalProposal(
           );
 
           resolve(
-            results[0] ||
-            null
+            results[0] || null
           );
 
         };
@@ -1230,9 +1234,9 @@ function getFinalProposal(
 }
 
 
-/* =====================================================
+/* ==========================================
    ELIMINAR PROPUESTA FINAL
-===================================================== */
+========================================== */
 
 function deleteFinalProposals(
   opportunityId
@@ -1317,9 +1321,9 @@ function deleteFinalProposals(
 }
 
 
-/* =====================================================
+/* ==========================================
    ESTADOS
-===================================================== */
+========================================== */
 
 function getStatusName(
   status
@@ -1352,9 +1356,9 @@ function getStatusName(
 }
 
 
-/* =====================================================
+/* ==========================================
    RESUMEN
-===================================================== */
+========================================== */
 
 function updateSummary(
   opportunities
@@ -1369,40 +1373,44 @@ function updateSummary(
     "analysisCount"
   ).textContent =
     opportunities.filter(
-      x =>
-        x.status === "analysis"
+      function(item) {
+        return item.status === "analysis";
+      }
     ).length;
 
   document.getElementById(
     "quoteCount"
   ).textContent =
     opportunities.filter(
-      x =>
-        !!x.quote
+      function(item) {
+        return !!item.quote;
+      }
     ).length;
 
   document.getElementById(
     "wonCount"
   ).textContent =
     opportunities.filter(
-      x =>
-        x.status === "won"
+      function(item) {
+        return item.status === "won";
+      }
     ).length;
 
   document.getElementById(
     "lostCount"
   ).textContent =
     opportunities.filter(
-      x =>
-        x.status === "lost"
+      function(item) {
+        return item.status === "lost";
+      }
     ).length;
 
 }
 
 
-/* =====================================================
+/* ==========================================
    RENDER
-===================================================== */
+========================================== */
 
 async function renderRepository() {
 
@@ -1435,26 +1443,21 @@ async function renderRepository() {
         const texto =
           (
             String(
-              opportunity.client ||
-              ""
+              opportunity.client || ""
             ) +
             " " +
             String(
-              opportunity.project ||
-              ""
+              opportunity.project || ""
             ) +
             " " +
             String(
-              opportunity.solution ||
-              ""
+              opportunity.solution || ""
             ) +
             " " +
             String(
-              opportunity.product ||
-              ""
+              opportunity.product || ""
             )
-          )
-          .toLowerCase();
+          ).toLowerCase();
 
         return texto.includes(
           search
@@ -1468,9 +1471,7 @@ async function renderRepository() {
   ) {
 
     container.innerHTML = `
-
       <div class="empty">
-
         <div style="font-size:45px;">
           🗂️
         </div>
@@ -1482,9 +1483,7 @@ async function renderRepository() {
         <p>
           Las oportunidades que crees aparecerán automáticamente acá.
         </p>
-
       </div>
-
     `;
 
     return;
@@ -1526,6 +1525,112 @@ async function renderRepository() {
       );
 
     }
+
+
+    const quoteSection =
+      quote
+        ? `
+          <div class="quote-section">
+
+            <div class="quote-title">
+              💰 Cotización asociada
+            </div>
+
+            <div class="quote-grid">
+
+              ${quoteCard(
+                "SETUP",
+                quote.totalSetup
+              )}
+
+              ${quoteCard(
+                "MENSUAL",
+                quote.totalMonthly
+              )}
+
+              ${quoteCard(
+                "PRIMER AÑO",
+                quote.totalYear
+              )}
+
+            </div>
+
+          </div>
+        `
+        : `
+          <div class="no-quote">
+            ⚠️ Esta oportunidad todavía no tiene una cotización guardada.
+          </div>
+        `;
+
+
+    const proposalSection =
+      finalProposal
+        ? `
+          <div class="proposal-section">
+
+            <div class="proposal-title">
+              📄 Propuesta final
+            </div>
+
+            <div class="proposal-file">
+
+              <strong>
+                ${escapeHTML(
+                  finalProposal.fileName ||
+                  "Propuesta final"
+                )}
+              </strong>
+
+              <br>
+
+              Producto:
+              ${escapeHTML(
+                finalProposal.product ||
+                opportunity.product ||
+                opportunity.solution ||
+                "Sin especificar"
+              )}
+
+              <br>
+
+              Generada:
+              ${formatDate(
+                finalProposal.createdAt
+              )}
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                class="purple"
+                onclick="previewProposal('${escapeAttribute(
+                  opportunity.id
+                )}')"
+              >
+                👁️ Previsualizar
+              </button>
+
+              <button
+                class="green"
+                onclick="downloadProposal('${escapeAttribute(
+                  opportunity.id
+                )}')"
+              >
+                ⬇️ Descargar Word
+              </button>
+
+            </div>
+
+          </div>
+        `
+        : `
+          <div class="no-quote">
+            📄 Todavía no hay una propuesta final generada para esta oportunidad.
+          </div>
+        `;
+
 
     card.innerHTML = `
 
@@ -1572,7 +1677,6 @@ async function renderRepository() {
 
       </div>
 
-
       <div class="data-grid">
 
         ${dataCard(
@@ -1617,131 +1721,9 @@ async function renderRepository() {
 
       </div>
 
+      ${quoteSection}
 
-      ${
-        quote
-
-          ? `
-
-            <div class="quote-section">
-
-              <div class="quote-title">
-                💰 Cotización asociada
-              </div>
-
-              <div class="quote-grid">
-
-                ${quoteCard(
-                  "SETUP",
-                  quote.totalSetup
-                )}
-
-                ${quoteCard(
-                  "MENSUAL",
-                  quote.totalMonthly
-                )}
-
-                ${quoteCard(
-                  "PRIMER AÑO",
-                  quote.totalYear
-                )}
-
-              </div>
-
-            </div>
-
-          `
-
-          : `
-
-            <div class="no-quote">
-
-              ⚠️ Esta oportunidad todavía no tiene
-              una cotización guardada.
-
-            </div>
-
-          `
-      }
-
-
-      ${
-        finalProposal
-
-          ? `
-
-            <div class="proposal-section">
-
-              <div class="proposal-title">
-                📄 Propuesta final
-              </div>
-
-              <div class="proposal-file">
-
-                <strong>
-                  ${escapeHTML(
-                    finalProposal.fileName ||
-                    "Propuesta final"
-                  )}
-                </strong>
-
-                <br>
-
-                Producto:
-                ${escapeHTML(
-                  finalProposal.product ||
-                  opportunity.product ||
-                  opportunity.solution ||
-                  "Sin especificar"
-                )}
-
-                <br>
-
-                Generada:
-                ${formatDate(
-                  finalProposal.createdAt
-                )}
-
-              </div>
-
-              <div class="actions">
-
-                <button
-                  class="purple"
-                  onclick="previewProposal('${escapeAttribute(
-                    opportunity.id
-                  )}')"
-                >
-                  👁️ Previsualizar
-                </button>
-
-                <button
-                  class="green"
-                  onclick="downloadProposal('${escapeAttribute(
-                    opportunity.id
-                  )}')"
-                >
-                  ⬇️ Descargar Word
-                </button>
-
-              </div>
-
-            </div>
-
-          `
-
-          : `
-
-            <div class="no-quote">
-
-              📄 Todavía no hay una propuesta final
-              generada para esta oportunidad.
-
-            </div>
-
-          `
-      }
-
+      ${proposalSection}
 
       <div class="actions">
 
@@ -1765,12 +1747,21 @@ async function renderRepository() {
         </button>
 
         <button
-          class="orange"
+          class="green"
           onclick="setOpportunityStatus('${escapeAttribute(
             opportunity.id
           )}','won')"
         >
           🟢 Ganada
+        </button>
+
+        <button
+          class="orange"
+          onclick="setOpportunityStatus('${escapeAttribute(
+            opportunity.id
+          )}','proposal')"
+        >
+          🟣 Propuesta
         </button>
 
         <button
@@ -1802,7 +1793,6 @@ async function renderRepository() {
 
       </div>
 
-
       <div class="detail">
 
         <div class="detail-section">
@@ -1812,16 +1802,13 @@ async function renderRepository() {
           </h4>
 
           <div class="detail-text">
-
             ${escapeHTML(
               opportunity.objective ||
               "No hay objetivo cargado."
             )}
-
           </div>
 
         </div>
-
 
         <div class="detail-section">
 
@@ -1830,16 +1817,13 @@ async function renderRepository() {
           </h4>
 
           <div class="detail-text">
-
             ${escapeHTML(
               opportunity.requirements ||
               "No hay requerimientos cargados."
             )}
-
           </div>
 
         </div>
-
 
         <div class="detail-section">
 
@@ -1848,16 +1832,13 @@ async function renderRepository() {
           </h4>
 
           <div class="detail-text">
-
             ${escapeHTML(
               opportunity.risks ||
               "No hay riesgos cargados."
             )}
-
           </div>
 
         </div>
-
 
         <div class="detail-section">
 
@@ -1866,18 +1847,15 @@ async function renderRepository() {
           </h4>
 
           <div class="detail-text">
-
             ${escapeHTML(
               opportunity.notes ||
               "Sin notas."
             )}
-
           </div>
 
         </div>
 
       </div>
-
     `;
 
     container.appendChild(
@@ -1889,9 +1867,9 @@ async function renderRepository() {
 }
 
 
-/* =====================================================
+/* ==========================================
    DATA CARD
-===================================================== */
+========================================== */
 
 function dataCard(
   label,
@@ -1899,36 +1877,30 @@ function dataCard(
 ) {
 
   return `
-
     <div class="data-card">
 
       <div class="data-label">
-        ${escapeHTML(
-          label
-        )}
+        ${escapeHTML(label)}
       </div>
 
       <div class="data-value">
-
         ${escapeHTML(
           String(
             value ||
             "No definido"
           )
         )}
-
       </div>
 
     </div>
-
   `;
 
 }
 
 
-/* =====================================================
+/* ==========================================
    QUOTE CARD
-===================================================== */
+========================================== */
 
 function quoteCard(
   label,
@@ -1936,35 +1908,29 @@ function quoteCard(
 ) {
 
   return `
-
     <div class="quote-card">
 
       <div class="quote-label">
-        ${escapeHTML(
-          label
-        )}
+        ${escapeHTML(label)}
       </div>
 
       <div class="quote-value">
-
         ${escapeHTML(
           formatMoney(
             value
           )
         )}
-
       </div>
 
     </div>
-
   `;
 
 }
 
 
-/* =====================================================
-   RESUMEN
-===================================================== */
+/* ==========================================
+   VER RESUMEN
+========================================== */
 
 function toggleDetail(
   button
@@ -2006,9 +1972,9 @@ function toggleDetail(
 }
 
 
-/* =====================================================
-   ABRIR COTIZADOR
-===================================================== */
+/* ==========================================
+   COTIZADOR
+========================================== */
 
 function openQuote(
   id
@@ -2019,13 +1985,16 @@ function openQuote(
 
   const opportunity =
     opportunities.find(
-      item =>
-        String(
+      function(item) {
+
+        return String(
           item.id
         ) ===
         String(
           id
-        )
+        );
+
+      }
     );
 
   if (!opportunity) {
@@ -2051,9 +2020,9 @@ function openQuote(
 }
 
 
-/* =====================================================
+/* ==========================================
    CAMBIAR ESTADO
-===================================================== */
+========================================== */
 
 function setOpportunityStatus(
   id,
@@ -2065,13 +2034,16 @@ function setOpportunityStatus(
 
   const index =
     opportunities.findIndex(
-      item =>
-        String(
+      function(item) {
+
+        return String(
           item.id
         ) ===
         String(
           id
-        )
+        );
+
+      }
     );
 
   if (
@@ -2086,17 +2058,28 @@ function setOpportunityStatus(
 
   }
 
-  const opportunity =
-    opportunities[index];
+  const labels = {
 
-  const mensaje =
-    status === "won"
-      ? "¿Querés marcar esta oportunidad como GANADA?"
-      : "¿Querés marcar esta oportunidad como PERDIDA?";
+    proposal:
+      "PROPUESTA",
+
+    won:
+      "GANADA",
+
+    lost:
+      "PERDIDA"
+
+  };
+
+  const nombre =
+    labels[status] ||
+    status;
 
   if (
     !confirm(
-      mensaje
+      "¿Querés marcar esta oportunidad como " +
+      nombre +
+      "?"
     )
   ) {
 
@@ -2104,10 +2087,10 @@ function setOpportunityStatus(
 
   }
 
-  opportunity.status =
+  opportunities[index].status =
     status;
 
-  opportunity.updatedAt =
+  opportunities[index].updatedAt =
     new Date().toISOString();
 
   saveOpportunities(
@@ -2117,7 +2100,7 @@ function setOpportunityStatus(
   localStorage.setItem(
     "preventa_current_opportunity",
     JSON.stringify(
-      opportunity
+      opportunities[index]
     )
   );
 
@@ -2126,9 +2109,9 @@ function setOpportunityStatus(
 }
 
 
-/* =====================================================
+/* ==========================================
    EDITAR OPORTUNIDAD
-===================================================== */
+========================================== */
 
 function editOpportunity(
   id
@@ -2139,13 +2122,16 @@ function editOpportunity(
 
   const opportunity =
     opportunities.find(
-      item =>
-        String(
+      function(item) {
+
+        return String(
           item.id
         ) ===
         String(
           id
-        )
+        );
+
+      }
     );
 
   if (!opportunity) {
@@ -2158,11 +2144,13 @@ function editOpportunity(
 
   }
 
-  document.getElementById(
-    "editModal"
-  ).dataset.id =
-    opportunity.id;
+  const modal =
+    document.getElementById(
+      "editModal"
+    );
 
+  modal.dataset.id =
+    opportunity.id;
 
   document.getElementById(
     "editClient"
@@ -2261,17 +2249,15 @@ function editOpportunity(
     opportunity.notes ||
     "";
 
-  document.getElementById(
-    "editModal"
-  ).style.display =
+  modal.style.display =
     "flex";
 
 }
 
 
-/* =====================================================
+/* ==========================================
    GUARDAR EDICION
-===================================================== */
+========================================== */
 
 function saveEditedOpportunity() {
 
@@ -2288,13 +2274,16 @@ function saveEditedOpportunity() {
 
   const index =
     opportunities.findIndex(
-      item =>
-        String(
+      function(item) {
+
+        return String(
           item.id
         ) ===
         String(
           id
-        )
+        );
+
+      }
     );
 
   if (
@@ -2325,7 +2314,7 @@ function saveEditedOpportunity() {
   ) {
 
     alert(
-      "Completá al menos Cliente y Oportunidad / Proyecto."
+      "Completá Cliente y Oportunidad / Proyecto."
     );
 
     return;
@@ -2432,9 +2421,9 @@ function saveEditedOpportunity() {
 }
 
 
-/* =====================================================
-   CERRAR EDITAR
-===================================================== */
+/* ==========================================
+   CERRAR EDICION
+========================================== */
 
 function closeEditModal() {
 
@@ -2446,9 +2435,9 @@ function closeEditModal() {
 }
 
 
-/* =====================================================
+/* ==========================================
    ELIMINAR OPORTUNIDAD
-===================================================== */
+========================================== */
 
 async function deleteOpportunity(
   id
@@ -2459,13 +2448,16 @@ async function deleteOpportunity(
 
   const opportunity =
     opportunities.find(
-      item =>
-        String(
+      function(item) {
+
+        return String(
           item.id
         ) ===
         String(
           id
-        )
+        );
+
+      }
     );
 
   if (!opportunity) {
@@ -2479,7 +2471,7 @@ async function deleteOpportunity(
   }
 
   let mensaje =
-    "¿Querés eliminar definitivamente la oportunidad:\n\n" +
+    "¿Querés eliminar definitivamente esta oportunidad?\n\n" +
     (
       opportunity.project ||
       "Sin nombre"
@@ -2500,7 +2492,7 @@ async function deleteOpportunity(
   }
 
   mensaje +=
-    "\nLa propuesta final asociada también dejará de estar vinculada.";
+    "\n\nLa propuesta final asociada también será eliminada.";
 
   if (
     !confirm(
@@ -2523,7 +2515,7 @@ async function deleteOpportunity(
   catch(error) {
 
     console.warn(
-      "No se pudo eliminar la propuesta final asociada:",
+      "No se pudo eliminar la propuesta final:",
       error
     );
 
@@ -2531,13 +2523,16 @@ async function deleteOpportunity(
 
   const remaining =
     opportunities.filter(
-      item =>
-        String(
+      function(item) {
+
+        return String(
           item.id
         ) !==
         String(
           id
-        )
+        );
+
+      }
     );
 
   saveOpportunities(
@@ -2581,14 +2576,14 @@ async function deleteOpportunity(
 
   }
 
-  await renderRepository();
+  renderRepository();
 
 }
 
 
-/* =====================================================
+/* ==========================================
    PREVISUALIZAR
-===================================================== */
+========================================== */
 
 async function previewProposal(
   opportunityId
@@ -2645,13 +2640,9 @@ async function previewProposal(
     );
 
   preview.innerHTML = `
-
     <div class="document-page">
-
       ⏳ Cargando propuesta...
-
     </div>
-
   `;
 
   modal.style.display =
@@ -2671,14 +2662,11 @@ async function previewProposal(
       );
 
     preview.innerHTML =
-
       "<div class='document-page'>" +
-
-        (
-          result.value ||
-          "<p>No se pudo mostrar el contenido.</p>"
-        ) +
-
+      (
+        result.value ||
+        "<p>No se pudo mostrar el contenido.</p>"
+      ) +
       "</div>";
 
   }
@@ -2686,11 +2674,11 @@ async function previewProposal(
   catch(error) {
 
     console.error(
+      "Error previsualizando:",
       error
     );
 
     preview.innerHTML = `
-
       <div class="document-page">
 
         <h3>
@@ -2699,11 +2687,14 @@ async function previewProposal(
 
         <p>
           El archivo está guardado correctamente,
-          pero no se pudo mostrar su contenido.
+          pero el navegador no pudo mostrarlo.
+        </p>
+
+        <p>
+          Podés descargar el Word desde la oportunidad.
         </p>
 
       </div>
-
     `;
 
   }
@@ -2711,9 +2702,9 @@ async function previewProposal(
 }
 
 
-/* =====================================================
+/* ==========================================
    DESCARGAR PROPUESTA
-===================================================== */
+========================================== */
 
 async function downloadProposal(
   opportunityId
@@ -2775,9 +2766,9 @@ async function downloadProposal(
 }
 
 
-/* =====================================================
+/* ==========================================
    CERRAR PREVIEW
-===================================================== */
+========================================== */
 
 function closePreview() {
 
@@ -2789,9 +2780,9 @@ function closePreview() {
 }
 
 
-/* =====================================================
+/* ==========================================
    FECHA
-===================================================== */
+========================================== */
 
 function formatDate(
   value
@@ -2822,9 +2813,9 @@ function formatDate(
 }
 
 
-/* =====================================================
+/* ==========================================
    DINERO
-===================================================== */
+========================================== */
 
 function formatMoney(
   value
@@ -2855,9 +2846,9 @@ function formatMoney(
 }
 
 
-/* =====================================================
+/* ==========================================
    SEGURIDAD
-===================================================== */
+========================================== */
 
 function escapeHTML(
   value
@@ -2867,27 +2858,22 @@ function escapeHTML(
     value ||
     ""
   )
-
   .replace(
     /&/g,
     "&amp;"
   )
-
   .replace(
     /</g,
     "&lt;"
   )
-
   .replace(
     />/g,
     "&gt;"
   )
-
   .replace(
     /"/g,
     "&quot;"
   )
-
   .replace(
     /'/g,
     "&#039;"
@@ -2916,9 +2902,27 @@ function escapeAttribute(
 }
 
 
-/* =====================================================
+/* ==========================================
+   BUSQUEDA
+========================================== */
+
+document
+  .getElementById(
+    "search"
+  )
+  .addEventListener(
+    "input",
+    function() {
+
+      renderRepository();
+
+    }
+  );
+
+
+/* ==========================================
    INICIO
-===================================================== */
+========================================== */
 
 (async function() {
 
