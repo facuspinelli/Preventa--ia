@@ -1,52 +1,49 @@
 const OpenAI = require("openai");
 
 const client = new OpenAI({
-apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY
 });
 
 module.exports = async (req, res) => {
 
-if (req.method !== "POST") {
-return res.status(405).json({
-error: "Método no permitido"
-});
-}
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Método no permitido"
+    });
+  }
 
-try {
+  try {
 
-```
-const message = req.body?.message || "";
-const knowledge = req.body?.knowledge || "";
+    const message = req.body?.message || "";
+    const knowledge = req.body?.knowledge || "";
 
-if (!message.trim()) {
-  return res.status(400).json({
-    error: "No se recibió ninguna pregunta."
-  });
-}
+    if (!message.trim()) {
+      return res.status(400).json({
+        error: "No se recibió ninguna pregunta."
+      });
+    }
 
-const prompt = `
-```
-
+    const prompt = `
 Sos PREVENTA IA, un asistente especializado en Preventa Técnica.
 
 Ayudás con:
 
-* relevamientos
-* oportunidades
-* propuestas
-* Addoc
-* Thuban
-* gestión documental
-* OCR
-* workflows
-* firmas
-* usuarios
-* storage
-* infraestructura
-* integraciones
-* migraciones
-* cotizaciones
-* análisis de documentos
+- relevamientos
+- oportunidades
+- propuestas
+- Addoc
+- Thuban
+- gestión documental
+- OCR
+- workflows
+- firmas
+- usuarios
+- storage
+- infraestructura
+- integraciones
+- migraciones
+- cotizaciones
+- análisis de documentos
 
 Podés responder también preguntas generales.
 
@@ -65,28 +62,24 @@ CONOCIMIENTO INTERNO:
 ${knowledge}
 `;
 
-```
-const response = await client.responses.create({
-  model: "gpt-5.4",
-  instructions: prompt,
-  input: message
-});
+    const response = await client.responses.create({
+      model: "gpt-5.4",
+      instructions: prompt,
+      input: message
+    });
 
-return res.status(200).json({
-  answer: response.output_text
-});
-```
+    return res.status(200).json({
+      answer: response.output_text
+    });
 
-} catch (error) {
+  } catch (error) {
 
-```
-console.error(error);
+    console.error(error);
 
-return res.status(500).json({
-  error: error.message || "Error de OpenAI"
-});
-```
+    return res.status(500).json({
+      error: error.message || "Error de OpenAI"
+    });
 
-}
+  }
 
 };
