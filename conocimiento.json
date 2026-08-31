@@ -1,0 +1,407 @@
+{
+  "nombre": "PREVENTA IA",
+  "version": "1.0",
+  "descripcion": "Base de conocimiento para Preventa Técnica sobre productos, partners, relevamiento, análisis de oportunidades y armado de propuestas.",
+
+  "principios_preventa": [
+    "No vender productos: resolver necesidades.",
+    "Primero entender el proceso y después elegir la herramienta.",
+    "Diferenciar producto, configuración y servicio profesional.",
+    "Separar licencias y costos de producto de horas de implementación.",
+    "Preguntar por usuarios, volumen, documentos, workflows, integraciones y plazos.",
+    "Conocer cuándo una solución propia es suficiente y cuándo conviene incorporar un partner.",
+    "No prometer funcionalidades o alcances sin validar técnicamente.",
+    "Todo lo que se cotiza debe poder transformarse en un alcance concreto.",
+    "Los plazos son tan importantes como las funcionalidades.",
+    "Preventa acompaña al comercial y protege técnicamente al proyecto."
+  ],
+
+  "ciclo_documental": {
+    "descripcion": "El ciclo documental permite identificar qué tipo de solución necesita el cliente.",
+    "etapas": [
+      {
+        "etapa": "Digitalización / captura",
+        "descripcion": "Convertir documentación física o proveniente de diferentes fuentes en información digital.",
+        "soluciones": ["Captika"]
+      },
+      {
+        "etapa": "Extracción de información",
+        "descripcion": "Utilizar OCR y mecanismos de reconocimiento para obtener datos del documento.",
+        "soluciones": ["Captika", "Visualizador Addoc"]
+      },
+      {
+        "etapa": "Almacenamiento",
+        "descripcion": "Guardar y organizar documentos dentro de una plataforma documental.",
+        "soluciones": ["Thuban", "Visualizador Addoc", "Documenta", "ADEA Doc"]
+      },
+      {
+        "etapa": "Consulta",
+        "descripcion": "Permitir que los usuarios encuentren y visualicen documentación.",
+        "soluciones": ["Visualizador Addoc", "Islas", "Documenta", "ADEA Doc", "Perfil Digital"]
+      },
+      {
+        "etapa": "Proceso",
+        "descripcion": "Incorporar workflows, firmas, alertas, validaciones o integraciones.",
+        "soluciones": ["Thuban", "Firmas Addoc", "Edatalia", "Onboarding Addoc"]
+      }
+    ]
+  },
+
+  "productos_propios": {
+
+    "Visualizador Addoc": {
+      "tipo": "Propio",
+      "categoria": "Digitalización y visualización documental",
+      "descripcion": "Visualizador orientado a la búsqueda y consulta de documentación.",
+      "funcionalidades": [
+        "Organización mediante campos definidos durante la digitalización.",
+        "OCR para extraer determinados datos de los documentos.",
+        "Uso de campos indexados como criterios de búsqueda.",
+        "Consulta de documentación mediante datos indexados.",
+        "Búsqueda Full Text dentro del contenido de los documentos."
+      ],
+      "ejemplo": "Si un documento tiene DNI, apellido, nombre y fecha como campos, esos datos pueden utilizarse para encontrar rápidamente el documento.",
+      "consideraciones_preventa": [
+        "Está orientado principalmente a búsqueda y consulta documental.",
+        "No debe confundirse con una plataforma completa de gestión documental.",
+        "Los workflows de gestión documental no deben asumirse como funcionalidad estándar del visualizador."
+      ]
+    },
+
+    "Islas": {
+      "tipo": "Propio / nuevo visualizador",
+      "categoria": "Visualización documental",
+      "descripcion": "Nuevo visualizador orientado a mejorar experiencia de usuario y arquitectura.",
+      "funcionalidades": [
+        "Interfaz moderna.",
+        "Mejor experiencia de usuario.",
+        "Arquitectura multicliente.",
+        "Permite trabajar con diferentes clientes dentro de una misma plataforma.",
+        "El alta de nuevos clientes se resuelve principalmente mediante configuración."
+      ],
+      "beneficios": [
+        "Reduce el esfuerzo de implementación por cliente.",
+        "Puede reducir el costo de setup inicial.",
+        "Facilita escalar una solución para múltiples clientes."
+      ],
+      "consideraciones_preventa": [
+        "El concepto de multicliente es relevante comercialmente.",
+        "No significa solamente una interfaz más moderna.",
+        "La arquitectura multicliente modifica la forma de implementar y escalar la solución."
+      ]
+    },
+
+    "Perfil Digital": {
+      "tipo": "Propio",
+      "categoria": "Recursos Humanos",
+      "descripcion": "Solución orientada principalmente a Recursos Humanos, gestión de legajos y recibos de sueldo.",
+      "funcionalidades": [
+        "Visualización y consulta de legajos.",
+        "Gestión de recibos de sueldo.",
+        "Firma de recibos de RRHH.",
+        "Firma electrónica.",
+        "Firma digital según el proceso y nivel de seguridad requerido.",
+        "Integración con otros componentes del ecosistema Addoc, incluyendo onboarding."
+      ],
+      "enfoque": "Persona / empleado y su legajo.",
+      "diferencia_visualizador": "Perfil Digital está pensado alrededor de la persona y su documentación, mientras que el Visualizador Addoc está más orientado a búsqueda y consulta documental."
+    },
+
+    "Onboarding Addoc": {
+      "tipo": "Propio",
+      "categoria": "Procesos de incorporación",
+      "descripcion": "Herramienta para digitalizar procesos de alta, incorporación y recolección de información.",
+      "funcionalidades": [
+        "Solicitar información.",
+        "Recolectar información.",
+        "Estructurar procesos de incorporación.",
+        "Utilizarse para empleados.",
+        "Utilizarse para clientes.",
+        "Utilizarse para proveedores.",
+        "Integrarse con otros sistemas y productos.",
+        "Digitalizar procesos específicos de una organización."
+      ],
+      "ejemplo": "Un proceso de alta puede solicitar datos personales, documentación, formularios y otra información necesaria y luego derivarla al sistema correspondiente."
+    },
+
+    "Firmas Addoc": {
+      "tipo": "Propio",
+      "categoria": "Firma electrónica",
+      "descripcion": "Herramienta de firma electrónica para documentos y procesos empresariales.",
+      "casos_de_uso": [
+        "Contratos.",
+        "Vacaciones.",
+        "Formularios.",
+        "Documentación interna."
+      ],
+      "funcionalidades": [
+        "Usuarios fijos.",
+        "Firma mediante link.",
+        "Envíos masivos.",
+        "Workflows de firma."
+      ],
+      "workflow": "Permite establecer un orden entre firmantes. El siguiente firmante puede avanzar una vez completado el paso anterior."
+    },
+
+    "Documenta Web": {
+      "tipo": "Propio / histórico",
+      "categoria": "Visualización documental",
+      "descripcion": "Visualizador utilizado históricamente para consulta de documentación digitalizada."
+    },
+
+    "ADEA Doc": {
+      "tipo": "Propio",
+      "categoria": "Gestión y consulta documental",
+      "descripcion": "Solución que permite consultar y gestionar documentación organizada en estructuras como cajas, archivos y otros esquemas documentales."
+    }
+  },
+
+  "partners": {
+
+    "Thuban": {
+      "tipo": "Partner",
+      "categoria": "Gestión documental",
+      "descripcion": "Plataforma de gestión documental orientada a centralizar, organizar, consultar y administrar documentos y expedientes digitales.",
+      "funcionalidades": [
+        "Gestión de documentos.",
+        "Organización documental.",
+        "Clasificación documental.",
+        "Búsqueda.",
+        "Consulta.",
+        "Workflows.",
+        "Circuitos documentales.",
+        "Alertas.",
+        "Eventos.",
+        "Integraciones.",
+        "Gestión de expedientes."
+      ],
+      "cuando_considerarlo": [
+        "Cuando el cliente necesita algo más que un simple visualizador.",
+        "Cuando necesita gestionar documentos.",
+        "Cuando necesita clases documentales.",
+        "Cuando necesita circuitos.",
+        "Cuando necesita permisos.",
+        "Cuando necesita alertas.",
+        "Cuando necesita expedientes.",
+        "Cuando necesita integraciones."
+      ],
+      "cotizacion": {
+        "componentes": [
+          "Licenciamiento / modalidad de uso.",
+          "Implementación.",
+          "Relevamiento funcional.",
+          "Parametrización.",
+          "Clases documentales.",
+          "Workflows.",
+          "Alertas.",
+          "Integraciones.",
+          "Migraciones.",
+          "Capacitación.",
+          "Soporte."
+        ],
+        "principio": "No cotizar solamente la licencia. El costo real depende de los servicios y configuraciones necesarios.",
+        "referencia_interna": "Se han utilizado bolsas de horas de implementación, incluyendo ejemplos de planes de 350 horas según alcance."
+      }
+    },
+
+    "Captika": {
+      "tipo": "Partner",
+      "categoria": "Captura documental",
+      "descripcion": "Plataforma de captura documental orientada a recibir documentos, aplicar reconocimiento/OCR, procesar información, validar y publicar resultados.",
+      "funcionalidades": [
+        "Captura desde escáneres.",
+        "Captura desde otras fuentes.",
+        "OCR.",
+        "Reconocimiento de información.",
+        "Procesamiento de documentos estructurados.",
+        "Procesamiento de documentos no estructurados.",
+        "Validación.",
+        "Reglas de procesamiento.",
+        "Publicación hacia diferentes destinos.",
+        "Integración con soluciones como Thuban."
+      ],
+      "posicion_ciclo": "Inicio del ciclo documental: captura y reconocimiento.",
+      "diferencia_thuban": "Captika está orientado principalmente a captura y reconocimiento; Thuban a gestión documental posterior."
+    },
+
+    "Edatalia": {
+      "tipo": "Partner",
+      "categoria": "Firma electrónica y digital",
+      "descripcion": "Partner especializado en soluciones de firma electrónica y firma digital.",
+      "modalidades": [
+        "Firma a distancia.",
+        "Firma biométrica presencial.",
+        "Firma en movilidad.",
+        "Firma cualificada/digital.",
+        "Firma masiva.",
+        "Integración mediante APIs."
+      ],
+      "firma_distancia": "Permite enviar documentos para que clientes, proveedores o empleados los firmen desde su dispositivo mediante mecanismos de autenticación y trazabilidad.",
+      "consideracion": "La solución adecuada depende del contexto, tipo de firmante y nivel de seguridad requerido."
+    }
+  },
+
+  "firma_electronica_vs_digital": {
+    "firma_electronica": "Mecanismo de firma que permite asociar la aceptación o intervención de una persona a un documento mediante distintos mecanismos de autenticación y evidencia.",
+    "firma_digital": "Utiliza certificados digitales y mecanismos criptográficos para verificar identidad e integridad del documento dentro del marco legal aplicable.",
+    "preventa": "No utilizar ambos conceptos como sinónimos. Primero identificar exactamente qué nivel de firma exige el cliente."
+  },
+
+  "matriz_soluciones": [
+    {
+      "necesidad": "Visualizar documentación",
+      "soluciones": ["Visualizador Addoc", "Documenta", "ADEA Doc"],
+      "pregunta": "¿Necesita encontrar documentos rápidamente?"
+    },
+    {
+      "necesidad": "Visualizar con arquitectura multicliente",
+      "soluciones": ["Islas"],
+      "pregunta": "¿Necesitamos escalar varios clientes sin desplegar una plataforma por cada uno?"
+    },
+    {
+      "necesidad": "Legajos y recibos de RRHH",
+      "soluciones": ["Perfil Digital"],
+      "pregunta": "¿El eje es el empleado y su documentación?"
+    },
+    {
+      "necesidad": "Alta e incorporación",
+      "soluciones": ["Onboarding Addoc"],
+      "pregunta": "¿Necesitamos digitalizar un proceso de incorporación?"
+    },
+    {
+      "necesidad": "Firma electrónica",
+      "soluciones": ["Firmas Addoc"],
+      "pregunta": "¿Necesitamos que personas firmen documentos?"
+    },
+    {
+      "necesidad": "Captura y OCR",
+      "soluciones": ["Captika"],
+      "pregunta": "¿Necesitamos digitalizar y extraer información?"
+    },
+    {
+      "necesidad": "Gestión documental y expedientes",
+      "soluciones": ["Thuban"],
+      "pregunta": "¿Necesitamos gestionar documentos, expedientes, workflows y alertas?"
+    },
+    {
+      "necesidad": "Firma especializada",
+      "soluciones": ["Edatalia"],
+      "pregunta": "¿Necesitamos firma remota, biométrica o cualificada?"
+    }
+  ],
+
+  "proceso_oportunidad": [
+    "Entender el problema.",
+    "Identificar el proceso.",
+    "Relevar información.",
+    "Elegir la solución.",
+    "Definir alcance.",
+    "Estimar servicios.",
+    "Costear.",
+    "Revisar riesgos.",
+    "Armar propuesta.",
+    "Acompañar al comercial."
+  ],
+
+  "checklist_relevamiento": [
+    "Cantidad de usuarios y perfiles.",
+    "Cantidad aproximada de documentos.",
+    "Cantidad de páginas o volumen mensual/anual.",
+    "Cantidad de clases documentales.",
+    "Cantidad de clientes u organizaciones.",
+    "Necesidad de arquitectura multicliente.",
+    "Cantidad y complejidad de workflows.",
+    "Cantidad de pasos por workflow.",
+    "Cantidad de alertas y notificaciones.",
+    "Necesidad de OCR.",
+    "Datos que deben extraerse mediante OCR.",
+    "Búsqueda por campos.",
+    "Búsqueda Full Text.",
+    "Sistemas con los que debe integrarse.",
+    "Existencia de una plataforma anterior.",
+    "Necesidad de migración.",
+    "Modalidad de alojamiento: Cloud u On-Premise.",
+    "Plazo esperado de implementación.",
+    "Necesidad de capacitación.",
+    "Necesidad de soporte.",
+    "Restricciones técnicas.",
+    "Restricciones de seguridad."
+  ],
+
+  "costeo": {
+    "principio": "Separar siempre producto de servicios necesarios para ponerlo en marcha.",
+    "bloques": {
+      "producto_licencia": [
+        "Licencia.",
+        "Usuarios.",
+        "Posiciones.",
+        "Consumo.",
+        "Modalidad Cloud/On-Premise."
+      ],
+      "setup_implementacion": [
+        "Instalación.",
+        "Configuración.",
+        "Parametrización."
+      ],
+      "servicios_profesionales": [
+        "Relevamiento.",
+        "Integración.",
+        "Migración.",
+        "Capacitación."
+      ],
+      "integraciones": [
+        "APIs.",
+        "ERP.",
+        "RRHH.",
+        "CRM.",
+        "Bases de datos."
+      ],
+      "migracion": [
+        "Documentos.",
+        "Metadatos.",
+        "Información desde plataformas anteriores."
+      ],
+      "soporte": [
+        "Mantenimiento.",
+        "Soporte.",
+        "Horas adicionales."
+      ]
+    }
+  },
+
+  "riesgos": [
+    "Información faltante del cliente.",
+    "Plazos demasiado cortos.",
+    "Integraciones críticas.",
+    "Migraciones complejas.",
+    "Alta cantidad de parametrización.",
+    "Dependencias del cliente.",
+    "Alcances no definidos.",
+    "Funcionalidades no validadas técnicamente."
+  ],
+
+  "reglas_asistente": [
+    "No inventar funcionalidades.",
+    "Si una funcionalidad no está confirmada, indicar que requiere validación técnica.",
+    "Diferenciar producto de proyecto.",
+    "No asumir que una funcionalidad disponible está incluida en una cotización.",
+    "Antes de recomendar una solución, analizar la necesidad del cliente.",
+    "Cuando falte información, indicar qué datos deberían relevarse.",
+    "Separar licencias, implementación y servicios profesionales.",
+    "Considerar plazos y riesgos además de funcionalidades.",
+    "Priorizar resolver la necesidad del cliente sobre vender un producto."
+  ],
+
+  "ejemplo_analisis": {
+    "necesidad": "Cliente necesita digitalizar legajos, permitir que empleados completen información, firmar documentos y consultar todo desde un único lugar.",
+    "analisis": [
+      "Digitalización: evaluar Captika u otra herramienta de captura.",
+      "Legajo de empleado: Perfil Digital.",
+      "Carga y recolección de información: Onboarding Addoc.",
+      "Firma: Firmas Addoc o Edatalia según requisitos.",
+      "Consulta documental: Perfil Digital o visualizador correspondiente.",
+      "Gestión documental más amplia: evaluar Thuban."
+    ],
+    "principio": "La solución surge del proceso y no del producto."
+  }
+}
