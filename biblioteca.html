@@ -1,36 +1,12 @@
 <!DOCTYPE html>
 
 <html lang="es">
-
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Biblioteca Técnica | PREVENTA IA</title>
-
-<!-- MAMMOTH: visualización de Word -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
-
-<!-- PDF.JS: visualización de PDF -->
-
-<script type="module">
-
-import {
-  getDocument,
-  GlobalWorkerOptions
-} from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
-
-GlobalWorkerOptions.workerSrc =
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
-
-window.pdfjsLibCustom = {
-  getDocument,
-  GlobalWorkerOptions
-};
-
-</script>
 
 <style>
 
@@ -83,75 +59,11 @@ header h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
   margin-bottom: 20px;
 }
 
 .top-bar h3 {
   margin: 0;
-}
-
-.button {
-  border: none;
-  border-radius: 8px;
-  padding: 11px 17px;
-  cursor: pointer;
-  font-size: 14px;
-  background: #111827;
-  color: white;
-}
-
-.button:hover {
-  background: #374151;
-}
-
-.primary {
-  background: #2563eb;
-}
-
-.primary:hover {
-  background: #1d4ed8;
-}
-
-.danger {
-  background: #dc2626;
-}
-
-.danger:hover {
-  background: #b91c1b;
-}
-
-.secondary {
-  background: #e5e7eb;
-  color: #1f2937;
-}
-
-.secondary:hover {
-  background: #d1d5db;
-}
-
-.green {
-  background: #166534;
-}
-
-.green:hover {
-  background: #15803d;
-}
-
-.purple {
-  background: #7c3aed;
-}
-
-.purple:hover {
-  background: #6d28d9;
-}
-
-.orange {
-  background: #ea580c;
-}
-
-.orange:hover {
-  background: #c2410c;
 }
 
 .layout {
@@ -182,8 +94,9 @@ header h1 {
 }
 
 .folder-row {
-  display: flex;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 5px;
   align-items: center;
 }
 
@@ -206,11 +119,6 @@ header h1 {
   background: #dbeafe;
   color: #1e40af;
   font-weight: bold;
-}
-
-.folder-edit {
-  flex-shrink: 0;
-  padding: 8px 10px;
 }
 
 .content {
@@ -243,7 +151,7 @@ header h1 {
 .file-card {
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-  padding: 16px;
+  padding: 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -258,8 +166,7 @@ header h1 {
 }
 
 .file-icon {
-  font-size: 30px;
-  flex-shrink: 0;
+  font-size: 32px;
 }
 
 .file-name {
@@ -270,7 +177,7 @@ header h1 {
 .file-meta {
   color: #6b7280;
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: 5px;
   line-height: 1.5;
 }
 
@@ -278,7 +185,66 @@ header h1 {
   display: flex;
   gap: 7px;
   flex-wrap: wrap;
-  justify-content: flex-end;
+}
+
+.button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  background: #111827;
+  color: white;
+}
+
+.button:hover {
+  background: #374151;
+}
+
+.primary {
+  background: #2563eb;
+}
+
+.primary:hover {
+  background: #1d4ed8;
+}
+
+.green {
+  background: #166534;
+}
+
+.green:hover {
+  background: #15803d;
+}
+
+.purple {
+  background: #7c3aed;
+}
+
+.purple:hover {
+  background: #6d28d9;
+}
+
+.danger {
+  background: #dc2626;
+}
+
+.danger:hover {
+  background: #b91c1c;
+}
+
+.secondary {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.secondary:hover {
+  background: #d1d5db;
+}
+
+.small-button {
+  padding: 8px 10px;
+  font-size: 12px;
 }
 
 .empty {
@@ -291,18 +257,19 @@ header h1 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .stat {
-  background: #f9fafb;
+  background: white;
   border-radius: 10px;
-  padding: 15px;
+  padding: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .stat-title {
-  color: #6b7280;
   font-size: 11px;
+  color: #6b7280;
 }
 
 .stat-value {
@@ -311,43 +278,32 @@ header h1 {
   margin-top: 5px;
 }
 
-/* INFO */
-
 .info {
   background: #eff6ff;
   color: #1e40af;
-  padding: 12px;
+  padding: 13px;
   border-radius: 8px;
   font-size: 13px;
   margin-bottom: 20px;
 }
 
-.warning {
-  background: #fff7ed;
-  color: #9a3412;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-
-/* MODAL */
+/* MODALES */
 
 .modal {
   display: none;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.60);
+  z-index: 1000;
   justify-content: center;
   align-items: center;
   padding: 20px;
-  z-index: 1000;
 }
 
 .modal-content {
   width: 100%;
-  max-width: 620px;
-  max-height: 92vh;
+  max-width: 600px;
+  max-height: 90vh;
   overflow-y: auto;
   background: white;
   border-radius: 14px;
@@ -358,31 +314,30 @@ header h1 {
   margin-top: 0;
 }
 
-.modal-subtitle {
+.modal-content p {
   color: #6b7280;
-  font-size: 13px;
   line-height: 1.5;
+  font-size: 13px;
 }
 
 label {
   display: block;
-  font-size: 13px;
   font-weight: bold;
+  font-size: 13px;
   margin-bottom: 7px;
+  margin-top: 15px;
 }
 
-input,
-select {
+input[type="text"],
+input[type="file"] {
   width: 100%;
   padding: 11px;
   border: 1px solid #d1d5db;
   border-radius: 7px;
   font-size: 14px;
-  margin-bottom: 15px;
 }
 
-input:focus,
-select:focus {
+input:focus {
   outline: none;
   border-color: #2563eb;
 }
@@ -390,15 +345,15 @@ select:focus {
 .modal-buttons {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 25px;
   flex-wrap: wrap;
 }
 
 /* PREVIEW */
 
 .preview-modal .modal-content {
-  max-width: 1050px;
-  height: 92vh;
+  max-width: 1000px;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -411,82 +366,68 @@ select:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
 }
 
 .preview-header h3 {
   margin: 0;
-  font-size: 17px;
 }
 
 .preview-body {
   flex: 1;
   overflow-y: auto;
-  background: #e5e7eb;
   padding: 30px;
+  background: #e5e7eb;
 }
 
-.document-page {
-  max-width: 820px;
-  min-height: 100%;
-  margin: auto;
+.preview-document {
   background: white;
-  padding: 50px;
+  max-width: 800px;
+  min-height: 500px;
+  margin: auto;
+  padding: 45px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   line-height: 1.6;
 }
 
-.document-page img {
+.preview-document img {
   max-width: 100%;
 }
 
-.document-page table {
-  width: 100%;
+.preview-document table {
   border-collapse: collapse;
-  margin: 20px 0;
+  width: 100%;
 }
 
-.document-page th,
-.document-page td {
+.preview-document td,
+.preview-document th {
   border: 1px solid #999;
   padding: 8px;
 }
 
-.document-page h1,
-.document-page h2,
-.document-page h3 {
-  margin-top: 20px;
+.txt-preview {
+  white-space: pre-wrap;
+  font-family: Arial, sans-serif;
 }
 
 .pdf-page {
-  max-width: 900px;
-  margin: 0 auto 20px auto;
   background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  max-width: 900px;
+  margin: 0 auto 20px;
 }
 
 .pdf-page canvas {
   width: 100%;
-  height: auto;
   display: block;
 }
 
-.close-button {
-  background: #e5e7eb;
-  color: #1f2937;
-}
-
-
-/* RESPONSIVE */
-
-@media (max-width: 900px) {
+@media (max-width: 850px) {
 
   .layout {
     grid-template-columns: 1fr;
   }
 
-  .content-header {
-    flex-direction: column;
+  .stats {
+    grid-template-columns: 1fr;
   }
 
   .file-card {
@@ -494,33 +435,25 @@ select:focus {
     align-items: flex-start;
   }
 
-  .file-actions {
-    justify-content: flex-start;
+  .content-header {
+    flex-direction: column;
   }
 
 }
 
-@media (max-width: 800px) {
+@media (max-width: 600px) {
 
   header {
     flex-direction: column;
     gap: 15px;
   }
 
-  .stats {
+  .folder-row {
     grid-template-columns: 1fr;
   }
 
-}
-
-@media (max-width: 550px) {
-
-  .document-page {
+  .preview-document {
     padding: 25px;
-  }
-
-  .preview-body {
-    padding: 15px;
   }
 
 }
@@ -533,9 +466,7 @@ select:focus {
 
 <header>
 
-  <h1>
-    📚 PREVENTA IA
-  </h1>
+  <h1>📚 PREVENTA IA</h1>
 
 <a
 href="index.html"
@@ -556,13 +487,12 @@ class="back"
   <div class="welcome">
 
 ```
-<h2>
-  📚 Biblioteca Técnica
-</h2>
+<h2>📚 Biblioteca Técnica</h2>
 
 <p>
-  Guardá, organizá y administrá tus propuestas técnicas
-  base por producto.
+  Organizá tus propuestas técnicas base por producto.
+  Estas propuestas serán utilizadas posteriormente
+  para generar propuestas finales para cada oportunidad.
 </p>
 ```
 
@@ -606,7 +536,7 @@ class="back"
 <div class="stat">
 
   <div class="stat-title">
-    BIBLIOTECA
+    ESTADO
   </div>
 
   <div
@@ -614,7 +544,7 @@ class="back"
     class="stat-value"
     style="font-size:16px;"
   >
-    Lista
+    Cargando...
   </div>
 
 </div>
@@ -647,7 +577,7 @@ class="back"
 <aside class="sidebar">
 
   <h3>
-    🗂️ Carpetas
+    🗂️ Productos
   </h3>
 
   <div
@@ -666,16 +596,12 @@ class="back"
 
     <div>
 
-      <h3
-        id="currentFolderTitle"
-      >
+      <h3 id="currentFolderTitle">
         Seleccioná un producto
       </h3>
 
-      <p
-        id="currentFolderDescription"
-      >
-        Las propuestas técnicas base aparecerán acá.
+      <p id="currentFolderDescription">
+        Acá aparecerán las propuestas técnicas base.
       </p>
 
     </div>
@@ -697,7 +623,7 @@ class="back"
     id="infoMessage"
     class="info"
   >
-    La Biblioteca utiliza almacenamiento local del navegador.
+    La Biblioteca Técnica se guarda localmente en este navegador.
   </div>
 
 
@@ -726,16 +652,16 @@ class="back"
 
 ```
 <h3 id="folderModalTitle">
-  📁 Nueva carpeta / producto
+  📁 Nueva carpeta
 </h3>
 
-<p class="modal-subtitle">
-  Creá o modificá el producto que usás como base
-  para tus propuestas técnicas.
+<p>
+  Creá una carpeta para cada producto:
+  Perfil Digital, Thuban, Firmas, Captika, etc.
 </p>
 
-<label>
-  Nombre del producto
+<label for="folderName">
+  Producto
 </label>
 
 <input
@@ -744,14 +670,14 @@ class="back"
   placeholder="Ejemplo: Perfil Digital"
 >
 
-<label>
+<label for="folderDescription">
   Descripción
 </label>
 
 <input
   id="folderDescription"
   type="text"
-  placeholder="Ejemplo: Propuestas técnicas de Perfil Digital"
+  placeholder="Propuestas técnicas de Perfil Digital"
 >
 
 <div class="modal-buttons">
@@ -778,48 +704,45 @@ class="back"
 </div>
 
 <!-- =====================================================
-     MODAL ARCHIVO / CARGAR
+     MODAL PROPUESTA
 ===================================================== -->
 
 <div
-  id="uploadModal"
+  id="proposalModal"
   class="modal"
 >
 
   <div class="modal-content">
 
 ```
-<h3 id="uploadModalTitle">
+<h3 id="proposalModalTitle">
   📤 Cargar propuesta técnica
 </h3>
 
-<p
-  id="uploadFolderText"
-  class="modal-subtitle"
-></p>
+<p id="proposalFolderText"></p>
 
-<label>
-  Nombre de la propuesta
+<label for="proposalName">
+  Nombre
 </label>
 
 <input
   id="proposalName"
   type="text"
-  placeholder="Ejemplo: Propuesta Técnica Perfil Digital"
+  placeholder="Propuesta Técnica Perfil Digital"
 >
 
-<label>
+<label for="proposalVersion">
   Versión
 </label>
 
 <input
   id="proposalVersion"
   type="text"
-  placeholder="Ejemplo: 1.0"
   value="1.0"
+  placeholder="1.0"
 >
 
-<label>
+<label for="proposalFile">
   Archivo
 </label>
 
@@ -829,25 +752,24 @@ class="back"
   accept=".pdf,.doc,.docx,.txt,.xlsx,.xls"
 >
 
-<div class="warning">
-  La propuesta original queda almacenada en la Biblioteca.
-  Cuando la reemplaces, las nuevas propuestas generadas
-  utilizarán el nuevo archivo base.
-</div>
+<p>
+  En modo edición podés cambiar solamente el nombre y la
+  versión, o seleccionar un nuevo archivo para reemplazar
+  la propuesta existente.
+</p>
 
 <div class="modal-buttons">
 
   <button
-    id="uploadSaveButton"
     class="button primary"
-    onclick="saveProposalFile()"
+    onclick="saveProposal()"
   >
-    💾 Guardar propuesta
+    💾 Guardar
   </button>
 
   <button
     class="button secondary"
-    onclick="closeUploadModal()"
+    onclick="closeProposalModal()"
   >
     Cancelar
   </button>
@@ -878,14 +800,13 @@ class="back"
   </h3>
 
   <button
-    class="button close-button"
+    class="button secondary"
     onclick="closePreview()"
   >
     ✕ Cerrar
   </button>
 
 </div>
-
 
 <div
   id="previewBody"
@@ -901,44 +822,105 @@ class="back"
 
 
 /* =====================================================
-   CONFIGURACION INDEXED DB
+   CONFIGURACIÓN
 ===================================================== */
 
 const DB_NAME =
   "preventa_ia_biblioteca";
 
-
-/*
-  Seguimos con versión 1 porque ya
-  es la estructura que tenías.
-*/
-
 const DB_VERSION =
   1;
-
 
 const STORE =
   "proposals";
 
+let db = null;
 
-let db =
-  null;
+let currentFolder = null;
 
+let editingFolderId = null;
 
-let currentFolder =
-  null;
-
-
-let editingFolderId =
-  null;
-
-
-let editingFileId =
-  null;
+let editingFileId = null;
 
 
 /* =====================================================
-   CARPETAS
+   ABRIR BASE
+===================================================== */
+
+function openDatabase() {
+
+  return new Promise(function(resolve, reject) {
+
+    const request =
+      indexedDB.open(
+        DB_NAME,
+        DB_VERSION
+      );
+
+    request.onupgradeneeded =
+      function(event) {
+
+        const database =
+          event.target.result;
+
+        if (
+          !database.objectStoreNames.contains(
+            STORE
+          )
+        ) {
+
+          const store =
+            database.createObjectStore(
+              STORE,
+              {
+                keyPath: "id",
+                autoIncrement: true
+              }
+            );
+
+          store.createIndex(
+            "folder",
+            "folder",
+            {
+              unique: false
+            }
+          );
+
+        }
+
+      };
+
+    request.onsuccess =
+      function(event) {
+
+        db =
+          event.target.result;
+
+        document.getElementById(
+          "libraryStatus"
+        ).textContent =
+          "✓ Lista";
+
+        resolve(db);
+
+      };
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
+
+}
+
+
+/* =====================================================
+   CARPETAS EN LOCAL STORAGE
 ===================================================== */
 
 function getFolders() {
@@ -954,11 +936,6 @@ function getFolders() {
   }
 
   catch(error) {
-
-    console.error(
-      "No se pudieron leer las carpetas.",
-      error
-    );
 
     return [];
 
@@ -982,119 +959,38 @@ function saveFolders(
 
 
 /* =====================================================
-   INDEXED DB
-===================================================== */
-
-function openDatabase() {
-
-  return new Promise(
-    function(resolve, reject) {
-
-      const request =
-        indexedDB.open(
-          DB_NAME,
-          DB_VERSION
-        );
-
-
-      request.onupgradeneeded =
-        function(event) {
-
-          const database =
-            event.target.result;
-
-
-          if (
-            !database.objectStoreNames.contains(
-              STORE
-            )
-          ) {
-
-            const objectStore =
-              database.createObjectStore(
-                STORE,
-                {
-                  keyPath: "id",
-                  autoIncrement: true
-                }
-              );
-
-
-            objectStore.createIndex(
-              "folder",
-              "folder",
-              {
-                unique: false
-              }
-            );
-
-          }
-
-        };
-
-
-      request.onsuccess =
-        function(event) {
-
-          db =
-            event.target.result;
-
-          resolve(db);
-
-        };
-
-
-      request.onerror =
-        function() {
-
-          reject(
-            request.error
-          );
-
-        };
-
-    }
-  );
-
-}
-
-
-/* =====================================================
    CREAR / EDITAR CARPETA
 ===================================================== */
 
 function openFolderModal(
-  folderId = null
+  id = null
 ) {
 
   editingFolderId =
-    folderId;
-
-
-  const modal =
-    document.getElementById(
-      "folderModal"
-    );
-
+    id;
 
   const title =
     document.getElementById(
       "folderModalTitle"
     );
 
+  const name =
+    document.getElementById(
+      "folderName"
+    );
 
-  const folders =
-    getFolders();
+  const description =
+    document.getElementById(
+      "folderDescription"
+    );
 
-
-  if (folderId) {
+  if (id) {
 
     const folder =
-      folders.find(
+      getFolders().find(
         item =>
-          item.id === folderId
+          item.id === id
       );
-
 
     if (!folder) {
 
@@ -1102,20 +998,13 @@ function openFolderModal(
 
     }
 
-
     title.textContent =
       "✏️ Editar producto";
 
-
-    document.getElementById(
-      "folderName"
-    ).value =
+    name.value =
       folder.name || "";
 
-
-    document.getElementById(
-      "folderDescription"
-    ).value =
+    description.value =
       folder.description || "";
 
   }
@@ -1123,24 +1012,19 @@ function openFolderModal(
   else {
 
     title.textContent =
-      "📁 Nueva carpeta / producto";
+      "📁 Nueva carpeta";
 
-
-    document.getElementById(
-      "folderName"
-    ).value =
+    name.value =
       "";
 
-
-    document.getElementById(
-      "folderDescription"
-    ).value =
+    description.value =
       "";
 
   }
 
-
-  modal.style.display =
+  document.getElementById(
+    "folderModal"
+  ).style.display =
     "flex";
 
 }
@@ -1152,7 +1036,6 @@ function closeFolderModal() {
     "folderModal"
   ).style.display =
     "none";
-
 
   editingFolderId =
     null;
@@ -1167,12 +1050,10 @@ function saveFolder() {
       "folderName"
     ).value.trim();
 
-
   const description =
     document.getElementById(
       "folderDescription"
     ).value.trim();
-
 
   if (!name) {
 
@@ -1184,35 +1065,31 @@ function saveFolder() {
 
   }
 
-
   const folders =
     getFolders();
 
-
   const duplicate =
-    folders.some(
-      folder =>
+    folders.some(function(folder) {
 
+      return (
         folder.id !== editingFolderId &&
-
         String(
           folder.name || ""
         ).toLowerCase() ===
         name.toLowerCase()
+      );
 
-    );
-
+    });
 
   if (duplicate) {
 
     alert(
-      "Ya existe un producto con ese nombre."
+      "Ya existe una carpeta con ese nombre."
     );
 
     return;
 
   }
-
 
   if (editingFolderId) {
 
@@ -1222,7 +1099,6 @@ function saveFolder() {
           folder.id ===
           editingFolderId
       );
-
 
     if (index !== -1) {
 
@@ -1259,25 +1135,20 @@ function saveFolder() {
 
     };
 
-
     folders.push(
       folder
     );
-
 
     currentFolder =
       folder.id;
 
   }
 
-
   saveFolders(
     folders
   );
 
-
   closeFolderModal();
-
 
   render();
 
@@ -1289,20 +1160,17 @@ function saveFolder() {
 ===================================================== */
 
 async function deleteFolder(
-  folderId
+  id
 ) {
 
   const folders =
     getFolders();
 
-
   const folder =
     folders.find(
       item =>
-        item.id ===
-        folderId
+        item.id === id
     );
-
 
   if (!folder) {
 
@@ -1310,37 +1178,34 @@ async function deleteFolder(
 
   }
 
-
   const files =
     await getFilesByFolder(
-      folderId
+      id
     );
 
+  let message =
+    "¿Querés eliminar la carpeta \"" +
+    folder.name +
+    "\"?";
 
-  const mensaje =
-    files.length
+  if (files.length) {
 
-      ? "La carpeta \"" +
-        folder.name +
-        "\" tiene " +
-        files.length +
-        " propuesta(s). ¿Querés eliminar la carpeta y todas sus propuestas?"
+    message =
+      "La carpeta \"" +
+      folder.name +
+      "\" tiene " +
+      files.length +
+      " propuesta(s).\n\n" +
+      "Si la eliminás también se eliminarán sus propuestas.\n\n" +
+      "¿Continuar?";
 
-      : "¿Querés eliminar la carpeta \"" +
-        folder.name +
-        "\"?";
+  }
 
-
-  if (
-    !confirm(
-      mensaje
-    )
-  ) {
+  if (!confirm(message)) {
 
     return;
 
   }
-
 
   try {
 
@@ -1354,32 +1219,26 @@ async function deleteFolder(
 
     }
 
-
-    const nuevas =
+    const remaining =
       folders.filter(
         item =>
-          item.id !==
-          folderId
+          item.id !== id
       );
 
-
     saveFolders(
-      nuevas
+      remaining
     );
 
-
     if (
-      currentFolder ===
-      folderId
+      currentFolder === id
     ) {
 
       currentFolder =
-        nuevas.length
-          ? nuevas[0].id
+        remaining.length
+          ? remaining[0].id
           : null;
 
     }
-
 
     await render();
 
@@ -1387,189 +1246,13 @@ async function deleteFolder(
 
   catch(error) {
 
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     alert(
       "No se pudo eliminar la carpeta."
     );
 
   }
-
-}
-
-
-/* =====================================================
-   RENDER CARPETAS
-===================================================== */
-
-function renderFolders() {
-
-  const container =
-    document.getElementById(
-      "folderList"
-    );
-
-
-  const folders =
-    getFolders();
-
-
-  container.innerHTML =
-    "";
-
-
-  if (
-    !folders.length
-  ) {
-
-    container.innerHTML = `
-
-      <div
-        style="
-          color:#6b7280;
-          font-size:13px;
-          line-height:1.5;
-        "
-      >
-        Todavía no tenés productos.
-        Creá una carpeta como
-        "Perfil Digital",
-        "Thuban",
-        "Firmas", etc.
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  folders.forEach(
-    function(folder) {
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-
-      row.className =
-        "folder-row";
-
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      button.className =
-        "folder" +
-        (
-          currentFolder ===
-          folder.id
-            ? " active"
-            : ""
-        );
-
-
-      button.textContent =
-        "📁 " +
-        folder.name;
-
-
-      button.onclick =
-        function() {
-
-          currentFolder =
-            folder.id;
-
-          render();
-
-        };
-
-
-      row.appendChild(
-        button
-      );
-
-
-      const edit =
-        document.createElement(
-          "button"
-        );
-
-
-      edit.className =
-        "button secondary folder-edit";
-
-
-      edit.textContent =
-        "✏️";
-
-
-      edit.title =
-        "Editar producto";
-
-
-      edit.onclick =
-        function() {
-
-          openFolderModal(
-            folder.id
-          );
-
-        };
-
-
-      row.appendChild(
-        edit
-      );
-
-
-      const remove =
-        document.createElement(
-          "button"
-        );
-
-
-      remove.className =
-        "button danger folder-edit";
-
-
-      remove.textContent =
-        "🗑️";
-
-
-      remove.title =
-        "Eliminar producto";
-
-
-      remove.onclick =
-        function() {
-
-          deleteFolder(
-            folder.id
-          );
-
-        };
-
-
-      row.appendChild(
-        remove
-      );
-
-
-      container.appendChild(
-        row
-      );
-
-    }
-  );
 
 }
 
@@ -1582,55 +1265,56 @@ function getFilesByFolder(
   folderId
 ) {
 
-  return new Promise(
-    function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
 
-      const transaction =
-        db.transaction(
-          STORE,
-          "readonly"
-        );
+    if (!db) {
 
+      resolve([]);
 
-      const store =
-        transaction.objectStore(
-          STORE
-        );
-
-
-      const index =
-        store.index(
-          "folder"
-        );
-
-
-      const request =
-        index.getAll(
-          folderId
-        );
-
-
-      request.onsuccess =
-        function() {
-
-          resolve(
-            request.result || []
-          );
-
-        };
-
-
-      request.onerror =
-        function() {
-
-          reject(
-            request.error
-          );
-
-        };
+      return;
 
     }
-  );
+
+    const transaction =
+      db.transaction(
+        STORE,
+        "readonly"
+      );
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+    const index =
+      store.index(
+        "folder"
+      );
+
+    const request =
+      index.getAll(
+        folderId
+      );
+
+    request.onsuccess =
+      function() {
+
+        resolve(
+          request.result || []
+        );
+
+      };
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
 
 }
 
@@ -1639,152 +1323,134 @@ function getFileById(
   id
 ) {
 
-  return new Promise(
-    function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
 
-      const transaction =
-        db.transaction(
-          STORE,
-          "readonly"
+    const transaction =
+      db.transaction(
+        STORE,
+        "readonly"
+      );
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+    const request =
+      store.get(
+        id
+      );
+
+    request.onsuccess =
+      function() {
+
+        resolve(
+          request.result ||
+          null
         );
 
+      };
 
-      const store =
-        transaction.objectStore(
-          STORE
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
         );
 
+      };
 
-      const request =
-        store.get(
-          id
-        );
-
-
-      request.onsuccess =
-        function() {
-
-          resolve(
-            request.result ||
-            null
-          );
-
-        };
-
-
-      request.onerror =
-        function() {
-
-          reject(
-            request.error
-          );
-
-        };
-
-    }
-  );
+  });
 
 }
 
 
-function saveFile(
-  fileData
+function addFile(
+  data
 ) {
 
-  return new Promise(
-    function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
 
-      const transaction =
-        db.transaction(
-          STORE,
-          "readwrite"
+    const transaction =
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+    const request =
+      store.add(
+        data
+      );
+
+    request.onsuccess =
+      function() {
+
+        resolve(
+          request.result
         );
 
+      };
 
-      const store =
-        transaction.objectStore(
-          STORE
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
         );
 
+      };
 
-      const request =
-        store.add(
-          fileData
-        );
-
-
-      request.onsuccess =
-        function() {
-
-          resolve(
-            request.result
-          );
-
-        };
-
-
-      request.onerror =
-        function() {
-
-          reject(
-            request.error
-          );
-
-        };
-
-    }
-  );
+  });
 
 }
 
 
 function updateFile(
-  fileData
+  data
 ) {
 
-  return new Promise(
-    function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
 
-      const transaction =
-        db.transaction(
-          STORE,
-          "readwrite"
+    const transaction =
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+    const request =
+      store.put(
+        data
+      );
+
+    request.onsuccess =
+      function() {
+
+        resolve(
+          request.result
         );
 
+      };
 
-      const store =
-        transaction.objectStore(
-          STORE
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
         );
 
+      };
 
-      const request =
-        store.put(
-          fileData
-        );
-
-
-      request.onsuccess =
-        function() {
-
-          resolve(
-            request.result
-          );
-
-        };
-
-
-      request.onerror =
-        function() {
-
-          reject(
-            request.error
-          );
-
-        };
-
-    }
-  );
+  });
 
 }
 
@@ -1793,53 +1459,47 @@ function deleteFile(
   id
 ) {
 
-  return new Promise(
-    function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
 
-      const transaction =
-        db.transaction(
-          STORE,
-          "readwrite"
+    const transaction =
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+    const request =
+      store.delete(
+        id
+      );
+
+    request.onsuccess =
+      function() {
+
+        resolve();
+
+      };
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
         );
 
+      };
 
-      const store =
-        transaction.objectStore(
-          STORE
-        );
-
-
-      const request =
-        store.delete(
-          id
-        );
-
-
-      request.onsuccess =
-        function() {
-
-          resolve();
-
-        };
-
-
-      request.onerror =
-        function() {
-
-          reject(
-            request.error
-          );
-
-        };
-
-    }
-  );
+  });
 
 }
 
 
 /* =====================================================
-   CARGAR NUEVA PROPUESTA
+   MODAL PROPUESTA
 ===================================================== */
 
 function openUploadModal() {
@@ -1854,31 +1514,23 @@ function openUploadModal() {
 
   }
 
-
   editingFileId =
     null;
 
-
-  const folders =
-    getFolders();
-
-
   const folder =
-    folders.find(
+    getFolders().find(
       item =>
         item.id ===
         currentFolder
     );
 
-
   document.getElementById(
-    "uploadModalTitle"
+    "proposalModalTitle"
   ).textContent =
     "📤 Cargar propuesta técnica";
 
-
   document.getElementById(
-    "uploadFolderText"
+    "proposalFolderText"
   ).textContent =
     "Producto: " +
     (
@@ -1886,62 +1538,28 @@ function openUploadModal() {
       "Sin definir"
     );
 
-
   document.getElementById(
     "proposalName"
   ).value =
     "";
-
 
   document.getElementById(
     "proposalVersion"
   ).value =
     "1.0";
 
-
   document.getElementById(
     "proposalFile"
   ).value =
     "";
 
-
   document.getElementById(
-    "proposalFile"
-  ).required =
-    true;
-
-
-  document.getElementById(
-    "uploadSaveButton"
-  ).textContent =
-    "💾 Guardar propuesta";
-
-
-  document.getElementById(
-    "uploadModal"
+    "proposalModal"
   ).style.display =
     "flex";
 
 }
 
-
-function closeUploadModal() {
-
-  document.getElementById(
-    "uploadModal"
-  ).style.display =
-    "none";
-
-
-  editingFileId =
-    null;
-
-}
-
-
-/* =====================================================
-   EDITAR / REEMPLAZAR ARCHIVO
-===================================================== */
 
 async function openEditFileModal(
   id
@@ -1951,7 +1569,6 @@ async function openEditFileModal(
     await getFileById(
       id
     );
-
 
   if (!file) {
 
@@ -1963,31 +1580,23 @@ async function openEditFileModal(
 
   }
 
-
   editingFileId =
     id;
 
-
-  const folders =
-    getFolders();
-
-
   const folder =
-    folders.find(
+    getFolders().find(
       item =>
         item.id ===
         file.folder
     );
 
-
   document.getElementById(
-    "uploadModalTitle"
+    "proposalModalTitle"
   ).textContent =
-    "✏️ Editar / reemplazar propuesta";
-
+    "✏️ Editar propuesta";
 
   document.getElementById(
-    "uploadFolderText"
+    "proposalFolderText"
   ).textContent =
     "Producto: " +
     (
@@ -1995,105 +1604,83 @@ async function openEditFileModal(
       "Sin definir"
     );
 
-
   document.getElementById(
     "proposalName"
   ).value =
-    file.name ||
-    "";
-
+    file.name || "";
 
   document.getElementById(
     "proposalVersion"
   ).value =
-    file.version ||
-    "1.0";
-
+    file.version || "1.0";
 
   document.getElementById(
     "proposalFile"
   ).value =
     "";
 
-
   document.getElementById(
-    "proposalFile"
-  ).required =
-    false;
-
-
-  document.getElementById(
-    "uploadSaveButton"
-  ).textContent =
-    "💾 Guardar cambios";
-
-
-  document.getElementById(
-    "uploadModal"
+    "proposalModal"
   ).style.display =
     "flex";
 
 }
 
 
+function closeProposalModal() {
+
+  document.getElementById(
+    "proposalModal"
+  ).style.display =
+    "none";
+
+  editingFileId =
+    null;
+
+}
+
+
 /* =====================================================
-   GUARDAR NUEVO O CAMBIADO
+   GUARDAR PROPUESTA
 ===================================================== */
 
-async function saveProposalFile() {
+async function saveProposal() {
 
   const name =
     document.getElementById(
       "proposalName"
     ).value.trim();
 
-
   const version =
     document.getElementById(
       "proposalVersion"
     ).value.trim();
-
 
   const input =
     document.getElementById(
       "proposalFile"
     );
 
-
   if (!name) {
 
     alert(
-      "Ingresá un nombre para la propuesta."
+      "Ingresá el nombre de la propuesta."
     );
 
     return;
 
   }
-
-
-  if (
-    !editingFileId &&
-    !input.files.length
-  ) {
-
-    alert(
-      "Seleccioná un archivo."
-    );
-
-    return;
-
-  }
-
 
   try {
 
-    if (editingFileId) {
+    /* EDITAR */
+
+    if (editingFileId !== null) {
 
       const existing =
         await getFileById(
           editingFileId
         );
-
 
       if (!existing) {
 
@@ -2101,78 +1688,55 @@ async function saveProposalFile() {
           "La propuesta ya no existe."
         );
 
-        closeUploadModal();
-
         return;
 
       }
 
+      existing.name =
+        name;
+
+      existing.version =
+        version ||
+        existing.version ||
+        "1.0";
+
+      existing.updatedAt =
+        new Date().toISOString();
 
       /*
-        Mantener archivo original
-        si no se seleccionó uno nuevo.
-      */
-
-      let updated =
-        {
-          ...existing,
-
-          name:
-            name,
-
-          version:
-            version ||
-            existing.version ||
-            "1.0",
-
-          updatedAt:
-            new Date().toISOString()
-
-        };
-
-
-      /*
-        Si seleccionaste un Word/PDF nuevo,
-        reemplazamos el blob.
+        Si seleccionás un nuevo archivo,
+        reemplazamos el Word/PDF/etc.
       */
 
       if (
-        input.files.length
+        input.files.length > 0
       ) {
 
         const newFile =
           input.files[0];
 
+        existing.blob =
+          newFile;
 
-        updated.originalName =
+        existing.originalName =
           newFile.name;
 
-
-        updated.type =
+        existing.type =
           newFile.type ||
           "application/octet-stream";
 
-
-        updated.size =
+        existing.size =
           newFile.size;
-
-
-        updated.blob =
-          newFile;
 
       }
 
-
       await updateFile(
-        updated
+        existing
       );
 
-
-      closeUploadModal();
-
+      closeProposalModal();
 
       await render();
-
 
       alert(
         "✅ Propuesta actualizada correctamente."
@@ -2183,15 +1747,24 @@ async function saveProposalFile() {
     }
 
 
-    /*
-      NUEVA PROPUESTA
-    */
+    /* NUEVA */
+
+    if (
+      !input.files.length
+    ) {
+
+      alert(
+        "Seleccioná el archivo de la propuesta."
+      );
+
+      return;
+
+    }
 
     const file =
       input.files[0];
 
-
-    await saveFile({
+    await addFile({
 
       folder:
         currentFolder,
@@ -2224,15 +1797,12 @@ async function saveProposalFile() {
 
     });
 
-
-    closeUploadModal();
-
+    closeProposalModal();
 
     await render();
 
-
     alert(
-      "✅ Propuesta técnica guardada correctamente."
+      "✅ Propuesta técnica cargada correctamente."
     );
 
   }
@@ -2243,7 +1813,6 @@ async function saveProposalFile() {
       "Error guardando propuesta:",
       error
     );
-
 
     alert(
       "No se pudo guardar la propuesta."
@@ -2258,60 +1827,7 @@ async function saveProposalFile() {
    DESCARGAR
 ===================================================== */
 
-function downloadBlob(
-  blob,
-  filename
-) {
-
-  const url =
-    URL.createObjectURL(
-      blob
-    );
-
-
-  const link =
-    document.createElement(
-      "a"
-    );
-
-
-  link.href =
-    url;
-
-
-  link.download =
-    filename ||
-    "propuesta";
-
-
-  document.body.appendChild(
-    link
-  );
-
-
-  link.click();
-
-
-  document.body.removeChild(
-    link
-  );
-
-
-  setTimeout(
-    function() {
-
-      URL.revokeObjectURL(
-        url
-      );
-
-    },
-    1000
-  );
-
-}
-
-
-async function downloadStoredFile(
+async function downloadFile(
   id
 ) {
 
@@ -2321,7 +1837,6 @@ async function downloadStoredFile(
       await getFileById(
         id
       );
-
 
     if (!file) {
 
@@ -2333,24 +1848,53 @@ async function downloadStoredFile(
 
     }
 
+    const url =
+      URL.createObjectURL(
+        file.blob
+      );
 
-    downloadBlob(
-      file.blob,
+    const link =
+      document.createElement(
+        "a"
+      );
+
+    link.href =
+      url;
+
+    link.download =
       file.originalName ||
-      file.name
+      file.name ||
+      "propuesta";
+
+    document.body.appendChild(
+      link
+    );
+
+    link.click();
+
+    document.body.removeChild(
+      link
+    );
+
+    setTimeout(
+      function() {
+
+        URL.revokeObjectURL(
+          url
+        );
+
+      },
+      1000
     );
 
   }
 
   catch(error) {
 
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     alert(
-      "No se pudo descargar la propuesta."
+      "No se pudo descargar el archivo."
     );
 
   }
@@ -2359,10 +1903,10 @@ async function downloadStoredFile(
 
 
 /* =====================================================
-   ELIMINAR ARCHIVO
+   ELIMINAR
 ===================================================== */
 
-async function removeStoredFile(
+async function removeFile(
   id
 ) {
 
@@ -2371,19 +1915,17 @@ async function removeStoredFile(
       id
     );
 
-
   if (!file) {
 
     return;
 
   }
 
-
   if (
     !confirm(
-      "¿Querés eliminar \"" +
+      "¿Querés eliminar la propuesta \"" +
       file.name +
-      "\" de la Biblioteca?"
+      "\"?"
     )
   ) {
 
@@ -2391,13 +1933,11 @@ async function removeStoredFile(
 
   }
 
-
   try {
 
     await deleteFile(
       id
     );
-
 
     await render();
 
@@ -2405,10 +1945,7 @@ async function removeStoredFile(
 
   catch(error) {
 
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     alert(
       "No se pudo eliminar la propuesta."
@@ -2423,7 +1960,7 @@ async function removeStoredFile(
    PREVISUALIZAR
 ===================================================== */
 
-async function previewStoredFile(
+async function previewFile(
   id
 ) {
 
@@ -2431,7 +1968,6 @@ async function previewStoredFile(
     await getFileById(
       id
     );
-
 
   if (!file) {
 
@@ -2443,24 +1979,20 @@ async function previewStoredFile(
 
   }
 
-
   const modal =
     document.getElementById(
       "previewModal"
     );
-
 
   const title =
     document.getElementById(
       "previewTitle"
     );
 
-
   const body =
     document.getElementById(
       "previewBody"
     );
-
 
   title.textContent =
     "📄 " +
@@ -2470,21 +2002,14 @@ async function previewStoredFile(
       "Previsualización"
     );
 
-
   body.innerHTML = `
-
-    <div class="document-page">
-
-      ⏳ Cargando propuesta...
-
+    <div class="preview-document">
+      ⏳ Cargando...
     </div>
-
   `;
-
 
   modal.style.display =
     "flex";
-
 
   try {
 
@@ -2497,20 +2022,22 @@ async function previewStoredFile(
       .pop()
       .toLowerCase();
 
-
     if (
-      extension === "docx"
+      extension === "txt"
     ) {
 
-      await previewDocx(
-        file.blob,
-        body
-      );
+      const text =
+        await file.blob.text();
+
+      body.innerHTML = `
+        <div class="preview-document">
+          <div class="txt-preview">${escapeHTML(text)}</div>
+        </div>
+      `;
 
       return;
 
     }
-
 
     if (
       extension === "pdf"
@@ -2525,848 +2052,1007 @@ async function previewStoredFile(
 
     }
 
-
     if (
-      extension === "txt"
+      extension === "docx"
     ) {
 
-      const text =
-        await file.blob.text();
+      await previewDOCX(
+        file.blob,
+        body
+      );
 
+      return;
 
-      body.innerHTML = `
+    }
 
-        <div class="document-page">
+    body.innerHTML = `
+      <div class="preview-document">
 
-          <pre
-            style="
-              white-space:pre-wrap;
-              font-family:Arial,sans-serif;
-              line-height:1.6;
-            "
-          >${escapeHTML(text)}</pre>
+        <h3>
+          📄 Vista previa no disponible
+        </h3>
 
-```
-    </div>
+        <p>
+          El archivo está correctamente almacenado,
+          pero este formato no puede visualizarse
+          directamente en el navegador.
+        </p>
 
-  `;
+        <button
+          class="button green"
+          onclick="downloadFile(${file.id})"
+        >
+          📥 Descargar archivo
+        </button>
 
-  return;
+      </div>
+    `;
 
-}
-
-
-body.innerHTML = `
-
-  <div class="document-page">
-
-    <h3>
-      ⚠️ Previsualización no disponible
-    </h3>
-
-    <p>
-      Este formato puede descargarse,
-      pero el navegador no tiene visor
-      incorporado para mostrarlo acá.
-    </p>
-
-    <button
-      class="button green"
-      onclick="downloadStoredFile(${file.id})"
-    >
-      📥 Descargar archivo
-    </button>
-
-  </div>
-
-`;
-```
-
-}
-
-catch(error) {
-
-```
-console.error(
-  "Error de preview:",
-  error
-);
-
-
-body.innerHTML = `
-
-  <div class="document-page">
-
-    <h3>
-      ⚠️ No se pudo previsualizar
-    </h3>
-
-    <p>
-      El archivo está almacenado en la Biblioteca,
-      pero no pudo mostrarse en el visor.
-    </p>
-
-    <button
-      class="button green"
-      onclick="downloadStoredFile(${file.id})"
-    >
-      📥 Descargar archivo
-    </button>
-
-  </div>
-
-`;
-```
-
-}
-
-}
-
-async function previewDocx(
-blob,
-container
-) {
-
-if (
-typeof mammoth ===
-"undefined"
-) {
-
-```
-throw new Error(
-  "Mammoth no está disponible."
-);
-```
-
-}
-
-const arrayBuffer =
-await blob.arrayBuffer();
-
-const result =
-await mammoth.convertToHtml({
-
-```
-  arrayBuffer:
-    arrayBuffer
-
-});
-```
-
-container.innerHTML = `
-
-```
-<div class="document-page">
-
-  ${
-    result.value ||
-    "<p>No se pudo leer el contenido del Word.</p>"
   }
 
-</div>
-```
+  catch(error) {
 
-`;
+    console.error(
+      error
+    );
 
-}
+    body.innerHTML = `
+      <div class="preview-document">
 
-async function previewPDF(
-blob,
-container
-) {
+        <h3>
+          ⚠️ No se pudo previsualizar
+        </h3>
 
-if (
-!window.pdfjsLibCustom
-) {
+        <p>
+          El archivo está guardado en la Biblioteca.
+        </p>
 
-```
-throw new Error(
-  "PDF.js no está disponible."
-);
-```
+        <button
+          class="button green"
+          onclick="downloadFile(${file.id})"
+        >
+          📥 Descargar archivo
+        </button>
 
-}
+      </div>
+    `;
 
-const arrayBuffer =
-await blob.arrayBuffer();
-
-const pdf =
-await window.pdfjsLibCustom.getDocument({
-data:
-arrayBuffer
-}).promise;
-
-container.innerHTML =
-"";
-
-for (
-let pageNumber = 1;
-pageNumber <= pdf.numPages;
-pageNumber++
-) {
-
-```
-const page =
-  await pdf.getPage(
-    pageNumber
-  );
-
-
-const viewport =
-  page.getViewport({
-    scale: 1.45
-  });
-
-
-const wrapper =
-  document.createElement(
-    "div"
-  );
-
-
-wrapper.className =
-  "pdf-page";
-
-
-const canvas =
-  document.createElement(
-    "canvas"
-  );
-
-
-canvas.width =
-  viewport.width;
-
-
-canvas.height =
-  viewport.height;
-
-
-wrapper.appendChild(
-  canvas
-);
-
-
-container.appendChild(
-  wrapper
-);
-
-
-await page.render({
-
-  canvasContext:
-    canvas.getContext(
-      "2d"
-    ),
-
-  viewport:
-    viewport
-
-}).promise;
-```
+  }
 
 }
 
-}
 
 /* =====================================================
-CERRAR PREVIEW
+   PREVIEW WORD
+===================================================== */
+
+async function previewDOCX(
+  blob,
+  container
+) {
+
+  /*
+    Cargar Mammoth únicamente
+    cuando se necesita.
+  */
+
+  if (
+    typeof window.mammoth ===
+    "undefined"
+  ) {
+
+    await loadScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"
+    );
+
+  }
+
+  const arrayBuffer =
+    await blob.arrayBuffer();
+
+  const result =
+    await window.mammoth.convertToHtml({
+
+      arrayBuffer:
+        arrayBuffer
+
+    });
+
+  container.innerHTML = `
+    <div class="preview-document">
+      ${
+        result.value ||
+        "<p>No se pudo mostrar el contenido.</p>"
+      }
+    </div>
+  `;
+
+}
+
+
+/* =====================================================
+   PREVIEW PDF
+===================================================== */
+
+async function previewPDF(
+  blob,
+  container
+) {
+
+  if (
+    !window.pdfjsLibCustom
+  ) {
+
+    await loadPDFJS();
+
+  }
+
+  if (
+    !window.pdfjsLibCustom
+  ) {
+
+    throw new Error(
+      "No se pudo cargar PDF.js."
+    );
+
+  }
+
+  const buffer =
+    await blob.arrayBuffer();
+
+  const pdf =
+    await window.pdfjsLibCustom.getDocument({
+      data:
+        buffer
+    }).promise;
+
+  container.innerHTML =
+    "";
+
+  for (
+    let pageNumber = 1;
+    pageNumber <= pdf.numPages;
+    pageNumber++
+  ) {
+
+    const page =
+      await pdf.getPage(
+        pageNumber
+      );
+
+    const viewport =
+      page.getViewport({
+        scale: 1.35
+      });
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+    wrapper.className =
+      "pdf-page";
+
+    const canvas =
+      document.createElement(
+        "canvas"
+      );
+
+    canvas.width =
+      viewport.width;
+
+    canvas.height =
+      viewport.height;
+
+    wrapper.appendChild(
+      canvas
+    );
+
+    container.appendChild(
+      wrapper
+    );
+
+    await page.render({
+
+      canvasContext:
+        canvas.getContext("2d"),
+
+      viewport:
+        viewport
+
+    }).promise;
+
+  }
+
+}
+
+
+/* =====================================================
+   CARGAR SCRIPT
+===================================================== */
+
+function loadScript(
+  url
+) {
+
+  return new Promise(function(resolve, reject) {
+
+    const script =
+      document.createElement(
+        "script"
+      );
+
+    script.src =
+      url;
+
+    script.onload =
+      resolve;
+
+    script.onerror =
+      reject;
+
+    document.head.appendChild(
+      script
+    );
+
+  });
+
+}
+
+
+/* =====================================================
+   CARGAR PDF JS
+===================================================== */
+
+async function loadPDFJS() {
+
+  if (
+    window.pdfjsLoading
+  ) {
+
+    return window.pdfjsLoading;
+
+  }
+
+  window.pdfjsLoading =
+    new Promise(async function(resolve, reject) {
+
+      try {
+
+        const module =
+          await import(
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs"
+          );
+
+        module.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+        window.pdfjsLibCustom =
+          module;
+
+        resolve();
+
+      }
+
+      catch(error) {
+
+        reject(
+          error
+        );
+
+      }
+
+    });
+
+  return window.pdfjsLoading;
+
+}
+
+
+/* =====================================================
+   CERRAR PREVIEW
 ===================================================== */
 
 function closePreview() {
 
-document.getElementById(
-"previewModal"
-).style.display =
-"none";
+  document.getElementById(
+    "previewModal"
+  ).style.display =
+    "none";
 
-document.getElementById(
-"previewBody"
-).innerHTML =
-"";
+  document.getElementById(
+    "previewBody"
+  ).innerHTML =
+    "";
 
 }
 
+
 /* =====================================================
-RENDER ARCHIVOS
+   RENDER CARPETAS
+===================================================== */
+
+function renderFolders() {
+
+  const container =
+    document.getElementById(
+      "folderList"
+    );
+
+  const folders =
+    getFolders();
+
+  container.innerHTML =
+    "";
+
+  if (!folders.length) {
+
+    container.innerHTML = `
+      <div style="color:#6b7280;font-size:13px;line-height:1.5;">
+        Todavía no tenés productos.
+        Creá una carpeta como
+        Perfil Digital, Thuban,
+        Firmas o Captika.
+      </div>
+    `;
+
+    return;
+
+  }
+
+  folders.forEach(
+    function(folder) {
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "folder-row";
+
+      const select =
+        document.createElement(
+          "button"
+        );
+
+      select.className =
+        "folder" +
+        (
+          currentFolder ===
+          folder.id
+            ? " active"
+            : ""
+        );
+
+      select.textContent =
+        "📁 " +
+        folder.name;
+
+      select.onclick =
+        function() {
+
+          currentFolder =
+            folder.id;
+
+          render();
+
+        };
+
+      row.appendChild(
+        select
+      );
+
+
+      const edit =
+        document.createElement(
+          "button"
+        );
+
+      edit.className =
+        "button secondary small-button";
+
+      edit.textContent =
+        "✏️";
+
+      edit.title =
+        "Editar producto";
+
+      edit.onclick =
+        function() {
+
+          openFolderModal(
+            folder.id
+          );
+
+        };
+
+      row.appendChild(
+        edit
+      );
+
+
+      const remove =
+        document.createElement(
+          "button"
+        );
+
+      remove.className =
+        "button danger small-button";
+
+      remove.textContent =
+        "🗑️";
+
+      remove.title =
+        "Eliminar producto";
+
+      remove.onclick =
+        function() {
+
+          deleteFolder(
+            folder.id
+          );
+
+        };
+
+      row.appendChild(
+        remove
+      );
+
+      container.appendChild(
+        row
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   RENDER ARCHIVOS
 ===================================================== */
 
 async function renderFiles() {
 
-const container =
-document.getElementById(
-"fileList"
-);
-
-container.innerHTML =
-"";
-
-if (!currentFolder) {
-
-```
-container.innerHTML = `
-
-  <div class="empty">
-
-    <div style="font-size:45px;">
-      📚
-    </div>
-
-    <h3>
-      Seleccioná un producto
-    </h3>
-
-    <p>
-      Elegí una carpeta para ver sus propuestas técnicas.
-    </p>
-
-  </div>
-
-`;
-
-return;
-```
-
-}
-
-const files =
-await getFilesByFolder(
-currentFolder
-);
-
-if (!files.length) {
-
-```
-container.innerHTML = `
-
-  <div class="empty">
-
-    <div style="font-size:45px;">
-      📄
-    </div>
-
-    <h3>
-      No hay propuestas cargadas
-    </h3>
-
-    <p>
-      Cargá la propuesta técnica base de este producto.
-    </p>
-
-  </div>
-
-`;
-
-return;
-```
-
-}
-
-files.sort(
-function(a, b) {
-
-```
-  return new Date(
-    b.updatedAt ||
-    b.createdAt ||
-    0
-  ) -
-  new Date(
-    a.updatedAt ||
-    a.createdAt ||
-    0
-  );
-
-}
-```
-
-);
-
-files.forEach(
-function(file) {
-
-```
-  const card =
-    document.createElement(
-      "div"
+  const container =
+    document.getElementById(
+      "fileList"
     );
 
+  container.innerHTML =
+    "";
 
-  card.className =
-    "file-card";
+  if (!currentFolder) {
 
+    container.innerHTML = `
+      <div class="empty">
 
-  card.innerHTML = `
-
-    <div class="file-info">
-
-      <div class="file-icon">
-
-        ${getFileIcon(
-          file.originalName
-        )}
-
-      </div>
-
-      <div>
-
-        <div class="file-name">
-
-          ${escapeHTML(
-            file.name ||
-            "Propuesta sin nombre"
-          )}
-
+        <div style="font-size:45px;">
+          📚
         </div>
 
-        <div class="file-meta">
+        <h3>
+          Seleccioná un producto
+        </h3>
 
-          Versión:
-          <strong>
-            ${escapeHTML(
-              file.version ||
-              "1.0"
+        <p>
+          Elegí una carpeta para ver sus propuestas técnicas.
+        </p>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  const files =
+    await getFilesByFolder(
+      currentFolder
+    );
+
+  if (!files.length) {
+
+    container.innerHTML = `
+      <div class="empty">
+
+        <div style="font-size:45px;">
+          📄
+        </div>
+
+        <h3>
+          No hay propuestas cargadas
+        </h3>
+
+        <p>
+          Cargá la propuesta técnica base de este producto.
+        </p>
+
+        <button
+          class="button primary"
+          onclick="openUploadModal()"
+        >
+          📤 Cargar propuesta
+        </button>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  files.sort(function(a, b) {
+
+    return new Date(
+      b.updatedAt ||
+      b.createdAt ||
+      0
+    ) -
+    new Date(
+      a.updatedAt ||
+      a.createdAt ||
+      0
+    );
+
+  });
+
+  files.forEach(
+    function(file) {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+      card.className =
+        "file-card";
+
+      card.innerHTML = `
+
+        <div class="file-info">
+
+          <div class="file-icon">
+            ${getFileIcon(
+              file.originalName
             )}
-          </strong>
+          </div>
 
-          · Archivo:
-          ${escapeHTML(
-            file.originalName ||
-            ""
-          )}
+          <div>
 
-          ·
-          ${formatBytes(
-            file.size || 0
-          )}
+            <div class="file-name">
+              ${escapeHTML(
+                file.name ||
+                "Propuesta sin nombre"
+              )}
+            </div>
 
-          <br>
+            <div class="file-meta">
 
-          Última actualización:
-          ${formatDate(
-            file.updatedAt ||
-            file.createdAt
-          )}
+              Versión:
+              <strong>
+                ${escapeHTML(
+                  file.version ||
+                  "1.0"
+                )}
+              </strong>
+
+              <br>
+
+              Archivo:
+              ${escapeHTML(
+                file.originalName ||
+                ""
+              )}
+
+              ·
+              ${formatBytes(
+                file.size ||
+                0
+              )}
+
+              <br>
+
+              Última actualización:
+              ${formatDate(
+                file.updatedAt ||
+                file.createdAt
+              )}
+
+            </div>
+
+          </div>
 
         </div>
 
-      </div>
+        <div class="file-actions">
 
-    </div>
+          <button
+            class="button purple"
+            onclick="previewFile(${file.id})"
+          >
+            👁️ Ver
+          </button>
 
+          <button
+            class="button secondary"
+            onclick="openEditFileModal(${file.id})"
+          >
+            ✏️ Editar
+          </button>
 
-    <div class="file-actions">
+          <button
+            class="button green"
+            onclick="downloadFile(${file.id})"
+          >
+            📥 Descargar
+          </button>
 
-      <button
-        class="button purple"
-        onclick="previewStoredFile(${file.id})"
-      >
-        👁️ Ver
-      </button>
+          <button
+            class="button danger"
+            onclick="removeFile(${file.id})"
+          >
+            🗑️ Eliminar
+          </button>
 
+        </div>
 
-      <button
-        class="button secondary"
-        onclick="openEditFileModal(${file.id})"
-      >
-        ✏️ Editar
-      </button>
+      `;
 
+      container.appendChild(
+        card
+      );
 
-      <button
-        class="button orange"
-        onclick="downloadStoredFile(${file.id})"
-      >
-        📥 Descargar
-      </button>
-
-
-      <button
-        class="button danger"
-        onclick="removeStoredFile(${file.id})"
-      >
-        🗑️ Eliminar
-      </button>
-
-    </div>
-
-  `;
-
-
-  container.appendChild(
-    card
+    }
   );
 
 }
-```
 
-);
-
-}
 
 /* =====================================================
-ESTADISTICAS
-===================================================== */
-
-async function updateStats() {
-
-const folders =
-getFolders();
-
-let totalFiles =
-0;
-
-for (
-const folder of folders
-) {
-
-```
-const files =
-  await getFilesByFolder(
-    folder.id
-  );
-
-
-totalFiles +=
-  files.length;
-```
-
-}
-
-document.getElementById(
-"folderCount"
-).textContent =
-folders.length;
-
-document.getElementById(
-"fileCount"
-).textContent =
-totalFiles;
-
-document.getElementById(
-"libraryStatus"
-).textContent =
-"✓ Lista";
-
-}
-
-/* =====================================================
-RENDER GENERAL
+   RENDER GENERAL
 ===================================================== */
 
 async function render() {
 
-renderFolders();
+  const folders =
+    getFolders();
 
-const folders =
-getFolders();
+  if (
+    !currentFolder &&
+    folders.length
+  ) {
 
-if (
-!currentFolder &&
-folders.length
-) {
+    currentFolder =
+      folders[0].id;
 
-```
-currentFolder =
-  folders[0].id;
+  }
 
-renderFolders();
-```
+  /*
+    Si la carpeta seleccionada
+    ya no existe, seleccionamos
+    la primera disponible.
+  */
+
+  const exists =
+    folders.some(
+      folder =>
+        folder.id ===
+        currentFolder
+    );
+
+  if (
+    !exists
+  ) {
+
+    currentFolder =
+      folders.length
+        ? folders[0].id
+        : null;
+
+  }
+
+  renderFolders();
+
+  const folder =
+    folders.find(
+      item =>
+        item.id ===
+        currentFolder
+    );
+
+  if (folder) {
+
+    document.getElementById(
+      "currentFolderTitle"
+    ).textContent =
+      "📁 " +
+      folder.name;
+
+    document.getElementById(
+      "currentFolderDescription"
+    ).textContent =
+      folder.description ||
+      "Propuestas técnicas base.";
+
+    document.getElementById(
+      "uploadButton"
+    ).style.display =
+      "inline-block";
+
+  }
+
+  else {
+
+    document.getElementById(
+      "currentFolderTitle"
+    ).textContent =
+      "Seleccioná un producto";
+
+    document.getElementById(
+      "currentFolderDescription"
+    ).textContent =
+      "Acá aparecerán las propuestas técnicas base.";
+
+    document.getElementById(
+      "uploadButton"
+    ).style.display =
+      "none";
+
+  }
+
+  await renderFiles();
+
+  await updateStats();
 
 }
 
-const folder =
-folders.find(
-item =>
-item.id ===
-currentFolder
-);
-
-if (folder) {
-
-```
-document.getElementById(
-  "currentFolderTitle"
-).textContent =
-  "📁 " +
-  folder.name;
-
-
-document.getElementById(
-  "currentFolderDescription"
-).textContent =
-  folder.description;
-
-
-document.getElementById(
-  "uploadButton"
-).style.display =
-  "inline-block";
-```
-
-}
-
-else {
-
-```
-document.getElementById(
-  "currentFolderTitle"
-).textContent =
-  "Seleccioná un producto";
-
-
-document.getElementById(
-  "currentFolderDescription"
-).textContent =
-  "Las propuestas técnicas base aparecerán acá.";
-
-
-document.getElementById(
-  "uploadButton"
-).style.display =
-  "none";
-```
-
-}
-
-await renderFiles();
-
-await updateStats();
-
-}
 
 /* =====================================================
-ICONOS
+   ESTADÍSTICAS
+===================================================== */
+
+async function updateStats() {
+
+  const folders =
+    getFolders();
+
+  let count =
+    0;
+
+  for (
+    const folder of folders
+  ) {
+
+    const files =
+      await getFilesByFolder(
+        folder.id
+      );
+
+    count +=
+      files.length;
+
+  }
+
+  document.getElementById(
+    "folderCount"
+  ).textContent =
+    folders.length;
+
+  document.getElementById(
+    "fileCount"
+  ).textContent =
+    count;
+
+}
+
+
+/* =====================================================
+   ICONO
 ===================================================== */
 
 function getFileIcon(
-name
+  name
 ) {
 
-const extension =
-String(
-name ||
-""
-)
-.split(".")
-.pop()
-.toLowerCase();
+  const extension =
+    String(
+      name ||
+      ""
+    )
+    .split(".")
+    .pop()
+    .toLowerCase();
 
-if (
-extension === "pdf"
-) {
+  if (
+    extension === "pdf"
+  ) {
 
-```
-return "📕";
-```
+    return "📕";
+
+  }
+
+  if (
+    extension === "doc" ||
+    extension === "docx"
+  ) {
+
+    return "📘";
+
+  }
+
+  if (
+    extension === "xls" ||
+    extension === "xlsx"
+  ) {
+
+    return "📗";
+
+  }
+
+  return "📄";
 
 }
 
-if (
-extension === "doc" ||
-extension === "docx"
-) {
-
-```
-return "📘";
-```
-
-}
-
-if (
-extension === "xls" ||
-extension === "xlsx"
-) {
-
-```
-return "📗";
-```
-
-}
-
-return "📄";
-
-}
 
 /* =====================================================
-BYTES
+   TAMAÑO
 ===================================================== */
 
 function formatBytes(
-bytes
+  bytes
 ) {
 
-if (
-bytes < 1024
-) {
+  if (
+    bytes < 1024
+  ) {
 
-```
-return bytes +
-  " B";
-```
+    return bytes +
+      " B";
+
+  }
+
+  if (
+    bytes < 1024 * 1024
+  ) {
+
+    return (
+      bytes / 1024
+    ).toFixed(1) +
+    " KB";
+
+  }
+
+  if (
+    bytes < 1024 * 1024 * 1024
+  ) {
+
+    return (
+      bytes /
+      1024 /
+      1024
+    ).toFixed(2) +
+    " MB";
+
+  }
+
+  return (
+    bytes /
+    1024 /
+    1024 /
+    1024
+  ).toFixed(2) +
+  " GB";
 
 }
 
-if (
-bytes < 1024 * 1024
-) {
-
-```
-return (
-  bytes /
-  1024
-).toFixed(1) +
-" KB";
-```
-
-}
-
-if (
-bytes < 1024 * 1024 * 1024
-) {
-
-```
-return (
-  bytes /
-  1024 /
-  1024
-).toFixed(2) +
-" MB";
-```
-
-}
-
-return (
-bytes /
-1024 /
-1024 /
-1024
-).toFixed(2) +
-" GB";
-
-}
 
 /* =====================================================
-FECHA
+   FECHA
 ===================================================== */
 
 function formatDate(
-value
+  value
 ) {
 
-if (!value) {
+  if (!value) {
 
-```
-return "Sin fecha";
-```
+    return "Sin fecha";
 
-}
+  }
 
-try {
+  try {
 
-```
-return new Date(
-  value
-).toLocaleString(
-  "es-AR"
-);
-```
+    return new Date(
+      value
+    ).toLocaleString(
+      "es-AR"
+    );
 
-}
+  }
 
-catch(error) {
+  catch(error) {
 
-```
-return "Sin fecha";
-```
+    return "Sin fecha";
+
+  }
 
 }
 
-}
 
 /* =====================================================
-ESCAPE
+   SEGURIDAD
 ===================================================== */
 
 function escapeHTML(
-value
+  value
 ) {
 
-return String(
-value ||
-""
-)
-
-.replace(
-/&/g,
-"&"
-)
-
-.replace(
-/</g,
-"<"
-)
-
-.replace(
-/>/g,
-">"
-)
-
-.replace(
-/"/g,
-"""
-)
-
-.replace(
-/'/g,
-"'"
-);
+  return String(
+    value ||
+    ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
+
 /* =====================================================
-INICIO
+   INICIO
 ===================================================== */
 
 (async function() {
 
-try {
+  try {
 
-```
-await openDatabase();
+    await openDatabase();
 
-await render();
-```
+    await render();
 
-}
+  }
 
-catch(error) {
+  catch(error) {
 
-```
-console.error(
-  "Error inicializando Biblioteca:",
-  error
-);
+    console.error(
+      "Error inicializando biblioteca:",
+      error
+    );
 
+    document.getElementById(
+      "libraryStatus"
+    ).textContent =
+      "Error";
 
-document.getElementById(
-  "libraryStatus"
-).textContent =
-  "Error";
+    document.getElementById(
+      "infoMessage"
+    ).textContent =
+      "⚠️ No se pudo inicializar la Biblioteca Técnica.";
 
-
-document.getElementById(
-  "infoMessage"
-).textContent =
-  "⚠️ El navegador no permitió inicializar la Biblioteca Técnica.";
-```
-
-}
+  }
 
 })();
 
 </script>
 
 </body>
-
 </html>
