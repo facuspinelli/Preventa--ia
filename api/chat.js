@@ -6,6 +6,8 @@ apiKey: process.env.OPENAI_API_KEY
 
 module.exports = async function handler(req, res) {
 
+res.setHeader("Content-Type", "application/json");
+
 if (req.method !== "POST") {
 return res.status(405).json({
 error: "Método no permitido"
@@ -15,65 +17,102 @@ error: "Método no permitido"
 try {
 
 ```
-const { message, knowledge } = req.body || {};
+const body = req.body || {};
 
-if (!message) {
+const message = body.message || "";
+const knowledge = body.knowledge || "";
+
+if (!message.trim()) {
   return res.status(400).json({
     error: "No se recibió ninguna pregunta."
+  });
+}
+
+if (!process.env.OPENAI_API_KEY) {
+  return res.status(500).json({
+    error: "OPENAI_API_KEY no está configurada en Vercel."
   });
 }
 
 const systemPrompt = `
 ```
 
-Sos PREVENTA IA, un asistente especializado en Preventa Técnica.
+Sos PREVENTA IA, un asistente inteligente especializado
+en Preventa Técnica.
 
-Tu objetivo es ayudar a analizar oportunidades, requerimientos,
-productos, soluciones, documentación, cotizaciones y propuestas.
+Tu función es ayudar a analizar:
 
-Tenés acceso a una base de conocimiento interna de la empresa.
-Cuando esa información sea relevante, utilizala como fuente prioritaria.
+* oportunidades comerciales
+* relevamientos
+* requerimientos técnicos
+* propuestas
+* productos Addoc
+* productos Thuban
+* gestión documental
+* OCR
+* workflows
+* firmas
+* usuarios
+* storage
+* infraestructura
+* integraciones
+* migraciones
+* cotizaciones
+* documentación
 
-Sin embargo, también podés responder preguntas generales utilizando
+IMPORTANTE:
+
+Tenés una base de conocimiento interna que se incluye debajo.
+
+Usala cuando la consulta esté relacionada con nuestra
+empresa, productos, soluciones o metodología de Preventa.
+
+Además, podés responder preguntas generales utilizando
 tu conocimiento general.
 
-REGLAS:
+No inventes funcionalidades específicas de productos.
 
-1. No inventes funcionalidades de productos.
-2. Si la información interna no alcanza para responder sobre un producto,
-   indicá claramente que es necesario validar esa información.
-3. Diferenciá entre información interna y conocimiento general cuando sea útil.
-4. Para documentos o requerimientos, buscá siempre:
+Si la información interna no alcanza para confirmar algo,
+decilo claramente.
 
-   * objetivo
-   * alcance
-   * requerimientos
-   * usuarios
-   * documentos
-   * OCR
-   * workflows
-   * firmas
-   * storage
-   * infraestructura
-   * integraciones
-   * seguridad
-   * volúmenes
-   * riesgos
-   * información faltante
-   * datos necesarios para cotizar
-5. Respondé en español.
-6. Sé claro, práctico y orientado a Preventa.
+Cuando analices una oportunidad, tratá de identificar:
+
+1. Objetivo
+2. Alcance
+3. Usuarios
+4. Documentos
+5. Volúmenes
+6. OCR
+7. Workflows
+8. Firmas
+9. Storage
+10. Infraestructura
+11. Integraciones
+12. Seguridad
+13. Migración
+14. Soporte
+15. Datos necesarios para cotizar
+16. Riesgos
+17. Información faltante
+18. Recomendaciones
+
+Respondé siempre en español y de forma práctica,
+clara y orientada a Preventa.
 
 BASE DE CONOCIMIENTO INTERNA:
 
-${knowledge || "No se proporcionó información interna adicional."}
+${knowledge}
 `;
 
 ```
 const response = await client.responses.create({
-  model: "gpt-5.4-mini",
+
+  model: "gpt-5.4",
+
   instructions: systemPrompt,
+
   input: message
+
 });
 
 return res.status(200).json({
@@ -84,10 +123,12 @@ return res.status(200).json({
 } catch (error) {
 
 ```
-console.error(error);
+console.error("ERROR OPENAI:", error);
 
 return res.status(500).json({
-  error: "Error al comunicarse con la IA."
+  error:
+    error?.message ||
+    "Error desconocido al comunicarse con la IA."
 });
 ```
 
