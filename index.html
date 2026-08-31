@@ -79,7 +79,6 @@ nav a:hover {
   padding: 0 25px;
 }
 
-
 /* ==========================================
    METRICAS
 ========================================== */
@@ -109,7 +108,6 @@ nav a:hover {
   font-size: 25px;
   font-weight: bold;
 }
-
 
 /* ==========================================
    GRAFICOS
@@ -189,7 +187,6 @@ nav a:hover {
   flex-shrink: 0;
 }
 
-
 /* ==========================================
    ACCIONES
 ========================================== */
@@ -248,9 +245,8 @@ nav a:hover {
   background: #1d4ed8;
 }
 
-
 /* ==========================================
-   BIBLIOTECA DESTACADA
+   BIBLIOTECA
 ========================================== */
 
 .library-highlight {
@@ -301,7 +297,6 @@ nav a:hover {
   font-size: 25px;
   font-weight: bold;
 }
-
 
 /* ==========================================
    ULTIMAS
@@ -376,7 +371,6 @@ nav a:hover {
   color: #6b7280;
 }
 
-
 /* ==========================================
    FOOTER
 ========================================== */
@@ -387,7 +381,6 @@ footer {
   color: #9ca3af;
   font-size: 13px;
 }
-
 
 /* ==========================================
    RESPONSIVE
@@ -511,7 +504,6 @@ footer {
 
 </div>
 
-
 <div class="metric">
 
   <div class="metric-title">
@@ -526,7 +518,6 @@ footer {
   </div>
 
 </div>
-
 
 <div class="metric">
 
@@ -543,7 +534,6 @@ footer {
 
 </div>
 
-
 <div class="metric">
 
   <div class="metric-title">
@@ -558,7 +548,6 @@ footer {
   </div>
 
 </div>
-
 
 <div class="metric">
 
@@ -607,7 +596,6 @@ footer {
 
     </div>
 
-
     <div
       id="statusLegend"
       class="legend"
@@ -616,7 +604,6 @@ footer {
   </div>
 
 </div>
-
 
 <div class="chart-card">
 
@@ -639,7 +626,6 @@ footer {
       </div>
 
     </div>
-
 
     <div
       id="quoteLegend"
@@ -688,7 +674,6 @@ footer {
 
 </div>
 
-
 <div class="card">
 
   <div class="icon">
@@ -712,7 +697,6 @@ footer {
   </a>
 
 </div>
-
 
 <div class="card">
 
@@ -738,7 +722,6 @@ footer {
 
 </div>
 
-
 <div class="card">
 
   <div class="icon">
@@ -762,7 +745,6 @@ footer {
   </a>
 
 </div>
-
 
 <div class="card">
 
@@ -788,7 +770,6 @@ footer {
 
 </div>
 
-
 <div class="card">
 
   <div class="icon">
@@ -812,7 +793,6 @@ footer {
   </a>
 
 </div>
-
 
 <div class="card">
 
@@ -871,7 +851,6 @@ footer {
 
 </div>
 
-
 <div class="library-data">
 
   <div class="library-box">
@@ -888,7 +867,6 @@ footer {
     </div>
 
   </div>
-
 
   <div class="library-box">
 
@@ -933,7 +911,6 @@ footer {
 
   </div>
 
-
   <div
     id="recentOpportunities"
   ></div>
@@ -953,7 +930,6 @@ PREVENTA IA · Herramienta inteligente para Preventa
 
 <script>
 
-
 /* ==========================================
    OPORTUNIDADES
 ========================================== */
@@ -972,12 +948,16 @@ function getOpportunities() {
 
   catch(error) {
 
+    console.error(
+      "No se pudieron leer las oportunidades.",
+      error
+    );
+
     return [];
 
   }
 
 }
-
 
 /* ==========================================
    BIBLIOTECA
@@ -987,11 +967,10 @@ const LIBRARY_DB_NAME =
   "preventa_ia_biblioteca";
 
 const LIBRARY_DB_VERSION =
-  1;
+  2;
 
 const LIBRARY_STORE =
   "proposals";
-
 
 function getLibraryFolders() {
 
@@ -1007,24 +986,111 @@ function getLibraryFolders() {
 
   catch(error) {
 
+    console.error(
+      "No se pudieron leer las carpetas de biblioteca.",
+      error
+    );
+
     return [];
 
   }
 
 }
 
-
 function openLibraryDatabase() {
 
   return new Promise(
     function(resolve) {
 
-      const request =
-        indexedDB.open(
-          LIBRARY_DB_NAME,
-          LIBRARY_DB_VERSION
+      let request;
+
+      try {
+
+        request =
+          indexedDB.open(
+            LIBRARY_DB_NAME,
+            LIBRARY_DB_VERSION
+          );
+
+      }
+
+      catch(error) {
+
+        console.error(
+          "No se pudo abrir IndexedDB.",
+          error
         );
 
+        resolve(null);
+
+        return;
+
+      }
+
+      request.onupgradeneeded =
+        function(event) {
+
+          const database =
+            event.target.result;
+
+          if (
+            !database.objectStoreNames.contains(
+              "proposals"
+            )
+          ) {
+
+            const store =
+              database.createObjectStore(
+                "proposals",
+                {
+                  keyPath: "id",
+                  autoIncrement: true
+                }
+              );
+
+            store.createIndex(
+              "folder",
+              "folder",
+              {
+                unique: false
+              }
+            );
+
+          }
+
+          if (
+            !database.objectStoreNames.contains(
+              "finalProposals"
+            )
+          ) {
+
+            const finalStore =
+              database.createObjectStore(
+                "finalProposals",
+                {
+                  keyPath: "id"
+                }
+              );
+
+            finalStore.createIndex(
+              "opportunityId",
+              "opportunityId",
+              {
+                unique: false
+              }
+            );
+
+            finalStore.createIndex(
+              "createdAt",
+              "createdAt",
+              {
+                unique: false
+              }
+            );
+
+          }
+
+        };
 
       request.onsuccess =
         function(event) {
@@ -1035,13 +1101,26 @@ function openLibraryDatabase() {
 
         };
 
-
       request.onerror =
         function() {
 
-          resolve(
-            null
+          console.error(
+            "Error al abrir Biblioteca Técnica:",
+            request.error
           );
+
+          resolve(null);
+
+        };
+
+      request.onblocked =
+        function() {
+
+          console.warn(
+            "La Biblioteca Técnica está bloqueada por otra pestaña."
+          );
+
+          resolve(null);
 
         };
 
@@ -1050,17 +1129,15 @@ function openLibraryDatabase() {
 
 }
 
-
 function countLibraryProposals() {
 
   return new Promise(
     async function(resolve) {
 
-      const db =
+      const database =
         await openLibraryDatabase();
 
-
-      if (!db) {
+      if (!database) {
 
         resolve(0);
 
@@ -1068,9 +1145,8 @@ function countLibraryProposals() {
 
       }
 
-
       if (
-        !db.objectStoreNames.contains(
+        !database.objectStoreNames.contains(
           LIBRARY_STORE
         )
       ) {
@@ -1081,25 +1157,21 @@ function countLibraryProposals() {
 
       }
 
-
       try {
 
         const transaction =
-          db.transaction(
+          database.transaction(
             LIBRARY_STORE,
             "readonly"
           );
-
 
         const store =
           transaction.objectStore(
             LIBRARY_STORE
           );
 
-
         const request =
           store.count();
-
 
         request.onsuccess =
           function() {
@@ -1109,7 +1181,6 @@ function countLibraryProposals() {
             );
 
           };
-
 
         request.onerror =
           function() {
@@ -1122,6 +1193,11 @@ function countLibraryProposals() {
 
       catch(error) {
 
+        console.error(
+          "No se pudo contar la biblioteca.",
+          error
+        );
+
         resolve(0);
 
       }
@@ -1131,22 +1207,18 @@ function countLibraryProposals() {
 
 }
 
-
 async function updateLibrarySummary() {
 
   const folders =
     getLibraryFolders();
-
 
   document.getElementById(
     "libraryFolders"
   ).textContent =
     folders.length;
 
-
   const proposals =
     await countLibraryProposals();
-
 
   document.getElementById(
     "libraryProposals"
@@ -1154,7 +1226,6 @@ async function updateLibrarySummary() {
     proposals;
 
 }
-
 
 /* ==========================================
    DINERO
@@ -1171,7 +1242,6 @@ function toNumber(
     return value;
 
   }
-
 
   const texto =
     String(
@@ -1190,19 +1260,16 @@ function toNumber(
       "."
     );
 
-
   const numero =
     parseFloat(
       texto
     );
-
 
   return isNaN(numero)
     ? 0
     : numero;
 
 }
-
 
 function money(
   value
@@ -1222,7 +1289,6 @@ function money(
   );
 
 }
-
 
 /* ==========================================
    ESTADOS
@@ -1251,14 +1317,12 @@ function statusName(
 
   };
 
-
   return (
     names[status] ||
     "Sin estado"
   );
 
 }
-
 
 /* ==========================================
    METRICAS
@@ -1271,74 +1335,69 @@ function updateMetrics(
   const total =
     opportunities.length;
 
-
   const analysis =
     opportunities.filter(
-      x =>
-        x.status === "analysis"
+      function(item) {
+        return item.status === "analysis";
+      }
     ).length;
-
 
   const quoted =
     opportunities.filter(
-      x =>
-        !!x.quote
+      function(item) {
+        return !!item.quote;
+      }
     ).length;
-
 
   const won =
     opportunities.filter(
-      x =>
-        x.status === "won"
+      function(item) {
+        return item.status === "won";
+      }
     ).length;
-
 
   const totalQuoted =
     opportunities.reduce(
-      function(total, opportunity) {
+      function(totalActual, opportunity) {
 
         if (
           !opportunity.quote
         ) {
 
-          return total;
+          return totalActual;
 
         }
 
-
-        return total +
+        return (
+          totalActual +
           toNumber(
             opportunity.quote.totalYear
-          );
+          )
+        );
 
       },
       0
     );
-
 
   document.getElementById(
     "totalOpportunities"
   ).textContent =
     total;
 
-
   document.getElementById(
     "analysisCount"
   ).textContent =
     analysis;
-
 
   document.getElementById(
     "quoteCount"
   ).textContent =
     quoted;
 
-
   document.getElementById(
     "wonCount"
   ).textContent =
     won;
-
 
   document.getElementById(
     "totalQuoted"
@@ -1348,7 +1407,6 @@ function updateMetrics(
     );
 
 }
-
 
 /* ==========================================
    GRAFICO ESTADOS
@@ -1368,33 +1426,25 @@ function renderStatusChart(
 
   };
 
-
   opportunities.forEach(
     function(opportunity) {
 
       const status =
         opportunity.status;
 
-
       if (
-        counts[
-          status
-        ] !== undefined
+        counts[status] !== undefined
       ) {
 
-        counts[
-          status
-        ]++;
+        counts[status]++;
 
       }
 
     }
   );
 
-
   const total =
     opportunities.length;
-
 
   const colors = {
 
@@ -1415,13 +1465,9 @@ function renderStatusChart(
 
   };
 
-
   const partes = [];
 
-
-  let acumulado =
-    0;
-
+  let acumulado = 0;
 
   Object.keys(
     counts
@@ -1436,10 +1482,8 @@ function renderStatusChart(
 
       }
 
-
       const inicio =
         acumulado;
-
 
       const porcentaje =
         (
@@ -1448,10 +1492,8 @@ function renderStatusChart(
         ) *
         100;
 
-
       acumulado +=
         porcentaje;
-
 
       partes.push(
         colors[key] +
@@ -1465,12 +1507,10 @@ function renderStatusChart(
     }
   );
 
-
   const donut =
     document.getElementById(
       "statusDonut"
     );
-
 
   if (
     total === 0
@@ -1490,22 +1530,18 @@ function renderStatusChart(
 
   }
 
-
   document.getElementById(
     "statusCenter"
   ).textContent =
     total;
-
 
   const legend =
     document.getElementById(
       "statusLegend"
     );
 
-
   legend.innerHTML =
     "";
-
 
   Object.keys(
     counts
@@ -1520,31 +1556,30 @@ function renderStatusChart(
 
       }
 
-
       const div =
         document.createElement(
           "div"
         );
 
-
       div.className =
         "legend-item";
 
+      div.innerHTML =
 
-      div.innerHTML = `
+        "<span " +
+          "class='legend-dot' " +
+          "style='background:" +
+          colors[key] +
+          "'>" +
+        "</span>" +
 
-        <span
-          class="legend-dot"
-          style="background:${colors[key]}"
-        ></span>
-
-        <span>
-          ${statusName(key)}
-          · ${counts[key]}
-        </span>
-
-      `;
-
+        "<span>" +
+          escapeHTML(
+            statusName(key)
+          ) +
+          " · " +
+          counts[key] +
+        "</span>";
 
       legend.appendChild(
         div
@@ -1552,7 +1587,6 @@ function renderStatusChart(
 
     }
   );
-
 
   if (
     total === 0
@@ -1567,7 +1601,6 @@ function renderStatusChart(
 
 }
 
-
 /* ==========================================
    GRAFICO COTIZACIONES
 ========================================== */
@@ -1579,24 +1612,21 @@ function renderQuoteChart(
   const total =
     opportunities.length;
 
-
   const quoted =
     opportunities.filter(
-      x =>
-        !!x.quote
+      function(item) {
+        return !!item.quote;
+      }
     ).length;
-
 
   const pending =
     total -
     quoted;
 
-
   const donut =
     document.getElementById(
       "quoteDonut"
     );
-
 
   if (
     total === 0
@@ -1604,7 +1634,6 @@ function renderQuoteChart(
 
     donut.style.background =
       "#e5e7eb";
-
 
     document.getElementById(
       "quoteCenter"
@@ -1622,7 +1651,6 @@ function renderQuoteChart(
       ) *
       100;
 
-
     donut.style.background =
       "conic-gradient(" +
       "#22c55e 0% " +
@@ -1631,7 +1659,6 @@ function renderQuoteChart(
       "#d1d5db " +
       porcentaje +
       "% 100%)";
-
 
     document.getElementById(
       "quoteCenter"
@@ -1643,12 +1670,10 @@ function renderQuoteChart(
 
   }
 
-
   const legend =
     document.getElementById(
       "quoteLegend"
     );
-
 
   legend.innerHTML = `
 
@@ -1664,7 +1689,6 @@ function renderQuoteChart(
       </span>
 
     </div>
-
 
     <div class="legend-item">
 
@@ -1683,7 +1707,6 @@ function renderQuoteChart(
 
 }
 
-
 /* ==========================================
    ULTIMAS OPORTUNIDADES
 ========================================== */
@@ -1697,10 +1720,8 @@ function renderRecent(
       "recentOpportunities"
     );
 
-
   container.innerHTML =
     "";
-
 
   if (
     opportunities.length === 0
@@ -1731,7 +1752,6 @@ function renderRecent(
 
   }
 
-
   opportunities
     .slice(
       0,
@@ -1745,14 +1765,11 @@ function renderRecent(
             "div"
           );
 
-
         item.className =
           "recent-item";
 
-
         const quote =
           opportunity.quote;
-
 
         item.innerHTML = `
 
@@ -1782,7 +1799,6 @@ function renderRecent(
 
           </div>
 
-
           <div class="recent-value">
 
             <small>
@@ -1810,7 +1826,6 @@ function renderRecent(
 
         `;
 
-
         container.appendChild(
           item
         );
@@ -1819,7 +1834,6 @@ function renderRecent(
     );
 
 }
-
 
 /* ==========================================
    SEGURIDAD
@@ -1861,7 +1875,6 @@ function escapeHTML(
 
 }
 
-
 /* ==========================================
    INICIO
 ========================================== */
@@ -1871,26 +1884,21 @@ function escapeHTML(
   const opportunities =
     getOpportunities();
 
-
   updateMetrics(
     opportunities
   );
-
 
   renderStatusChart(
     opportunities
   );
 
-
   renderQuoteChart(
     opportunities
   );
 
-
   renderRecent(
     opportunities
   );
-
 
   await updateLibrarySummary();
 
@@ -1899,4 +1907,5 @@ function escapeHTML(
 </script>
 
 </body>
+
 </html>
