@@ -1,5 +1,5 @@
+```html
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -65,6 +65,30 @@ h2 {
   border-radius: 10px;
   padding: 14px 18px;
   margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.library-status {
+  display: none;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.library-found {
+  display: block;
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.library-missing {
+  display: block;
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
 }
 
 .card {
@@ -98,20 +122,24 @@ h2 {
   font-size: 12px;
 }
 
-input {
+input,
+select {
   width: 100%;
   padding: 12px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 15px;
+  background: white;
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: none;
   border-color: #2563eb;
 }
 
-input.prefilled {
+input.prefilled,
+select.prefilled {
   background: #f0fdf4;
   border-color: #86efac;
 }
@@ -256,7 +284,10 @@ input.prefilled {
 
   <h1>💰 PREVENTA IA</h1>
 
-  <a href="index.html" class="back">
+  <a
+    href="index.html"
+    class="back"
+  >
     ← Volver al inicio
   </a>
 
@@ -270,379 +301,458 @@ input.prefilled {
     Calculá automáticamente los costos de implementación y costos mensuales.
   </p>
 
+
   <div
     id="connection"
     class="connection"
   ></div>
 
+
   <!-- DATOS DE LA COTIZACIÓN -->
 
   <div class="card">
 
-```
-<h3>📋 Datos de la cotización</h3>
+    <h3>
+      📋 Datos de la cotización
+    </h3>
 
-<div class="fields">
 
-  <div class="field">
+    <div class="fields">
 
-    <label>Cliente</label>
 
-    <input
-      type="text"
-      id="client"
-      placeholder="Nombre del cliente"
-    >
+      <!-- PRODUCTO -->
+
+      <div class="field">
+
+        <label for="product">
+          🧩 Producto / Solución
+        </label>
+
+        <select
+          id="product"
+          onchange="productChanged()"
+        >
+
+          <option value="">
+            Seleccioná un producto
+          </option>
+
+        </select>
+
+        <small>
+          Se toma de las carpetas creadas en la Biblioteca Técnica.
+        </small>
+
+        <div
+          id="libraryStatus"
+          class="library-status"
+        ></div>
+
+      </div>
+
+
+      <!-- CLIENTE -->
+
+      <div class="field">
+
+        <label>
+          Cliente
+        </label>
+
+        <input
+          type="text"
+          id="client"
+          placeholder="Nombre del cliente"
+        >
+
+      </div>
+
+
+      <!-- OPORTUNIDAD -->
+
+      <div class="field">
+
+        <label>
+          Oportunidad
+        </label>
+
+        <input
+          type="text"
+          id="opportunity"
+          placeholder="Nombre de la oportunidad"
+        >
+
+      </div>
+
+
+      <!-- SETUP -->
+
+      <div class="field">
+
+        <label>
+          Horas de parametrización / Setup
+        </label>
+
+        <input
+          type="number"
+          id="setup"
+          value="8"
+          min="0"
+        >
+
+        <small>
+          Costo: USD 25 por hora.
+        </small>
+
+      </div>
+
+
+      <!-- USUARIOS -->
+
+      <div class="field">
+
+        <label>
+          Cantidad de usuarios
+        </label>
+
+        <input
+          type="number"
+          id="users"
+          value="10"
+          min="0"
+        >
+
+        <small>
+          El precio depende del tramo de usuarios.
+        </small>
+
+      </div>
+
+
+      <!-- FIRMAS -->
+
+      <div class="field">
+
+        <label>
+          Firmas por mes
+        </label>
+
+        <input
+          type="number"
+          id="signatures"
+          value="0"
+          min="0"
+        >
+
+        <small>
+          Costo: USD 0,20 por firma.
+        </small>
+
+      </div>
+
+
+      <!-- PESO -->
+
+      <div class="field">
+
+        <label>
+          Peso promedio de una imagen (KB)
+        </label>
+
+        <input
+          type="number"
+          id="imageWeight"
+          value="70"
+          min="0"
+        >
+
+        <small>
+          Referencia habitual: 70 KB por imagen.
+        </small>
+
+      </div>
+
+
+      <!-- IMAGENES -->
+
+      <div class="field">
+
+        <label>
+          Cantidad de imágenes
+        </label>
+
+        <input
+          type="number"
+          id="images"
+          value="0"
+          min="0"
+        >
+
+        <small>
+          Se calcula automáticamente el almacenamiento necesario.
+        </small>
+
+      </div>
+
+
+      <!-- PACKS -->
+
+      <div class="field">
+
+        <label>
+          Packs de Storage
+        </label>
+
+        <input
+          type="number"
+          id="manualPacks"
+          value="0"
+          min="0"
+        >
+
+        <small>
+          Opcional: 1 pack = 50 GB · 2 = 100 GB · 3 = 150 GB.
+        </small>
+
+      </div>
+
+
+      <!-- SOPORTE -->
+
+      <div class="field">
+
+        <label>
+          Horas de soporte Addoc
+        </label>
+
+        <input
+          type="number"
+          id="support"
+          value="5"
+          min="0"
+        >
+
+        <small>
+          Costo: USD 25 por hora.
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="warning"
+      class="warning"
+    ></div>
+
+
+    <div
+      id="info"
+      class="info"
+    ></div>
+
+
+    <div
+      id="success"
+      class="success"
+    ></div>
+
+
+    <div class="buttons">
+
+      <button
+        class="button"
+        onclick="calculate()"
+      >
+        🧮 Calcular cotización
+      </button>
+
+
+      <button
+        class="button save-button"
+        onclick="saveQuoteToOpportunity()"
+      >
+        💾 Guardar en oportunidad
+      </button>
+
+
+      <button
+        class="button excel-button"
+        onclick="downloadExcel()"
+      >
+        📥 Descargar Excel
+      </button>
+
+    </div>
 
   </div>
 
-
-  <div class="field">
-
-    <label>Oportunidad</label>
-
-    <input
-      type="text"
-      id="opportunity"
-      placeholder="Nombre de la oportunidad"
-    >
-
-  </div>
-
-
-  <div class="field">
-
-    <label>Horas de parametrización / Setup</label>
-
-    <input
-      type="number"
-      id="setup"
-      value="8"
-      min="0"
-    >
-
-    <small>
-      Costo: USD 25 por hora.
-    </small>
-
-  </div>
-
-
-  <div class="field">
-
-    <label>Cantidad de usuarios</label>
-
-    <input
-      type="number"
-      id="users"
-      value="10"
-      min="0"
-    >
-
-    <small>
-      El precio depende del tramo de usuarios.
-    </small>
-
-  </div>
-
-
-  <div class="field">
-
-    <label>Firmas por mes</label>
-
-    <input
-      type="number"
-      id="signatures"
-      value="0"
-      min="0"
-    >
-
-    <small>
-      Costo: USD 0,20 por firma.
-    </small>
-
-  </div>
-
-
-  <div class="field">
-
-    <label>Peso promedio de una imagen (KB)</label>
-
-    <input
-      type="number"
-      id="imageWeight"
-      value="70"
-      min="0"
-    >
-
-    <small>
-      Referencia habitual: 70 KB por imagen.
-    </small>
-
-  </div>
-
-
-  <div class="field">
-
-    <label>Cantidad de imágenes</label>
-
-    <input
-      type="number"
-      id="images"
-      value="0"
-      min="0"
-    >
-
-    <small>
-      Se calcula automáticamente el almacenamiento necesario.
-    </small>
-
-  </div>
-
-
-  <div class="field">
-
-    <label>Packs de Storage</label>
-
-    <input
-      type="number"
-      id="manualPacks"
-      value="0"
-      min="0"
-    >
-
-    <small>
-      Opcional: 1 pack = 50 GB · 2 = 100 GB · 3 = 150 GB.
-    </small>
-
-  </div>
-
-
-  <div class="field">
-
-    <label>Horas de soporte Addoc</label>
-
-    <input
-      type="number"
-      id="support"
-      value="5"
-      min="0"
-    >
-
-    <small>
-      Costo: USD 25 por hora.
-    </small>
-
-  </div>
-
-</div>
-
-
-<div
-  id="warning"
-  class="warning"
-></div>
-
-
-<div
-  id="info"
-  class="info"
-></div>
-
-
-<div
-  id="success"
-  class="success"
-></div>
-
-
-<div class="buttons">
-
-  <button
-    class="button"
-    onclick="calculate()"
-  >
-    🧮 Calcular cotización
-  </button>
-
-
-  <button
-    class="button save-button"
-    onclick="saveQuoteToOpportunity()"
-  >
-    💾 Guardar en oportunidad
-  </button>
-
-
-  <button
-    class="button excel-button"
-    onclick="downloadExcel()"
-  >
-    📥 Descargar Excel
-  </button>
-
-</div>
-```
-
-  </div>
 
   <!-- RESULTADOS -->
 
   <div class="card">
 
-```
-<h3>📊 Resultado</h3>
+    <h3>
+      📊 Resultado
+    </h3>
 
 
-<div class="results">
+    <div class="results">
 
-  <div class="result">
+      <div class="result">
 
-    <div class="result-title">
-      Costo Setup
+        <div class="result-title">
+          Costo Setup
+        </div>
+
+        <div
+          class="result-value"
+          id="setupCost"
+        >
+          USD 0,00
+        </div>
+
+      </div>
+
+
+      <div class="result">
+
+        <div class="result-title">
+          Costo Usuarios
+        </div>
+
+        <div
+          class="result-value"
+          id="usersCost"
+        >
+          USD 0,00
+        </div>
+
+      </div>
+
+
+      <div class="result">
+
+        <div class="result-title">
+          Costo Firmas
+        </div>
+
+        <div
+          class="result-value"
+          id="signatureCost"
+        >
+          USD 0,00
+        </div>
+
+      </div>
+
+
+      <div class="result">
+
+        <div class="result-title">
+          Costo Soporte
+        </div>
+
+        <div
+          class="result-value"
+          id="supportCost"
+        >
+          USD 0,00
+        </div>
+
+      </div>
+
     </div>
 
-    <div
-      class="result-value"
-      id="setupCost"
-    >
-      USD 0,00
+
+    <div class="storage-box">
+
+      <strong>
+        💾 Storage
+      </strong>
+
+
+      <p>
+        Necesidad calculada:
+        <strong id="storageNeeded">
+          0 GB
+        </strong>
+      </p>
+
+
+      <p>
+        Storage a cotizar:
+        <strong id="storageQuoted">
+          50 GB
+        </strong>
+      </p>
+
+
+      <p>
+        Cantidad de packs:
+        <strong id="storagePacks">
+          1
+        </strong>
+      </p>
+
+
+      <p>
+        Costo Storage:
+        <strong id="storageCost">
+          USD 2,00
+        </strong>
+      </p>
+
     </div>
 
-  </div>
+
+    <div class="total">
+
+      <div class="total-row">
+
+        <span>
+          Total único / Setup
+        </span>
+
+        <strong id="totalSetup">
+          USD 0,00
+        </strong>
+
+      </div>
 
 
-  <div class="result">
+      <div class="total-row">
 
-    <div class="result-title">
-      Costo Usuarios
+        <span>
+          Total mensual
+        </span>
+
+        <strong id="totalMonthly">
+          USD 0,00
+        </strong>
+
+      </div>
+
+
+      <div class="total-final">
+
+        <div>
+          Costo total primer año
+        </div>
+
+        <div id="totalYear">
+          USD 0,00
+        </div>
+
+      </div>
+
     </div>
-
-    <div
-      class="result-value"
-      id="usersCost"
-    >
-      USD 0,00
-    </div>
-
-  </div>
-
-
-  <div class="result">
-
-    <div class="result-title">
-      Costo Firmas
-    </div>
-
-    <div
-      class="result-value"
-      id="signatureCost"
-    >
-      USD 0,00
-    </div>
-
-  </div>
-
-
-  <div class="result">
-
-    <div class="result-title">
-      Costo Soporte
-    </div>
-
-    <div
-      class="result-value"
-      id="supportCost"
-    >
-      USD 0,00
-    </div>
-
-  </div>
-
-</div>
-
-
-<div class="storage-box">
-
-  <strong>💾 Storage</strong>
-
-  <p>
-    Necesidad calculada:
-    <strong id="storageNeeded">
-      0 GB
-    </strong>
-  </p>
-
-  <p>
-    Storage a cotizar:
-    <strong id="storageQuoted">
-      50 GB
-    </strong>
-  </p>
-
-  <p>
-    Cantidad de packs:
-    <strong id="storagePacks">
-      1
-    </strong>
-  </p>
-
-  <p>
-    Costo Storage:
-    <strong id="storageCost">
-      USD 2,00
-    </strong>
-  </p>
-
-</div>
-
-
-<div class="total">
-
-  <div class="total-row">
-
-    <span>
-      Total único / Setup
-    </span>
-
-    <strong id="totalSetup">
-      USD 0,00
-    </strong>
-
-  </div>
-
-
-  <div class="total-row">
-
-    <span>
-      Total mensual
-    </span>
-
-    <strong id="totalMonthly">
-      USD 0,00
-    </strong>
-
-  </div>
-
-
-  <div class="total-final">
-
-    <div>
-      Costo total primer año
-    </div>
-
-    <div id="totalYear">
-      USD 0,00
-    </div>
-
-  </div>
-
-</div>
-```
 
   </div>
 
 </main>
+
 
 <script>
 
@@ -651,10 +761,396 @@ input.prefilled {
    OPORTUNIDAD ACTUAL
 ========================================= */
 
-let currentOpportunity = null;
+let currentOpportunity =
+  null;
 
 
-function loadCurrentOpportunity() {
+/* =========================================
+   BIBLIOTECA
+========================================= */
+
+let libraryDatabase =
+  null;
+
+
+const LIBRARY_DB_NAME =
+  "preventa_ia_biblioteca";
+
+
+const LIBRARY_DB_VERSION =
+  1;
+
+
+const LIBRARY_STORE =
+  "proposals";
+
+
+function getLibraryFolders() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "preventa_library_folders"
+      )
+    ) || [];
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "No se pudieron leer las carpetas.",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+function openLibraryDatabase() {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      const request =
+        indexedDB.open(
+          LIBRARY_DB_NAME,
+          LIBRARY_DB_VERSION
+        );
+
+
+      request.onsuccess =
+        function(event) {
+
+          libraryDatabase =
+            event.target.result;
+
+          resolve(
+            libraryDatabase
+          );
+
+        };
+
+
+      request.onerror =
+        function() {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+function getLibraryFiles(
+  folderId
+) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      if (!libraryDatabase) {
+
+        resolve([]);
+
+        return;
+
+      }
+
+
+      const transaction =
+        libraryDatabase.transaction(
+          LIBRARY_STORE,
+          "readonly"
+        );
+
+
+      const store =
+        transaction.objectStore(
+          LIBRARY_STORE
+        );
+
+
+      const index =
+        store.index(
+          "folder"
+        );
+
+
+      const request =
+        index.getAll(
+          folderId
+        );
+
+
+      request.onsuccess =
+        function() {
+
+          resolve(
+            request.result || []
+          );
+
+        };
+
+
+      request.onerror =
+        function() {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   CARGAR PRODUCTOS
+========================================= */
+
+async function loadProducts() {
+
+  const select =
+    document.getElementById(
+      "product"
+    );
+
+
+  const folders =
+    getLibraryFolders();
+
+
+  select.innerHTML =
+    "";
+
+
+  const defaultOption =
+    document.createElement(
+      "option"
+    );
+
+
+  defaultOption.value =
+    "";
+
+
+  defaultOption.textContent =
+    folders.length
+      ? "Seleccioná un producto"
+      : "No hay productos en la Biblioteca";
+
+
+  select.appendChild(
+    defaultOption
+  );
+
+
+  folders.forEach(
+    function(folder) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        folder.id;
+
+
+      option.textContent =
+        folder.name;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  /*
+    Si la oportunidad ya tiene
+    un producto guardado,
+    intentamos seleccionarlo.
+  */
+
+  if (
+    currentOpportunity &&
+    currentOpportunity.productFolderId
+  ) {
+
+    select.value =
+      currentOpportunity.productFolderId;
+
+  }
+
+  else if (
+    currentOpportunity &&
+    currentOpportunity.solution
+  ) {
+
+    const encontrado =
+      folders.find(
+        folder =>
+          folder.name.toLowerCase() ===
+          String(
+            currentOpportunity.solution
+          ).toLowerCase()
+      );
+
+
+    if (encontrado) {
+
+      select.value =
+        encontrado.id;
+
+    }
+
+  }
+
+
+  await productChanged();
+
+}
+
+
+/* =========================================
+   PRODUCTO CAMBIADO
+========================================= */
+
+async function productChanged() {
+
+  const select =
+    document.getElementById(
+      "product"
+    );
+
+
+  const folderId =
+    select.value;
+
+
+  const status =
+    document.getElementById(
+      "libraryStatus"
+    );
+
+
+  status.className =
+    "library-status";
+
+
+  status.textContent =
+    "";
+
+
+  if (!folderId) {
+
+    return;
+
+  }
+
+
+  const folders =
+    getLibraryFolders();
+
+
+  const folder =
+    folders.find(
+      item =>
+        item.id ===
+        folderId
+    );
+
+
+  if (!folder) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const files =
+      await getLibraryFiles(
+        folderId
+      );
+
+
+    if (
+      files.length
+    ) {
+
+      status.classList.add(
+        "library-found"
+      );
+
+
+      status.textContent =
+        "📚 Propuesta técnica disponible: " +
+        files[0].name +
+        " · versión " +
+        files[0].version;
+
+    }
+
+    else {
+
+      status.classList.add(
+        "library-missing"
+      );
+
+
+      status.textContent =
+        "⚠️ No hay todavía una propuesta técnica cargada para " +
+        folder.name +
+        ".";
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+
+    status.classList.add(
+      "library-missing"
+    );
+
+
+    status.textContent =
+      "⚠️ No pude comprobar la propuesta técnica de la biblioteca.";
+
+  }
+
+}
+
+
+/* =========================================
+   LOAD OPPORTUNITY
+========================================= */
+
+async function loadCurrentOpportunity() {
 
   const stored =
     localStorage.getItem(
@@ -663,6 +1159,8 @@ function loadCurrentOpportunity() {
 
 
   if (!stored) {
+
+    await loadProducts();
 
     return;
 
@@ -685,6 +1183,8 @@ function loadCurrentOpportunity() {
       error
     );
 
+    await loadProducts();
+
     return;
 
   }
@@ -692,14 +1192,12 @@ function loadCurrentOpportunity() {
 
   if (!currentOpportunity) {
 
+    await loadProducts();
+
     return;
 
   }
 
-
-  /*
-    CLIENTE
-  */
 
   const client =
     document.getElementById(
@@ -720,10 +1218,6 @@ function loadCurrentOpportunity() {
 
   }
 
-
-  /*
-    OPORTUNIDAD
-  */
 
   const opportunity =
     document.getElementById(
@@ -763,15 +1257,9 @@ function loadCurrentOpportunity() {
       usuarios > 0
     ) {
 
-      document.getElementById(
-        "users"
-      ).value =
-        usuarios;
-
-      document.getElementById(
-        "users"
-      ).classList.add(
-        "prefilled"
+      setInputValue(
+        "users",
+        usuarios
       );
 
     }
@@ -803,15 +1291,9 @@ function loadCurrentOpportunity() {
         );
 
 
-      document.getElementById(
-        "manualPacks"
-      ).value =
-        packs;
-
-      document.getElementById(
-        "manualPacks"
-      ).classList.add(
-        "prefilled"
+      setInputValue(
+        "manualPacks",
+        packs
       );
 
     }
@@ -820,8 +1302,7 @@ function loadCurrentOpportunity() {
 
 
   /*
-    SI YA EXISTE UNA COTIZACIÓN,
-    CARGARLA
+    COTIZACION EXISTENTE
   */
 
   if (
@@ -876,10 +1357,6 @@ function loadCurrentOpportunity() {
   }
 
 
-  /*
-    MENSAJE DE CONEXIÓN
-  */
-
   const connection =
     document.getElementById(
       "connection"
@@ -893,7 +1370,7 @@ function loadCurrentOpportunity() {
         currentOpportunity.client +
         " — " +
         currentOpportunity.project +
-        " · Ya existe una cotización guardada."
+        " · Cotización existente cargada."
 
       : "🔗 Cotización vinculada a: " +
         currentOpportunity.client +
@@ -905,9 +1382,8 @@ function loadCurrentOpportunity() {
     "block";
 
 
-  /*
-    CALCULAR CON LOS DATOS CARGADOS
-  */
+  await loadProducts();
+
 
   setTimeout(
     calculate,
@@ -1451,6 +1927,32 @@ function calculate() {
     );
 
 
+  /*
+    PRODUCTO
+  */
+
+  const productSelect =
+    document.getElementById(
+      "product"
+    );
+
+
+  const productFolderId =
+    productSelect.value;
+
+
+  const folders =
+    getLibraryFolders();
+
+
+  const productFolder =
+    folders.find(
+      folder =>
+        folder.id ===
+        productFolderId
+    );
+
+
   window.cotizacion = {
 
     client:
@@ -1462,6 +1964,15 @@ function calculate() {
       document.getElementById(
         "opportunity"
       ).value,
+
+    product:
+      productFolder
+        ? productFolder.name
+        : "",
+
+    productFolderId:
+      productFolderId ||
+      "",
 
     setup,
     users,
@@ -1493,7 +2004,14 @@ function calculate() {
 
 
   info.innerText =
-    "✅ Cotización calculada correctamente.";
+    productFolder
+
+      ? "✅ Cotización calculada para " +
+        productFolder.name +
+        "."
+
+      : "✅ Cotización calculada correctamente.";
+
 
   info.style.display =
     "block";
@@ -1556,12 +2074,45 @@ function saveQuoteToOpportunity() {
   }
 
 
+  const quote =
+    window.cotizacion;
+
+
   /*
     GUARDAR COTIZACION
   */
 
   opportunities[index].quote =
-    window.cotizacion;
+    quote;
+
+
+  /*
+    GUARDAR PRODUCTO TAMBIEN
+  */
+
+  opportunities[index].product =
+    quote.product ||
+    "";
+
+
+  opportunities[index].productFolderId =
+    quote.productFolderId ||
+    "";
+
+
+  /*
+    Si el producto existe,
+    también actualizamos solution.
+  */
+
+  if (
+    quote.product
+  ) {
+
+    opportunities[index].solution =
+      quote.product;
+
+  }
 
 
   opportunities[index].updatedAt =
@@ -1569,8 +2120,8 @@ function saveQuoteToOpportunity() {
 
 
   /*
-    Si todavía estaba en análisis,
-    pasarla automáticamente a cotizando.
+    Si estaba en análisis,
+    pasa a cotizando.
   */
 
   if (
@@ -1584,10 +2135,6 @@ function saveQuoteToOpportunity() {
   }
 
 
-  /*
-    Guardar lista completa.
-  */
-
   localStorage.setItem(
     "preventa_opportunities",
     JSON.stringify(
@@ -1595,10 +2142,6 @@ function saveQuoteToOpportunity() {
     )
   );
 
-
-  /*
-    Actualizar oportunidad actual.
-  */
 
   currentOpportunity =
     opportunities[index];
@@ -1611,10 +2154,6 @@ function saveQuoteToOpportunity() {
     )
   );
 
-
-  /*
-    Mensaje de éxito.
-  */
 
   const success =
     document.getElementById(
@@ -1629,10 +2168,6 @@ function saveQuoteToOpportunity() {
     "block";
 
 
-  /*
-    Actualizar mensaje superior.
-  */
-
   const connection =
     document.getElementById(
       "connection"
@@ -1644,6 +2179,12 @@ function saveQuoteToOpportunity() {
     currentOpportunity.client +
     " — " +
     currentOpportunity.project +
+    (
+      quote.product
+        ? " · Producto: " +
+          quote.product
+        : ""
+    ) +
     " · Cotización guardada.";
 
 
@@ -1676,6 +2217,11 @@ function downloadExcel() {
     "Sin especificar";
 
 
+  const product =
+    c.product ||
+    "Sin especificar";
+
+
   const rows = [
 
     [
@@ -1692,6 +2238,11 @@ function downloadExcel() {
     [
       "Oportunidad",
       opportunity
+    ],
+
+    [
+      "Producto / Solución",
+      product
     ],
 
     [
@@ -1886,12 +2437,33 @@ function downloadExcel() {
    INICIO
 ========================================= */
 
-loadCurrentOpportunity();
+(async function() {
 
-calculate();
+  try {
+
+    await openLibraryDatabase();
+
+  }
+
+  catch(error) {
+
+    console.warn(
+      "La biblioteca todavía no está disponible.",
+      error
+    );
+
+  }
+
+
+  await loadCurrentOpportunity();
+
+  calculate();
+
+})();
 
 </script>
 
 </body>
 
 </html>
+```
