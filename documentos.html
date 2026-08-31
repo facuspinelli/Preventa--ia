@@ -1,429 +1,876 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Documentos | PREVENTA IA</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
+<title>Análisis de Documentos | PREVENTA IA</title>
 
-    * {
-      box-sizing: border-box;
-    }
+<style>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #1f2937;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    header {
-      background: #111827;
-      color: white;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 22px;
-    }
+header {
+  background: #111827;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .back {
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-    }
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+.back {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
 
-    .welcome {
-      margin-bottom: 30px;
-    }
+.container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
 
-    .welcome h2 {
-      margin-bottom: 8px;
-    }
+.welcome {
+  margin-bottom: 30px;
+}
 
-    .upload-box {
-      background: white;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-    }
+.welcome h2 {
+  margin-bottom: 8px;
+}
 
-    .upload-box h3 {
-      margin-top: 0;
-    }
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
 
-    .file-input {
-      margin-top: 20px;
-      padding: 20px;
-      border: 2px dashed #d1d5db;
-      border-radius: 10px;
-      text-align: center;
-    }
+.card h3 {
+  margin-top: 0;
+}
 
-    input[type="file"] {
-      margin-top: 10px;
-    }
+.upload-area {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 35px;
+  text-align: center;
+  background: #f8fafc;
+}
 
-    .file-name {
-      margin-top: 15px;
-      font-size: 14px;
-      color: #4b5563;
-    }
+.upload-area:hover {
+  border-color: #2563eb;
+}
 
-    .analysis-box {
-      background: white;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
+.upload-icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
 
-    textarea {
-      width: 100%;
-      height: 100px;
-      resize: vertical;
-      padding: 15px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-family: Arial, sans-serif;
-      font-size: 15px;
-      margin-top: 10px;
-    }
+input[type="file"] {
+  margin-top: 20px;
+}
 
-    button {
-      margin-top: 15px;
-      background: #111827;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 22px;
-      cursor: pointer;
-      font-size: 15px;
-    }
+.file-name {
+  margin-top: 15px;
+  font-weight: bold;
+}
 
-    button:hover {
-      background: #374151;
-    }
+.file-info {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 13px;
+}
 
-    .result {
-      margin-top: 25px;
-      background: #f9fafb;
-      border-radius: 10px;
-      padding: 20px;
-      line-height: 1.6;
-      display: none;
-    }
+textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  padding: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+}
 
-    .result h4 {
-      margin-top: 0;
-    }
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
 
-    .tag {
-      display: inline-block;
-      background: #e5e7eb;
-      padding: 6px 10px;
-      border-radius: 20px;
-      margin: 4px;
-      font-size: 13px;
-    }
+.button {
+  margin-top: 18px;
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 24px;
+  cursor: pointer;
+  font-size: 15px;
+}
 
-    .warning {
-      margin-top: 20px;
-      padding: 15px;
-      background: #fff7ed;
-      border-radius: 8px;
-      color: #9a3412;
-    }
+.button:hover {
+  background: #374151;
+}
 
-    @media (max-width: 700px) {
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
-      header {
-        flex-direction: column;
-        gap: 15px;
-      }
+.status {
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1e40af;
+  display: none;
+}
 
-    }
+.result {
+  display: none;
+}
 
-  </style>
+.summary {
+  background: #eef2ff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.analysis-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 18px;
+  background: white;
+}
+
+.analysis-title {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 7px;
+  font-weight: bold;
+}
+
+.analysis-value {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.tag {
+  display: inline-block;
+  background: #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 20px;
+  margin: 3px;
+  font-size: 13px;
+}
+
+.warning {
+  margin-top: 20px;
+  padding: 15px;
+  background: #fff7ed;
+  border-radius: 8px;
+  color: #9a3412;
+}
+
+.success {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0fdf4;
+  border-radius: 8px;
+  color: #166534;
+}
+
+@media (max-width: 700px) {
+
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-  <header>
+<header>
 
-    <h1>📄 PREVENTA IA</h1>
+  <h1>📄 PREVENTA IA</h1>
 
-    <a href="index.html" class="back">
-      ← Volver al inicio
-    </a>
+  <a href="index.html" class="back">
+    ← Volver al inicio
+  </a>
 
-  </header>
-
-
-  <main class="container">
-
-    <div class="welcome">
-
-      <h2>📄 Análisis de Documentos</h2>
-
-      <p>
-        Cargá un documento y preparalo para analizarlo desde Preventa IA.
-      </p>
-
-    </div>
+</header>
 
 
-    <div class="upload-box">
+<main class="container">
 
-      <h3>1. Seleccioná un documento</h3>
+  <div class="welcome">
 
-      <p>
-        Podés seleccionar un pliego, propuesta, requerimiento o documento
-        relacionado con una oportunidad comercial.
-      </p>
+    <h2>📄 Análisis inteligente de documentos</h2>
 
-      <div class="file-input">
+    <p>
+      Subí un pliego, propuesta, requerimiento o documento
+      de una oportunidad y PREVENTA IA preparará la información
+      relevante para su análisis.
+    </p>
 
-        📁 Seleccionar archivo
+  </div>
 
-        <br>
 
-        <input
-          type="file"
-          id="documentFile"
-          accept=".pdf,.doc,.docx,.txt,.xlsx,.xls"
-          onchange="showFileName()"
-        >
+  <!-- DOCUMENTO -->
 
-        <div
-          id="fileName"
-          class="file-name"
-        >
-        </div>
+  <div class="card">
 
+    <h3>1. 📁 Documento</h3>
+
+    <div class="upload-area">
+
+      <div class="upload-icon">
+        📄
       </div>
 
-    </div>
+      <strong>
+        Seleccioná el documento a analizar
+      </strong>
 
+      <br>
 
-    <div class="analysis-box">
-
-      <h3>2. ¿Qué querés analizar?</h3>
-
-      <p>
-        Indicá qué necesitás encontrar o entender del documento.
-      </p>
-
-      <textarea
-        id="analysisQuestion"
-        placeholder="Ejemplo: Identificá los requerimientos técnicos, usuarios, volumen documental, OCR, workflows, integraciones y plazos."
-      ></textarea>
-
-
-      <button onclick="analyzeDocument()">
-        🔍 Analizar documento
-      </button>
-
+      <input
+        type="file"
+        id="documentFile"
+        accept=".pdf,.doc,.docx,.txt,.xlsx,.xls"
+        onchange="showFile()"
+      >
 
       <div
-        id="result"
-        class="result"
+        id="fileName"
+        class="file-name"
+      ></div>
+
+      <div
+        id="fileInfo"
+        class="file-info"
       ></div>
 
     </div>
 
-  </main>
+  </div>
+
+
+  <!-- OBJETIVO -->
+
+  <div class="card">
+
+    <h3>2. 🎯 ¿Qué querés obtener?</h3>
+
+    <p>
+      Podés dejar el campo vacío para realizar un análisis general.
+    </p>
+
+    <textarea
+      id="analysisQuestion"
+      placeholder="Ejemplo: Analizá todo lo importante para Preventa, incluyendo usuarios, documentos, OCR, workflows, storage, infraestructura, integraciones, migración, costos, riesgos y datos faltantes."
+    ></textarea>
+
+    <button
+      class="button"
+      id="analyzeButton"
+      onclick="analyzeDocument()"
+    >
+      🔍 Analizar documento
+    </button>
+
+    <div
+      id="status"
+      class="status"
+    ></div>
+
+  </div>
+
+
+  <!-- RESULTADO -->
+
+  <div
+    id="result"
+    class="card result"
+  >
+
+    <h3>📊 Resultado del análisis</h3>
+
+    <div
+      id="summary"
+      class="summary"
+    ></div>
+
+    <div class="grid">
+
+      <div class="analysis-item">
+        <div class="analysis-title">🎯 Objetivo</div>
+        <div id="objective" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">🏢 Cliente / Organización</div>
+        <div id="client" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">👥 Usuarios</div>
+        <div id="users" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">📑 Documentos</div>
+        <div id="documents" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">📦 Volumen documental</div>
+        <div id="volume" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">💾 Storage</div>
+        <div id="storage" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">🔎 OCR / Digitalización</div>
+        <div id="ocr" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">🔤 Full Text / Búsqueda</div>
+        <div id="fulltext" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">🔄 Workflows</div>
+        <div id="workflows" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">✍️ Firmas</div>
+        <div id="signatures" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">🔌 Integraciones</div>
+        <div id="integrations" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
+
+      <div class="analysis-item">
+        <div class="analysis-title">🏗️ Infraestructura</div>
+        <div id="infrastructure" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
 
+      <div class="analysis-item">
+        <div class="analysis-title">🔐 Seguridad</div>
+        <div id="security" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
 
-  <script>
+      <div class="analysis-item">
+        <div class="analysis-title">🔄 Migración</div>
+        <div id="migration" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
 
-    function showFileName() {
+      <div class="analysis-item">
+        <div class="analysis-title">🛠️ Soporte</div>
+        <div id="support" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
 
-      const fileInput =
-        document.getElementById("documentFile");
+      <div class="analysis-item">
+        <div class="analysis-title">📅 Plazos</div>
+        <div id="deadlines" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
 
-      const fileName =
-        document.getElementById("fileName");
+      <div class="analysis-item">
+        <div class="analysis-title">💰 Datos para cotizar</div>
+        <div id="pricing" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
 
-      if (fileInput.files.length > 0) {
+      <div class="analysis-item">
+        <div class="analysis-title">⚠️ Riesgos</div>
+        <div id="risks" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
 
-        fileName.textContent =
-          "📄 Archivo seleccionado: " +
-          fileInput.files[0].name;
+      <div class="analysis-item">
+        <div class="analysis-title">❓ Información faltante</div>
+        <div id="missing" class="analysis-value">
+          No detectado todavía.
+        </div>
+      </div>
 
-      } else {
+    </div>
 
-        fileName.textContent = "";
+    <div
+      id="resultMessage"
+      class="success"
+    ></div>
 
-      }
+  </div>
 
-    }
+</main>
 
 
-    function analyzeDocument() {
+<script>
 
-      const fileInput =
-        document.getElementById("documentFile");
 
-      const question =
-        document.getElementById("analysisQuestion").value.trim();
+/* =====================================
+   MOSTRAR ARCHIVO
+===================================== */
 
-      const result =
-        document.getElementById("result");
+function showFile() {
 
+  const input =
+    document.getElementById("documentFile");
 
-      if (fileInput.files.length === 0) {
+  const fileName =
+    document.getElementById("fileName");
 
-        alert("Primero seleccioná un documento.");
+  const fileInfo =
+    document.getElementById("fileInfo");
 
-        return;
 
-      }
+  if (!input.files.length) {
 
+    fileName.textContent = "";
+    fileInfo.textContent = "";
 
-      if (question === "") {
+    return;
 
-        alert("Indicá qué querés analizar.");
+  }
 
-        return;
 
-      }
+  const file =
+    input.files[0];
 
 
-      const file =
-        fileInput.files[0];
+  fileName.textContent =
+    "📄 " + file.name;
 
 
-      const fileName =
-        file.name.toLowerCase();
+  const sizeMB =
+    file.size / 1024 / 1024;
 
 
-      let detected = [];
+  fileInfo.textContent =
+    "Tamaño: " +
+    sizeMB.toFixed(2) +
+    " MB";
 
+}
 
-      if (
-        fileName.includes("thuban") ||
-        question.toLowerCase().includes("gestión documental") ||
-        question.toLowerCase().includes("gestion documental") ||
-        question.toLowerCase().includes("workflow")
-      ) {
 
-        detected.push("Thuban");
+/* =====================================
+   ANALIZAR DOCUMENTO
+===================================== */
 
-      }
+async function analyzeDocument() {
 
+  const fileInput =
+    document.getElementById("documentFile");
 
-      if (
-        question.toLowerCase().includes("ocr") ||
-        question.toLowerCase().includes("digitalización") ||
-        question.toLowerCase().includes("digitalizacion")
-      ) {
+  const question =
+    document
+      .getElementById("analysisQuestion")
+      .value
+      .trim();
 
-        detected.push("Captika");
+  const button =
+    document.getElementById("analyzeButton");
 
-      }
+  const status =
+    document.getElementById("status");
 
+  const result =
+    document.getElementById("result");
 
-      if (
-        question.toLowerCase().includes("firma")
-      ) {
 
-        detected.push("Firmas Addoc / Edatalia");
+  if (!fileInput.files.length) {
 
-      }
+    alert(
+      "Primero seleccioná un documento."
+    );
 
+    return;
 
-      if (
-        question.toLowerCase().includes("legajo") ||
-        question.toLowerCase().includes("rrhh") ||
-        question.toLowerCase().includes("recibo")
-      ) {
+  }
 
-        detected.push("Perfil Digital");
 
-      }
+  const file =
+    fileInput.files[0];
 
 
-      if (
-        question.toLowerCase().includes("onboarding") ||
-        question.toLowerCase().includes("alta")
-      ) {
+  button.disabled = true;
 
-        detected.push("Onboarding Addoc");
+  status.style.display = "block";
 
-      }
+  status.textContent =
+    "🔎 Preparando análisis...";
 
 
-      result.style.display = "block";
+  /*
+    Por ahora trabajamos en modo básico.
 
+    La siguiente etapa conectará este contenido
+    con el backend de IA.
+  */
 
-      let html = "";
 
-      html += "<h4>🔎 Análisis preliminar</h4>";
+  setTimeout(function() {
 
-      html +=
-        "<p><strong>Documento:</strong> " +
-        file.name +
-        "</p>";
+    generarAnalisisBasico(
+      file,
+      question
+    );
 
-      html +=
-        "<p><strong>Consulta:</strong> " +
-        question +
-        "</p>";
+    button.disabled = false;
 
+  }, 800);
 
-      if (detected.length > 0) {
+}
 
-        html +=
-          "<p><strong>Soluciones potencialmente relacionadas:</strong></p>";
 
-        detected.forEach(function(item) {
+/* =====================================
+   ANÁLISIS BÁSICO GRATUITO
+===================================== */
 
-          html +=
-            '<span class="tag">' +
-            item +
-            "</span>";
+function generarAnalisisBasico(file, question) {
 
-        });
+  const result =
+    document.getElementById("result");
 
-      } else {
+  const summary =
+    document.getElementById("summary");
 
-        html +=
-          "<p>No detecté todavía una solución específica.</p>";
+  const status =
+    document.getElementById("status");
 
-      }
 
+  const texto =
+    question.toLowerCase();
 
-      html +=
-        '<div class="warning">' +
-        "⚠️ Este análisis es preliminar. " +
-        "La versión actual todavía no lee el contenido interno del documento " +
-        "ni reemplaza una validación técnica." +
-        "</div>";
 
+  result.style.display = "block";
 
-      result.innerHTML = html;
 
-    }
+  /*
+    Detectar temas solicitados
+  */
 
-  </script>
+  const temas = [];
+
+
+  if (
+    texto.includes("ocr") ||
+    texto.includes("digital")
+  ) {
+
+    temas.push("OCR / Digitalización");
+
+  }
+
+
+  if (
+    texto.includes("workflow") ||
+    texto.includes("flujo")
+  ) {
+
+    temas.push("Workflows");
+
+  }
+
+
+  if (
+    texto.includes("firma")
+  ) {
+
+    temas.push("Firmas");
+
+  }
+
+
+  if (
+    texto.includes("storage") ||
+    texto.includes("almacenamiento")
+  ) {
+
+    temas.push("Storage");
+
+  }
+
+
+  if (
+    texto.includes("usuario")
+  ) {
+
+    temas.push("Usuarios");
+
+  }
+
+
+  /*
+    Resumen básico
+  */
+
+  summary.innerHTML =
+
+    "<strong>📄 Documento analizado:</strong> " +
+    escapeHTML(file.name) +
+
+    "<br><br>" +
+
+    "<strong>📌 Análisis solicitado:</strong> " +
+
+    (
+      question
+        ? escapeHTML(question)
+        : "Análisis general de Preventa"
+    ) +
+
+    "<br><br>" +
+
+    "<strong>📋 Estado:</strong> " +
+
+    "El documento fue recibido correctamente y está preparado " +
+    "para el análisis inteligente.";
+
+
+  /*
+    Información básica
+  */
+
+  setValue(
+    "objective",
+    "Pendiente de análisis semántico del contenido."
+  );
+
+  setValue(
+    "client",
+    "Pendiente de identificación."
+  );
+
+  setValue(
+    "users",
+    "Buscar cantidad de usuarios en el documento."
+  );
+
+  setValue(
+    "documents",
+    "Identificar tipos y clases documentales."
+  );
+
+  setValue(
+    "volume",
+    "Buscar cantidades, volúmenes y crecimiento documental."
+  );
+
+  setValue(
+    "storage",
+    "Calcular a partir del volumen y peso documental."
+  );
+
+  setValue(
+    "ocr",
+    "Verificar requerimientos de OCR y digitalización."
+  );
+
+  setValue(
+    "fulltext",
+    "Verificar búsqueda Full Text y campos indexados."
+  );
+
+  setValue(
+    "workflows",
+    "Identificar circuitos, estados, aprobaciones y tareas."
+  );
+
+  setValue(
+    "signatures",
+    "Buscar requerimientos de firma electrónica o digital."
+  );
+
+  setValue(
+    "integrations",
+    "Identificar sistemas externos y APIs."
+  );
+
+  setValue(
+    "infrastructure",
+    "Buscar requerimientos de infraestructura y arquitectura."
+  );
+
+  setValue(
+    "security",
+    "Buscar autenticación, permisos, auditoría y seguridad."
+  );
+
+  setValue(
+    "migration",
+    "Buscar migraciones, fuentes de datos y sistemas existentes."
+  );
+
+  setValue(
+    "support",
+    "Buscar SLA, soporte y mantenimiento."
+  );
+
+  setValue(
+    "deadlines",
+    "Buscar fechas, plazos y etapas de implementación."
+  );
+
+  setValue(
+    "pricing",
+    "Extraer usuarios, storage, horas, módulos y otros datos necesarios para cotizar."
+  );
+
+  setValue(
+    "risks",
+    "Identificar dependencias, restricciones y riesgos."
+  );
+
+  setValue(
+    "missing",
+    "Identificar información necesaria que no esté definida."
+  );
+
+
+  /*
+    Mensaje final
+  */
+
+  let mensaje =
+    "🟢 Documento cargado correctamente.\n\n";
+
+
+  if (temas.length > 0) {
+
+    mensaje +=
+      "Temas solicitados detectados: " +
+      temas.join(", ") +
+      ".\n\n";
+
+  }
+
+
+  mensaje +=
+    "Este es el modo básico gratuito de PREVENTA IA. " +
+    "La próxima etapa conectará este módulo con el motor de IA " +
+    "para leer y analizar el contenido completo del documento.";
+
+
+  document.getElementById(
+    "resultMessage"
+  ).textContent = mensaje;
+
+
+  status.textContent =
+    "🟢 Documento preparado — modo básico gratuito.";
+
+}
+
+
+/* =====================================
+   UTILIDADES
+===================================== */
+
+function setValue(id, text) {
+
+  document.getElementById(id).textContent =
+    text;
+
+}
+
+
+function escapeHTML(text) {
+
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+</script>
 
 </body>
 
 </html>
-```
