@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Oportunidades | PREVENTA IA</title>
+<title>Análisis | PREVENTA IA</title>
 
 <style>
 
@@ -42,7 +42,7 @@ header h1 {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1150px;
   margin: 40px auto;
   padding: 0 20px;
 }
@@ -55,38 +55,137 @@ header h1 {
   margin-bottom: 8px;
 }
 
-.top-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.source-box {
+  display: none;
+  background: #eef2ff;
+  border-radius: 10px;
+  padding: 15px 18px;
   margin-bottom: 20px;
+  color: #3730a3;
 }
 
-.top-actions h3 {
-  margin: 0;
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-button {
+.metric {
+  background: white;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.metric-title {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.analysis {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
+
+.analysis h3 {
+  margin-top: 0;
+}
+
+.summary-box {
+  background: #eef2ff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.section {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+  background: #fafafa;
+}
+
+.section h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.value {
+  display: block;
+  color: #374151;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  font-size: 14px;
+}
+
+.known {
+  color: #166534;
+}
+
+.unknown {
+  color: #92400e;
+}
+
+.recommendations {
+  margin-top: 25px;
+}
+
+.recommendation {
+  padding: 15px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.button {
+  display: inline-block;
   background: #111827;
   color: white;
-  border: none;
+  text-decoration: none;
+  padding: 12px 20px;
   border-radius: 8px;
-  padding: 11px 18px;
+  border: none;
   cursor: pointer;
   font-size: 14px;
 }
 
-button:hover {
+.button:hover {
   background: #374151;
 }
 
-.secondary {
-  background: #e5e7eb;
-  color: #1f2937;
+.primary {
+  background: #2563eb;
 }
 
-.secondary:hover {
-  background: #d1d5db;
+.primary:hover {
+  background: #1d4ed8;
 }
 
 .green {
@@ -97,101 +196,22 @@ button:hover {
   background: #15803d;
 }
 
-.opportunities {
-  display: grid;
-  gap: 16px;
-}
-
-.opportunity {
-  background: white;
-  border-radius: 14px;
-  padding: 22px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-}
-
-.opportunity-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.opportunity-info h3 {
-  margin: 0 0 8px 0;
-  font-size: 19px;
-}
-
-.opportunity-info p {
-  margin: 5px 0;
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.status {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  margin-top: 8px;
-  font-weight: bold;
-}
-
-.analysis {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.quote {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.proposal {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-
-.won {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.lost {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.opportunity-data {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid #e5e7eb;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
-.data-box {
-  background: #f9fafb;
+.warning-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: #fff7ed;
+  color: #9a3412;
   border-radius: 8px;
-  padding: 12px;
+  line-height: 1.5;
 }
 
-.data-title {
-  font-size: 11px;
-  color: #6b7280;
-  margin-bottom: 5px;
-}
-
-.data-value {
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.actions {
-  margin-top: 18px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.success-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0fdf4;
+  color: #166534;
+  border-radius: 8px;
+  display: none;
 }
 
 .empty {
@@ -203,39 +223,45 @@ button:hover {
   box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
+/* ==========================================
+   MODAL OPORTUNIDAD
+========================================== */
+
 .modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.55);
   justify-content: center;
   align-items: center;
   padding: 20px;
-  z-index: 10;
+  z-index: 100;
 }
 
 .modal-content {
+  width: 100%;
+  max-width: 850px;
+  max-height: 92vh;
+  overflow-y: auto;
   background: white;
   border-radius: 14px;
   padding: 30px;
-  width: 100%;
-  max-width: 700px;
-  max-height: 90vh;
-  overflow-y: auto;
 }
 
 .modal-content h3 {
   margin-top: 0;
 }
 
+.modal-subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.form-group {
-  margin-bottom: 5px;
+  gap: 16px;
 }
 
 .form-group.full {
@@ -244,9 +270,9 @@ button:hover {
 
 label {
   display: block;
-  margin-bottom: 6px;
   font-size: 13px;
   font-weight: bold;
+  margin-bottom: 6px;
 }
 
 input,
@@ -256,8 +282,8 @@ textarea {
   padding: 11px;
   border: 1px solid #d1d5db;
   border-radius: 7px;
-  font-size: 14px;
   font-family: Arial, sans-serif;
+  font-size: 14px;
 }
 
 textarea {
@@ -265,86 +291,51 @@ textarea {
   resize: vertical;
 }
 
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.detected {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
 .modal-buttons {
   display: flex;
   gap: 10px;
-  margin-top: 25px;
   flex-wrap: wrap;
+  margin-top: 25px;
 }
 
-.detail-modal {
-  max-width: 900px;
+.cancel {
+  background: #e5e7eb;
+  color: #1f2937;
 }
 
-.detail-section {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+.cancel:hover {
+  background: #d1d5db;
 }
 
-.detail-section h4 {
-  margin: 0 0 10px;
+@media (max-width: 900px) {
+
+  .dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
 }
 
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.detail-box {
-  background: #f9fafb;
-  padding: 14px;
-  border-radius: 8px;
-}
-
-.detail-label {
-  font-size: 11px;
-  color: #6b7280;
-  margin-bottom: 5px;
-}
-
-.detail-value {
-  font-size: 14px;
-  font-weight: bold;
-  white-space: pre-wrap;
-}
-
-.notes {
-  background: #eef2ff;
-  padding: 15px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  line-height: 1.5;
-}
-
-.warning {
-  background: #fff7ed;
-  color: #9a3412;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 12px;
-}
-
-@media (max-width: 800px) {
+@media (max-width: 700px) {
 
   header {
     flex-direction: column;
     gap: 15px;
   }
 
-  .top-actions {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .opportunity-header {
-    flex-direction: column;
-  }
-
-  .opportunity-data,
-  .detail-grid,
+  .grid,
+  .dashboard,
   .form-grid {
     grid-template-columns: 1fr;
   }
@@ -363,9 +354,12 @@ textarea {
 
 <header>
 
-  <h1>💼 PREVENTA IA</h1>
+  <h1>📊 PREVENTA IA</h1>
 
-  <a href="index.html" class="back">
+  <a
+    href="index.html"
+    class="back"
+  >
     ← Volver al inicio
   </a>
 
@@ -376,58 +370,347 @@ textarea {
 
   <div class="welcome">
 
-    <h2>💼 Oportunidades</h2>
+    <h2>
+      🎯 Análisis de Oportunidad
+    </h2>
 
     <p>
-      Centralizá clientes, requerimientos, análisis y datos
-      de cotización en cada oportunidad.
+      Acá se concentra la información detectada en documentos
+      y se prepara para convertirla en una oportunidad de Preventa.
     </p>
 
   </div>
 
 
-  <div class="top-actions">
+  <div
+    id="sourceBox"
+    class="source-box"
+  ></div>
 
-    <h3>Mis oportunidades</h3>
 
-    <button onclick="openModal()">
-      + Nueva oportunidad
-    </button>
+  <!-- INDICADORES -->
+
+  <div class="dashboard">
+
+    <div class="metric">
+
+      <div class="metric-title">
+        USUARIOS
+      </div>
+
+      <div
+        id="metricUsers"
+        class="metric-value"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="metric">
+
+      <div class="metric-title">
+        CATEGORÍAS DETECTADAS
+      </div>
+
+      <div
+        id="metricCategories"
+        class="metric-value"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="metric">
+
+      <div class="metric-title">
+        EVIDENCIAS
+      </div>
+
+      <div
+        id="metricEvidence"
+        class="metric-value"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="metric">
+
+      <div class="metric-title">
+        PÁGINAS
+      </div>
+
+      <div
+        id="metricPages"
+        class="metric-value"
+      >
+        0
+      </div>
+
+    </div>
 
   </div>
 
 
   <div
-    id="opportunities"
-    class="opportunities"
-  ></div>
+    id="emptyState"
+    class="empty"
+  >
+
+    <div style="font-size:45px;">
+      📄
+    </div>
+
+    <h3>
+      Todavía no hay un análisis cargado
+    </h3>
+
+    <p>
+      Analizá primero un documento para traer
+      sus resultados a esta pantalla.
+    </p>
+
+    <a
+      href="documentos.html"
+      class="button primary"
+    >
+      📄 Ir a Documentos
+    </a>
+
+  </div>
+
+
+  <div
+    id="analysisContent"
+    class="analysis"
+    style="display:none;"
+  >
+
+    <h3>
+      🔎 Información relevada
+    </h3>
+
+
+    <div
+      id="summary"
+      class="summary-box"
+    ></div>
+
+
+    <div class="grid">
+
+      <div class="section">
+        <h4>🎯 Objetivo</h4>
+        <div id="objective"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🏢 Cliente / Organización</h4>
+        <div id="client"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>👥 Usuarios</h4>
+        <div id="users"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>📄 Documentación</h4>
+        <div id="documents"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>📦 Volumen documental</h4>
+        <div id="volume"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>💾 Storage</h4>
+        <div id="storage"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🔎 OCR / Digitalización</h4>
+        <div id="ocr"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🔤 Full Text / Búsqueda</h4>
+        <div id="fulltext"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🔄 Workflows</h4>
+        <div id="workflows"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>✍️ Firmas</h4>
+        <div id="signatures"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🔌 Integraciones</h4>
+        <div id="integrations"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🏗️ Infraestructura</h4>
+        <div id="infrastructure"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🔐 Seguridad</h4>
+        <div id="security"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🔄 Migración</h4>
+        <div id="migration"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>🛠️ Soporte</h4>
+        <div id="support"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>📅 Plazos</h4>
+        <div id="deadlines"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>💰 Datos para cotizar</h4>
+        <div id="pricing"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>⚠️ Riesgos</h4>
+        <div id="risks"></div>
+      </div>
+
+
+      <div class="section">
+        <h4>❓ Información faltante</h4>
+        <div id="missing"></div>
+      </div>
+
+    </div>
+
+
+    <!-- RECOMENDACIONES -->
+
+    <div class="recommendations">
+
+      <h3>
+        🧩 Soluciones a evaluar
+      </h3>
+
+      <div id="recommendations"></div>
+
+    </div>
+
+
+    <!-- EVIDENCIA -->
+
+    <div class="recommendations">
+
+      <h3>
+        📌 Evidencia del documento
+      </h3>
+
+      <div id="evidence"></div>
+
+    </div>
+
+
+    <div
+      id="successBox"
+      class="success-box"
+    ></div>
+
+
+    <div class="actions">
+
+      <a
+        href="documentos.html"
+        class="button"
+      >
+        📄 Analizar otro documento
+      </a>
+
+
+      <button
+        class="button green"
+        onclick="openOpportunityModal()"
+      >
+        💼 Crear oportunidad
+      </button>
+
+    </div>
+
+  </div>
 
 </main>
 
 
-<!-- NUEVA OPORTUNIDAD -->
+<!-- ==========================================
+     MODAL CREAR OPORTUNIDAD
+========================================== -->
 
 <div
-  id="modal"
+  id="opportunityModal"
   class="modal"
 >
 
   <div class="modal-content">
 
-    <h3>➕ Nueva oportunidad</h3>
+    <h3>
+      💼 Nueva oportunidad
+    </h3>
+
+    <p class="modal-subtitle">
+      Revisá y corregí la información detectada antes de guardar.
+      Nada se guarda hasta que presiones "Crear oportunidad".
+    </p>
+
 
     <div class="form-grid">
 
+
       <div class="form-group">
 
-        <label for="client">
+        <label for="opClient">
           Cliente
         </label>
 
         <input
-          id="client"
+          id="opClient"
           type="text"
-          placeholder="Ejemplo: Banco X"
+          placeholder="Nombre del cliente"
         >
 
       </div>
@@ -435,14 +718,14 @@ textarea {
 
       <div class="form-group">
 
-        <label for="project">
+        <label for="opProject">
           Oportunidad / Proyecto
         </label>
 
         <input
-          id="project"
+          id="opProject"
           type="text"
-          placeholder="Ejemplo: Gestión documental"
+          placeholder="Nombre de la oportunidad"
         >
 
       </div>
@@ -450,14 +733,14 @@ textarea {
 
       <div class="form-group">
 
-        <label for="solution">
+        <label for="opSolution">
           Solución principal
         </label>
 
         <input
-          id="solution"
+          id="opSolution"
           type="text"
-          placeholder="Ejemplo: Thuban"
+          placeholder="Thuban / Captika / etc."
         >
 
       </div>
@@ -465,11 +748,11 @@ textarea {
 
       <div class="form-group">
 
-        <label for="status">
+        <label for="opStatus">
           Estado
         </label>
 
-        <select id="status">
+        <select id="opStatus">
 
           <option value="analysis">
             🟡 En análisis
@@ -498,14 +781,13 @@ textarea {
 
       <div class="form-group">
 
-        <label for="users">
+        <label for="opUsers">
           Usuarios
         </label>
 
         <input
-          id="users"
-          type="number"
-          min="0"
+          id="opUsers"
+          type="text"
           placeholder="Ejemplo: 500"
         >
 
@@ -514,12 +796,12 @@ textarea {
 
       <div class="form-group">
 
-        <label for="storage">
+        <label for="opStorage">
           Storage
         </label>
 
         <input
-          id="storage"
+          id="opStorage"
           type="text"
           placeholder="Ejemplo: 250 GB"
         >
@@ -529,14 +811,14 @@ textarea {
 
       <div class="form-group">
 
-        <label for="documents">
+        <label for="opDocuments">
           Documentos / Volumen
         </label>
 
         <input
-          id="documents"
+          id="opDocuments"
           type="text"
-          placeholder="Ejemplo: 2.000.000 documentos"
+          placeholder="Ejemplo: Legajos, contratos..."
         >
 
       </div>
@@ -544,14 +826,14 @@ textarea {
 
       <div class="form-group">
 
-        <label for="workflows">
+        <label for="opWorkflows">
           Workflows
         </label>
 
         <input
-          id="workflows"
+          id="opWorkflows"
           type="text"
-          placeholder="Ejemplo: 3"
+          placeholder="Ejemplo: 3 circuitos"
         >
 
       </div>
@@ -559,11 +841,11 @@ textarea {
 
       <div class="form-group">
 
-        <label for="ocr">
+        <label for="opOcr">
           OCR
         </label>
 
-        <select id="ocr">
+        <select id="opOcr">
 
           <option value="No definido">
             No definido
@@ -584,11 +866,11 @@ textarea {
 
       <div class="form-group">
 
-        <label for="signatures">
+        <label for="opSignatures">
           Firmas
         </label>
 
-        <select id="signatures">
+        <select id="opSignatures">
 
           <option value="No definido">
             No definido
@@ -609,14 +891,14 @@ textarea {
 
       <div class="form-group">
 
-        <label for="infrastructure">
+        <label for="opInfrastructure">
           Infraestructura
         </label>
 
         <input
-          id="infrastructure"
+          id="opInfrastructure"
           type="text"
-          placeholder="Cloud / On Premise / etc."
+          placeholder="Cloud / On Premise"
         >
 
       </div>
@@ -624,12 +906,12 @@ textarea {
 
       <div class="form-group">
 
-        <label for="deadline">
+        <label for="opDeadline">
           Plazo
         </label>
 
         <input
-          id="deadline"
+          id="opDeadline"
           type="text"
           placeholder="Ejemplo: 6 meses"
         >
@@ -639,13 +921,13 @@ textarea {
 
       <div class="form-group full">
 
-        <label for="objective">
-          Objetivo de la oportunidad
+        <label for="opObjective">
+          Objetivo
         </label>
 
         <textarea
-          id="objective"
-          placeholder="¿Qué necesita resolver el cliente?"
+          id="opObjective"
+          placeholder="Objetivo del proyecto"
         ></textarea>
 
       </div>
@@ -653,13 +935,13 @@ textarea {
 
       <div class="form-group full">
 
-        <label for="requirements">
-          Requerimientos principales
+        <label for="opRequirements">
+          Requerimientos
         </label>
 
         <textarea
-          id="requirements"
-          placeholder="OCR, workflows, integraciones, firmas, migración, etc."
+          id="opRequirements"
+          placeholder="Requerimientos detectados"
         ></textarea>
 
       </div>
@@ -667,13 +949,13 @@ textarea {
 
       <div class="form-group full">
 
-        <label for="risks">
-          Riesgos / puntos de atención
+        <label for="opRisks">
+          Riesgos / Puntos de atención
         </label>
 
         <textarea
-          id="risks"
-          placeholder="Información faltante, dependencias, restricciones..."
+          id="opRisks"
+          placeholder="Riesgos detectados"
         ></textarea>
 
       </div>
@@ -681,13 +963,13 @@ textarea {
 
       <div class="form-group full">
 
-        <label for="notes">
-          Notas
+        <label for="opNotes">
+          Notas internas de Preventa
         </label>
 
         <textarea
-          id="notes"
-          placeholder="Notas internas de Preventa"
+          id="opNotes"
+          placeholder="Notas adicionales"
         ></textarea>
 
       </div>
@@ -697,13 +979,17 @@ textarea {
 
     <div class="modal-buttons">
 
-      <button onclick="saveOpportunity()">
-        Guardar oportunidad
+      <button
+        class="button green"
+        onclick="saveOpportunity()"
+      >
+        💾 Crear oportunidad
       </button>
 
+
       <button
-        class="secondary"
-        onclick="closeModal()"
+        class="button cancel"
+        onclick="closeOpportunityModal()"
       >
         Cancelar
       </button>
@@ -715,238 +1001,928 @@ textarea {
 </div>
 
 
-<!-- DETALLE -->
-
-<div
-  id="detailModal"
-  class="modal"
->
-
-  <div class="modal-content detail-modal">
-
-    <h3 id="detailTitle">
-      Oportunidad
-    </h3>
-
-    <div id="detailContent"></div>
-
-    <div class="modal-buttons">
-
-      <button onclick="closeDetailModal()">
-        Cerrar
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
 <script>
 
-let opportunities =
-  JSON.parse(
+
+/* ==========================================
+   LEER ANALISIS
+========================================== */
+
+function getAnalysis() {
+
+  const data =
     localStorage.getItem(
-      "preventa_opportunities"
-    )
-  ) || [];
-
-
-/* =========================================
-   RENDER
-========================================= */
-
-function renderOpportunities() {
-
-  const container =
-    document.getElementById(
-      "opportunities"
+      "preventa_document_analysis"
     );
 
 
-  container.innerHTML = "";
+  if (!data) {
+
+    return null;
+
+  }
 
 
-  if (
-    opportunities.length === 0
-  ) {
+  try {
 
-    container.innerHTML = `
+    return JSON.parse(
+      data
+    );
 
-      <div class="empty">
+  }
 
-        <div style="font-size:42px;">
-          💼
-        </div>
+  catch(error) {
 
-        <h3>
-          Todavía no tenés oportunidades
-        </h3>
+    console.error(
+      "No se pudo leer el análisis.",
+      error
+    );
 
-        <p>
-          Creá tu primera oportunidad para centralizar
-          la información de Preventa.
-        </p>
+    return null;
 
-      </div>
+  }
 
-    `;
+}
+
+
+/* ==========================================
+   CARGAR ANALISIS
+========================================== */
+
+function loadAnalysis() {
+
+  const data =
+    getAnalysis();
+
+
+  if (!data) {
 
     return;
 
   }
 
 
-  opportunities.forEach(
-    function(opportunity, index) {
+  document.getElementById(
+    "emptyState"
+  ).style.display =
+    "none";
 
-      const card =
+
+  document.getElementById(
+    "analysisContent"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "sourceBox"
+  ).textContent =
+    "📄 Documento analizado: " +
+    (
+      data.fileName ||
+      "Documento sin nombre"
+    );
+
+
+  document.getElementById(
+    "sourceBox"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "metricUsers"
+  ).textContent =
+    extraerUsuarios(
+      data
+    );
+
+
+  document.getElementById(
+    "metricCategories"
+  ).textContent =
+    data.temas ||
+    contarCategorias(
+      data
+    );
+
+
+  document.getElementById(
+    "metricEvidence"
+  ).textContent =
+    data.evidence
+      ? data.evidence.length
+      : 0;
+
+
+  document.getElementById(
+    "metricPages"
+  ).textContent =
+    data.pages ||
+    0;
+
+
+  document.getElementById(
+    "summary"
+  ).textContent =
+    crearResumen(
+      data
+    );
+
+
+  setAnalysisField(
+    "objective",
+    data.objective,
+    "No se detectó claramente el objetivo."
+  );
+
+
+  setAnalysisField(
+    "client",
+    data.client,
+    "No se identificó claramente el cliente."
+  );
+
+
+  setAnalysisField(
+    "users",
+    data.categories?.users,
+    "No se detectó claramente la cantidad de usuarios."
+  );
+
+
+  setAnalysisField(
+    "documents",
+    data.categories?.documents,
+    "No se detectaron tipos documentales claros."
+  );
+
+
+  setAnalysisField(
+    "volume",
+    data.categories?.volume,
+    "No se detectó claramente el volumen documental."
+  );
+
+
+  setAnalysisField(
+    "storage",
+    data.categories?.storage,
+    "No se detectó claramente el storage."
+  );
+
+
+  setAnalysisField(
+    "ocr",
+    data.categories?.ocr,
+    "No se detectó OCR explícitamente."
+  );
+
+
+  setAnalysisField(
+    "fulltext",
+    data.categories?.fulltext,
+    "No se detectó Full Text explícitamente."
+  );
+
+
+  setAnalysisField(
+    "workflows",
+    data.categories?.workflows,
+    "No se detectaron workflows explícitamente."
+  );
+
+
+  setAnalysisField(
+    "signatures",
+    data.categories?.signatures,
+    "No se detectaron firmas explícitamente."
+  );
+
+
+  setAnalysisField(
+    "integrations",
+    data.categories?.integrations,
+    "No se detectaron integraciones explícitamente."
+  );
+
+
+  setAnalysisField(
+    "infrastructure",
+    data.categories?.infrastructure,
+    "No se detectó infraestructura claramente."
+  );
+
+
+  setAnalysisField(
+    "security",
+    data.categories?.security,
+    "No se detectaron requisitos claros de seguridad."
+  );
+
+
+  setAnalysisField(
+    "migration",
+    data.categories?.migration,
+    "No se detectó información clara de migración."
+  );
+
+
+  setAnalysisField(
+    "support",
+    data.categories?.support,
+    "No se detectaron requisitos claros de soporte."
+  );
+
+
+  setAnalysisField(
+    "deadlines",
+    data.categories?.deadlines,
+    "No se detectaron plazos claros."
+  );
+
+
+  document.getElementById(
+    "pricing"
+  ).textContent =
+    createPricing(
+      data
+    );
+
+
+  document.getElementById(
+    "risks"
+  ).textContent =
+    createRisks(
+      data
+    );
+
+
+  document.getElementById(
+    "missing"
+  ).textContent =
+    createMissing(
+      data
+    );
+
+
+  renderRecommendations(
+    data
+  );
+
+
+  renderEvidence(
+    data
+  );
+
+}
+
+
+/* ==========================================
+   CAMPO
+========================================== */
+
+function setAnalysisField(
+  id,
+  data,
+  fallback
+) {
+
+  const element =
+    document.getElementById(
+      id
+    );
+
+
+  let texto =
+    "";
+
+
+  if (
+    Array.isArray(data)
+  ) {
+
+    texto =
+      data
+        .map(
+          item => {
+
+            if (
+              typeof item === "string"
+            ) {
+
+              return item;
+
+            }
+
+
+            const page =
+              item.page
+                ? "\n📄 Página " +
+                  item.page
+                : "";
+
+
+            return (
+              item.texto ||
+              item.text ||
+              item.linea ||
+              String(item)
+            ) +
+            page;
+
+          }
+        )
+        .join(
+          "\n\n"
+        );
+
+  }
+
+  else if (
+    typeof data === "object" &&
+    data !== null
+  ) {
+
+    texto =
+      (
+        data.texto ||
+        data.text ||
+        String(data)
+      ) +
+
+      (
+        data.page
+          ? "\n📄 Página " +
+            data.page
+          : ""
+      );
+
+  }
+
+  else if (
+    data
+  ) {
+
+    texto =
+      String(data);
+
+  }
+
+
+  if (!texto) {
+
+    texto =
+      fallback;
+
+  }
+
+
+  element.textContent =
+    texto;
+
+
+  element.className =
+    texto === fallback
+      ? "value unknown"
+      : "value known";
+
+}
+
+
+/* ==========================================
+   USUARIOS
+========================================== */
+
+function extraerUsuarios(
+  data
+) {
+
+  const items =
+    data.categories?.users ||
+    [];
+
+
+  for (
+    const item of items
+  ) {
+
+    const texto =
+      item.texto ||
+      item.text ||
+      "";
+
+
+    const match =
+      texto.match(
+        /\b\d{1,3}(?:[.,]\d{3})*(?:[.,]\d+)?\b/
+      );
+
+
+    if (match) {
+
+      return match[0];
+
+    }
+
+  }
+
+
+  return "0";
+
+}
+
+
+/* ==========================================
+   CATEGORIAS
+========================================== */
+
+function contarCategorias(
+  data
+) {
+
+  if (
+    !data.categories
+  ) {
+
+    return 0;
+
+  }
+
+
+  return Object.keys(
+    data.categories
+  ).filter(
+    key =>
+      data.categories[key] &&
+      data.categories[key].length
+  ).length;
+
+}
+
+
+/* ==========================================
+   RESUMEN
+========================================== */
+
+function crearResumen(
+  data
+) {
+
+  const partes = [];
+
+
+  partes.push(
+    "El análisis reúne la información encontrada " +
+    "en el documento desde una perspectiva de Preventa."
+  );
+
+
+  if (
+    data.client
+  ) {
+
+    partes.push(
+      "🏢 Cliente: " +
+      (
+        data.client.texto ||
+        data.client
+      )
+    );
+
+  }
+
+
+  if (
+    data.objective?.length
+  ) {
+
+    partes.push(
+      "🎯 Objetivo: " +
+      (
+        data.objective[0].texto ||
+        data.objective[0]
+      )
+    );
+
+  }
+
+
+  const detectados = [];
+
+
+  if (
+    data.categories
+  ) {
+
+    Object.keys(
+      data.categories
+    ).forEach(
+      function(key) {
+
+        if (
+          data.categories[key]?.length
+        ) {
+
+          detectados.push(
+            key
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  if (
+    detectados.length
+  ) {
+
+    partes.push(
+      "📌 Se detectaron " +
+      detectados.length +
+      " categorías de información relevante."
+    );
+
+  }
+
+
+  return partes.join(
+    "\n\n"
+  );
+
+}
+
+
+/* ==========================================
+   DATOS COTIZAR
+========================================== */
+
+function createPricing(
+  data
+) {
+
+  const partes = [];
+
+
+  const users =
+    data.categories?.users || [];
+
+
+  const storage =
+    data.categories?.storage || [];
+
+
+  const volume =
+    data.categories?.volume || [];
+
+
+  if (
+    users.length
+  ) {
+
+    partes.push(
+      "👥 Usuarios: " +
+      users
+        .map(
+          item =>
+            item.texto ||
+            item.text
+        )
+        .join(
+          " | "
+        )
+    );
+
+  }
+
+
+  if (
+    storage.length
+  ) {
+
+    partes.push(
+      "💾 Storage: " +
+      storage
+        .map(
+          item =>
+            item.texto ||
+            item.text
+        )
+        .join(
+          " | "
+        )
+    );
+
+  }
+
+
+  if (
+    volume.length
+  ) {
+
+    partes.push(
+      "📦 Volumen: " +
+      volume
+        .map(
+          item =>
+            item.texto ||
+            item.text
+        )
+        .join(
+          " | "
+        )
+    );
+
+  }
+
+
+  if (
+    data.categories?.workflows?.length
+  ) {
+
+    partes.push(
+      "🔄 Workflows detectados."
+    );
+
+  }
+
+
+  if (
+    data.categories?.signatures?.length
+  ) {
+
+    partes.push(
+      "✍️ Firmas detectadas."
+    );
+
+  }
+
+
+  if (
+    data.categories?.ocr?.length
+  ) {
+
+    partes.push(
+      "🔎 OCR detectado."
+    );
+
+  }
+
+
+  if (!partes.length) {
+
+    return (
+      "⚠️ Todavía no hay datos suficientes para cotizar."
+    );
+
+  }
+
+
+  return partes.join(
+    "\n\n"
+  );
+
+}
+
+
+/* ==========================================
+   RIESGOS
+========================================== */
+
+function createRisks(
+  data
+) {
+
+  const riesgos = [];
+
+
+  if (
+    !data.categories?.users?.length
+  ) {
+
+    riesgos.push(
+      "No se identificó claramente la cantidad de usuarios."
+    );
+
+  }
+
+
+  if (
+    !data.categories?.storage?.length
+  ) {
+
+    riesgos.push(
+      "No se identificó claramente el storage."
+    );
+
+  }
+
+
+  if (
+    !data.categories?.integrations?.length
+  ) {
+
+    riesgos.push(
+      "No se identificaron integraciones."
+    );
+
+  }
+
+
+  if (
+    !data.categories?.deadlines?.length
+  ) {
+
+    riesgos.push(
+      "No se identificaron plazos."
+    );
+
+  }
+
+
+  return riesgos.length
+
+    ? riesgos.join(
+        "\n"
+      )
+
+    : "✅ No se detectaron faltantes críticos mediante las reglas básicas.";
+
+}
+
+
+/* ==========================================
+   FALTANTES
+========================================== */
+
+function createMissing(
+  data
+) {
+
+  const faltantes = [];
+
+
+  if (
+    !data.objective?.length
+  ) {
+
+    faltantes.push(
+      "Objetivo"
+    );
+
+  }
+
+
+  if (
+    !data.categories?.users?.length
+  ) {
+
+    faltantes.push(
+      "Cantidad de usuarios"
+    );
+
+  }
+
+
+  if (
+    !data.categories?.documents?.length
+  ) {
+
+    faltantes.push(
+      "Tipos documentales"
+    );
+
+  }
+
+
+  if (
+    !data.categories?.storage?.length
+  ) {
+
+    faltantes.push(
+      "Storage"
+    );
+
+  }
+
+
+  if (
+    !data.categories?.deadlines?.length
+  ) {
+
+    faltantes.push(
+      "Plazos"
+    );
+
+  }
+
+
+  return faltantes.length
+
+    ? faltantes.join(
+        "\n"
+      )
+
+    : "✅ No detecté faltantes básicos.";
+
+}
+
+
+/* ==========================================
+   RECOMENDACIONES
+========================================== */
+
+function renderRecommendations(
+  data
+) {
+
+  const container =
+    document.getElementById(
+      "recommendations"
+    );
+
+
+  const recomendaciones = [];
+
+
+  if (
+    data.categories?.workflows?.length
+  ) {
+
+    recomendaciones.push(
+      "Thuban — evaluar para gestión documental y workflows."
+    );
+
+  }
+
+
+  if (
+    data.categories?.ocr?.length
+  ) {
+
+    recomendaciones.push(
+      "Captika — evaluar para captura y OCR."
+    );
+
+  }
+
+
+  if (
+    data.categories?.signatures?.length
+  ) {
+
+    recomendaciones.push(
+      "Firmas Addoc / Edatalia — evaluar para requerimientos de firma."
+    );
+
+  }
+
+
+  if (
+    data.categories?.migration?.length
+  ) {
+
+    recomendaciones.push(
+      "Evaluar estrategia de migración y sistema origen."
+    );
+
+  }
+
+
+  if (!recomendaciones.length) {
+
+    recomendaciones.push(
+      "No hay una solución determinada automáticamente. Requiere validación de Preventa."
+    );
+
+  }
+
+
+  container.innerHTML = "";
+
+
+  recomendaciones.forEach(
+    function(texto) {
+
+      const div =
         document.createElement(
           "div"
         );
 
 
-      card.className =
-        "opportunity";
+      div.className =
+        "recommendation";
 
 
-      card.innerHTML = `
-
-        <div class="opportunity-header">
-
-          <div class="opportunity-info">
-
-            <h3>
-              ${escapeHTML(
-                opportunity.project
-              )}
-            </h3>
-
-            <p>
-              👤 Cliente:
-              ${escapeHTML(
-                opportunity.client
-              )}
-            </p>
-
-            <p>
-              🧩 Solución:
-              ${escapeHTML(
-                opportunity.solution
-              )}
-            </p>
-
-            <span class="status ${opportunity.status}">
-              ${getStatusName(
-                opportunity.status
-              )}
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="opportunity-data">
-
-          <div class="data-box">
-
-            <div class="data-title">
-              👥 USUARIOS
-            </div>
-
-            <div class="data-value">
-              ${escapeHTML(
-                opportunity.users ||
-                "No definido"
-              )}
-            </div>
-
-          </div>
-
-
-          <div class="data-box">
-
-            <div class="data-title">
-              💾 STORAGE
-            </div>
-
-            <div class="data-value">
-              ${escapeHTML(
-                opportunity.storage ||
-                "No definido"
-              )}
-            </div>
-
-          </div>
-
-
-          <div class="data-box">
-
-            <div class="data-title">
-              📑 DOCUMENTOS
-            </div>
-
-            <div class="data-value">
-              ${escapeHTML(
-                opportunity.documents ||
-                "No definido"
-              )}
-            </div>
-
-          </div>
-
-
-          <div class="data-box">
-
-            <div class="data-title">
-              🔄 WORKFLOWS
-            </div>
-
-            <div class="data-value">
-              ${escapeHTML(
-                opportunity.workflows ||
-                "No definido"
-              )}
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="actions">
-
-          <button
-            onclick="viewOpportunity(${index})"
-          >
-            👁️ Ver detalle
-          </button>
-
-
-          <button
-            class="green"
-            onclick="sendToQuote(${index})"
-          >
-            💰 Cotizar
-          </button>
-
-
-          <button
-            class="secondary"
-            onclick="deleteOpportunity(${index})"
-          >
-            🗑️ Eliminar
-          </button>
-
-        </div>
-
-      `;
+      div.textContent =
+        texto;
 
 
       container.appendChild(
-        card
+        div
       );
 
     }
@@ -955,129 +1931,451 @@ function renderOpportunities() {
 }
 
 
-/* =========================================
-   STATUS
-========================================= */
+/* ==========================================
+   EVIDENCIA
+========================================== */
 
-function getStatusName(
-  status
+function renderEvidence(
+  data
 ) {
 
-  const names = {
-
-    analysis:
-      "🟡 En análisis",
-
-    quote:
-      "🔵 Cotizando",
-
-    proposal:
-      "🟣 Propuesta",
-
-    won:
-      "🟢 Ganada",
-
-    lost:
-      "🔴 Perdida"
-
-  };
+  const container =
+    document.getElementById(
+      "evidence"
+    );
 
 
-  return (
-    names[status] ||
-    status
-  );
+  container.innerHTML = "";
+
+
+  if (
+    !data.evidence ||
+    !data.evidence.length
+  ) {
+
+    container.innerHTML =
+      "<div class='warning-box'>" +
+      "No hay evidencia almacenada." +
+      "</div>";
+
+    return;
+
+  }
+
+
+  data.evidence
+    .slice(
+      0,
+      20
+    )
+    .forEach(
+      function(item) {
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+
+        div.className =
+          "recommendation";
+
+
+        div.textContent =
+          (
+            item.titulo ||
+            "Información detectada"
+          ) +
+
+          " · Página " +
+
+          (
+            item.page ||
+            "?"
+          ) +
+
+          "\n\n" +
+
+          (
+            item.texto ||
+            ""
+          );
+
+
+        container.appendChild(
+          div
+        );
+
+      }
+    );
 
 }
 
 
-/* =========================================
-   MODAL
-========================================= */
+/* ==========================================
+   ABRIR MODAL
+========================================== */
 
-function openModal() {
+function openOpportunityModal() {
 
-  document
-    .getElementById(
-      "modal"
-    )
-    .style.display =
+  const data =
+    getAnalysis();
+
+
+  if (!data) {
+
+    alert(
+      "No hay un análisis disponible."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    CLIENTE
+  */
+
+  document.getElementById(
+    "opClient"
+  ).value =
+    obtenerCliente(
+      data
+    );
+
+
+  /*
+    NOMBRE DEL PROYECTO
+
+    Lo sugerimos, pero el usuario
+    puede modificarlo.
+  */
+
+  document.getElementById(
+    "opProject"
+  ).value =
+    generarNombreProyecto(
+      data
+    );
+
+
+  /*
+    SOLUCION
+  */
+
+  document.getElementById(
+    "opSolution"
+  ).value =
+    recomendarSolucion(
+      data
+    );
+
+
+  /*
+    USUARIOS
+  */
+
+  document.getElementById(
+    "opUsers"
+  ).value =
+    extraerUsuariosTexto(
+      data
+    );
+
+
+  /*
+    STORAGE
+  */
+
+  document.getElementById(
+    "opStorage"
+  ).value =
+    extraerDatoTexto(
+      data.categories?.storage
+    );
+
+
+  /*
+    DOCUMENTOS
+  */
+
+  document.getElementById(
+    "opDocuments"
+  ).value =
+    extraerDatoTexto(
+      data.categories?.documents
+    );
+
+
+  /*
+    WORKFLOWS
+  */
+
+  document.getElementById(
+    "opWorkflows"
+  ).value =
+    extraerDatoTexto(
+      data.categories?.workflows
+    );
+
+
+  /*
+    OCR
+  */
+
+  document.getElementById(
+    "opOcr"
+  ).value =
+    data.categories?.ocr?.length
+      ? "Requerido"
+      : "No definido";
+
+
+  /*
+    FIRMAS
+  */
+
+  document.getElementById(
+    "opSignatures"
+  ).value =
+    data.categories?.signatures?.length
+      ? "Requerido"
+      : "No definido";
+
+
+  /*
+    INFRAESTRUCTURA
+  */
+
+  document.getElementById(
+    "opInfrastructure"
+  ).value =
+    extraerDatoTexto(
+      data.categories?.infrastructure
+    );
+
+
+  /*
+    PLAZO
+  */
+
+  document.getElementById(
+    "opDeadline"
+  ).value =
+    extraerDatoTexto(
+      data.categories?.deadlines
+    );
+
+
+  /*
+    OBJETIVO
+  */
+
+  document.getElementById(
+    "opObjective"
+  ).value =
+    data.objective?.length
+      ? data.objective
+          .map(
+            item =>
+              item.texto ||
+              item
+          )
+          .join(
+            "\n\n"
+          )
+      : "";
+
+
+  /*
+    REQUERIMIENTOS
+  */
+
+  document.getElementById(
+    "opRequirements"
+  ).value =
+    crearRequerimientos(
+      data
+    );
+
+
+  /*
+    RIESGOS
+  */
+
+  document.getElementById(
+    "opRisks"
+  ).value =
+    createRisks(
+      data
+    );
+
+
+  /*
+    NOTAS
+  */
+
+  document.getElementById(
+    "opNotes"
+  ).value =
+    "Información inicial obtenida del documento: " +
+    (
+      data.fileName ||
+      "sin nombre"
+    ) +
+    ". Revisar y validar antes de avanzar.";
+
+
+  document.getElementById(
+    "opStatus"
+  ).value =
+    "analysis";
+
+
+  document.getElementById(
+    "opportunityModal"
+  ).style.display =
     "flex";
 
 }
 
 
-function closeModal() {
+/* ==========================================
+   CERRAR MODAL
+========================================== */
 
-  document
-    .getElementById(
-      "modal"
-    )
-    .style.display =
+function closeOpportunityModal() {
+
+  document.getElementById(
+    "opportunityModal"
+  ).style.display =
     "none";
 
 }
 
 
-/* =========================================
-   GUARDAR
-========================================= */
+/* ==========================================
+   GUARDAR OPORTUNIDAD
+========================================== */
 
 function saveOpportunity() {
 
-  const opportunity = {
+  const client =
+    valueOf(
+      "opClient"
+    );
+
+
+  const project =
+    valueOf(
+      "opProject"
+    );
+
+
+  const solution =
+    valueOf(
+      "opSolution"
+    );
+
+
+  if (
+    !client ||
+    !project
+  ) {
+
+    alert(
+      "Completá al menos Cliente y Oportunidad / Proyecto."
+    );
+
+    return;
+
+  }
+
+
+  const oportunidad = {
 
     id:
       Date.now(),
 
     client:
-      getValue("client"),
+      client,
 
     project:
-      getValue("project"),
+      project,
 
     solution:
-      getValue("solution") ||
+      solution ||
       "Por definir",
 
     status:
-      getValue("status"),
+      valueOf(
+        "opStatus"
+      ) ||
+      "analysis",
 
     users:
-      getValue("users"),
+      valueOf(
+        "opUsers"
+      ),
 
     storage:
-      getValue("storage"),
+      valueOf(
+        "opStorage"
+      ),
 
     documents:
-      getValue("documents"),
+      valueOf(
+        "opDocuments"
+      ),
 
     workflows:
-      getValue("workflows"),
+      valueOf(
+        "opWorkflows"
+      ),
 
     ocr:
-      getValue("ocr"),
+      valueOf(
+        "opOcr"
+      ),
 
     signatures:
-      getValue("signatures"),
+      valueOf(
+        "opSignatures"
+      ),
 
     infrastructure:
-      getValue("infrastructure"),
+      valueOf(
+        "opInfrastructure"
+      ),
 
     deadline:
-      getValue("deadline"),
+      valueOf(
+        "opDeadline"
+      ),
 
     objective:
-      getValue("objective"),
+      valueOf(
+        "opObjective"
+      ),
 
     requirements:
-      getValue("requirements"),
+      valueOf(
+        "opRequirements"
+      ),
 
     risks:
-      getValue("risks"),
+      valueOf(
+        "opRisks"
+      ),
 
     notes:
-      getValue("notes"),
+      valueOf(
+        "opNotes"
+      ),
+
+    sourceDocument:
+      dataFileName(),
 
     createdAt:
       new Date().toISOString(),
@@ -1091,525 +2389,342 @@ function saveOpportunity() {
   };
 
 
-  if (
-    !opportunity.client ||
-    !opportunity.project
-  ) {
-
-    alert(
-      "Completá al menos Cliente y Oportunidad / Proyecto."
-    );
-
-    return;
-
-  }
+  const oportunidades =
+    JSON.parse(
+      localStorage.getItem(
+        "preventa_opportunities"
+      )
+    ) || [];
 
 
-  opportunities.unshift(
-    opportunity
+  oportunidades.unshift(
+    oportunidad
   );
 
-
-  saveToStorage();
-
-  clearForm();
-
-  closeModal();
-
-  renderOpportunities();
-
-}
-
-
-/* =========================================
-   STORAGE
-========================================= */
-
-function saveToStorage() {
 
   localStorage.setItem(
     "preventa_opportunities",
     JSON.stringify(
-      opportunities
+      oportunidades
     )
   );
-
-}
-
-
-/* =========================================
-   VER DETALLE
-========================================= */
-
-function viewOpportunity(index) {
-
-  const opportunity =
-    opportunities[index];
-
-
-  document.getElementById(
-    "detailTitle"
-  ).textContent =
-    "💼 " +
-    opportunity.project;
-
-
-  let html = `
-
-    <div class="detail-section">
-
-      <h4>📋 Información general</h4>
-
-      <div class="detail-grid">
-
-        ${detailBox(
-          "Cliente",
-          opportunity.client
-        )}
-
-        ${detailBox(
-          "Solución",
-          opportunity.solution
-        )}
-
-        ${detailBox(
-          "Estado",
-          getStatusName(
-            opportunity.status
-          )
-        )}
-
-        ${detailBox(
-          "Creada",
-          formatDate(
-            opportunity.createdAt
-          )
-        )}
-
-        ${detailBox(
-          "Actualizada",
-          formatDate(
-            opportunity.updatedAt
-          )
-        )}
-
-        ${detailBox(
-          "Plazo",
-          opportunity.deadline ||
-          "No definido"
-        )}
-
-      </div>
-
-    </div>
-
-
-    <div class="detail-section">
-
-      <h4>📊 Datos técnicos</h4>
-
-      <div class="detail-grid">
-
-        ${detailBox(
-          "Usuarios",
-          opportunity.users ||
-          "No definido"
-        )}
-
-        ${detailBox(
-          "Storage",
-          opportunity.storage ||
-          "No definido"
-        )}
-
-        ${detailBox(
-          "Documentos",
-          opportunity.documents ||
-          "No definido"
-        )}
-
-        ${detailBox(
-          "Workflows",
-          opportunity.workflows ||
-          "No definido"
-        )}
-
-        ${detailBox(
-          "OCR",
-          opportunity.ocr ||
-          "No definido"
-        )}
-
-        ${detailBox(
-          "Firmas",
-          opportunity.signatures ||
-          "No definido"
-        )}
-
-        ${detailBox(
-          "Infraestructura",
-          opportunity.infrastructure ||
-          "No definido"
-        )}
-
-      </div>
-
-    </div>
-
-
-    <div class="detail-section">
-
-      <h4>🎯 Objetivo</h4>
-
-      <div class="notes">
-
-        ${escapeHTML(
-          opportunity.objective ||
-          "No definido"
-        )}
-
-      </div>
-
-    </div>
-
-
-    <div class="detail-section">
-
-      <h4>🧩 Requerimientos</h4>
-
-      <div class="notes">
-
-        ${escapeHTML(
-          opportunity.requirements ||
-          "No definidos"
-        )}
-
-      </div>
-
-    </div>
-
-
-    <div class="detail-section">
-
-      <h4>⚠️ Riesgos / puntos de atención</h4>
-
-      <div class="notes">
-
-        ${escapeHTML(
-          opportunity.risks ||
-          "No definidos"
-        )}
-
-      </div>
-
-    </div>
-
-
-    <div class="detail-section">
-
-      <h4>📝 Notas</h4>
-
-      <div class="notes">
-
-        ${escapeHTML(
-          opportunity.notes ||
-          "Sin notas."
-        )}
-
-      </div>
-
-    </div>
-
-
-    <div class="detail-section">
-
-      <h4>💰 Cotización</h4>
-
-      ${
-        opportunity.quote
-          ? `
-            <div class="detail-grid">
-
-              ${detailBox(
-                "Setup",
-                opportunity.quote.totalSetup
-              )}
-
-              ${detailBox(
-                "Mensual",
-                opportunity.quote.totalMonthly
-              )}
-
-              ${detailBox(
-                "Primer año",
-                opportunity.quote.totalYear
-              )}
-
-            </div>
-          `
-          : `
-            <div class="warning">
-              Todavía no hay una cotización asociada.
-            </div>
-          `
-      }
-
-    </div>
-
-  `;
-
-
-  document.getElementById(
-    "detailContent"
-  ).innerHTML =
-    html;
-
-
-  document.getElementById(
-    "detailModal"
-  ).style.display =
-    "flex";
-
-}
-
-
-function closeDetailModal() {
-
-  document.getElementById(
-    "detailModal"
-  ).style.display =
-    "none";
-
-}
-
-
-/* =========================================
-   DETAIL BOX
-========================================= */
-
-function detailBox(
-  label,
-  value
-) {
-
-  return `
-
-    <div class="detail-box">
-
-      <div class="detail-label">
-        ${escapeHTML(label)}
-      </div>
-
-      <div class="detail-value">
-        ${escapeHTML(
-          String(
-            value || "No definido"
-          )
-        )}
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================
-   COTIZADOR
-========================================= */
-
-function sendToQuote(index) {
-
-  const opportunity =
-    opportunities[index];
 
 
   localStorage.setItem(
     "preventa_current_opportunity",
     JSON.stringify(
-      opportunity
+      oportunidad
     )
   );
 
 
-  window.location.href =
-    "cotizador.html";
-
-}
+  closeOpportunityModal();
 
 
-/* =========================================
-   ELIMINAR
-========================================= */
-
-function deleteOpportunity(index) {
-
-  const opportunity =
-    opportunities[index];
+  const success =
+    document.getElementById(
+      "successBox"
+    );
 
 
-  if (
-    !confirm(
-      "¿Querés eliminar la oportunidad '" +
-      opportunity.project +
-      "'?"
-    )
-  ) {
+  success.textContent =
+    "✅ Oportunidad creada correctamente. " +
+    "La información fue revisada y guardada con los datos que confirmaste.";
 
-    return;
-
-  }
+  success.style.display =
+    "block";
 
 
-  opportunities.splice(
-    index,
-    1
+  /*
+    Después de crearla,
+    ir a Oportunidades.
+  */
+
+  setTimeout(
+    function() {
+
+      window.location.href =
+        "oportunidades.html";
+
+    },
+    1000
   );
 
-
-  saveToStorage();
-
-  renderOpportunities();
-
 }
 
 
-/* =========================================
-   FORM
-========================================= */
+/* ==========================================
+   HELPERS
+========================================== */
 
-function getValue(id) {
+function valueOf(
+  id
+) {
 
   return document
-    .getElementById(id)
+    .getElementById(
+      id
+    )
     .value
     .trim();
 
 }
 
 
-function clearForm() {
+function dataFileName() {
 
-  const campos = [
-
-    "client",
-    "project",
-    "solution",
-    "users",
-    "storage",
-    "documents",
-    "workflows",
-    "infrastructure",
-    "deadline",
-    "objective",
-    "requirements",
-    "risks",
-    "notes"
-
-  ];
+  const data =
+    getAnalysis();
 
 
-  campos.forEach(
-    function(id) {
+  return data?.fileName ||
+    "";
 
-      document.getElementById(
-        id
-      ).value = "";
+}
+
+
+function obtenerCliente(
+  data
+) {
+
+  if (
+    !data.client
+  ) {
+
+    return "";
+
+  }
+
+
+  return (
+    data.client.texto ||
+    data.client ||
+    ""
+  );
+
+}
+
+
+function extraerUsuariosTexto(
+  data
+) {
+
+  const items =
+    data.categories?.users ||
+    [];
+
+
+  for (
+    const item of items
+  ) {
+
+    const texto =
+      item.texto ||
+      item.text ||
+      "";
+
+
+    const match =
+      texto.match(
+        /\b\d{1,3}(?:[.,]\d{3})*(?:[.,]\d+)?\b/
+      );
+
+
+    if (match) {
+
+      return match[0];
+
+    }
+
+  }
+
+
+  return "";
+
+}
+
+
+function extraerDatoTexto(
+  items
+) {
+
+  if (
+    !items ||
+    !items.length
+  ) {
+
+    return "";
+
+  }
+
+
+  return items
+
+    .map(
+      item =>
+        item.texto ||
+        item.text ||
+        ""
+    )
+
+    .filter(
+      texto =>
+        texto.length
+    )
+
+    .slice(
+      0,
+      3
+    )
+
+    .join(
+      "\n\n"
+    );
+
+}
+
+
+function recomendarSolucion(
+  data
+) {
+
+  if (
+    data.categories?.workflows?.length
+  ) {
+
+    return "Thuban";
+
+  }
+
+
+  if (
+    data.categories?.ocr?.length
+  ) {
+
+    return "Captika";
+
+  }
+
+
+  if (
+    data.categories?.signatures?.length
+  ) {
+
+    return "Firmas Addoc / Edatalia";
+
+  }
+
+
+  return "Por definir";
+
+}
+
+
+function generarNombreProyecto(
+  data
+) {
+
+  if (
+    data.client
+  ) {
+
+    const cliente =
+      data.client.texto ||
+      data.client;
+
+
+    return (
+      "Nueva oportunidad - " +
+      cliente
+    );
+
+  }
+
+
+  return "Nueva oportunidad";
+
+}
+
+
+function crearRequerimientos(
+  data
+) {
+
+  const partes = [];
+
+
+  const mapa = {
+
+    documents:
+      "Documentación",
+
+    ocr:
+      "OCR",
+
+    fulltext:
+      "Full Text",
+
+    workflows:
+      "Workflows",
+
+    signatures:
+      "Firmas",
+
+    integrations:
+      "Integraciones",
+
+    infrastructure:
+      "Infraestructura",
+
+    security:
+      "Seguridad",
+
+    migration:
+      "Migración",
+
+    support:
+      "Soporte"
+
+  };
+
+
+  Object.keys(
+    mapa
+  )
+  .forEach(
+    function(key) {
+
+      if (
+        data.categories?.[key]?.length
+      ) {
+
+        partes.push(
+          mapa[key] +
+          ": detectado en el documento."
+        );
+
+      }
 
     }
   );
 
 
-  document.getElementById(
-    "status"
-  ).value =
-    "analysis";
+  return partes.length
 
+    ? partes.join(
+        "\n"
+      )
 
-  document.getElementById(
-    "ocr"
-  ).value =
-    "No definido";
-
-
-  document.getElementById(
-    "signatures"
-  ).value =
-    "No definido";
+    : "Sin requerimientos estructurados adicionales.";
 
 }
 
 
-/* =========================================
-   FECHA
-========================================= */
-
-function formatDate(
-  value
-) {
-
-  if (!value) {
-
-    return "No disponible";
-
-  }
-
-
-  return new Date(
-    value
-  ).toLocaleDateString(
-    "es-AR"
-  );
-
-}
-
-
-/* =========================================
-   ESCAPE
-========================================= */
-
-function escapeHTML(
-  value
-) {
-
-  return String(
-    value || ""
-  )
-
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-
-  .replace(
-    /</g,
-    "&lt;"
-  )
-
-  .replace(
-    />/g,
-    "&gt;"
-  )
-
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-
-  .replace(
-    /'/g,
-    "&#039;"
-  );
-
-}
-
-
-/* =========================================
+/* ==========================================
    INICIO
-========================================= */
+========================================== */
 
-renderOpportunities();
+loadAnalysis();
 
 </script>
 
