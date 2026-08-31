@@ -40,7 +40,7 @@ header {
 nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 20px;
 }
 
 nav a {
@@ -55,7 +55,7 @@ nav a:hover {
 
 .hero {
   background: white;
-  padding: 60px 30px;
+  padding: 70px 30px;
   text-align: center;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -67,7 +67,7 @@ nav a:hover {
 }
 
 .hero p {
-  font-size: 18px;
+  font-size: 19px;
   color: #6b7280;
   max-width: 700px;
   margin: auto;
@@ -75,34 +75,9 @@ nav a:hover {
 }
 
 .container {
-  max-width: 1150px;
-  margin: 40px auto;
+  max-width: 1100px;
+  margin: 50px auto;
   padding: 0 25px;
-}
-
-.dashboard {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  margin-bottom: 35px;
-}
-
-.metric {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid #e5e7eb;
-}
-
-.metric-title {
-  color: #6b7280;
-  font-size: 12px;
-  margin-bottom: 8px;
-}
-
-.metric-value {
-  font-size: 28px;
-  font-weight: bold;
 }
 
 .section-title {
@@ -113,12 +88,12 @@ nav a:hover {
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 25px;
 }
 
 .card {
   background: white;
-  padding: 28px;
+  padding: 30px;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   transition: 0.2s;
@@ -159,92 +134,11 @@ nav a:hover {
   background: #1d4ed8;
 }
 
-.repository-preview {
-  margin-top: 40px;
-}
-
-.repository-card {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  overflow: hidden;
-}
-
-.repository-header {
-  padding: 18px 20px;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-}
-
-.repository-header h3 {
-  margin: 0;
-}
-
-.repository-header a {
-  color: #2563eb;
-  text-decoration: none;
-  font-size: 13px;
-}
-
-.repository-item {
-  padding: 18px 20px;
-  border-bottom: 1px solid #f1f5f9;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.repository-item:last-child {
-  border-bottom: none;
-}
-
-.repository-info h4 {
-  margin-bottom: 6px;
-}
-
-.repository-info p {
-  color: #6b7280;
-  font-size: 13px;
-  margin: 3px 0;
-}
-
-.repository-value {
-  text-align: right;
-}
-
-.repository-value .label {
-  color: #6b7280;
-  font-size: 11px;
-}
-
-.repository-value .value {
-  font-weight: bold;
-  margin-top: 4px;
-}
-
-.empty {
-  padding: 30px;
-  text-align: center;
-  color: #6b7280;
-}
-
 footer {
   text-align: center;
   padding: 30px;
   color: #9ca3af;
   font-size: 13px;
-}
-
-@media (max-width: 900px) {
-
-  .dashboard {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
 }
 
 @media (max-width: 700px) {
@@ -256,23 +150,19 @@ footer {
 
   nav {
     justify-content: center;
+    gap: 12px;
   }
 
-  .hero h1 {
-    font-size: 32px;
+  nav a {
+    font-size: 13px;
   }
 
   .cards {
     grid-template-columns: 1fr;
   }
 
-  .repository-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .repository-value {
-    text-align: left;
+  .hero h1 {
+    font-size: 32px;
   }
 
 }
@@ -332,86 +222,14 @@ footer {
   </h1>
 
   <p>
-    Tu asistente inteligente para analizar documentos,
-    oportunidades, soluciones y cotizaciones desde un solo lugar.
+    Tu asistente inteligente para tareas de Preventa.
+    Analizá información, documentos, oportunidades
+    y cotizaciones desde un solo lugar.
   </p>
 
 </section>
 
 <main class="container">
-
-  <!-- DASHBOARD -->
-
-  <div class="dashboard">
-
-```
-<div class="metric">
-
-  <div class="metric-title">
-    OPORTUNIDADES
-  </div>
-
-  <div
-    class="metric-value"
-    id="totalOpportunities"
-  >
-    0
-  </div>
-
-</div>
-
-
-<div class="metric">
-
-  <div class="metric-title">
-    EN ANÁLISIS
-  </div>
-
-  <div
-    class="metric-value"
-    id="analysisCount"
-  >
-    0
-  </div>
-
-</div>
-
-
-<div class="metric">
-
-  <div class="metric-title">
-    COTIZADAS
-  </div>
-
-  <div
-    class="metric-value"
-    id="quoteCount"
-  >
-    0
-  </div>
-
-</div>
-
-
-<div class="metric">
-
-  <div class="metric-title">
-    GANADAS
-  </div>
-
-  <div
-    class="metric-value"
-    id="wonCount"
-  >
-    0
-  </div>
-
-</div>
-```
-
-  </div>
-
-  <!-- ACCIONES -->
 
   <h2 class="section-title">
     ¿Qué querés hacer?
@@ -484,12 +302,13 @@ footer {
   </div>
 
   <h3>
-    Análisis de oportunidad
+    Análisis
   </h3>
 
   <p>
-    Organizá requerimientos, objetivos, riesgos,
-    preguntas pendientes y recomendaciones.
+    Organizá requerimientos, objetivos,
+    riesgos, preguntas y recomendaciones
+    de una oportunidad.
   </p>
 
   <a
@@ -516,7 +335,8 @@ footer {
 
   <p>
     Centralizá clientes, proyectos,
-    requerimientos y seguimiento comercial.
+    requerimientos y seguimiento
+    de tus oportunidades.
   </p>
 
   <a
@@ -569,8 +389,8 @@ footer {
   </h3>
 
   <p>
-    Consultá el historial de oportunidades,
-    análisis y cotizaciones realizadas.
+    Consultá oportunidades, análisis
+    y cotizaciones guardadas.
   </p>
 
   <a
@@ -585,37 +405,6 @@ footer {
 
   </div>
 
-  <!-- ÚLTIMAS OPORTUNIDADES -->
-
-  <section class="repository-preview">
-
-```
-<div class="repository-card">
-
-  <div class="repository-header">
-
-    <h3>
-      🕐 Últimas oportunidades
-    </h3>
-
-    <a
-      href="repositorio.html"
-    >
-      Ver repositorio →
-    </a>
-
-  </div>
-
-
-  <div
-    id="recentOpportunities"
-  ></div>
-
-</div>
-```
-
-  </section>
-
 </main>
 
 <footer>
@@ -624,337 +413,6 @@ PREVENTA IA · Herramienta inteligente para Preventa
 
 </footer>
 
-<script>
-
-
-/* ==========================================
-   OPORTUNIDADES
-========================================== */
-
-function getOpportunities() {
-
-  return JSON.parse(
-    localStorage.getItem(
-      "preventa_opportunities"
-    )
-  ) || [];
-
-}
-
-
-/* ==========================================
-   DASHBOARD
-========================================== */
-
-function updateDashboard(
-  opportunities
-) {
-
-  document.getElementById(
-    "totalOpportunities"
-  ).textContent =
-    opportunities.length;
-
-
-  document.getElementById(
-    "analysisCount"
-  ).textContent =
-    opportunities.filter(
-      opportunity =>
-        opportunity.status === "analysis"
-    ).length;
-
-
-  document.getElementById(
-    "quoteCount"
-  ).textContent =
-    opportunities.filter(
-      opportunity =>
-        opportunity.quote
-    ).length;
-
-
-  document.getElementById(
-    "wonCount"
-  ).textContent =
-    opportunities.filter(
-      opportunity =>
-        opportunity.status === "won"
-    ).length;
-
-}
-
-
-/* ==========================================
-   ESTADO
-========================================== */
-
-function getStatusName(
-  status
-) {
-
-  const names = {
-
-    analysis:
-      "🟡 En análisis",
-
-    quote:
-      "🔵 Cotizando",
-
-    proposal:
-      "🟣 Propuesta",
-
-    won:
-      "🟢 Ganada",
-
-    lost:
-      "🔴 Perdida"
-
-  };
-
-
-  return (
-    names[status] ||
-    status ||
-    "Sin estado"
-  );
-
-}
-
-
-/* ==========================================
-   ULTIMAS
-========================================== */
-
-function renderRecentOpportunities(
-  opportunities
-) {
-
-  const container =
-    document.getElementById(
-      "recentOpportunities"
-    );
-
-
-  container.innerHTML = "";
-
-
-  if (
-    opportunities.length === 0
-  ) {
-
-    container.innerHTML = `
-
-      <div class="empty">
-
-        <div style="font-size:38px;">
-          💼
-        </div>
-
-        <p>
-          Todavía no hay oportunidades creadas.
-        </p>
-
-        <br>
-
-        <a
-          href="oportunidades.html"
-          class="button"
-        >
-          Crear oportunidad
-        </a>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  const recientes =
-    opportunities.slice(
-      0,
-      5
-    );
-
-
-  recientes.forEach(
-    function(opportunity) {
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-
-      item.className =
-        "repository-item";
-
-
-      const quote =
-        opportunity.quote;
-
-
-      item.innerHTML = `
-
-        <div class="repository-info">
-
-          <h4>
-            ${escapeHTML(
-              opportunity.project
-            )}
-          </h4>
-
-          <p>
-            👤 ${escapeHTML(
-              opportunity.client
-            )}
-          </p>
-
-          <p>
-            🧩 ${escapeHTML(
-              opportunity.solution ||
-              "Por definir"
-            )}
-          </p>
-
-          <p>
-            ${getStatusName(
-              opportunity.status
-            )}
-          </p>
-
-        </div>
-
-
-        <div class="repository-value">
-
-          <div class="label">
-            ${quote
-              ? "PRIMER AÑO"
-              : "COTIZACIÓN"
-            }
-          </div>
-
-          <div class="value">
-
-            ${
-              quote
-                ? escapeHTML(
-                    String(
-                      quote.totalYear ||
-                      "USD 0,00"
-                    )
-                  )
-                : "Sin cotización"
-            }
-
-          </div>
-
-        </div>
-
-      `;
-
-
-      container.appendChild(
-        item
-      );
-
-    }
-  );
-
-}
-
-
-/* ==========================================
-   SEGURIDAD HTML
-========================================== */
-
-function escapeHTML(
-  value
-) {
-
-  return String(
-    value || ""
-  )
-
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-
-  .replace(
-    /</g,
-    "&lt;"
-  )
-
-  .replace(
-    />/g,
-    "&gt;"
-  )
-
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-
-  .replace(
-    /'/g,
-    "&#039;"
-  );
-
-}
-
-
-/* ==========================================
-   INICIO
-========================================== */
-
-const opportunities =
-  getOpportunities();
-
-
-updateDashboard(
-  opportunities
-);
-
-
-renderRecentOpportunities(
-  opportunities
-);
-
-</script>
-
 </body>
 
 </html>
-```
-
-### Después
-
-Hacé:
-
-**GitHub → `index.html` → editar → borrar todo → pegar → Commit changes.**
-
-Después esperá que Vercel diga **Ready**.
-
-Con esto ya tenemos las **6 áreas principales visibles desde Inicio**:
-
-**🤖 Asistente**
-**📄 Documentos**
-**🎯 Análisis**
-**💼 Oportunidades**
-**💰 Cotizador**
-**🗂️ Repositorio**
-
-Y además el inicio ya empieza a comportarse como dashboard.
-
-### El siguiente problema que vamos a resolver
-
-Hay algo que todavía tenemos que conectar: **Documentos → Análisis → Oportunidad**.
-
-Hoy esas pantallas existen, pero los datos todavía no viajan automáticamente de una a otra.
-
-Ese es el siguiente paso lógico: que el análisis que sacamos del documento pueda convertirse en una oportunidad **sin volver a cargar toda la información manualmente**.
