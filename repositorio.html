@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Repositorio | PREVENTA IA</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+header {
+  background: #111827;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.back {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.welcome {
+  margin-bottom: 30px;
+}
+
+.welcome h2 {
+  margin-bottom: 8px;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.summary-title {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.summary-value {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.search-box {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.opportunities {
+  display: grid;
+  gap: 16px;
+}
+
+.opportunity {
+  background: white;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.opportunity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.opportunity-title h3 {
+  margin: 0 0 7px 0;
+}
+
+.opportunity-title p {
+  margin: 4px 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.analysis {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.quote {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.proposal {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.won {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.lost {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.data-card {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.data-label {
+  font-size: 11px;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+.data-value {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.quote-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.quote-title {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.quote-card {
+  padding: 15px;
+  border-radius: 8px;
+  background: #f0fdf4;
+}
+
+.quote-label {
+  font-size: 11px;
+  color: #166534;
+}
+
+.quote-value {
+  font-weight: bold;
+  font-size: 17px;
+  margin-top: 4px;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 13px;
+  background: #111827;
+  color: white;
+}
+
+button:hover {
+  background: #374151;
+}
+
+.secondary {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.secondary:hover {
+  background: #d1d5db;
+}
+
+.empty {
+  background: white;
+  border-radius: 12px;
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.detail {
+  display: none;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detail-section {
+  margin-bottom: 20px;
+}
+
+.detail-section h4 {
+  margin-bottom: 8px;
+}
+
+.detail-text {
+  background: #f9fafb;
+  padding: 14px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+@media (max-width: 800px) {
+
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .data-grid,
+  .quote-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .opportunity-header {
+    flex-direction: column;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .summary,
+  .data-grid,
+  .quote-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <h1>🗂️ PREVENTA IA</h1>
+
+<a
+href="index.html"
+class="back"
+
+>
+
+```
+← Volver al inicio
+```
+
+  </a>
+
+</header>
+
+<main class="container">
+
+  <div class="welcome">
+
+```
+<h2>🗂️ Repositorio de Preventa</h2>
+
+<p>
+  Historial centralizado de oportunidades, análisis y cotizaciones.
+</p>
+```
+
+  </div>
+
+  <!-- RESUMEN -->
+
+  <div class="summary">
+
+```
+<div class="summary-card">
+
+  <div class="summary-title">
+    OPORTUNIDADES
+  </div>
+
+  <div
+    class="summary-value"
+    id="totalOpportunities"
+  >
+    0
+  </div>
+
+</div>
+
+
+<div class="summary-card">
+
+  <div class="summary-title">
+    EN ANÁLISIS
+  </div>
+
+  <div
+    class="summary-value"
+    id="analysisCount"
+  >
+    0
+  </div>
+
+</div>
+
+
+<div class="summary-card">
+
+  <div class="summary-title">
+    COTIZADAS
+  </div>
+
+  <div
+    class="summary-value"
+    id="quoteCount"
+  >
+    0
+  </div>
+
+</div>
+
+
+<div class="summary-card">
+
+  <div class="summary-title">
+    GANADAS
+  </div>
+
+  <div
+    class="summary-value"
+    id="wonCount"
+  >
+    0
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- BUSQUEDA -->
+
+  <div class="search-box">
+
+```
+<input
+  id="search"
+  type="text"
+  placeholder="🔎 Buscar por cliente, oportunidad o solución..."
+  oninput="renderRepository()"
+>
+```
+
+  </div>
+
+  <!-- LISTA -->
+
+  <div
+    id="opportunities"
+    class="opportunities"
+  ></div>
+
+</main>
+
+<script>
+
+
+/* ==========================================
+   DATOS
+========================================== */
+
+function getOpportunities() {
+
+  return JSON.parse(
+    localStorage.getItem(
+      "preventa_opportunities"
+    )
+  ) || [];
+
+}
+
+
+/* ==========================================
+   ESTADO
+========================================== */
+
+function getStatusName(
+  status
+) {
+
+  const names = {
+
+    analysis:
+      "🟡 En análisis",
+
+    quote:
+      "🔵 Cotizando",
+
+    proposal:
+      "🟣 Propuesta",
+
+    won:
+      "🟢 Ganada",
+
+    lost:
+      "🔴 Perdida"
+
+  };
+
+
+  return (
+    names[status] ||
+    status ||
+    "Sin estado"
+  );
+
+}
+
+
+/* ==========================================
+   RESUMEN
+========================================== */
+
+function updateSummary(
+  opportunities
+) {
+
+  document.getElementById(
+    "totalOpportunities"
+  ).textContent =
+    opportunities.length;
+
+
+  document.getElementById(
+    "analysisCount"
+  ).textContent =
+    opportunities.filter(
+      x =>
+        x.status === "analysis"
+    ).length;
+
+
+  document.getElementById(
+    "quoteCount"
+  ).textContent =
+    opportunities.filter(
+      x =>
+        x.quote
+    ).length;
+
+
+  document.getElementById(
+    "wonCount"
+  ).textContent =
+    opportunities.filter(
+      x =>
+        x.status === "won"
+    ).length;
+
+}
+
+
+/* ==========================================
+   RENDER
+========================================== */
+
+function renderRepository() {
+
+  const opportunities =
+    getOpportunities();
+
+
+  updateSummary(
+    opportunities
+  );
+
+
+  const search =
+    document
+      .getElementById(
+        "search"
+      )
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  const container =
+    document.getElementById(
+      "opportunities"
+    );
+
+
+  container.innerHTML = "";
+
+
+  const filtered =
+    opportunities.filter(
+      function(opportunity) {
+
+        const texto =
+          (
+            opportunity.client +
+            " " +
+            opportunity.project +
+            " " +
+            opportunity.solution
+          )
+          .toLowerCase();
+
+
+        return texto.includes(
+          search
+        );
+
+      }
+    );
+
+
+  if (
+    filtered.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <div style="font-size:45px;">
+          🗂️
+        </div>
+
+        <h3>
+          No hay oportunidades en el repositorio
+        </h3>
+
+        <p>
+          Las oportunidades que crees y sus cotizaciones
+          aparecerán automáticamente acá.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  filtered.forEach(
+    function(opportunity) {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "opportunity";
+
+
+      const quote =
+        opportunity.quote;
+
+
+      card.innerHTML = `
+
+        <div class="opportunity-header">
+
+          <div class="opportunity-title">
+
+            <h3>
+              ${escapeHTML(
+                opportunity.project
+              )}
+            </h3>
+
+            <p>
+              👤 ${escapeHTML(
+                opportunity.client
+              )}
+            </p>
+
+            <p>
+              🧩 ${escapeHTML(
+                opportunity.solution ||
+                "Por definir"
+              )}
+            </p>
+
+            <span
+              class="status ${opportunity.status}"
+            >
+              ${getStatusName(
+                opportunity.status
+              )}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="data-grid">
+
+          ${dataCard(
+            "👥 Usuarios",
+            opportunity.users ||
+            "No definido"
+          )}
+
+          ${dataCard(
+            "💾 Storage",
+            opportunity.storage ||
+            "No definido"
+          )}
+
+          ${dataCard(
+            "📑 Documentos",
+            opportunity.documents ||
+            "No definido"
+          )}
+
+          ${dataCard(
+            "🔄 Workflows",
+            opportunity.workflows ||
+            "No definido"
+          )}
+
+          ${dataCard(
+            "🔎 OCR",
+            opportunity.ocr ||
+            "No definido"
+          )}
+
+          ${dataCard(
+            "✍️ Firmas",
+            opportunity.signatures ||
+            "No definido"
+          )}
+
+          ${dataCard(
+            "🏗️ Infraestructura",
+            opportunity.infrastructure ||
+            "No definido"
+          )}
+
+          ${dataCard(
+            "📅 Plazo",
+            opportunity.deadline ||
+            "No definido"
+          )}
+
+        </div>
+
+
+        ${
+          quote
+            ? `
+
+              <div class="quote-section">
+
+                <div class="quote-title">
+                  💰 Cotización asociada
+                </div>
+
+                <div class="quote-grid">
+
+                  ${quoteCard(
+                    "Setup",
+                    quote.totalSetup
+                  )}
+
+                  ${quoteCard(
+                    "Mensual",
+                    quote.totalMonthly
+                  )}
+
+                  ${quoteCard(
+                    "Primer año",
+                    quote.totalYear
+                  )}
+
+                </div>
+
+              </div>
+
+            `
+            : `
+
+              <div class="warning">
+                Esta oportunidad todavía no tiene cotización.
+              </div>
+
+            `
+        }
+
+
+        <div class="actions">
+
+          <button
+            onclick="toggleDetail(this)"
+          >
+            👁️ Ver análisis
+          </button>
+
+          ${
+            quote
+              ? ""
+              : `
+                <button
+                  onclick="goToQuote('${escapeAttribute(
+                    opportunity.id
+                  )}')"
+                >
+                  💰 Cotizar
+                </button>
+              `
+          }
+
+        </div>
+
+
+        <div class="detail">
+
+          <div class="detail-section">
+
+            <h4>
+              🎯 Objetivo
+            </h4>
+
+            <div class="detail-text">
+
+              ${escapeHTML(
+                opportunity.objective ||
+                "No definido"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              🧩 Requerimientos
+            </h4>
+
+            <div class="detail-text">
+
+              ${escapeHTML(
+                opportunity.requirements ||
+                "No definidos"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              ⚠️ Riesgos
+            </h4>
+
+            <div class="detail-text">
+
+              ${escapeHTML(
+                opportunity.risks ||
+                "No definidos"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              📝 Notas
+            </h4>
+
+            <div class="detail-text">
+
+              ${escapeHTML(
+                opportunity.notes ||
+                "Sin notas"
+              )}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* ==========================================
+   DATA CARD
+========================================== */
+
+function dataCard(
+  label,
+  value
+) {
+
+  return `
+
+    <div class="data-card">
+
+      <div class="data-label">
+        ${escapeHTML(label)}
+      </div>
+
+      <div class="data-value">
+        ${escapeHTML(
+          String(
+            value ||
+            "No definido"
+          )
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================
+   QUOTE CARD
+========================================== */
+
+function quoteCard(
+  label,
+  value
+) {
+
+  return `
+
+    <div class="quote-card">
+
+      <div class="quote-label">
+        ${escapeHTML(label)}
+      </div>
+
+      <div class="quote-value">
+        ${escapeHTML(
+          String(
+            value ||
+            "USD 0,00"
+          )
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================
+   VER DETALLE
+========================================== */
+
+function toggleDetail(
+  button
+) {
+
+  const card =
+    button.closest(
+      ".opportunity"
+    );
+
+
+  const detail =
+    card.querySelector(
+      ".detail"
+    );
+
+
+  if (
+    detail.style.display ===
+    "block"
+  ) {
+
+    detail.style.display =
+      "none";
+
+    button.textContent =
+      "👁️ Ver análisis";
+
+  }
+
+  else {
+
+    detail.style.display =
+      "block";
+
+    button.textContent =
+      "🔼 Ocultar análisis";
+
+  }
+
+}
+
+
+/* ==========================================
+   COTIZADOR
+========================================== */
+
+function goToQuote(
+  id
+) {
+
+  const opportunities =
+    getOpportunities();
+
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) === String(id)
+    );
+
+
+  if (!opportunity) {
+
+    alert(
+      "No se encontró la oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(
+      opportunity
+    )
+  );
+
+
+  window.location.href =
+    "cotizador.html";
+
+}
+
+
+/* ==========================================
+   ESCAPE HTML
+========================================== */
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+function escapeAttribute(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+  .replace(
+    /'/g,
+    "\\'"
+  );
+
+}
+
+
+/* ==========================================
+   INICIO
+========================================== */
+
+renderRepository();
+
+</script>
+
+</body>
+
+</html>
