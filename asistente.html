@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,6 +63,8 @@
 
     .messages {
       min-height: 350px;
+      max-height: 550px;
+      overflow-y: auto;
       padding: 10px;
       margin-bottom: 20px;
     }
@@ -69,8 +73,9 @@
       padding: 14px 18px;
       border-radius: 10px;
       margin-bottom: 15px;
-      max-width: 75%;
+      max-width: 80%;
       line-height: 1.5;
+      white-space: pre-wrap;
     }
 
     .ia {
@@ -82,6 +87,11 @@
       background: #111827;
       color: white;
       margin-left: auto;
+    }
+
+    .loading {
+      opacity: 0.7;
+      font-style: italic;
     }
 
     .input-area {
@@ -100,6 +110,11 @@
       font-size: 15px;
     }
 
+    textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
     button {
       background: #111827;
       color: white;
@@ -114,228 +129,437 @@
       background: #374151;
     }
 
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .tip {
       margin-top: 20px;
       font-size: 13px;
       color: #6b7280;
     }
+
+    .status {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    @media (max-width: 700px) {
+
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .input-area {
+        flex-direction: column;
+      }
+
+      button {
+        height: 45px;
+      }
+
+      .message {
+        max-width: 95%;
+      }
+    }
+
   </style>
+
 </head>
 
 <body>
 
   <header>
-    <h1>🤖 PREVENTA IA</h1>
-    <a href="index.html" class="back">← Volver al inicio</a>
+
+```
+<h1>🤖 PREVENTA IA</h1>
+
+<a href="index.html" class="back">
+  ← Volver al inicio
+</a>
+```
+
   </header>
 
   <main class="container">
 
-    <div class="welcome">
-      <h2>Asistente IA</h2>
-      <p>
-        Tu asistente para resolver tareas de Preventa.
-      </p>
+```
+<div class="welcome">
+
+  <h2>Asistente IA</h2>
+
+  <p>
+    Tu asistente inteligente para tareas de Preventa.
+  </p>
+
+</div>
+
+
+<div class="chat">
+
+  <div class="messages" id="messages">
+
+    <div class="message ia">
+      👋 Hola. Soy tu asistente de PREVENTA IA.
+
+      Puedo ayudarte con relevamientos, propuestas,
+      productos Addoc, Thuban, documentos, cotizaciones,
+      workflows, usuarios, storage, infraestructura y
+      análisis de oportunidades.
+
+      También puedo responder preguntas generales.
+
+      ¿En qué puedo ayudarte?
     </div>
 
-    <div class="chat">
+  </div>
 
-      <div class="messages" id="messages">
 
-        <div class="message ia">
-          👋 Hola. Soy tu asistente de Preventa IA.
-          <br><br>
-          ¿En qué puedo ayudarte?
-        </div>
+  <div class="input-area">
 
-      </div>
+    <textarea
+      id="question"
+      placeholder="Escribí tu consulta..."
+    ></textarea>
 
-      <div class="input-area">
+    <button
+      id="sendButton"
+      onclick="sendMessage()"
+    >
+      Enviar
+    </button>
 
-        <textarea
-          id="question"
-          placeholder="Escribí tu consulta..."
-        ></textarea>
+  </div>
 
-        <button onclick="sendMessage()">
-          Enviar
-        </button>
 
-      </div>
+  <div class="tip">
 
-      <div class="tip">
-        💡 Probá preguntarme algo como:
-        "¿Qué preguntas debería hacerle a un cliente durante un relevamiento?"
-      </div>
+    💡 Ejemplos:
 
-    </div>
+    "¿Qué preguntas debería hacerle a un cliente
+    durante un relevamiento?"
+
+    "¿Qué diferencia hay entre OCR y full text?"
+
+    "Necesito analizar una oportunidad para 500 usuarios."
+
+  </div>
+
+
+  <div
+    id="status"
+    class="status"
+  ></div>
+
+</div>
+```
 
   </main>
 
   <script>
 
-    function sendMessage() {
+    let conocimiento = null;
 
-      const input = document.getElementById("question");
-      const messages = document.getElementById("messages");
 
-      const question = input.value.trim();
+    /*
+      Cargar nuestra base de conocimiento interna.
+    */
 
-      if (question === "") {
-        return;
+    async function cargarConocimiento() {
+
+      try {
+
+        const response =
+          await fetch("conocimiento.json");
+
+        if (!response.ok) {
+          throw new Error("No se pudo cargar conocimiento.json");
+        }
+
+        conocimiento =
+          await response.json();
+
+      } catch (error) {
+
+        console.error(error);
+
+        conocimiento = null;
+
       }
 
-      // Mostrar mensaje del usuario
-
-      const userMessage = document.createElement("div");
-
-      userMessage.className = "message user";
-      userMessage.textContent = question;
-
-      messages.appendChild(userMessage);
-
-      // Limpiar campo
-
-      input.value = "";
-
-      // Respuesta temporal de la IA
-
-      // Buscar información en la base de conocimiento
-
-setTimeout(async function() {
-
-  const iaMessage = document.createElement("div");
-
-  iaMessage.className = "message ia";
-
-  try {
-
-    const response = await fetch("conocimiento.json");
-
-    if (!response.ok) {
-      throw new Error("No se pudo cargar la base de conocimiento");
     }
 
-    const conocimiento = await response.json();
 
-    const q = question.toLowerCase();
+    /*
+      Convertir el JSON de conocimiento
+      en texto para enviarlo a la IA.
+    */
 
-    let resultados = [];
+    function prepararConocimiento(objeto, ruta = "") {
 
-    // Buscar coincidencias dentro de todo el conocimiento
-
-    function buscar(objeto, ruta = "") {
+      let resultado = "";
 
       if (typeof objeto === "string") {
 
-        const texto = objeto.toLowerCase();
+        resultado +=
+          ruta + ": " + objeto + "\n";
 
-        const palabras = q
-          .split(/\s+/)
-          .filter(palabra => palabra.length > 3);
+      }
 
-        let coincidencias = 0;
+      else if (Array.isArray(objeto)) {
 
-        palabras.forEach(palabra => {
+        objeto.forEach(function(item, index) {
 
-          if (texto.includes(palabra)) {
-            coincidencias++;
-          }
-
-        });
-
-        if (coincidencias > 0) {
-
-          resultados.push({
-            texto: objeto,
-            coincidencias: coincidencias,
-            ruta: ruta
-          });
-
-        }
-
-      } else if (Array.isArray(objeto)) {
-
-        objeto.forEach((item, index) => {
-          buscar(item, ruta);
-        });
-
-      } else if (typeof objeto === "object" && objeto !== null) {
-
-        Object.keys(objeto).forEach(clave => {
-
-          buscar(
-            objeto[clave],
-            ruta ? ruta + " → " + clave : clave
-          );
+          resultado +=
+            prepararConocimiento(
+              item,
+              ruta + " [" + index + "]"
+            );
 
         });
 
       }
 
-    }
+      else if (
+        typeof objeto === "object" &&
+        objeto !== null
+      ) {
 
-    buscar(conocimiento);
+        Object.keys(objeto).forEach(function(clave) {
 
-    // Ordenar resultados por cantidad de coincidencias
+          const nuevaRuta =
+            ruta
+              ? ruta + " → " + clave
+              : clave;
 
-    resultados.sort(function(a, b) {
-      return b.coincidencias - a.coincidencias;
-    });
+          resultado +=
+            prepararConocimiento(
+              objeto[clave],
+              nuevaRuta
+            );
 
-    // Evitar respuestas demasiado largas
+        });
 
-    resultados = resultados.slice(0, 8);
+      }
 
-    if (resultados.length === 0) {
-
-      iaMessage.textContent =
-        "No encontré información específica sobre esa consulta en mi base de conocimiento. 🤔\n\n" +
-        "Probá preguntarme sobre Thuban, Captika, Edatalia, Perfil Digital, " +
-        "Onboarding Addoc, Firmas Addoc, Visualizador Addoc, Islas, " +
-        "migraciones, relevamientos o propuestas técnicas.";
-
-    } else {
-
-      let respuesta =
-        "Encontré esta información relacionada con tu consulta:\n\n";
-
-      resultados.forEach(function(resultado, index) {
-
-        respuesta +=
-          "• " + resultado.texto + "\n";
-
-      });
-
-      respuesta +=
-        "\n💡 Si necesitás una respuesta más específica, " +
-        "podés agregar datos del cliente, usuarios, documentos, " +
-        "volumen, workflows, integraciones o plazos.";
-
-      iaMessage.textContent = respuesta;
+      return resultado;
 
     }
 
-  } catch (error) {
 
-    iaMessage.textContent =
-      "⚠️ No pude acceder a mi base de conocimiento. " +
-      "Verificá que el archivo conocimiento.json esté publicado correctamente.";
+    /*
+      Agregar mensaje al chat.
+    */
 
-    console.error(error);
+    function agregarMensaje(texto, tipo) {
 
-  }
+      const messages =
+        document.getElementById("messages");
 
-  messages.appendChild(iaMessage);
+      const message =
+        document.createElement("div");
 
-  messages.scrollTop = messages.scrollHeight;
+      message.className =
+        "message " + tipo;
 
-}, 500);
+      message.textContent =
+        texto;
+
+      messages.appendChild(message);
+
+      messages.scrollTop =
+        messages.scrollHeight;
+
+      return message;
 
     }
+
+
+    /*
+      Enviar pregunta a la IA.
+    */
+
+    async function sendMessage() {
+
+      const input =
+        document.getElementById("question");
+
+      const button =
+        document.getElementById("sendButton");
+
+      const status =
+        document.getElementById("status");
+
+      const question =
+        input.value.trim();
+
+
+      if (!question) {
+        return;
+      }
+
+
+      agregarMensaje(
+        question,
+        "user"
+      );
+
+
+      input.value = "";
+
+      button.disabled = true;
+
+      status.textContent =
+        "🧠 Analizando tu consulta...";
+
+
+      const loading =
+        agregarMensaje(
+          "Estoy analizando la consulta...",
+          "ia loading"
+        );
+
+
+      try {
+
+        /*
+          Preparar conocimiento interno.
+        */
+
+        let knowledgeText =
+          "No hay conocimiento interno disponible.";
+
+        if (conocimiento) {
+
+          knowledgeText =
+            prepararConocimiento(
+              conocimiento
+            );
+
+        }
+
+
+        /*
+          Enviar consulta a nuestro backend
+          de Vercel.
+        */
+
+        const response =
+          await fetch("/api/chat", {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+              message: question,
+
+              knowledge: knowledgeText
+
+            })
+
+          });
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Error en el servidor"
+          );
+
+        }
+
+
+        loading.remove();
+
+
+        agregarMensaje(
+          data.answer ||
+          "No recibí una respuesta de la IA.",
+          "ia"
+        );
+
+
+        status.textContent =
+          "✅ Respuesta generada por PREVENTA IA";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        loading.remove();
+
+
+        agregarMensaje(
+
+          "⚠️ No pude comunicarme con la IA.\n\n" +
+          "El backend todavía puede estar desplegándose " +
+          "o puede haber un problema de configuración.\n\n" +
+          "Error: " + error.message,
+
+          "ia"
+
+        );
+
+
+        status.textContent =
+          "⚠️ Error al conectar con la IA.";
+
+      }
+
+
+      button.disabled = false;
+
+      input.focus();
+
+    }
+
+
+    /*
+      Permitir enviar con Ctrl + Enter.
+    */
+
+    document
+      .getElementById("question")
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (
+            event.key === "Enter" &&
+            event.ctrlKey
+          ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+          }
+
+        }
+      );
+
+
+    /*
+      Cargar conocimiento al abrir.
+    */
+
+    cargarConocimiento();
 
   </script>
 
 </body>
-</html>
 
+</html>
