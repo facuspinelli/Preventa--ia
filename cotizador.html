@@ -322,12 +322,16 @@ select.prefilled {
 
 <main class="container">
 
-  <h2>💰 Cotizador</h2>
+  <h2>
+    💰 Cotizador
+  </h2>
 
   <p class="subtitle">
     Calculá automáticamente los costos de implementación y costos mensuales.
   </p>
 
+
+  <!-- CONEXIÓN OPORTUNIDAD -->
 
   <div
     id="connection"
@@ -382,7 +386,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="client">
           Cliente
         </label>
 
@@ -399,7 +403,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="opportunity">
           Oportunidad
         </label>
 
@@ -416,7 +420,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="setup">
           Horas de parametrización / Setup
         </label>
 
@@ -438,7 +442,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="users">
           Cantidad de usuarios
         </label>
 
@@ -460,7 +464,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="signatures">
           Firmas por mes
         </label>
 
@@ -482,7 +486,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="imageWeight">
           Peso promedio de una imagen (KB)
         </label>
 
@@ -504,7 +508,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="images">
           Cantidad de imágenes
         </label>
 
@@ -526,7 +530,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="manualPacks">
           Packs de Storage
         </label>
 
@@ -548,7 +552,7 @@ select.prefilled {
 
       <div class="field">
 
-        <label>
+        <label for="support">
           Horas de soporte Addoc
         </label>
 
@@ -586,7 +590,10 @@ select.prefilled {
     ></div>
 
 
-    <div class="proposal-box" id="proposalBox"></div>
+    <div
+      id="proposalBox"
+      class="proposal-box"
+    ></div>
 
 
     <div class="buttons">
@@ -795,28 +802,45 @@ select.prefilled {
 <script>
 
 
-/* =========================================
+/* =====================================================
    OPORTUNIDAD ACTUAL
-========================================= */
+===================================================== */
 
 let currentOpportunity = null;
 
 
-/* =========================================
+/* =====================================================
    BIBLIOTECA
-========================================= */
+===================================================== */
 
 let libraryDatabase = null;
+
 
 const LIBRARY_DB_NAME =
   "preventa_ia_biblioteca";
 
+
+/*
+  IMPORTANTE:
+  Usamos versión 2 para tener el espacio
+  de propuestas finales.
+*/
+
 const LIBRARY_DB_VERSION =
-  1;
+  2;
+
 
 const LIBRARY_STORE =
   "proposals";
 
+
+const FINAL_STORE =
+  "finalProposals";
+
+
+/* =====================================================
+   CARPETAS
+===================================================== */
 
 function getLibraryFolders() {
 
@@ -844,6 +868,10 @@ function getLibraryFolders() {
 }
 
 
+/* =====================================================
+   BASE DE DATOS
+===================================================== */
+
 function openLibraryDatabase() {
 
   return new Promise(
@@ -856,11 +884,66 @@ function openLibraryDatabase() {
         );
 
 
+      request.onupgradeneeded =
+        function(event) {
+
+          const db =
+            event.target.result;
+
+
+          /*
+            NO tocamos "proposals".
+          */
+
+
+          /*
+            Crear almacenamiento
+            para propuestas finales.
+          */
+
+          if (
+            !db.objectStoreNames.contains(
+              FINAL_STORE
+            )
+          ) {
+
+            const store =
+              db.createObjectStore(
+                FINAL_STORE,
+                {
+                  keyPath: "id"
+                }
+              );
+
+
+            store.createIndex(
+              "opportunityId",
+              "opportunityId",
+              {
+                unique: false
+              }
+            );
+
+
+            store.createIndex(
+              "createdAt",
+              "createdAt",
+              {
+                unique: false
+              }
+            );
+
+          }
+
+        };
+
+
       request.onsuccess =
         function(event) {
 
           libraryDatabase =
             event.target.result;
+
 
           resolve(
             libraryDatabase
@@ -884,6 +967,10 @@ function openLibraryDatabase() {
 }
 
 
+/* =====================================================
+   ARCHIVOS DE BIBLIOTECA
+===================================================== */
+
 function getLibraryFiles(
   folderId
 ) {
@@ -892,6 +979,19 @@ function getLibraryFiles(
     function(resolve, reject) {
 
       if (!libraryDatabase) {
+
+        resolve([]);
+
+        return;
+
+      }
+
+
+      if (
+        !libraryDatabase.objectStoreNames.contains(
+          LIBRARY_STORE
+        )
+      ) {
 
         resolve([]);
 
@@ -913,10 +1013,29 @@ function getLibraryFiles(
         );
 
 
-      const index =
-        store.index(
-          "folder"
-        );
+      /*
+        La Biblioteca existente
+        utiliza el índice "folder".
+      */
+
+      let index;
+
+      try {
+
+        index =
+          store.index(
+            "folder"
+          );
+
+      }
+
+      catch(error) {
+
+        resolve([]);
+
+        return;
+
+      }
 
 
       const request =
@@ -936,10 +1055,10 @@ function getLibraryFiles(
             function(a, b) {
 
               return new Date(
-                b.createdAt
+                b.createdAt || 0
               ) -
               new Date(
-                a.createdAt
+                a.createdAt || 0
               );
 
             }
@@ -968,9 +1087,9 @@ function getLibraryFiles(
 }
 
 
-/* =========================================
+/* =====================================================
    PRODUCTOS
-========================================= */
+===================================================== */
 
 async function loadProducts() {
 
@@ -1035,7 +1154,7 @@ async function loadProducts() {
 
 
   /*
-    Recuperar producto guardado.
+    Recuperar producto de la oportunidad.
   */
 
   if (
@@ -1055,11 +1174,18 @@ async function loadProducts() {
 
     const encontrado =
       folders.find(
-        folder =>
-          folder.name.toLowerCase() ===
-          String(
-            currentOpportunity.solution
-          ).toLowerCase()
+        function(folder) {
+
+          return (
+            String(
+              folder.name
+            ).toLowerCase() ===
+            String(
+              currentOpportunity.solution
+            ).toLowerCase()
+          );
+
+        }
       );
 
 
@@ -1078,9 +1204,9 @@ async function loadProducts() {
 }
 
 
-/* =========================================
+/* =====================================================
    PRODUCTO CAMBIADO
-========================================= */
+===================================================== */
 
 async function productChanged() {
 
@@ -1122,8 +1248,12 @@ async function productChanged() {
   const folder =
     folders.find(
       item =>
-        item.id ===
-        folderId
+        String(
+          item.id
+        ) ===
+        String(
+          folderId
+        )
     );
 
 
@@ -1154,8 +1284,12 @@ async function productChanged() {
       status.textContent =
         "📚 Propuesta técnica disponible: " +
         files[0].name +
-        " · versión " +
-        files[0].version;
+        (
+          files[0].version
+            ? " · versión " +
+              files[0].version
+            : ""
+        );
 
     }
 
@@ -1195,9 +1329,9 @@ async function productChanged() {
 }
 
 
-/* =========================================
+/* =====================================================
    CARGAR OPORTUNIDAD
-========================================= */
+===================================================== */
 
 async function loadCurrentOpportunity() {
 
@@ -1248,41 +1382,33 @@ async function loadCurrentOpportunity() {
   }
 
 
-  const client =
-    document.getElementById(
-      "client"
-    );
-
+  /*
+    CLIENTE
+  */
 
   if (
     currentOpportunity.client
   ) {
 
-    client.value =
-      currentOpportunity.client;
-
-    client.classList.add(
-      "prefilled"
+    setInputValue(
+      "client",
+      currentOpportunity.client
     );
 
   }
 
 
-  const opportunity =
-    document.getElementById(
-      "opportunity"
-    );
-
+  /*
+    OPORTUNIDAD
+  */
 
   if (
     currentOpportunity.project
   ) {
 
-    opportunity.value =
-      currentOpportunity.project;
-
-    opportunity.classList.add(
-      "prefilled"
+    setInputValue(
+      "opportunity",
+      currentOpportunity.project
     );
 
   }
@@ -1406,6 +1532,10 @@ async function loadCurrentOpportunity() {
   }
 
 
+  /*
+    MENSAJE
+  */
+
   const connection =
     document.getElementById(
       "connection"
@@ -1442,9 +1572,9 @@ async function loadCurrentOpportunity() {
 }
 
 
-/* =========================================
-   INPUT
-========================================= */
+/* =====================================================
+   SET INPUT
+===================================================== */
 
 function setInputValue(
   id,
@@ -1478,9 +1608,9 @@ function setInputValue(
 }
 
 
-/* =========================================
+/* =====================================================
    NUMERO
-========================================= */
+===================================================== */
 
 function parseNumber(
   value
@@ -1525,9 +1655,9 @@ function parseNumber(
 }
 
 
-/* =========================================
-   STORAGE
-========================================= */
+/* =====================================================
+   STORAGE A GB
+===================================================== */
 
 function extraerGB(
   value
@@ -1591,9 +1721,9 @@ function extraerGB(
 }
 
 
-/* =========================================
+/* =====================================================
    DINERO
-========================================= */
+===================================================== */
 
 function money(
   value
@@ -1613,9 +1743,9 @@ function money(
 }
 
 
-/* =========================================
+/* =====================================================
    PRECIO USUARIO
-========================================= */
+===================================================== */
 
 function getUserPrice(
   users
@@ -1698,9 +1828,9 @@ function getUserPrice(
 }
 
 
-/* =========================================
+/* =====================================================
    CALCULAR
-========================================= */
+===================================================== */
 
 function calculate() {
 
@@ -1840,7 +1970,8 @@ function calculate() {
 
 
   const totalKB =
-    imageWeight * images;
+    imageWeight *
+    images;
 
 
   const storageNeeded =
@@ -1902,9 +2033,14 @@ function calculate() {
   const totalYear =
     totalSetup +
     (
-      totalMonthly * 12
+      totalMonthly *
+      12
     );
 
+
+  /*
+    MOSTRAR
+  */
 
   document.getElementById(
     "setupCost"
@@ -2013,10 +2149,19 @@ function calculate() {
   const productFolder =
     folders.find(
       folder =>
-        folder.id ===
-        productFolderId
+        String(
+          folder.id
+        ) ===
+        String(
+          productFolderId
+        )
     );
 
+
+  /*
+    GUARDAR COTIZACION
+    EN MEMORIA
+  */
 
   window.cotizacion = {
 
@@ -2084,9 +2229,9 @@ function calculate() {
 }
 
 
-/* =========================================
-   GUARDAR COTIZACION
-========================================= */
+/* =====================================================
+   GUARDAR COTIZACION EN OPORTUNIDAD
+===================================================== */
 
 function saveQuoteToOpportunity() {
 
@@ -2211,6 +2356,7 @@ function saveQuoteToOpportunity() {
   success.innerText =
     "✅ Cotización guardada correctamente en la oportunidad.";
 
+
   success.style.display =
     "block";
 
@@ -2241,11 +2387,15 @@ function saveQuoteToOpportunity() {
 }
 
 
-/* =========================================
+/* =====================================================
    GENERAR PROPUESTA FINAL
-========================================= */
+===================================================== */
 
 async function generateFinalProposal() {
+
+  /*
+    Primero calcular.
+  */
 
   calculate();
 
@@ -2306,7 +2456,7 @@ async function generateFinalProposal() {
   }
 
 
-  const status =
+  const success =
     document.getElementById(
       "success"
     );
@@ -2320,11 +2470,11 @@ async function generateFinalProposal() {
 
   try {
 
-    status.style.display =
+    success.style.display =
       "block";
 
 
-    status.innerText =
+    success.innerText =
       "📄 Buscando la propuesta técnica base...";
 
 
@@ -2346,16 +2496,31 @@ async function generateFinalProposal() {
 
 
     /*
-      Tomamos la propuesta más reciente.
+      Tomar la propuesta más reciente.
     */
 
     const baseFile =
       files[0];
 
 
-    status.innerText =
-      "📝 Preparando la propuesta económica...";
+    if (
+      !baseFile.blob
+    ) {
 
+      throw new Error(
+        "La propuesta encontrada no contiene el archivo Word."
+      );
+
+    }
+
+
+    success.innerText =
+      "📝 Agregando la propuesta económica...";
+
+
+    /*
+      Crear Word final.
+    */
 
     const finalBlob =
       await addEconomicProposal(
@@ -2365,7 +2530,25 @@ async function generateFinalProposal() {
 
 
     /*
-      Nombre final
+      Guardar Word final
+      en IndexedDB.
+    */
+
+    success.innerText =
+      "💾 Guardando propuesta final...";
+
+
+    const savedProposal =
+      await saveFinalProposal(
+        finalBlob,
+        quote,
+        currentOpportunity,
+        baseFile
+      );
+
+
+    /*
+      NOMBRE
     */
 
     const client =
@@ -2391,7 +2574,7 @@ async function generateFinalProposal() {
 
 
     /*
-      Descargar
+      DESCARGAR
     */
 
     const url =
@@ -2439,39 +2622,72 @@ async function generateFinalProposal() {
     );
 
 
-    status.innerText =
-      "✅ Propuesta final generada correctamente.";
+    /*
+      Mensaje final.
+    */
+
+    success.innerText =
+      "✅ Propuesta final generada, guardada en el Repositorio y descargada correctamente.";
+
+
+    success.style.display =
+      "block";
 
 
     proposalBox.innerHTML =
-      "<strong>📄 Propuesta generada</strong><br><br>" +
+      "<strong>📄 Propuesta final guardada</strong><br><br>" +
+
       "Archivo: " +
       escapeHTML(
         finalFileName
       ) +
       "<br>" +
+
       "Producto: " +
       escapeHTML(
         quote.product
       ) +
       "<br>" +
-      "Se descargó automáticamente en tu equipo.";
+
+      "Cliente: " +
+      escapeHTML(
+        quote.client
+      ) +
+      "<br><br>" +
+
+      "✅ También quedó asociada a esta oportunidad " +
+      "para poder previsualizarla y descargarla desde el Repositorio.";
 
 
     proposalBox.style.display =
       "block";
+
+
+    /*
+      Guardamos nombre en la
+      oportunidad nuevamente.
+    */
+
+    saveFinalProposalReference(
+      savedProposal
+    );
 
   }
 
   catch(error) {
 
     console.error(
+      "Error generando propuesta:",
       error
     );
 
 
-    status.innerText =
-      "❌ No se pudo generar la propuesta.";
+    success.innerText =
+      "❌ No se pudo generar la propuesta final.";
+
+
+    success.style.display =
+      "block";
 
 
     alert(
@@ -2484,19 +2700,346 @@ async function generateFinalProposal() {
 }
 
 
-/* =========================================
+/* =====================================================
+   GUARDAR PROPUESTA FINAL
+===================================================== */
+
+function saveFinalProposal(
+  blob,
+  quote,
+  opportunity,
+  baseFile
+) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      if (!libraryDatabase) {
+
+        reject(
+          new Error(
+            "La Biblioteca Técnica no está disponible."
+          )
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !libraryDatabase.objectStoreNames.contains(
+          FINAL_STORE
+        )
+      ) {
+
+        reject(
+          new Error(
+            "El almacenamiento de propuestas finales no está disponible. Recargá la página una vez."
+          )
+        );
+
+        return;
+
+      }
+
+
+      const transaction =
+        libraryDatabase.transaction(
+          FINAL_STORE,
+          "readwrite"
+        );
+
+
+      const store =
+        transaction.objectStore(
+          FINAL_STORE
+        );
+
+
+      const opportunityId =
+        String(
+          opportunity.id
+        );
+
+
+      /*
+        Eliminar propuesta final
+        anterior de la misma oportunidad.
+      */
+
+      const index =
+        store.index(
+          "opportunityId"
+        );
+
+
+      const request =
+        index.getAll(
+          opportunityId
+        );
+
+
+      request.onsuccess =
+        function() {
+
+          const anteriores =
+            request.result ||
+            [];
+
+
+          anteriores.forEach(
+            function(item) {
+
+              store.delete(
+                item.id
+              );
+
+            }
+          );
+
+
+          const client =
+            sanitizeFileName(
+              quote.client ||
+              "Cliente"
+            );
+
+
+          const product =
+            sanitizeFileName(
+              quote.product ||
+              "Propuesta"
+            );
+
+
+          const fileName =
+            "Propuesta_" +
+            product +
+            "_" +
+            client +
+            ".docx";
+
+
+          const registro = {
+
+            id:
+              opportunityId +
+              "_" +
+              Date.now(),
+
+            opportunityId:
+              opportunityId,
+
+            client:
+              quote.client ||
+              opportunity.client ||
+              "",
+
+            opportunity:
+              quote.opportunity ||
+              opportunity.project ||
+              "",
+
+            product:
+              quote.product ||
+              "",
+
+            productFolderId:
+              quote.productFolderId ||
+              "",
+
+            fileName:
+              fileName,
+
+            blob:
+              blob,
+
+            sourceProposal:
+              baseFile.name ||
+              "",
+
+            createdAt:
+              new Date().toISOString(),
+
+            totalSetup:
+              quote.totalSetup,
+
+            totalMonthly:
+              quote.totalMonthly,
+
+            totalYear:
+              quote.totalYear
+
+          };
+
+
+          const addRequest =
+            store.add(
+              registro
+            );
+
+
+          addRequest.onsuccess =
+            function() {
+
+              resolve(
+                registro
+              );
+
+            };
+
+
+          addRequest.onerror =
+            function() {
+
+              reject(
+                addRequest.error
+              );
+
+            };
+
+        };
+
+
+      request.onerror =
+        function() {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   REFERENCIA FINAL EN OPORTUNIDAD
+===================================================== */
+
+function saveFinalProposalReference(
+  proposal
+) {
+
+  if (
+    !proposal ||
+    !currentOpportunity
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const opportunities =
+      JSON.parse(
+        localStorage.getItem(
+          "preventa_opportunities"
+        )
+      ) || [];
+
+
+    const index =
+      opportunities.findIndex(
+        opportunity =>
+          String(
+            opportunity.id
+          ) ===
+          String(
+            currentOpportunity.id
+          )
+      );
+
+
+    if (
+      index === -1
+    ) {
+
+      return;
+
+    }
+
+
+    opportunities[index].finalProposal = {
+
+      fileName:
+        proposal.fileName,
+
+      createdAt:
+        proposal.createdAt,
+
+      product:
+        proposal.product,
+
+      sourceProposal:
+        proposal.sourceProposal
+
+    };
+
+
+    opportunities[index].updatedAt =
+      new Date().toISOString();
+
+
+    localStorage.setItem(
+      "preventa_opportunities",
+      JSON.stringify(
+        opportunities
+      )
+    );
+
+
+    currentOpportunity =
+      opportunities[index];
+
+
+    localStorage.setItem(
+      "preventa_current_opportunity",
+      JSON.stringify(
+        currentOpportunity
+      )
+    );
+
+  }
+
+  catch(error) {
+
+    console.warn(
+      "No se pudo guardar la referencia de la propuesta.",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
    MODIFICAR DOCX
-========================================= */
+===================================================== */
 
 async function addEconomicProposal(
   baseBlob,
   quote
 ) {
 
-  /*
-    Un DOCX es un ZIP que contiene,
-    entre otras cosas, word/document.xml.
-  */
+  if (
+    typeof JSZip ===
+    "undefined"
+  ) {
+
+    throw new Error(
+      "No se pudo cargar el componente necesario para modificar el Word."
+    );
+
+  }
+
 
   const arrayBuffer =
     await baseBlob.arrayBuffer();
@@ -2529,20 +3072,11 @@ async function addEconomicProposal(
     );
 
 
-  /*
-    Construimos la nueva página.
-  */
-
   const economicXML =
     buildEconomicPage(
       quote
     );
 
-
-  /*
-    Insertar antes del cierre
-    del cuerpo del documento.
-  */
 
   const bodyEnd =
     xml.lastIndexOf(
@@ -2579,17 +3113,21 @@ async function addEconomicProposal(
 
 
   return await zip.generateAsync({
-    type: "blob",
+
+    type:
+      "blob",
+
     mimeType:
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+
   });
 
 }
 
 
-/* =========================================
-   CONSTRUIR PAGINA ECONOMICA
-========================================= */
+/* =====================================================
+   CREAR PAGINA ECONOMICA
+===================================================== */
 
 function buildEconomicPage(
   quote
@@ -2600,7 +3138,6 @@ function buildEconomicPage(
 
   /*
     USUARIOS
-    Solo mostrar si > 0
   */
 
   if (
@@ -2641,9 +3178,6 @@ function buildEconomicPage(
 
   if (
     Number(
-      quote.packs
-    ) > 0 &&
-    Number(
       quote.storageCost
     ) > 0
   ) {
@@ -2654,8 +3188,7 @@ function buildEconomicPage(
         "Storage",
 
       unit:
-        quote.storageQuoted +
-        " GB / mes",
+        "Pack de 50 GB / mes",
 
       quantity:
         quote.packs,
@@ -2792,6 +3325,7 @@ function buildEconomicPage(
   */
 
   tableRows +=
+
     "<w:tr>" +
 
       tableCell(
@@ -2830,6 +3364,7 @@ function buildEconomicPage(
     function(row) {
 
       tableRows +=
+
         "<w:tr>" +
 
           tableCell(
@@ -2868,7 +3403,7 @@ function buildEconomicPage(
 
 
   /*
-    SI NO HAY NADA
+    SIN CONCEPTOS
   */
 
   if (
@@ -2876,6 +3411,7 @@ function buildEconomicPage(
   ) {
 
     tableRows +=
+
       "<w:tr>" +
 
         tableCell(
@@ -2890,17 +3426,12 @@ function buildEconomicPage(
 
 
   /*
-    XML
+    PAGINA
   */
 
   const page =
+
     "<w:p>" +
-
-      "<w:pPr>" +
-
-        "<w:spacing w:before=\"0\" w:after=\"0\"/>" +
-
-      "</w:pPr>" +
 
       "<w:r>" +
 
@@ -2942,7 +3473,11 @@ function buildEconomicPage(
 
       "<w:r>" +
 
-        "<w:rPr><w:b/></w:rPr>" +
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+        "</w:rPr>" +
 
         "<w:t>Cliente: </w:t>" +
 
@@ -3020,6 +3555,12 @@ function buildEconomicPage(
 
       "<w:r>" +
 
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+        "</w:rPr>" +
+
         "<w:t>Detalle económico</w:t>" +
 
       "</w:r>" +
@@ -3034,10 +3575,15 @@ function buildEconomicPage(
         "<w:tblBorders>" +
 
           borderXML("top") +
+
           borderXML("left") +
+
           borderXML("bottom") +
+
           borderXML("right") +
+
           borderXML("insideH") +
+
           borderXML("insideV") +
 
         "</w:tblBorders>" +
@@ -3183,9 +3729,9 @@ function buildEconomicPage(
 }
 
 
-/* =========================================
+/* =====================================================
    CELDA TABLA
-========================================= */
+===================================================== */
 
 function tableCell(
   text,
@@ -3193,7 +3739,7 @@ function tableCell(
   span = 1
 ) {
 
-  return (
+  return
 
     "<w:tc>" +
 
@@ -3201,9 +3747,11 @@ function tableCell(
 
         (
           span > 1
+
             ? "<w:gridSpan w:val=\"" +
               span +
               "\"/>"
+
             : ""
         ) +
 
@@ -3216,11 +3764,13 @@ function tableCell(
         "<w:pPr>" +
 
           "<w:jc w:val=\"" +
+
           (
             header
               ? "center"
               : "left"
           ) +
+
           "\"/>" +
 
         "</w:pPr>" +
@@ -3251,16 +3801,14 @@ function tableCell(
 
       "</w:p>" +
 
-    "</w:tc>"
-
-  );
+    "</w:tc>";
 
 }
 
 
-/* =========================================
+/* =====================================================
    BORDES
-========================================= */
+===================================================== */
 
 function borderXML(
   side
@@ -3277,9 +3825,9 @@ function borderXML(
 }
 
 
-/* =========================================
-   DINERO SIMPLE
-========================================= */
+/* =====================================================
+   DINERO PLANO
+===================================================== */
 
 function moneyPlain(
   value
@@ -3298,9 +3846,9 @@ function moneyPlain(
 }
 
 
-/* =========================================
+/* =====================================================
    ESCAPE XML
-========================================= */
+===================================================== */
 
 function escapeXML(
   value
@@ -3338,9 +3886,9 @@ function escapeXML(
 }
 
 
-/* =========================================
-   NOMBRE ARCHIVO
-========================================= */
+/* =====================================================
+   NOMBRE DE ARCHIVO
+===================================================== */
 
 function sanitizeFileName(
   value
@@ -3349,14 +3897,17 @@ function sanitizeFileName(
   return String(
     value || ""
   )
+
   .replace(
     /[<>:"/\\|?*]+/g,
     "_"
   )
+
   .replace(
     /\s+/g,
     "_"
   )
+
   .substring(
     0,
     100
@@ -3365,9 +3916,9 @@ function sanitizeFileName(
 }
 
 
-/* =========================================
+/* =====================================================
    ESCAPE HTML
-========================================= */
+===================================================== */
 
 function escapeHTML(
   value
@@ -3406,9 +3957,9 @@ function escapeHTML(
 }
 
 
-/* =========================================
+/* =====================================================
    EXCEL
-========================================= */
+===================================================== */
 
 function downloadExcel() {
 
@@ -3505,8 +4056,8 @@ function downloadExcel() {
 
     [
       "Storage",
-      "GB",
-      c.storageQuoted,
+      "Pack 50 GB",
+      c.packs,
       2,
       "",
       c.storageCost
@@ -3571,7 +4122,8 @@ function downloadExcel() {
 
             let text =
               String(
-                value ?? ""
+                value ??
+                ""
               );
 
 
@@ -3646,9 +4198,9 @@ function downloadExcel() {
 }
 
 
-/* =========================================
+/* =====================================================
    INICIO
-========================================= */
+===================================================== */
 
 (async function() {
 
@@ -3669,6 +4221,7 @@ function downloadExcel() {
 
 
   await loadCurrentOpportunity();
+
 
   calculate();
 
