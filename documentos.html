@@ -8,6 +8,9 @@
 
 <title>Análisis de Documentos | PREVENTA IA</title>
 
+<!-- PDF.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+
 <style>
 
 * {
@@ -42,7 +45,7 @@ header h1 {
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1150px;
   margin: 40px auto;
   padding: 0 20px;
 }
@@ -156,6 +159,12 @@ textarea:focus {
   line-height: 1.6;
 }
 
+.summary-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -170,24 +179,50 @@ textarea:focus {
 }
 
 .analysis-title {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 7px;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 9px;
   font-weight: bold;
 }
 
 .analysis-value {
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
 }
 
-.tag {
-  display: inline-block;
-  background: #e5e7eb;
-  padding: 6px 10px;
-  border-radius: 20px;
-  margin: 3px;
+.found {
+  border-left: 4px solid #16a34a;
+}
+
+.not-found {
+  border-left: 4px solid #f59e0b;
+}
+
+.quote {
+  margin-top: 10px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
   font-size: 13px;
+  color: #4b5563;
+}
+
+.evidence {
+  margin-top: 25px;
+}
+
+.evidence-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.evidence-title {
+  font-weight: bold;
+  margin-bottom: 7px;
 }
 
 .warning {
@@ -196,6 +231,7 @@ textarea:focus {
   background: #fff7ed;
   border-radius: 8px;
   color: #9a3412;
+  line-height: 1.5;
 }
 
 .success {
@@ -204,6 +240,21 @@ textarea:focus {
   background: #f0fdf4;
   border-radius: 8px;
   color: #166534;
+  line-height: 1.5;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.stat {
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
 }
 
 @media (max-width: 700px) {
@@ -247,9 +298,8 @@ textarea:focus {
     <h2>📄 Análisis inteligente de documentos</h2>
 
     <p>
-      Subí un pliego, propuesta, requerimiento o documento
-      de una oportunidad y PREVENTA IA preparará la información
-      relevante para su análisis.
+      Subí un documento y PREVENTA IA buscará automáticamente
+      información relevante para Preventa.
     </p>
 
   </div>
@@ -268,7 +318,7 @@ textarea:focus {
       </div>
 
       <strong>
-        Seleccioná el documento a analizar
+        Seleccioná un PDF o archivo TXT
       </strong>
 
       <br>
@@ -276,7 +326,7 @@ textarea:focus {
       <input
         type="file"
         id="documentFile"
-        accept=".pdf,.doc,.docx,.txt,.xlsx,.xls"
+        accept=".pdf,.txt"
         onchange="showFile()"
       >
 
@@ -295,19 +345,20 @@ textarea:focus {
   </div>
 
 
-  <!-- OBJETIVO -->
+  <!-- ANÁLISIS -->
 
   <div class="card">
 
-    <h3>2. 🎯 ¿Qué querés obtener?</h3>
+    <h3>2. 🔎 Análisis</h3>
 
     <p>
-      Podés dejar el campo vacío para realizar un análisis general.
+      Podés indicar algo específico o dejar vacío para analizar
+      todo lo importante para Preventa.
     </p>
 
     <textarea
       id="analysisQuestion"
-      placeholder="Ejemplo: Analizá todo lo importante para Preventa, incluyendo usuarios, documentos, OCR, workflows, storage, infraestructura, integraciones, migración, costos, riesgos y datos faltantes."
+      placeholder="Ejemplo: Analizá todo lo importante para Preventa."
     ></textarea>
 
     <button
@@ -340,142 +391,119 @@ textarea:focus {
       class="summary"
     ></div>
 
+    <div
+      id="stats"
+      class="stats"
+    ></div>
+
     <div class="grid">
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-objective">
         <div class="analysis-title">🎯 Objetivo</div>
-        <div id="objective" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="objective" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-client">
         <div class="analysis-title">🏢 Cliente / Organización</div>
-        <div id="client" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="client" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-users">
         <div class="analysis-title">👥 Usuarios</div>
-        <div id="users" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="users" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-documents">
         <div class="analysis-title">📑 Documentos</div>
-        <div id="documents" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="documents" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-volume">
         <div class="analysis-title">📦 Volumen documental</div>
-        <div id="volume" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="volume" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-storage">
         <div class="analysis-title">💾 Storage</div>
-        <div id="storage" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="storage" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-ocr">
         <div class="analysis-title">🔎 OCR / Digitalización</div>
-        <div id="ocr" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="ocr" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-fulltext">
         <div class="analysis-title">🔤 Full Text / Búsqueda</div>
-        <div id="fulltext" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="fulltext" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-workflows">
         <div class="analysis-title">🔄 Workflows</div>
-        <div id="workflows" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="workflows" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-signatures">
         <div class="analysis-title">✍️ Firmas</div>
-        <div id="signatures" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="signatures" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-integrations">
         <div class="analysis-title">🔌 Integraciones</div>
-        <div id="integrations" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="integrations" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-infrastructure">
         <div class="analysis-title">🏗️ Infraestructura</div>
-        <div id="infrastructure" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="infrastructure" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-security">
         <div class="analysis-title">🔐 Seguridad</div>
-        <div id="security" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="security" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-migration">
         <div class="analysis-title">🔄 Migración</div>
-        <div id="migration" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="migration" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-support">
         <div class="analysis-title">🛠️ Soporte</div>
-        <div id="support" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="support" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-deadlines">
         <div class="analysis-title">📅 Plazos</div>
-        <div id="deadlines" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="deadlines" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-pricing">
         <div class="analysis-title">💰 Datos para cotizar</div>
-        <div id="pricing" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="pricing" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-risks">
         <div class="analysis-title">⚠️ Riesgos</div>
-        <div id="risks" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="risks" class="analysis-value"></div>
       </div>
 
-      <div class="analysis-item">
+      <div class="analysis-item" id="box-missing">
         <div class="analysis-title">❓ Información faltante</div>
-        <div id="missing" class="analysis-value">
-          No detectado todavía.
-        </div>
+        <div id="missing" class="analysis-value"></div>
       </div>
 
     </div>
+
+
+    <div class="evidence">
+
+      <h3>📌 Evidencia encontrada</h3>
+
+      <div id="evidenceList"></div>
+
+    </div>
+
 
     <div
       id="resultMessage"
@@ -487,14 +515,35 @@ textarea:focus {
 </main>
 
 
-<script>
+<script type="module">
+
+/* ========================================
+   PDF.JS
+======================================== */
+
+import {
+  getDocument,
+  GlobalWorkerOptions
+} from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+
+GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
 
-/* =====================================
+/* ========================================
+   VARIABLES
+======================================== */
+
+let documentoActual = null;
+let textoDocumento = "";
+let paginasDocumento = [];
+
+
+/* ========================================
    MOSTRAR ARCHIVO
-===================================== */
+======================================== */
 
-function showFile() {
+window.showFile = function() {
 
   const input =
     document.getElementById("documentFile");
@@ -520,6 +569,10 @@ function showFile() {
     input.files[0];
 
 
+  documentoActual =
+    file;
+
+
   fileName.textContent =
     "📄 " + file.name;
 
@@ -533,35 +586,1277 @@ function showFile() {
     sizeMB.toFixed(2) +
     " MB";
 
+};
+
+
+/* ========================================
+   LEER TXT
+======================================== */
+
+async function leerTXT(file) {
+
+  const texto =
+    await file.text();
+
+  return {
+
+    text: texto,
+
+    pages: [
+
+      {
+        page: 1,
+        text: texto
+      }
+
+    ]
+
+  };
+
 }
 
 
-/* =====================================
-   ANALIZAR DOCUMENTO
-===================================== */
+/* ========================================
+   LEER PDF
+======================================== */
 
-async function analyzeDocument() {
+async function leerPDF(file) {
 
-  const fileInput =
-    document.getElementById("documentFile");
+  const buffer =
+    await file.arrayBuffer();
 
-  const question =
-    document
-      .getElementById("analysisQuestion")
-      .value
-      .trim();
 
-  const button =
-    document.getElementById("analyzeButton");
+  const pdf =
+    await getDocument({
+      data: buffer
+    }).promise;
 
-  const status =
-    document.getElementById("status");
+
+  let textoCompleto = "";
+
+  const paginas = [];
+
+
+  for (
+    let numeroPagina = 1;
+    numeroPagina <= pdf.numPages;
+    numeroPagina++
+  ) {
+
+    const page =
+      await pdf.getPage(numeroPagina);
+
+
+    const content =
+      await page.getTextContent();
+
+
+    const textoPagina =
+      content.items
+        .map(item => item.str)
+        .join(" ");
+
+
+    paginas.push({
+
+      page: numeroPagina,
+
+      text: textoPagina
+
+    });
+
+
+    textoCompleto +=
+      "\n\n" +
+      "PÁGINA " +
+      numeroPagina +
+      "\n" +
+      textoPagina;
+
+  }
+
+
+  return {
+
+    text: textoCompleto,
+
+    pages: paginas,
+
+    numPages: pdf.numPages
+
+  };
+
+}
+
+
+/* ========================================
+   LEER DOCUMENTO
+======================================== */
+
+async function extraerTexto(file) {
+
+  const extension =
+    file.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+
+  if (extension === "txt") {
+
+    return await leerTXT(file);
+
+  }
+
+
+  if (extension === "pdf") {
+
+    return await leerPDF(file);
+
+  }
+
+
+  throw new Error(
+    "Formato no soportado en el modo básico."
+  );
+
+}
+
+
+/* ========================================
+   NORMALIZAR TEXTO
+======================================== */
+
+function normalizar(texto) {
+
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+}
+
+
+/* ========================================
+   BUSCAR CATEGORÍA
+======================================== */
+
+function detectarCategoria(texto, patrones) {
+
+  const resultado = [];
+
+  const textoNormalizado =
+    normalizar(texto);
+
+
+  patrones.forEach(function(patron) {
+
+    if (
+      textoNormalizado.includes(
+        normalizar(patron)
+      )
+    ) {
+
+      resultado.push(patron);
+
+    }
+
+  });
+
+
+  return resultado;
+
+}
+
+
+/* ========================================
+   BUSCAR FRAGMENTOS
+======================================== */
+
+function obtenerFragmentos(
+  texto,
+  patrones,
+  cantidad = 5
+) {
+
+  const lineas =
+    texto.split(/\n+/);
+
+  const encontradas = [];
+
+
+  for (
+    const lineaOriginal of lineas
+  ) {
+
+    const linea =
+      normalizar(lineaOriginal);
+
+
+    const coincide =
+      patrones.some(function(patron) {
+
+        return linea.includes(
+          normalizar(patron)
+        );
+
+      });
+
+
+    if (
+      coincide &&
+      lineaOriginal.trim().length > 10
+    ) {
+
+      encontradas.push(
+        lineaOriginal.trim()
+      );
+
+    }
+
+
+    if (
+      encontradas.length >= cantidad
+    ) {
+
+      break;
+
+    }
+
+  }
+
+
+  return encontradas;
+
+}
+
+
+/* ========================================
+   BUSCAR NÚMEROS RELACIONADOS
+======================================== */
+
+function buscarDatosNumericos(
+  texto,
+  palabrasClave
+) {
+
+  const resultados = [];
+
+  const lineas =
+    texto.split(/\n+/);
+
+
+  for (
+    const lineaOriginal of lineas
+  ) {
+
+    const linea =
+      normalizar(lineaOriginal);
+
+
+    const relacionada =
+      palabrasClave.some(function(palabra) {
+
+        return linea.includes(
+          normalizar(palabra)
+        );
+
+      });
+
+
+    if (!relacionada) {
+      continue;
+    }
+
+
+    const numeros =
+      lineaOriginal.match(
+        /\b\d[\d.,]*\b/g
+      );
+
+
+    if (numeros) {
+
+      resultados.push({
+
+        linea:
+          lineaOriginal.trim(),
+
+        numeros
+
+      });
+
+    }
+
+  }
+
+
+  return resultados.slice(0, 10);
+
+}
+
+
+/* ========================================
+   CATEGORÍAS
+======================================== */
+
+const categorias = {
+
+  users: [
+    "usuarios",
+    "usuario",
+    "usuarios concurrentes",
+    "cuentas",
+    "perfiles",
+    "roles"
+  ],
+
+  documents: [
+    "documentos",
+    "documento",
+    "legajos",
+    "expedientes",
+    "contratos",
+    "comprobantes",
+    "recibos",
+    "formularios",
+    "clases documentales",
+    "tipo documental"
+  ],
+
+  volume: [
+    "volumen documental",
+    "cantidad de documentos",
+    "millones de documentos",
+    "documentos anuales",
+    "documentos mensuales",
+    "crecimiento",
+    "volumen"
+  ],
+
+  storage: [
+    "storage",
+    "almacenamiento",
+    "gb",
+    "tb",
+    "terabytes",
+    "gigabytes"
+  ],
+
+  ocr: [
+    "ocr",
+    "digitalizacion",
+    "digitalización",
+    "reconocimiento optico",
+    "reconocimiento óptico"
+  ],
+
+  fulltext: [
+    "full text",
+    "fulltext",
+    "texto completo",
+    "busqueda de texto",
+    "búsqueda de texto",
+    "indexacion",
+    "indexación"
+  ],
+
+  workflows: [
+    "workflow",
+    "workflows",
+    "flujo",
+    "flujo de trabajo",
+    "aprobacion",
+    "aprobación",
+    "circuito",
+    "estados"
+  ],
+
+  signatures: [
+    "firma",
+    "firmas",
+    "firma digital",
+    "firma electrónica",
+    "firma electronica"
+  ],
+
+  integrations: [
+    "integracion",
+    "integración",
+    "integraciones",
+    "api",
+    "web service",
+    "soap",
+    "rest"
+  ],
+
+  infrastructure: [
+    "infraestructura",
+    "servidor",
+    "servidores",
+    "cloud",
+    "on premise",
+    "on-premise",
+    "base de datos",
+    "docker",
+    "virtualizacion"
+  ],
+
+  security: [
+    "seguridad",
+    "autenticacion",
+    "autenticación",
+    "autorizacion",
+    "autorización",
+    "permisos",
+    "auditoria",
+    "auditoría",
+    "trazabilidad"
+  ],
+
+  migration: [
+    "migracion",
+    "migración",
+    "migrar",
+    "openkm",
+    "sistema actual",
+    "datos existentes"
+  ],
+
+  support: [
+    "soporte",
+    "sla",
+    "mantenimiento",
+    "mesa de ayuda",
+    "horario de atención"
+  ],
+
+  deadlines: [
+    "plazo",
+    "plazos",
+    "fecha",
+    "fechas",
+    "meses",
+    "semanas",
+    "cronograma",
+    "implementacion",
+    "implementación"
+  ]
+
+};
+
+
+/* ========================================
+   DETECTAR OBJETIVO
+======================================== */
+
+function detectarObjetivo(texto) {
+
+  const lineas =
+    texto.split(/\n+/);
+
+
+  const patrones = [
+
+    "objetivo",
+
+    "objeto",
+
+    "finalidad",
+
+    "alcance",
+
+    "propósito",
+
+    "proposito",
+
+    "se requiere",
+
+    "se solicita"
+
+  ];
+
+
+  const resultados = [];
+
+
+  for (
+    const lineaOriginal of lineas
+  ) {
+
+    const linea =
+      normalizar(lineaOriginal);
+
+
+    const coincide =
+      patrones.some(function(patron) {
+
+        return linea.includes(
+          normalizar(patron)
+        );
+
+      });
+
+
+    if (
+      coincide &&
+      lineaOriginal.trim().length > 20
+    ) {
+
+      resultados.push(
+        lineaOriginal.trim()
+      );
+
+    }
+
+
+    if (
+      resultados.length >= 5
+    ) {
+
+      break;
+
+    }
+
+  }
+
+
+  return resultados;
+
+}
+
+
+/* ========================================
+   DETECTAR CLIENTE
+======================================== */
+
+function detectarCliente(texto) {
+
+  const lineas =
+    texto.split(/\n+/);
+
+
+  const patrones = [
+
+    "cliente:",
+
+    "cliente",
+
+    "organismo:",
+
+    "organizacion:",
+
+    "organización:",
+
+    "empresa:",
+
+    "razon social",
+
+    "razón social"
+
+  ];
+
+
+  for (
+    const lineaOriginal of lineas
+  ) {
+
+    const linea =
+      normalizar(lineaOriginal);
+
+
+    if (
+      patrones.some(
+        p => linea.includes(
+          normalizar(p)
+        )
+      )
+    ) {
+
+      return lineaOriginal.trim();
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* ========================================
+   CREAR RESULTADO
+======================================== */
+
+function generarResultado(data, pregunta) {
 
   const result =
     document.getElementById("result");
 
+  result.style.display =
+    "block";
 
-  if (!fileInput.files.length) {
+
+  const resumen =
+    crearResumen(data, pregunta);
+
+
+  document.getElementById(
+    "summary"
+  ).innerHTML =
+    "<div class='summary-title'>📝 Resumen PREVENTA</div>" +
+    escapeHTML(resumen);
+
+
+  const datos = {
+
+    objective:
+      data.objective.length
+        ? data.objective.join("\n\n")
+        : "No encontré un objetivo claramente definido.",
+
+    client:
+      data.client ||
+      "No pude identificar claramente el cliente.",
+
+    users:
+      formatearDatos(
+        data.numbers.users,
+        "No encontré una cantidad de usuarios claramente asociada."
+      ),
+
+    documents:
+      formatearCategoria(
+        data.documents,
+        "No encontré información clara sobre tipos documentales."
+      ),
+
+    volume:
+      formatearDatos(
+        data.numbers.volume,
+        "No encontré un volumen documental claramente definido."
+      ),
+
+    storage:
+      formatearDatos(
+        data.numbers.storage,
+        "No encontré una necesidad de storage claramente definida."
+      ),
+
+    ocr:
+      formatearCategoria(
+        data.ocr,
+        "No encontré requerimientos explícitos de OCR."
+      ),
+
+    fulltext:
+      formatearCategoria(
+        data.fulltext,
+        "No encontré requerimientos explícitos de Full Text."
+      ),
+
+    workflows:
+      formatearCategoria(
+        data.workflows,
+        "No encontré requerimientos explícitos de workflows."
+      ),
+
+    signatures:
+      formatearCategoria(
+        data.signatures,
+        "No encontré requerimientos explícitos de firmas."
+      ),
+
+    integrations:
+      formatearCategoria(
+        data.integrations,
+        "No encontré integraciones claramente especificadas."
+      ),
+
+    infrastructure:
+      formatearCategoria(
+        data.infrastructure,
+        "No encontré requisitos claros de infraestructura."
+      ),
+
+    security:
+      formatearCategoria(
+        data.security,
+        "No encontré requisitos claros de seguridad."
+      ),
+
+    migration:
+      formatearCategoria(
+        data.migration,
+        "No encontré información clara de migración."
+      ),
+
+    support:
+      formatearCategoria(
+        data.support,
+        "No encontré requisitos claros de soporte."
+      ),
+
+    deadlines:
+      formatearCategoria(
+        data.deadlines,
+        "No encontré plazos claramente definidos."
+      ),
+
+    pricing:
+      crearDatosCotizacion(data),
+
+    risks:
+      crearRiesgos(data),
+
+    missing:
+      crearFaltantes(data)
+
+  };
+
+
+  Object.keys(datos).forEach(function(id) {
+
+    setValue(id, datos[id]);
+
+
+    const box =
+      document.getElementById(
+        "box-" + id
+      );
+
+
+    const noEncontrado =
+      datos[id].toLowerCase().includes(
+        "no encontr"
+      ) ||
+      datos[id].toLowerCase().includes(
+        "no pude"
+      );
+
+
+    if (box) {
+
+      box.classList.remove(
+        "found",
+        "not-found"
+      );
+
+
+      box.classList.add(
+        noEncontrado
+          ? "not-found"
+          : "found"
+      );
+
+    }
+
+  });
+
+
+  crearStats(data);
+
+  crearEvidencia(data);
+
+  document.getElementById(
+    "resultMessage"
+  ).textContent =
+    "🟢 Documento leído y analizado en modo básico gratuito. " +
+    "No se consumieron créditos de IA.";
+
+}
+
+
+/* ========================================
+   FORMATEAR
+======================================== */
+
+function formatearCategoria(
+  valores,
+  fallback
+) {
+
+  if (!valores.length) {
+
+    return fallback;
+
+  }
+
+
+  return (
+    "Detectado: " +
+    valores.join(", ")
+  );
+
+}
+
+
+function formatearDatos(
+  valores,
+  fallback
+) {
+
+  if (!valores.length) {
+
+    return fallback;
+
+  }
+
+
+  return valores
+    .map(item =>
+      item.linea
+    )
+    .join("\n\n");
+
+}
+
+
+/* ========================================
+   COTIZACIÓN
+======================================== */
+
+function crearDatosCotizacion(data) {
+
+  const partes = [];
+
+
+  if (data.numbers.users.length) {
+
+    partes.push(
+      "Usuarios: " +
+      data.numbers.users
+        .map(x => x.linea)
+        .join(" | ")
+    );
+
+  }
+
+
+  if (data.numbers.storage.length) {
+
+    partes.push(
+      "Storage: " +
+      data.numbers.storage
+        .map(x => x.linea)
+        .join(" | ")
+    );
+
+  }
+
+
+  if (data.numbers.volume.length) {
+
+    partes.push(
+      "Volumen: " +
+      data.numbers.volume
+        .map(x => x.linea)
+        .join(" | ")
+    );
+
+  }
+
+
+  if (data.workflows.length) {
+
+    partes.push(
+      "Workflows: detectados"
+    );
+
+  }
+
+
+  if (data.signatures.length) {
+
+    partes.push(
+      "Firmas: detectadas"
+    );
+
+  }
+
+
+  if (!partes.length) {
+
+    return (
+      "No encontré todavía datos suficientes " +
+      "para preparar una cotización."
+    );
+
+  }
+
+
+  return partes.join("\n\n");
+
+}
+
+
+/* ========================================
+   RIESGOS
+======================================== */
+
+function crearRiesgos(data) {
+
+  const riesgos = [];
+
+
+  if (!data.numbers.users.length) {
+
+    riesgos.push(
+      "No se identificó claramente la cantidad de usuarios."
+    );
+
+  }
+
+
+  if (!data.numbers.storage.length) {
+
+    riesgos.push(
+      "No se identificó claramente el storage requerido."
+    );
+
+  }
+
+
+  if (!data.integrations.length) {
+
+    riesgos.push(
+      "No se identificaron integraciones explícitas."
+    );
+
+  }
+
+
+  if (!data.deadlines.length) {
+
+    riesgos.push(
+      "No se identificaron plazos claros."
+    );
+
+  }
+
+
+  if (!riesgos.length) {
+
+    return (
+      "No se detectaron faltantes críticos mediante el análisis básico."
+    );
+
+  }
+
+
+  return riesgos.join("\n");
+
+}
+
+
+/* ========================================
+   INFORMACIÓN FALTANTE
+======================================== */
+
+function crearFaltantes(data) {
+
+  const faltantes = [];
+
+
+  if (!data.objective.length) {
+
+    faltantes.push(
+      "Objetivo del proyecto"
+    );
+
+  }
+
+
+  if (!data.numbers.users.length) {
+
+    faltantes.push(
+      "Cantidad de usuarios"
+    );
+
+  }
+
+
+  if (!data.documents.length) {
+
+    faltantes.push(
+      "Tipos documentales"
+    );
+
+  }
+
+
+  if (!data.numbers.storage.length) {
+
+    faltantes.push(
+      "Storage"
+    );
+
+  }
+
+
+  if (!data.deadlines.length) {
+
+    faltantes.push(
+      "Plazos"
+    );
+
+  }
+
+
+  if (!faltantes.length) {
+
+    return "No detecté faltantes básicos.";
+
+  }
+
+
+  return faltantes.join("\n");
+
+}
+
+
+/* ========================================
+   RESUMEN
+======================================== */
+
+function crearResumen(data, pregunta) {
+
+  const partes = [];
+
+
+  partes.push(
+    "El documento fue procesado en modo básico, " +
+    "buscando información relevante para Preventa."
+  );
+
+
+  if (data.objective.length) {
+
+    partes.push(
+      "Objetivo detectado: " +
+      data.objective[0]
+    );
+
+  }
+
+
+  if (data.numbers.users.length) {
+
+    partes.push(
+      "Se detectaron referencias de usuarios."
+    );
+
+  }
+
+
+  if (data.documents.length) {
+
+    partes.push(
+      "Se detectaron referencias a tipos o clases documentales."
+    );
+
+  }
+
+
+  if (data.ocr.length) {
+
+    partes.push(
+      "El documento menciona OCR o digitalización."
+    );
+
+  }
+
+
+  if (data.workflows.length) {
+
+    partes.push(
+      "El documento menciona workflows o circuitos."
+    );
+
+  }
+
+
+  if (data.signatures.length) {
+
+    partes.push(
+      "El documento menciona firmas."
+    );
+
+  }
+
+
+  if (data.integrations.length) {
+
+    partes.push(
+      "Se detectaron posibles integraciones."
+    );
+
+  }
+
+
+  if (data.migration.length) {
+
+    partes.push(
+      "Se detectaron referencias a migración."
+    );
+
+  }
+
+
+  if (pregunta) {
+
+    partes.push(
+      "Consulta específica solicitada: " +
+      pregunta
+    );
+
+  }
+
+
+  return partes.join("\n\n");
+
+}
+
+
+/* ========================================
+   STATS
+======================================== */
+
+function crearStats(data) {
+
+  const stats =
+    document.getElementById("stats");
+
+
+  stats.innerHTML = "";
+
+
+  const elementos = [
+
+    "Páginas analizadas: " +
+    (data.pages || 1),
+
+    "Caracteres procesados: " +
+    data.textLength,
+
+    "Temas detectados: " +
+    data.temas
+
+  ];
+
+
+  elementos.forEach(function(texto) {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "stat";
+
+    div.textContent =
+      texto;
+
+    stats.appendChild(div);
+
+  });
+
+}
+
+
+/* ========================================
+   EVIDENCIA
+======================================== */
+
+function crearEvidencia(data) {
+
+  const contenedor =
+    document.getElementById(
+      "evidenceList"
+    );
+
+
+  contenedor.innerHTML = "";
+
+
+  data.evidence
+    .slice(0, 15)
+    .forEach(function(item) {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.className =
+        "evidence-item";
+
+
+      div.innerHTML =
+        "<div class='evidence-title'>" +
+        escapeHTML(item.titulo) +
+        "</div>" +
+
+        "<div class='quote'>" +
+        escapeHTML(item.texto) +
+        "</div>";
+
+
+      contenedor.appendChild(div);
+
+    });
+
+
+  if (
+    !data.evidence.length
+  ) {
+
+    contenedor.innerHTML =
+      "<div class='warning'>" +
+      "No encontré fragmentos suficientemente claros " +
+      "para mostrar como evidencia." +
+      "</div>";
+
+  }
+
+}
+
+
+/* ========================================
+   ANALIZAR
+======================================== */
+
+window.analyzeDocument =
+async function() {
+
+  const input =
+    document.getElementById(
+      "documentFile"
+    );
+
+
+  const question =
+    document
+      .getElementById(
+        "analysisQuestion"
+      )
+      .value
+      .trim();
+
+
+  const button =
+    document.getElementById(
+      "analyzeButton"
+    );
+
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+
+  if (!input.files.length) {
 
     alert(
       "Primero seleccioná un documento."
@@ -573,294 +1868,295 @@ async function analyzeDocument() {
 
 
   const file =
-    fileInput.files[0];
+    input.files[0];
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
 
-  status.style.display = "block";
+
+  status.style.display =
+    "block";
+
 
   status.textContent =
-    "🔎 Preparando análisis...";
+    "📖 Leyendo el documento completo...";
 
 
-  /*
-    Por ahora trabajamos en modo básico.
+  try {
 
-    La siguiente etapa conectará este contenido
-    con el backend de IA.
-  */
+    const resultado =
+      await extraerTexto(file);
 
 
-  setTimeout(function() {
+    textoDocumento =
+      resultado.text;
 
-    generarAnalisisBasico(
-      file,
+
+    paginasDocumento =
+      resultado.pages || [];
+
+
+    if (
+      !textoDocumento.trim()
+    ) {
+
+      throw new Error(
+        "No se pudo extraer texto. " +
+        "Si el PDF es un escaneo o imagen, " +
+        "necesitará OCR."
+      );
+
+    }
+
+
+    status.textContent =
+      "🔎 Analizando usuarios, documentos, storage, workflows y demás datos...";
+
+
+    const datos =
+      analizarTexto(
+        textoDocumento,
+        question,
+        resultado.numPages ||
+        paginasDocumento.length ||
+        1
+      );
+
+
+    generarResultado(
+      datos,
       question
     );
 
-    button.disabled = false;
 
-  }, 800);
+    status.textContent =
+      "✅ Análisis terminado sin consumir créditos de IA.";
+
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+
+    status.textContent =
+      "❌ No pude analizar el documento.";
+
+
+    alert(
+      error.message ||
+      "Ocurrió un error al procesar el archivo."
+    );
+
+  }
+
+
+  button.disabled =
+    false;
+
+};
+
+
+/* ========================================
+   ANALIZAR TEXTO
+======================================== */
+
+function analizarTexto(
+  texto,
+  pregunta,
+  paginas
+) {
+
+  const data = {
+
+    textLength:
+      texto.length,
+
+    pages:
+      paginas,
+
+    objective:
+      detectarObjetivo(texto),
+
+    client:
+      detectarCliente(texto),
+
+    users:
+      detectarCategoria(
+        texto,
+        categorias.users
+      ),
+
+    documents:
+      detectarCategoria(
+        texto,
+        categorias.documents
+      ),
+
+    volume:
+      detectarCategoria(
+        texto,
+        categorias.volume
+      ),
+
+    storage:
+      detectarCategoria(
+        texto,
+        categorias.storage
+      ),
+
+    ocr:
+      detectarCategoria(
+        texto,
+        categorias.ocr
+      ),
+
+    fulltext:
+      detectarCategoria(
+        texto,
+        categorias.fulltext
+      ),
+
+    workflows:
+      detectarCategoria(
+        texto,
+        categorias.workflows
+      ),
+
+    signatures:
+      detectarCategoria(
+        texto,
+        categorias.signatures
+      ),
+
+    integrations:
+      detectarCategoria(
+        texto,
+        categorias.integrations
+      ),
+
+    infrastructure:
+      detectarCategoria(
+        texto,
+        categorias.infrastructure
+      ),
+
+    security:
+      detectarCategoria(
+        texto,
+        categorias.security
+      ),
+
+    migration:
+      detectarCategoria(
+        texto,
+        categorias.migration
+      ),
+
+    support:
+      detectarCategoria(
+        texto,
+        categorias.support
+      ),
+
+    deadlines:
+      detectarCategoria(
+        texto,
+        categorias.deadlines
+      )
+
+  };
+
+
+  data.numbers = {
+
+    users:
+      buscarDatosNumericos(
+        texto,
+        categorias.users
+      ),
+
+    volume:
+      buscarDatosNumericos(
+        texto,
+        categorias.volume
+      ),
+
+    storage:
+      buscarDatosNumericos(
+        texto,
+        categorias.storage
+      )
+
+  };
+
+
+  data.temas =
+    Object.keys(categorias)
+      .filter(
+        key =>
+          data[key] &&
+          data[key].length
+      )
+      .length;
+
+
+  data.evidence = [];
+
+
+  Object.keys(categorias)
+    .forEach(function(key) {
+
+      const fragmentos =
+        obtenerFragmentos(
+          texto,
+          categorias[key],
+          2
+        );
+
+
+      fragmentos.forEach(function(fragmento) {
+
+        data.evidence.push({
+
+          titulo:
+            "🔎 " +
+            key.toUpperCase(),
+
+          texto:
+            fragmento
+
+        });
+
+      });
+
+    });
+
+
+  return data;
 
 }
 
 
-/* =====================================
-   ANÁLISIS BÁSICO GRATUITO
-===================================== */
-
-function generarAnalisisBasico(file, question) {
-
-  const result =
-    document.getElementById("result");
-
-  const summary =
-    document.getElementById("summary");
-
-  const status =
-    document.getElementById("status");
-
-
-  const texto =
-    question.toLowerCase();
-
-
-  result.style.display = "block";
-
-
-  /*
-    Detectar temas solicitados
-  */
-
-  const temas = [];
-
-
-  if (
-    texto.includes("ocr") ||
-    texto.includes("digital")
-  ) {
-
-    temas.push("OCR / Digitalización");
-
-  }
-
-
-  if (
-    texto.includes("workflow") ||
-    texto.includes("flujo")
-  ) {
-
-    temas.push("Workflows");
-
-  }
-
-
-  if (
-    texto.includes("firma")
-  ) {
-
-    temas.push("Firmas");
-
-  }
-
-
-  if (
-    texto.includes("storage") ||
-    texto.includes("almacenamiento")
-  ) {
-
-    temas.push("Storage");
-
-  }
-
-
-  if (
-    texto.includes("usuario")
-  ) {
-
-    temas.push("Usuarios");
-
-  }
-
-
-  /*
-    Resumen básico
-  */
-
-  summary.innerHTML =
-
-    "<strong>📄 Documento analizado:</strong> " +
-    escapeHTML(file.name) +
-
-    "<br><br>" +
-
-    "<strong>📌 Análisis solicitado:</strong> " +
-
-    (
-      question
-        ? escapeHTML(question)
-        : "Análisis general de Preventa"
-    ) +
-
-    "<br><br>" +
-
-    "<strong>📋 Estado:</strong> " +
-
-    "El documento fue recibido correctamente y está preparado " +
-    "para el análisis inteligente.";
-
-
-  /*
-    Información básica
-  */
-
-  setValue(
-    "objective",
-    "Pendiente de análisis semántico del contenido."
-  );
-
-  setValue(
-    "client",
-    "Pendiente de identificación."
-  );
-
-  setValue(
-    "users",
-    "Buscar cantidad de usuarios en el documento."
-  );
-
-  setValue(
-    "documents",
-    "Identificar tipos y clases documentales."
-  );
-
-  setValue(
-    "volume",
-    "Buscar cantidades, volúmenes y crecimiento documental."
-  );
-
-  setValue(
-    "storage",
-    "Calcular a partir del volumen y peso documental."
-  );
-
-  setValue(
-    "ocr",
-    "Verificar requerimientos de OCR y digitalización."
-  );
-
-  setValue(
-    "fulltext",
-    "Verificar búsqueda Full Text y campos indexados."
-  );
-
-  setValue(
-    "workflows",
-    "Identificar circuitos, estados, aprobaciones y tareas."
-  );
-
-  setValue(
-    "signatures",
-    "Buscar requerimientos de firma electrónica o digital."
-  );
-
-  setValue(
-    "integrations",
-    "Identificar sistemas externos y APIs."
-  );
-
-  setValue(
-    "infrastructure",
-    "Buscar requerimientos de infraestructura y arquitectura."
-  );
-
-  setValue(
-    "security",
-    "Buscar autenticación, permisos, auditoría y seguridad."
-  );
-
-  setValue(
-    "migration",
-    "Buscar migraciones, fuentes de datos y sistemas existentes."
-  );
-
-  setValue(
-    "support",
-    "Buscar SLA, soporte y mantenimiento."
-  );
-
-  setValue(
-    "deadlines",
-    "Buscar fechas, plazos y etapas de implementación."
-  );
-
-  setValue(
-    "pricing",
-    "Extraer usuarios, storage, horas, módulos y otros datos necesarios para cotizar."
-  );
-
-  setValue(
-    "risks",
-    "Identificar dependencias, restricciones y riesgos."
-  );
-
-  setValue(
-    "missing",
-    "Identificar información necesaria que no esté definida."
-  );
-
-
-  /*
-    Mensaje final
-  */
-
-  let mensaje =
-    "🟢 Documento cargado correctamente.\n\n";
-
-
-  if (temas.length > 0) {
-
-    mensaje +=
-      "Temas solicitados detectados: " +
-      temas.join(", ") +
-      ".\n\n";
-
-  }
-
-
-  mensaje +=
-    "Este es el modo básico gratuito de PREVENTA IA. " +
-    "La próxima etapa conectará este módulo con el motor de IA " +
-    "para leer y analizar el contenido completo del documento.";
-
+/* ========================================
+   UTILIDAD
+======================================== */
+
+function setValue(id, texto) {
 
   document.getElementById(
-    "resultMessage"
-  ).textContent = mensaje;
-
-
-  status.textContent =
-    "🟢 Documento preparado — modo básico gratuito.";
+    id
+  ).textContent =
+    texto;
 
 }
 
 
-/* =====================================
-   UTILIDADES
-===================================== */
+function escapeHTML(texto) {
 
-function setValue(id, text) {
-
-  document.getElementById(id).textContent =
-    text;
-
-}
-
-
-function escapeHTML(text) {
-
-  return text
+  return String(texto)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -868,6 +2164,33 @@ function escapeHTML(text) {
     .replace(/'/g, "&#039;");
 
 }
+
+
+/* ========================================
+   ATAJO CTRL + ENTER
+======================================== */
+
+document
+  .getElementById(
+    "analysisQuestion"
+  )
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter" &&
+        event.ctrlKey
+      ) {
+
+        event.preventDefault();
+
+        window.analyzeDocument();
+
+      }
+
+    }
+  );
 
 </script>
 
