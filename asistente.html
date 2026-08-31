@@ -200,56 +200,131 @@
 
       // Respuesta temporal de la IA
 
-      setTimeout(function() {
+      // Buscar información en la base de conocimiento
+
+setTimeout(async function() {
 
   const iaMessage = document.createElement("div");
 
   iaMessage.className = "message ia";
 
-  const q = question.toLowerCase();
+  try {
 
-  let answer = "";
+    const response = await fetch("conocimiento.json");
 
-  if (q.includes("thuban")) {
+    if (!response.ok) {
+      throw new Error("No se pudo cargar la base de conocimiento");
+    }
 
-    answer =
-      "Thuban es una plataforma de gestión documental que permite centralizar, organizar, consultar y administrar documentación digital. 🤖";
+    const conocimiento = await response.json();
 
-  } else if (
-    q.includes("relevamiento") ||
-    q.includes("preguntas") ||
-    q.includes("cliente")
-  ) {
+    const q = question.toLowerCase();
 
-    answer =
-      "Para un relevamiento de Preventa te recomiendo preguntar: 1) ¿Qué documentación manejan? 2) ¿Cuántos usuarios tendrán? 3) ¿Qué volumen de documentos tienen? 4) ¿Necesitan OCR? 5) ¿Necesitan búsquedas por texto o campos? 6) ¿Existen workflows? 7) ¿Necesitan firma digital? 8) ¿Qué sistemas necesitan integrar?";
+    let resultados = [];
 
-  } else if (
-    q.includes("openkm") ||
-    q.includes("migración") ||
-    q.includes("migracion")
-  ) {
+    // Buscar coincidencias dentro de todo el conocimiento
 
-    answer =
-      "Para una migración desde OpenKM conviene relevar versión, cantidad de documentos, estructura documental, metadatos, usuarios, permisos, workflows, volumen de información y necesidades de integración.";
+    function buscar(objeto, ruta = "") {
 
-  } else if (
-    q.includes("propuesta") ||
-    q.includes("propuesta técnica") ||
-    q.includes("propuesta tecnica")
-  ) {
+      if (typeof objeto === "string") {
 
-    answer =
-      "Para preparar una propuesta técnica conviene identificar: alcance, funcionalidades, arquitectura, implementación, migración, integraciones, soporte, supuestos y exclusiones.";
+        const texto = objeto.toLowerCase();
 
-  } else {
+        const palabras = q
+          .split(/\s+/)
+          .filter(palabra => palabra.length > 3);
 
-    answer =
-      "Todavía estoy aprendiendo 🤖. Probá preguntarme sobre Thuban, OpenKM, migraciones, relevamientos o propuestas técnicas.";
+        let coincidencias = 0;
+
+        palabras.forEach(palabra => {
+
+          if (texto.includes(palabra)) {
+            coincidencias++;
+          }
+
+        });
+
+        if (coincidencias > 0) {
+
+          resultados.push({
+            texto: objeto,
+            coincidencias: coincidencias,
+            ruta: ruta
+          });
+
+        }
+
+      } else if (Array.isArray(objeto)) {
+
+        objeto.forEach((item, index) => {
+          buscar(item, ruta);
+        });
+
+      } else if (typeof objeto === "object" && objeto !== null) {
+
+        Object.keys(objeto).forEach(clave => {
+
+          buscar(
+            objeto[clave],
+            ruta ? ruta + " → " + clave : clave
+          );
+
+        });
+
+      }
+
+    }
+
+    buscar(conocimiento);
+
+    // Ordenar resultados por cantidad de coincidencias
+
+    resultados.sort(function(a, b) {
+      return b.coincidencias - a.coincidencias;
+    });
+
+    // Evitar respuestas demasiado largas
+
+    resultados = resultados.slice(0, 8);
+
+    if (resultados.length === 0) {
+
+      iaMessage.textContent =
+        "No encontré información específica sobre esa consulta en mi base de conocimiento. 🤔\n\n" +
+        "Probá preguntarme sobre Thuban, Captika, Edatalia, Perfil Digital, " +
+        "Onboarding Addoc, Firmas Addoc, Visualizador Addoc, Islas, " +
+        "migraciones, relevamientos o propuestas técnicas.";
+
+    } else {
+
+      let respuesta =
+        "Encontré esta información relacionada con tu consulta:\n\n";
+
+      resultados.forEach(function(resultado, index) {
+
+        respuesta +=
+          "• " + resultado.texto + "\n";
+
+      });
+
+      respuesta +=
+        "\n💡 Si necesitás una respuesta más específica, " +
+        "podés agregar datos del cliente, usuarios, documentos, " +
+        "volumen, workflows, integraciones o plazos.";
+
+      iaMessage.textContent = respuesta;
+
+    }
+
+  } catch (error) {
+
+    iaMessage.textContent =
+      "⚠️ No pude acceder a mi base de conocimiento. " +
+      "Verificá que el archivo conocimiento.json esté publicado correctamente.";
+
+    console.error(error);
 
   }
-
-  iaMessage.textContent = answer;
 
   messages.appendChild(iaMessage);
 
