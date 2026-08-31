@@ -1,5 +1,5 @@
-```html
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -9,20 +9,11 @@
 
 <title>Cotizador | PREVENTA IA</title>
 
-<!-- =====================================================
-     JSZIP
-===================================================== -->
+<!-- JSZIP -->
 
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
-</script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <style>
-
-/* =====================================================
-   GENERAL
-===================================================== */
 
 * {
   box-sizing: border-box;
@@ -70,11 +61,6 @@ h2 {
   margin-bottom: 30px;
 }
 
-
-/* =====================================================
-   MENSAJES
-===================================================== */
-
 .connection {
   display: none;
   background: #ecfdf5;
@@ -109,11 +95,6 @@ h2 {
   border: 1px solid #fed7aa;
 }
 
-
-/* =====================================================
-   CARDS
-===================================================== */
-
 .card {
   background: white;
   padding: 30px;
@@ -125,11 +106,6 @@ h2 {
 .card h3 {
   margin-top: 0;
 }
-
-
-/* =====================================================
-   CAMPOS
-===================================================== */
 
 .fields {
   display: grid;
@@ -171,11 +147,6 @@ select.prefilled {
   background: #f0fdf4;
   border-color: #86efac;
 }
-
-
-/* =====================================================
-   BOTONES
-===================================================== */
 
 .buttons {
   display: flex;
@@ -222,11 +193,6 @@ select.prefilled {
   background: #6d28d9;
 }
 
-
-/* =====================================================
-   RESULTADOS
-===================================================== */
-
 .results {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -257,6 +223,10 @@ select.prefilled {
   margin-top: 20px;
 }
 
+.storage-box p {
+  margin: 10px 0;
+}
+
 .total {
   margin-top: 25px;
   padding: 25px;
@@ -278,11 +248,6 @@ select.prefilled {
   padding-top: 15px;
   border-top: 1px solid #4b5563;
 }
-
-
-/* =====================================================
-   MENSAJES RESULTADO
-===================================================== */
 
 .warning {
   color: #b45309;
@@ -322,11 +287,6 @@ select.prefilled {
   line-height: 1.5;
 }
 
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
 @media (max-width: 700px) {
 
   header {
@@ -350,9 +310,7 @@ select.prefilled {
 
 </head>
 
-
 <body>
-
 
 <header>
 
@@ -360,538 +318,524 @@ select.prefilled {
     💰 PREVENTA IA
   </h1>
 
-  <a
-    href="index.html"
-    class="back"
-  >
-    ← Volver al inicio
+<a
+href="index.html"
+class="back"
+
+>
+
+```
+← Volver al inicio
+```
+
   </a>
 
 </header>
 
-
 <main class="container">
-
 
   <h2>
     💰 Cotizador
   </h2>
 
-
   <p class="subtitle">
     Calculá automáticamente los costos de implementación y costos mensuales.
   </p>
 
-
-  <!-- =================================================
-       CONEXION OPORTUNIDAD
-  ================================================= -->
+  <!-- CONEXIÓN -->
 
   <div
     id="connection"
     class="connection"
   ></div>
 
-
-  <!-- =================================================
-       DATOS
-  ================================================= -->
+  <!-- DATOS -->
 
   <div class="card">
 
-    <h3>
-      📋 Datos de la cotización
-    </h3>
+```
+<h3>
+  📋 Datos de la cotización
+</h3>
 
 
-    <div class="fields">
+<div class="fields">
 
 
-      <!-- PRODUCTO -->
+  <!-- PRODUCTO -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="product">
-          🧩 Producto / Solución
-        </label>
+    <label for="product">
+      🧩 Producto / Solución
+    </label>
 
-        <select
-          id="product"
-          onchange="productChanged()"
-        >
+    <select
+      id="product"
+      onchange="productChanged()"
+    >
 
-          <option value="">
-            Seleccioná un producto
-          </option>
+      <option value="">
+        Seleccioná un producto
+      </option>
 
-        </select>
+    </select>
 
-        <small>
-          Se toma de las carpetas creadas en la Biblioteca Técnica.
-        </small>
+    <small>
+      Se toma de las carpetas creadas en la Biblioteca Técnica.
+    </small>
 
-        <div
-          id="libraryStatus"
-          class="library-status"
-        ></div>
+    <div
+      id="libraryStatus"
+      class="library-status"
+    ></div>
 
-      </div>
+  </div>
 
 
-      <!-- CLIENTE -->
+  <!-- CLIENTE -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="client">
-          Cliente
-        </label>
+    <label for="client">
+      Cliente
+    </label>
 
-        <input
-          type="text"
-          id="client"
-          placeholder="Nombre del cliente"
-        >
+    <input
+      type="text"
+      id="client"
+      placeholder="Nombre del cliente"
+    >
 
-      </div>
+  </div>
 
 
-      <!-- OPORTUNIDAD -->
+  <!-- OPORTUNIDAD -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="opportunity">
-          Oportunidad
-        </label>
+    <label for="opportunity">
+      Oportunidad
+    </label>
 
-        <input
-          type="text"
-          id="opportunity"
-          placeholder="Nombre de la oportunidad"
-        >
+    <input
+      type="text"
+      id="opportunity"
+      placeholder="Nombre de la oportunidad"
+    >
 
-      </div>
+  </div>
 
 
-      <!-- SETUP -->
+  <!-- SETUP -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="setup">
-          Horas de parametrización / Setup
-        </label>
+    <label for="setup">
+      Horas de parametrización / Setup
+    </label>
 
-        <input
-          type="number"
-          id="setup"
-          value="8"
-          min="0"
-        >
+    <input
+      type="number"
+      id="setup"
+      value="8"
+      min="0"
+    >
 
-        <small>
-          Costo: USD 25 por hora.
-        </small>
+    <small>
+      Costo: USD 25 por hora.
+    </small>
 
-      </div>
+  </div>
 
 
-      <!-- USUARIOS -->
+  <!-- USUARIOS -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="users">
-          Cantidad de usuarios
-        </label>
+    <label for="users">
+      Cantidad de usuarios
+    </label>
 
-        <input
-          type="number"
-          id="users"
-          value="10"
-          min="0"
-        >
+    <input
+      type="number"
+      id="users"
+      value="10"
+      min="0"
+    >
 
-        <small>
-          El precio depende del tramo de usuarios.
-        </small>
+    <small>
+      El precio depende del tramo de usuarios.
+    </small>
 
-      </div>
+  </div>
 
 
-      <!-- FIRMAS -->
+  <!-- FIRMAS -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="signatures">
-          Firmas por mes
-        </label>
+    <label for="signatures">
+      Firmas por mes
+    </label>
 
-        <input
-          type="number"
-          id="signatures"
-          value="0"
-          min="0"
-        >
+    <input
+      type="number"
+      id="signatures"
+      value="0"
+      min="0"
+    >
 
-        <small>
-          Costo: USD 0,20 por firma.
-        </small>
+    <small>
+      Costo: USD 0,20 por firma.
+    </small>
 
-      </div>
+  </div>
 
 
-      <!-- PESO -->
+  <!-- PESO -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="imageWeight">
-          Peso promedio de una imagen (KB)
-        </label>
+    <label for="imageWeight">
+      Peso promedio de una imagen (KB)
+    </label>
 
-        <input
-          type="number"
-          id="imageWeight"
-          value="70"
-          min="0"
-        >
+    <input
+      type="number"
+      id="imageWeight"
+      value="70"
+      min="0"
+    >
 
-        <small>
-          Referencia habitual: 70 KB por imagen.
-        </small>
+    <small>
+      Referencia habitual: 70 KB por imagen.
+    </small>
 
-      </div>
+  </div>
 
 
-      <!-- IMAGENES -->
+  <!-- IMAGENES -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="images">
-          Cantidad de imágenes
-        </label>
+    <label for="images">
+      Cantidad de imágenes
+    </label>
 
-        <input
-          type="number"
-          id="images"
-          value="0"
-          min="0"
-        >
+    <input
+      type="number"
+      id="images"
+      value="0"
+      min="0"
+    >
 
-        <small>
-          Se calcula automáticamente el almacenamiento necesario.
-        </small>
+    <small>
+      Se calcula automáticamente el almacenamiento necesario.
+    </small>
 
-      </div>
+  </div>
 
 
-      <!-- PACKS -->
+  <!-- STORAGE -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="manualPacks">
-          Packs de Storage
-        </label>
+    <label for="manualPacks">
+      Packs de Storage
+    </label>
 
-        <input
-          type="number"
-          id="manualPacks"
-          value="0"
-          min="0"
-        >
+    <input
+      type="number"
+      id="manualPacks"
+      value="0"
+      min="0"
+    >
 
-        <small>
-          Opcional: 1 pack = 50 GB · 2 = 100 GB · 3 = 150 GB.
-        </small>
+    <small>
+      1 pack = 50 GB · 2 = 100 GB · 3 = 150 GB.
+    </small>
 
-      </div>
+  </div>
 
 
-      <!-- SOPORTE -->
+  <!-- SOPORTE -->
 
-      <div class="field">
+  <div class="field">
 
-        <label for="support">
-          Horas de soporte Addoc
-        </label>
+    <label for="support">
+      Horas de soporte Addoc
+    </label>
 
-        <input
-          type="number"
-          id="support"
-          value="5"
-          min="0"
-        >
+    <input
+      type="number"
+      id="support"
+      value="5"
+      min="0"
+    >
 
-        <small>
-          Costo: USD 25 por hora.
-        </small>
+    <small>
+      Costo: USD 25 por hora.
+    </small>
 
-      </div>
+  </div>
 
+
+</div>
+
+
+<div
+  id="warning"
+  class="warning"
+></div>
+
+
+<div
+  id="info"
+  class="info"
+></div>
+
+
+<div
+  id="success"
+  class="success"
+></div>
+
+
+<div
+  id="proposalBox"
+  class="proposal-box"
+></div>
+
+
+<div class="buttons">
+
+
+  <button
+    class="button"
+    onclick="calculate()"
+  >
+    🧮 Calcular cotización
+  </button>
+
+
+  <button
+    class="button save-button"
+    onclick="saveQuoteToOpportunity()"
+  >
+    💾 Guardar en oportunidad
+  </button>
+
+
+  <button
+    class="button docx-button"
+    onclick="generateFinalProposal()"
+  >
+    📄 Generar propuesta final
+  </button>
+
+
+  <button
+    class="button excel-button"
+    onclick="downloadExcel()"
+  >
+    📥 Descargar Excel
+  </button>
+
+
+</div>
+```
+
+  </div>
+
+  <!-- RESULTADOS -->
+
+  <div class="card">
+
+```
+<h3>
+  📊 Resultado
+</h3>
+
+
+<div class="results">
+
+
+  <div class="result">
+
+    <div class="result-title">
+      Costo Setup
     </div>
 
-
     <div
-      id="warning"
-      class="warning"
-    ></div>
-
-
-    <div
-      id="info"
-      class="info"
-    ></div>
-
-
-    <div
-      id="success"
-      class="success"
-    ></div>
-
-
-    <div
-      id="proposalBox"
-      class="proposal-box"
-    ></div>
-
-
-    <div class="buttons">
-
-
-      <button
-        class="button"
-        onclick="calculate()"
-      >
-        🧮 Calcular cotización
-      </button>
-
-
-      <button
-        class="button save-button"
-        onclick="saveQuoteToOpportunity()"
-      >
-        💾 Guardar en oportunidad
-      </button>
-
-
-      <button
-        class="button docx-button"
-        onclick="generateFinalProposal()"
-      >
-        📄 Generar propuesta final
-      </button>
-
-
-      <button
-        class="button excel-button"
-        onclick="downloadExcel()"
-      >
-        📥 Descargar Excel
-      </button>
-
+      class="result-value"
+      id="setupCost"
+    >
+      USD 0,00
     </div>
 
   </div>
 
 
-  <!-- =================================================
-       RESULTADOS
-  ================================================= -->
+  <div class="result">
 
-  <div class="card">
-
-    <h3>
-      📊 Resultado
-    </h3>
-
-
-    <div class="results">
-
-
-      <div class="result">
-
-        <div class="result-title">
-          Costo Setup
-        </div>
-
-        <div
-          class="result-value"
-          id="setupCost"
-        >
-          USD 0,00
-        </div>
-
-      </div>
-
-
-      <div class="result">
-
-        <div class="result-title">
-          Costo Usuarios
-        </div>
-
-        <div
-          class="result-value"
-          id="usersCost"
-        >
-          USD 0,00
-        </div>
-
-      </div>
-
-
-      <div class="result">
-
-        <div class="result-title">
-          Costo Firmas
-        </div>
-
-        <div
-          class="result-value"
-          id="signatureCost"
-        >
-          USD 0,00
-        </div>
-
-      </div>
-
-
-      <div class="result">
-
-        <div class="result-title">
-          Costo Soporte
-        </div>
-
-        <div
-          class="result-value"
-          id="supportCost"
-        >
-          USD 0,00
-        </div>
-
-      </div>
-
+    <div class="result-title">
+      Costo Usuarios
     </div>
 
-
-    <!-- STORAGE -->
-
-    <div class="storage-box">
-
-      <strong>
-        💾 Storage
-      </strong>
-
-
-      <p>
-        Necesidad calculada:
-        <strong id="storageNeeded">
-          0 GB
-        </strong>
-      </p>
-
-
-      <p>
-        Storage a cotizar:
-        <strong id="storageQuoted">
-          50 GB
-        </strong>
-      </p>
-
-
-      <p>
-        Cantidad de packs:
-        <strong id="storagePacks">
-          1
-        </strong>
-      </p>
-
-
-      <p>
-        Costo Storage:
-        <strong id="storageCost">
-          USD 2,00
-        </strong>
-      </p>
-
+    <div
+      class="result-value"
+      id="usersCost"
+    >
+      USD 0,00
     </div>
 
-
-    <!-- TOTAL -->
-
-    <div class="total">
-
-      <div class="total-row">
-
-        <span>
-          Total único / Setup
-        </span>
-
-        <strong id="totalSetup">
-          USD 0,00
-        </strong>
-
-      </div>
+  </div>
 
 
-      <div class="total-row">
+  <div class="result">
 
-        <span>
-          Total mensual
-        </span>
-
-        <strong id="totalMonthly">
-          USD 0,00
-        </strong>
-
-      </div>
-
-
-      <div class="total-final">
-
-        <div>
-          Costo total primer año
-        </div>
-
-        <div id="totalYear">
-          USD 0,00
-        </div>
-
-      </div>
-
+    <div class="result-title">
+      Costo Firmas
     </div>
+
+    <div
+      class="result-value"
+      id="signatureCost"
+    >
+      USD 0,00
+    </div>
+
+  </div>
+
+
+  <div class="result">
+
+    <div class="result-title">
+      Costo Soporte
+    </div>
+
+    <div
+      class="result-value"
+      id="supportCost"
+    >
+      USD 0,00
+    </div>
+
+  </div>
+
+
+</div>
+
+
+<div class="storage-box">
+
+  <strong>
+    💾 Storage
+  </strong>
+
+  <p>
+    Necesidad calculada:
+    <strong id="storageNeeded">
+      0 GB
+    </strong>
+  </p>
+
+  <p>
+    Storage a cotizar:
+    <strong id="storageQuoted">
+      50 GB
+    </strong>
+  </p>
+
+  <p>
+    Cantidad de packs:
+    <strong id="storagePacks">
+      1
+    </strong>
+  </p>
+
+  <p>
+    Costo Storage:
+    <strong id="storageCost">
+      USD 2,00
+    </strong>
+  </p>
+
+</div>
+
+
+<div class="total">
+
+  <div class="total-row">
+
+    <span>
+      Total único / Setup
+    </span>
+
+    <strong id="totalSetup">
+      USD 0,00
+    </strong>
+
+  </div>
+
+
+  <div class="total-row">
+
+    <span>
+      Total mensual
+    </span>
+
+    <strong id="totalMonthly">
+      USD 0,00
+    </strong>
+
+  </div>
+
+
+  <div class="total-final">
+
+    <div>
+      Costo total primer año
+    </div>
+
+    <div id="totalYear">
+      USD 0,00
+    </div>
+
+  </div>
+
+</div>
+```
 
   </div>
 
 </main>
 
-
 <script>
 
-/* =====================================================
-   OPORTUNIDAD ACTUAL
-===================================================== */
-
-let currentOpportunity =
-  null;
-
 
 /* =====================================================
-   BIBLIOTECA
+   VARIABLES
 ===================================================== */
 
-let libraryDatabase =
-  null;
+let currentOpportunity = null;
 
+let libraryDatabase = null;
+
+
+/* =====================================================
+   CONFIGURACION BIBLIOTECA
+===================================================== */
 
 const LIBRARY_DB_NAME =
   "preventa_ia_biblioteca";
 
-
 const LIBRARY_DB_VERSION =
   2;
 
-
 const LIBRARY_STORE =
   "proposals";
-
 
 const FINAL_STORE =
   "finalProposals";
@@ -916,7 +860,7 @@ function getLibraryFolders() {
   catch(error) {
 
     console.error(
-      "No se pudieron leer las carpetas:",
+      "No se pudieron leer las carpetas.",
       error
     );
 
@@ -928,7 +872,7 @@ function getLibraryFolders() {
 
 
 /* =====================================================
-   ABRIR BASE DE DATOS
+   ABRIR INDEXED DB
 ===================================================== */
 
 function openLibraryDatabase() {
@@ -951,8 +895,38 @@ function openLibraryDatabase() {
 
 
           /*
-            Mantener la estructura
-            existente de la biblioteca.
+            Mantener propuestas originales.
+          */
+
+          if (
+            !database.objectStoreNames.contains(
+              LIBRARY_STORE
+            )
+          ) {
+
+            const store =
+              database.createObjectStore(
+                LIBRARY_STORE,
+                {
+                  keyPath: "id",
+                  autoIncrement: true
+                }
+              );
+
+
+            store.createIndex(
+              "folder",
+              "folder",
+              {
+                unique: false
+              }
+            );
+
+          }
+
+
+          /*
+            Propuestas finales.
           */
 
           if (
@@ -961,7 +935,7 @@ function openLibraryDatabase() {
             )
           ) {
 
-            const store =
+            const finalStore =
               database.createObjectStore(
                 FINAL_STORE,
                 {
@@ -970,7 +944,7 @@ function openLibraryDatabase() {
               );
 
 
-            store.createIndex(
+            finalStore.createIndex(
               "opportunityId",
               "opportunityId",
               {
@@ -979,7 +953,7 @@ function openLibraryDatabase() {
             );
 
 
-            store.createIndex(
+            finalStore.createIndex(
               "createdAt",
               "createdAt",
               {
@@ -1010,7 +984,10 @@ function openLibraryDatabase() {
         function() {
 
           reject(
-            request.error
+            request.error ||
+            new Error(
+              "No se pudo abrir la Biblioteca Técnica."
+            )
           );
 
         };
@@ -1022,7 +999,7 @@ function openLibraryDatabase() {
 
 
 /* =====================================================
-   ARCHIVOS DE BIBLIOTECA
+   OBTENER ARCHIVOS DE UNA CARPETA
 ===================================================== */
 
 function getLibraryFiles(
@@ -1069,6 +1046,7 @@ function getLibraryFiles(
 
       let index;
 
+
       try {
 
         index =
@@ -1079,11 +1057,6 @@ function getLibraryFiles(
       }
 
       catch(error) {
-
-        console.warn(
-          "No existe el índice folder:",
-          error
-        );
 
         resolve([]);
 
@@ -1210,8 +1183,7 @@ async function loadProducts() {
 
 
   /*
-    Recuperar producto
-    previamente guardado.
+    Recuperar producto.
   */
 
   if (
@@ -1262,7 +1234,7 @@ async function loadProducts() {
 
 
 /* =====================================================
-   PRODUCTO CAMBIADO
+   CAMBIO DE PRODUCTO
 ===================================================== */
 
 async function productChanged() {
@@ -1345,10 +1317,7 @@ async function productChanged() {
 
       status.textContent =
         "📚 Propuesta técnica disponible: " +
-        (
-          files[0].name ||
-          "Archivo Word"
-        ) +
+        files[0].name +
         (
           files[0].version
             ? " · versión " +
@@ -1366,7 +1335,7 @@ async function productChanged() {
 
 
       status.textContent =
-        "⚠️ No hay todavía una propuesta técnica cargada para " +
+        "⚠️ No hay una propuesta técnica cargada para " +
         folder.name +
         ".";
 
@@ -1427,7 +1396,7 @@ async function loadCurrentOpportunity() {
   catch(error) {
 
     console.error(
-      "No se pudo leer la oportunidad:",
+      "No se pudo leer la oportunidad.",
       error
     );
 
@@ -1464,7 +1433,7 @@ async function loadCurrentOpportunity() {
 
 
   /*
-    OPORTUNIDAD
+    PROYECTO
   */
 
   if (
@@ -1525,15 +1494,11 @@ async function loadCurrentOpportunity() {
       storageGB > 0
     ) {
 
-      const packs =
-        Math.ceil(
-          storageGB / 50
-        );
-
-
       setInputValue(
         "manualPacks",
-        packs
+        Math.ceil(
+          storageGB / 50
+        )
       );
 
     }
@@ -1611,27 +1576,15 @@ async function loadCurrentOpportunity() {
     currentOpportunity.quote
 
       ? "🔗 Cotización asociada a: " +
-        (
-          currentOpportunity.client ||
-          ""
-        ) +
+        currentOpportunity.client +
         " — " +
-        (
-          currentOpportunity.project ||
-          ""
-        ) +
+        currentOpportunity.project +
         " · Cotización existente cargada."
 
       : "🔗 Cotización vinculada a: " +
-        (
-          currentOpportunity.client ||
-          ""
-        ) +
+        currentOpportunity.client +
         " — " +
-        (
-          currentOpportunity.project ||
-          ""
-        );
+        currentOpportunity.project;
 
 
   connection.style.display =
@@ -1650,7 +1603,7 @@ async function loadCurrentOpportunity() {
 
 
 /* =====================================================
-   SET INPUT
+   INPUT
 ===================================================== */
 
 function setInputValue(
@@ -1686,7 +1639,7 @@ function setInputValue(
 
 
 /* =====================================================
-   PARSE NUMBER
+   NUMERO
 ===================================================== */
 
 function parseNumber(
@@ -1694,8 +1647,7 @@ function parseNumber(
 ) {
 
   if (
-    typeof value ===
-    "number"
+    typeof value === "number"
   ) {
 
     return value;
@@ -1726,9 +1678,7 @@ function parseNumber(
     );
 
 
-  return isNaN(
-    numero
-  )
+  return isNaN(numero)
     ? 0
     : numero;
 
@@ -1736,7 +1686,7 @@ function parseNumber(
 
 
 /* =====================================================
-   EXTRAER GB
+   STORAGE A GB
 ===================================================== */
 
 function extraerGB(
@@ -1820,6 +1770,23 @@ function money(
         maximumFractionDigits: 2
       }
     )
+  );
+
+}
+
+
+function moneyPlain(
+  value
+) {
+
+  return Number(
+    value || 0
+  ).toLocaleString(
+    "es-AR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
   );
 
 }
@@ -2268,7 +2235,7 @@ function calculate() {
 
 
   /*
-    OBJETO COTIZACION
+    COTIZACION EN MEMORIA
   */
 
   window.cotizacion = {
@@ -2323,11 +2290,9 @@ function calculate() {
 
   info.innerText =
     productFolder
-
       ? "✅ Cotización calculada para " +
         productFolder.name +
         "."
-
       : "✅ Cotización calculada correctamente.";
 
 
@@ -2401,17 +2366,9 @@ function saveQuoteToOpportunity() {
     window.cotizacion;
 
 
-  /*
-    GUARDAR COTIZACION
-  */
-
   opportunities[index].quote =
     quote;
 
-
-  /*
-    PRODUCTO
-  */
 
   opportunities[index].product =
     quote.product ||
@@ -2437,10 +2394,6 @@ function saveQuoteToOpportunity() {
     new Date().toISOString();
 
 
-  /*
-    CAMBIO DE ESTADO
-  */
-
   if (
     opportunities[index].status ===
     "analysis"
@@ -2451,10 +2404,6 @@ function saveQuoteToOpportunity() {
 
   }
 
-
-  /*
-    GUARDAR
-  */
 
   localStorage.setItem(
     "preventa_opportunities",
@@ -2485,6 +2434,7 @@ function saveQuoteToOpportunity() {
   success.innerText =
     "✅ Cotización guardada correctamente en la oportunidad.";
 
+
   success.style.display =
     "block";
 
@@ -2497,15 +2447,9 @@ function saveQuoteToOpportunity() {
 
   connection.textContent =
     "🔗 Oportunidad actualizada: " +
-    (
-      currentOpportunity.client ||
-      ""
-    ) +
+    currentOpportunity.client +
     " — " +
-    (
-      currentOpportunity.project ||
-      ""
-    ) +
+    currentOpportunity.project +
     (
       quote.product
         ? " · Producto: " +
@@ -2513,6 +2457,7 @@ function saveQuoteToOpportunity() {
         : ""
     ) +
     " · Cotización guardada.";
+
 
   connection.style.display =
     "block";
@@ -2525,10 +2470,6 @@ function saveQuoteToOpportunity() {
 ===================================================== */
 
 async function generateFinalProposal() {
-
-  /*
-    Recalcular.
-  */
 
   calculate();
 
@@ -2581,7 +2522,7 @@ async function generateFinalProposal() {
   ) {
 
     alert(
-      "La Biblioteca Técnica todavía no está disponible."
+      "La Biblioteca Técnica todavía no está disponible. Recargá el cotizador."
     );
 
     return;
@@ -2602,15 +2543,6 @@ async function generateFinalProposal() {
 
 
   try {
-
-    /*
-      Antes de generar,
-      guardamos la cotización
-      dentro de la oportunidad.
-    */
-
-    saveQuoteToOpportunity();
-
 
     success.style.display =
       "block";
@@ -2637,6 +2569,11 @@ async function generateFinalProposal() {
     }
 
 
+    /*
+      Se toma la propuesta
+      más reciente.
+    */
+
     const baseFile =
       files[0];
 
@@ -2646,7 +2583,7 @@ async function generateFinalProposal() {
     ) {
 
       throw new Error(
-        "La propuesta encontrada no contiene el archivo Word."
+        "La propuesta encontrada no contiene el archivo."
       );
 
     }
@@ -2657,7 +2594,7 @@ async function generateFinalProposal() {
 
 
     /*
-      Crear documento final.
+      Crear Word final.
     */
 
     const finalBlob =
@@ -2668,11 +2605,11 @@ async function generateFinalProposal() {
 
 
     success.innerText =
-      "💾 Guardando propuesta final...";
+      "💾 Guardando propuesta final en el Repositorio...";
 
 
     /*
-      Guardar en IndexedDB.
+      Guardar propuesta final.
     */
 
     const savedProposal =
@@ -2685,7 +2622,7 @@ async function generateFinalProposal() {
 
 
     /*
-      NOMBRE
+      NOMBRE DEL ARCHIVO
     */
 
     const client =
@@ -2711,7 +2648,7 @@ async function generateFinalProposal() {
 
 
     /*
-      DESCARGA AUTOMATICA
+      Descargar automáticamente.
     */
 
     const url =
@@ -2755,12 +2692,12 @@ async function generateFinalProposal() {
         );
 
       },
-      1500
+      1000
     );
 
 
     /*
-      REFERENCIA
+      Guardar referencia.
     */
 
     saveFinalProposalReference(
@@ -2768,8 +2705,13 @@ async function generateFinalProposal() {
     );
 
 
+    /*
+      MENSAJE
+    */
+
     success.innerText =
       "✅ Propuesta final generada, guardada en el Repositorio y descargada correctamente.";
+
 
     success.style.display =
       "block";
@@ -2777,7 +2719,7 @@ async function generateFinalProposal() {
 
     proposalBox.innerHTML =
 
-      "<strong>📄 Propuesta final guardada</strong><br><br>" +
+      "<strong>📄 Propuesta final generada</strong><br><br>" +
 
       "Archivo: " +
       escapeHTML(
@@ -2799,8 +2741,11 @@ async function generateFinalProposal() {
       ) +
       "<br><br>" +
 
-      "✅ Quedó asociada a esta oportunidad y " +
-      "podrás previsualizarla y descargarla desde el Repositorio.";
+      "✅ La propuesta económica fue agregada al Word." +
+      "<br>" +
+      "✅ El archivo quedó guardado en el Repositorio." +
+      "<br>" +
+      "✅ También fue descargado a tu computadora.";
 
 
     proposalBox.style.display =
@@ -2811,13 +2756,14 @@ async function generateFinalProposal() {
   catch(error) {
 
     console.error(
-      "Error generando propuesta:",
+      "Error generando propuesta final:",
       error
     );
 
 
     success.innerText =
       "❌ No se pudo generar la propuesta final.";
+
 
     success.style.display =
       "block";
@@ -2834,7 +2780,7 @@ async function generateFinalProposal() {
 
 
 /* =====================================================
-   GUARDAR PROPUESTA FINAL EN INDEXEDDB
+   GUARDAR PROPUESTA FINAL
 ===================================================== */
 
 function saveFinalProposal(
@@ -2868,7 +2814,7 @@ function saveFinalProposal(
 
         reject(
           new Error(
-            "No existe el almacenamiento de propuestas finales."
+            "El almacenamiento de propuestas finales no está disponible. Recargá la página."
           )
         );
 
@@ -2912,11 +2858,13 @@ function saveFinalProposal(
         function() {
 
           const anteriores =
-            request.result || [];
+            request.result ||
+            [];
 
 
           /*
-            Eliminar versiones anteriores.
+            Borrar versiones anteriores
+            de la misma oportunidad.
           */
 
           anteriores.forEach(
@@ -2929,10 +2877,6 @@ function saveFinalProposal(
             }
           );
 
-
-          /*
-            Nombre.
-          */
 
           const client =
             sanitizeFileName(
@@ -2955,10 +2899,6 @@ function saveFinalProposal(
             client +
             ".docx";
 
-
-          /*
-            Registro.
-          */
 
           const registro = {
 
@@ -2996,6 +2936,7 @@ function saveFinalProposal(
 
             sourceProposal:
               baseFile.name ||
+              baseFile.originalName ||
               "",
 
             createdAt:
@@ -3057,7 +2998,7 @@ function saveFinalProposal(
 
 
 /* =====================================================
-   REFERENCIA EN OPORTUNIDAD
+   GUARDAR REFERENCIA EN OPORTUNIDAD
 ===================================================== */
 
 function saveFinalProposalReference(
@@ -3127,12 +3068,13 @@ function saveFinalProposalReference(
     };
 
 
-    /*
-      Guardar también que ya
-      existe una propuesta.
-    */
+    opportunities[index].updatedAt =
+      new Date().toISOString();
+
 
     if (
+      opportunities[index].status ===
+      "analysis" ||
       opportunities[index].status ===
       "quote"
     ) {
@@ -3141,10 +3083,6 @@ function saveFinalProposalReference(
         "proposal";
 
     }
-
-
-    opportunities[index].updatedAt =
-      new Date().toISOString();
 
 
     localStorage.setItem(
@@ -3171,7 +3109,7 @@ function saveFinalProposalReference(
   catch(error) {
 
     console.warn(
-      "No se pudo guardar referencia:",
+      "No se pudo guardar la referencia.",
       error
     );
 
@@ -3181,7 +3119,7 @@ function saveFinalProposalReference(
 
 
 /* =====================================================
-   MODIFICAR WORD
+   AGREGAR PROPUESTA ECONOMICA AL WORD
 ===================================================== */
 
 async function addEconomicProposal(
@@ -3200,10 +3138,6 @@ async function addEconomicProposal(
 
   }
 
-
-  /*
-    Leer DOCX.
-  */
 
   const arrayBuffer =
     await baseBlob.arrayBuffer();
@@ -3237,7 +3171,7 @@ async function addEconomicProposal(
 
 
   /*
-    Crear sección económica.
+    Agregar página económica.
   */
 
   const economicXML =
@@ -3246,85 +3180,33 @@ async function addEconomicProposal(
     );
 
 
-  /*
-    ==================================================
-    IMPORTANTE
-    ==================================================
-
-    Word exige que w:sectPr quede
-    como último elemento del body.
-
-    Por eso NO insertamos antes de
-    </w:body>, sino JUSTO ANTES de
-    <w:sectPr ...>.
-  */
-
-  const sectPrPosition =
+  const bodyEnd =
     xml.lastIndexOf(
-      "<w:sectPr"
+      "</w:body>"
     );
 
 
   if (
-    sectPrPosition !== -1
+    bodyEnd === -1
   ) {
 
-    xml =
-      xml.slice(
-        0,
-        sectPrPosition
-      ) +
-
-      economicXML +
-
-      xml.slice(
-        sectPrPosition
-      );
-
-  }
-
-  else {
-
-    /*
-      Algunos documentos pueden
-      no tener sectPr explícito.
-    */
-
-    const bodyEnd =
-      xml.lastIndexOf(
-        "</w:body>"
-      );
-
-
-    if (
-      bodyEnd === -1
-    ) {
-
-      throw new Error(
-        "No encontré una estructura válida en el Word."
-      );
-
-    }
-
-
-    xml =
-      xml.slice(
-        0,
-        bodyEnd
-      ) +
-
-      economicXML +
-
-      xml.slice(
-        bodyEnd
-      );
+    throw new Error(
+      "No pude encontrar el cuerpo del documento Word."
+    );
 
   }
 
 
-  /*
-    Guardar document.xml.
-  */
+  xml =
+    xml.slice(
+      0,
+      bodyEnd
+    ) +
+    economicXML +
+    xml.slice(
+      bodyEnd
+    );
+
 
   zip.file(
     "word/document.xml",
@@ -3332,32 +3214,21 @@ async function addEconomicProposal(
   );
 
 
-  /*
-    Generar DOCX.
-  */
+  return await zip.generateAsync({
 
-  const finalBlob =
-    await zip.generateAsync({
+    type:
+      "blob",
 
-      type:
-        "blob",
+    mimeType:
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 
-      mimeType:
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-
-      compression:
-        "DEFLATE"
-
-    });
-
-
-  return finalBlob;
+  });
 
 }
 
 
 /* =====================================================
-   CREAR PAGINA ECONOMICA
+   CONSTRUIR PAGINA ECONOMICA
 ===================================================== */
 
 function buildEconomicPage(
@@ -3389,10 +3260,14 @@ function buildEconomicPage(
         quote.users,
 
       unitPrice:
-        quote.userPrice,
+        moneyPlain(
+          quote.userPrice
+        ),
 
       total:
-        quote.usersCost
+        moneyPlain(
+          quote.usersCost
+        )
 
     });
 
@@ -3405,7 +3280,7 @@ function buildEconomicPage(
 
   if (
     Number(
-      quote.storageCost
+      quote.packs
     ) > 0
   ) {
 
@@ -3415,16 +3290,20 @@ function buildEconomicPage(
         "Storage",
 
       unit:
-        "Pack 50 GB / mes",
+        "Pack de 50 GB / mes",
 
       quantity:
         quote.packs,
 
       unitPrice:
-        2,
+        moneyPlain(
+          2
+        ),
 
       total:
-        quote.storageCost
+        moneyPlain(
+          quote.storageCost
+        )
 
     });
 
@@ -3453,10 +3332,14 @@ function buildEconomicPage(
         quote.signatures,
 
       unitPrice:
-        0.20,
+        moneyPlain(
+          0.20
+        ),
 
       total:
-        quote.signatureCost
+        moneyPlain(
+          quote.signatureCost
+        )
 
     });
 
@@ -3485,10 +3368,14 @@ function buildEconomicPage(
         quote.setup,
 
       unitPrice:
-        25,
+        moneyPlain(
+          25
+        ),
 
       total:
-        quote.setupCost
+        moneyPlain(
+          quote.setupCost
+        )
 
     });
 
@@ -3517,23 +3404,27 @@ function buildEconomicPage(
         quote.support,
 
       unitPrice:
-        25,
+        moneyPlain(
+          25
+        ),
 
       total:
-        quote.supportCost
+        moneyPlain(
+          quote.supportCost
+        )
 
     });
 
   }
 
 
-  /*
-    TABLA
-  */
-
   let tableRows =
     "";
 
+
+  /*
+    ENCABEZADO
+  */
 
   tableRows +=
     "<w:tr>" +
@@ -3566,11 +3457,14 @@ function buildEconomicPage(
     "</w:tr>";
 
 
+  /*
+    FILAS
+  */
+
   rows.forEach(
     function(row) {
 
       tableRows +=
-
         "<w:tr>" +
 
           tableCell(
@@ -3592,17 +3486,13 @@ function buildEconomicPage(
 
           tableCell(
             "USD " +
-            moneyPlain(
-              row.unitPrice
-            ),
+            row.unitPrice,
             false
           ) +
 
           tableCell(
             "USD " +
-            moneyPlain(
-              row.total
-            ),
+            row.total,
             false
           ) +
 
@@ -3613,85 +3503,30 @@ function buildEconomicPage(
 
 
   /*
-    Si no hay conceptos.
+    SIN CONCEPTOS
   */
 
   if (
-    rows.length ===
-    0
+    rows.length === 0
   ) {
 
     tableRows +=
-
       "<w:tr>" +
-
         tableCell(
           "No se cargaron conceptos económicos.",
           false,
           5
         ) +
-
       "</w:tr>";
 
   }
 
 
   /*
-    TABLA COMPLETA
-  */
-
-  const tableXML =
-
-    "<w:tbl>" +
-
-      "<w:tblPr>" +
-
-        "<w:tblW w:w=\"0\" w:type=\"auto\"/>" +
-
-        "<w:tblBorders>" +
-
-          borderXML("top") +
-
-          borderXML("left") +
-
-          borderXML("bottom") +
-
-          borderXML("right") +
-
-          borderXML("insideH") +
-
-          borderXML("insideV") +
-
-        "</w:tblBorders>" +
-
-        "<w:tblLayout w:type=\"autofit\"/>" +
-
-      "</w:tblPr>" +
-
-      "<w:tblGrid>" +
-
-        "<w:gridCol w:w=\"2600\"/>" +
-
-        "<w:gridCol w:w=\"1900\"/>" +
-
-        "<w:gridCol w:w=\"1200\"/>" +
-
-        "<w:gridCol w:w=\"1800\"/>" +
-
-        "<w:gridCol w:w=\"2000\"/>" +
-
-      "</w:tblGrid>" +
-
-      tableRows +
-
-    "</w:tbl>";
-
-
-  /*
     PAGINA ECONOMICA
   */
 
-  let page =
+  const page =
 
     "<w:p>" +
 
@@ -3701,14 +3536,12 @@ function buildEconomicPage(
 
       "</w:r>" +
 
-    "</w:p>";
+    "</w:p>" +
 
 
-  /*
-    TITULO
-  */
-
-  page +=
+    /*
+      TITULO
+    */
 
     "<w:p>" +
 
@@ -3716,7 +3549,7 @@ function buildEconomicPage(
 
         "<w:jc w:val=\"center\"/>" +
 
-        "<w:spacing w:after=\"240\"/>" +
+        "<w:spacing w:after=\"200\"/>" +
 
       "</w:pPr>" +
 
@@ -3734,50 +3567,45 @@ function buildEconomicPage(
 
       "</w:r>" +
 
-    "</w:p>";
+    "</w:p>" +
 
 
-  /*
-    CLIENTE
-  */
+    /*
+      CLIENTE
+    */
 
-  page +=
-    economicParagraph(
-      "Cliente",
+    paragraphBoldValue(
+      "Cliente: ",
       quote.client ||
       "Sin especificar"
-    );
+    ) +
 
 
-  /*
-    OPORTUNIDAD
-  */
+    /*
+      OPORTUNIDAD
+    */
 
-  page +=
-    economicParagraph(
-      "Oportunidad",
+    paragraphBoldValue(
+      "Oportunidad: ",
       quote.opportunity ||
       "Sin especificar"
-    );
+    ) +
 
 
-  /*
-    PRODUCTO
-  */
+    /*
+      PRODUCTO
+    */
 
-  page +=
-    economicParagraph(
-      "Producto / Solución",
+    paragraphBoldValue(
+      "Producto: ",
       quote.product ||
       "Sin especificar"
-    );
+    ) +
 
 
-  /*
-    SUBTITULO
-  */
-
-  page +=
+    /*
+      DETALLE
+    */
 
     "<w:p>" +
 
@@ -3793,22 +3621,45 @@ function buildEconomicPage(
 
       "</w:r>" +
 
-    "</w:p>";
+    "</w:p>" +
 
 
-  /*
-    TABLA
-  */
+    /*
+      TABLA
+    */
 
-  page +=
-    tableXML;
+    "<w:tbl>" +
+
+      "<w:tblPr>" +
+
+        "<w:tblBorders>" +
+
+          borderXML("top") +
+
+          borderXML("left") +
+
+          borderXML("bottom") +
+
+          borderXML("right") +
+
+          borderXML("insideH") +
+
+          borderXML("insideV") +
+
+        "</w:tblBorders>" +
+
+        "<w:tblLayout w:type=\"fixed\"/>" +
+
+      "</w:tblPr>" +
+
+      tableRows +
+
+    "</w:tbl>" +
 
 
-  /*
-    SEPARADOR
-  */
-
-  page +=
+    /*
+      ESPACIO
+    */
 
     "<w:p>" +
 
@@ -3818,38 +3669,36 @@ function buildEconomicPage(
 
       "</w:r>" +
 
-    "</w:p>";
+    "</w:p>" +
 
 
-  /*
-    TOTALES
-  */
+    /*
+      TOTAL SETUP
+    */
 
-  page +=
-
-    economicParagraph(
-      "Total único / Setup",
+    paragraphBoldValue(
+      "Total único / Setup: ",
       money(
         quote.totalSetup
       )
-    );
+    ) +
 
 
-  page +=
+    /*
+      TOTAL MENSUAL
+    */
 
-    economicParagraph(
-      "Total mensual",
+    paragraphBoldValue(
+      "Total mensual: ",
       money(
         quote.totalMonthly
       )
-    );
+    ) +
 
 
-  /*
-    TOTAL PRIMER AÑO
-  */
-
-  page +=
+    /*
+      TOTAL PRIMER AÑO
+    */
 
     "<w:p>" +
 
@@ -3889,21 +3738,32 @@ function buildEconomicPage(
 
       "</w:r>" +
 
+    "</w:p>" +
+
+
+    /*
+      FECHA
+    */
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          "Fecha: " +
+
+          escapeXML(
+            new Date().toLocaleDateString(
+              "es-AR"
+            )
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
     "</w:p>";
-
-
-  /*
-    FECHA
-  */
-
-  page +=
-
-    economicParagraph(
-      "Fecha",
-      new Date().toLocaleDateString(
-        "es-AR"
-      )
-    );
 
 
   return page;
@@ -3912,7 +3772,57 @@ function buildEconomicPage(
 
 
 /* =====================================================
-   CELDA
+   PARAGRAFO CON NEGRITA
+===================================================== */
+
+function paragraphBoldValue(
+  label,
+  value
+) {
+
+  return (
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+        "</w:rPr>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            label
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            value
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>"
+
+  );
+
+}
+
+
+/* =====================================================
+   CELDA TABLA
 ===================================================== */
 
 function tableCell(
@@ -3920,12 +3830,6 @@ function tableCell(
   header,
   span = 1
 ) {
-
-  /*
-    IMPORTANTE:
-    return queda en la misma
-    línea para evitar ASI.
-  */
 
   return (
 
@@ -3942,6 +3846,8 @@ function tableCell(
 
             : ""
         ) +
+
+        "<w:tcW w:w=\"1800\" w:type=\"dxa\"/>" +
 
       "</w:tcPr>" +
 
@@ -3995,64 +3901,6 @@ function tableCell(
 
 
 /* =====================================================
-   PARRAFO ECONOMICO
-===================================================== */
-
-function economicParagraph(
-  label,
-  value
-) {
-
-  return (
-
-    "<w:p>" +
-
-      "<w:r>" +
-
-        "<w:rPr>" +
-
-          "<w:b/>" +
-
-        "</w:rPr>" +
-
-        "<w:t>" +
-
-          escapeXML(
-            String(
-              label ||
-              ""
-            )
-          ) +
-
-          ": " +
-
-        "</w:t>" +
-
-      "</w:r>" +
-
-      "<w:r>" +
-
-        "<w:t>" +
-
-          escapeXML(
-            String(
-              value ||
-              ""
-            )
-          ) +
-
-        "</w:t>" +
-
-      "</w:r>" +
-
-    "</w:p>"
-
-  );
-
-}
-
-
-/* =====================================================
    BORDES
 ===================================================== */
 
@@ -4064,33 +3912,8 @@ function borderXML(
 
     "<w:" +
     side +
-    " " +
-    "w:val=\"single\" " +
-    "w:sz=\"4\" " +
-    "w:space=\"0\" " +
-    "w:color=\"B7B7B7\"/>"
+    " w:val=\"single\" w:sz=\"4\" w:space=\"0\" w:color=\"B7B7B7\"/>"
 
-  );
-
-}
-
-
-/* =====================================================
-   DINERO PLANO
-===================================================== */
-
-function moneyPlain(
-  value
-) {
-
-  return Number(
-    value || 0
-  ).toLocaleString(
-    "es-AR",
-    {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }
   );
 
 }
@@ -4105,8 +3928,7 @@ function escapeXML(
 ) {
 
   return String(
-    value ||
-    ""
+    value || ""
   )
 
   .replace(
@@ -4146,8 +3968,7 @@ function sanitizeFileName(
 ) {
 
   return String(
-    value ||
-    ""
+    value || ""
   )
 
   .replace(
@@ -4210,7 +4031,7 @@ function escapeHTML(
 
 
 /* =====================================================
-   EXCEL / CSV
+   EXCEL
 ===================================================== */
 
 function downloadExcel() {
@@ -4220,21 +4041,6 @@ function downloadExcel() {
 
   const c =
     window.cotizacion;
-
-
-  const client =
-    c.client ||
-    "Sin especificar";
-
-
-  const opportunity =
-    c.opportunity ||
-    "Sin especificar";
-
-
-  const product =
-    c.product ||
-    "Sin especificar";
 
 
   const rows = [
@@ -4247,25 +4053,27 @@ function downloadExcel() {
 
     [
       "Cliente",
-      client
+      c.client ||
+      "Sin especificar"
     ],
 
     [
       "Oportunidad",
-      opportunity
+      c.opportunity ||
+      "Sin especificar"
     ],
 
     [
       "Producto / Solución",
-      product
+      c.product ||
+      "Sin especificar"
     ],
 
     [
       "Fecha",
-      new Date()
-        .toLocaleDateString(
-          "es-AR"
-        )
+      new Date().toLocaleDateString(
+        "es-AR"
+      )
     ],
 
     [],
@@ -4370,37 +4178,34 @@ function downloadExcel() {
     rows.map(
       function(row) {
 
-        return row
-          .map(
-            function(value) {
+        return row.map(
+          function(value) {
 
-              let text =
-                String(
-                  value ??
-                  ""
-                );
-
-
-              text =
-                text.replace(
-                  /"/g,
-                  '""'
-                );
-
-
-              return (
-                '"' +
-                text +
-                '"'
+            let text =
+              String(
+                value ??
+                ""
               );
 
-            }
-          )
-          .join(";");
+
+            text =
+              text.replace(
+                /"/g,
+                '""'
+              );
+
+
+            return (
+              '"' +
+              text +
+              '"'
+            );
+
+          }
+        ).join(";");
 
       }
-    )
-    .join("\n");
+    ).join("\n");
 
 
   const blob =
@@ -4477,8 +4282,8 @@ function downloadExcel() {
 
   catch(error) {
 
-    console.warn(
-      "La Biblioteca todavía no está disponible:",
+    console.error(
+      "No se pudo inicializar la Biblioteca Técnica:",
       error
     );
 
@@ -4497,4 +4302,3 @@ function downloadExcel() {
 </body>
 
 </html>
-```
