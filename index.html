@@ -7,6 +7,7 @@
 <title>PREVENTA IA</title>
 
 <style>
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -286,6 +287,58 @@ nav a:hover {
   font-weight: bold;
 }
 
+/* CONOCIMIENTO IA */
+
+.knowledge-highlight {
+  margin-top: 35px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 25px;
+}
+
+.knowledge-highlight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.knowledge-highlight-header h3 {
+  margin: 0;
+}
+
+.knowledge-highlight-header p {
+  margin-top: 5px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.knowledge-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.knowledge-box {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.knowledge-box-title {
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.knowledge-box-text {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
 /* ULTIMAS */
 
 .recent {
@@ -369,12 +422,15 @@ footer {
 /* RESPONSIVE */
 
 @media (max-width: 1000px) {
+
   .metrics {
     grid-template-columns: repeat(3, 1fr);
   }
+
 }
 
 @media (max-width: 800px) {
+
   header {
     flex-direction: column;
     gap: 15px;
@@ -389,13 +445,16 @@ footer {
     flex-direction: column;
   }
 
-  .library-highlight-header {
+  .library-highlight-header,
+  .knowledge-highlight-header {
     flex-direction: column;
     align-items: flex-start;
   }
+
 }
 
 @media (max-width: 600px) {
+
   .metrics {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -408,10 +467,13 @@ footer {
     text-align: left;
   }
 
-  .library-data {
+  .library-data,
+  .knowledge-info {
     grid-template-columns: 1fr;
   }
+
 }
+
 </style>
 
 </head>
@@ -425,6 +487,7 @@ footer {
   </div>
 
   <nav>
+
     <a href="index.html">Inicio</a>
     <a href="asistente.html">Asistente</a>
     <a href="documentos.html">Documentos</a>
@@ -433,6 +496,8 @@ footer {
     <a href="cotizador.html">Cotizador</a>
     <a href="repositorio.html">Repositorio</a>
     <a href="biblioteca.html">Biblioteca técnica</a>
+    <a href="conocimientoiaasistente.html">Conocimiento IA</a>
+
   </nav>
 
 </header>
@@ -456,28 +521,78 @@ footer {
   <div class="metrics">
 
     <div class="metric">
-      <div class="metric-title">OPORTUNIDADES</div>
-      <div id="totalOpportunities" class="metric-value">0</div>
+
+      <div class="metric-title">
+        OPORTUNIDADES
+      </div>
+
+      <div
+        id="totalOpportunities"
+        class="metric-value"
+      >
+        0
+      </div>
+
     </div>
 
     <div class="metric">
-      <div class="metric-title">EN ANÁLISIS</div>
-      <div id="analysisCount" class="metric-value">0</div>
+
+      <div class="metric-title">
+        EN ANÁLISIS
+      </div>
+
+      <div
+        id="analysisCount"
+        class="metric-value"
+      >
+        0
+      </div>
+
     </div>
 
     <div class="metric">
-      <div class="metric-title">COTIZADAS</div>
-      <div id="quoteCount" class="metric-value">0</div>
+
+      <div class="metric-title">
+        COTIZADAS
+      </div>
+
+      <div
+        id="quoteCount"
+        class="metric-value"
+      >
+        0
+      </div>
+
     </div>
 
     <div class="metric">
-      <div class="metric-title">GANADAS</div>
-      <div id="wonCount" class="metric-value">0</div>
+
+      <div class="metric-title">
+        GANADAS
+      </div>
+
+      <div
+        id="wonCount"
+        class="metric-value"
+      >
+        0
+      </div>
+
     </div>
 
     <div class="metric">
-      <div class="metric-title">VALOR 1ER AÑO COTIZADO</div>
-      <div id="totalQuoted" class="metric-value">USD 0</div>
+
+      <div class="metric-title">
+        VALOR 1ER AÑO COTIZADO
+      </div>
+
+      <div
+        id="totalQuoted"
+        class="metric-value"
+      >
+        USD 0
+      </div>
+
     </div>
 
   </div>
@@ -492,15 +607,24 @@ footer {
 
       <div class="chart-area">
 
-        <div id="statusDonut" class="donut">
+        <div
+          id="statusDonut"
+          class="donut"
+        >
 
-          <div id="statusCenter" class="donut-center">
+          <div
+            id="statusCenter"
+            class="donut-center"
+          >
             0
           </div>
 
         </div>
 
-        <div id="statusLegend" class="legend"></div>
+        <div
+          id="statusLegend"
+          class="legend"
+        ></div>
 
       </div>
 
@@ -514,15 +638,24 @@ footer {
 
       <div class="chart-area">
 
-        <div id="quoteDonut" class="donut">
+        <div
+          id="quoteDonut"
+          class="donut"
+        >
 
-          <div id="quoteCenter" class="donut-center">
+          <div
+            id="quoteCenter"
+            class="donut-center"
+          >
             0%
           </div>
 
         </div>
 
-        <div id="quoteLegend" class="legend"></div>
+        <div
+          id="quoteLegend"
+          class="legend"
+        ></div>
 
       </div>
 
@@ -537,7 +670,10 @@ footer {
   <div class="cards">
 
     <div class="card">
-      <div class="icon">🤖</div>
+
+      <div class="icon">
+        🤖
+      </div>
 
       <h3>
         Asistente IA
@@ -548,13 +684,20 @@ footer {
         para tus tareas de Preventa.
       </p>
 
-      <a href="asistente.html" class="button">
+      <a
+        href="asistente.html"
+        class="button"
+      >
         Abrir asistente
       </a>
+
     </div>
 
     <div class="card">
-      <div class="icon">📄</div>
+
+      <div class="icon">
+        📄
+      </div>
 
       <h3>
         Documentos
@@ -565,13 +708,20 @@ footer {
         información relevante.
       </p>
 
-      <a href="documentos.html" class="button">
+      <a
+        href="documentos.html"
+        class="button"
+      >
         Analizar documento
       </a>
+
     </div>
 
     <div class="card">
-      <div class="icon">🎯</div>
+
+      <div class="icon">
+        🎯
+      </div>
 
       <h3>
         Análisis
@@ -582,13 +732,20 @@ footer {
         datos faltantes y soluciones sugeridas.
       </p>
 
-      <a href="analisis.html" class="button">
+      <a
+        href="analisis.html"
+        class="button"
+      >
         Abrir análisis
       </a>
+
     </div>
 
     <div class="card">
-      <div class="icon">💼</div>
+
+      <div class="icon">
+        💼
+      </div>
 
       <h3>
         Oportunidades
@@ -599,13 +756,20 @@ footer {
         estados, requerimientos y cotizaciones.
       </p>
 
-      <a href="oportunidades.html" class="button">
+      <a
+        href="oportunidades.html"
+        class="button"
+      >
         Ver oportunidades
       </a>
+
     </div>
 
     <div class="card">
-      <div class="icon">💰</div>
+
+      <div class="icon">
+        💰
+      </div>
 
       <h3>
         Cotizador
@@ -616,13 +780,20 @@ footer {
         firmas, soporte y costo anual.
       </p>
 
-      <a href="cotizador.html" class="button">
+      <a
+        href="cotizador.html"
+        class="button"
+      >
         Abrir cotizador
       </a>
+
     </div>
 
     <div class="card">
-      <div class="icon">🗂️</div>
+
+      <div class="icon">
+        🗂️
+      </div>
 
       <h3>
         Repositorio
@@ -633,13 +804,20 @@ footer {
         y propuestas finales generadas.
       </p>
 
-      <a href="repositorio.html" class="button">
+      <a
+        href="repositorio.html"
+        class="button"
+      >
         Abrir repositorio
       </a>
+
     </div>
 
     <div class="card">
-      <div class="icon">📚</div>
+
+      <div class="icon">
+        📚
+      </div>
 
       <h3>
         Biblioteca Técnica
@@ -650,9 +828,37 @@ footer {
         que utilizarás como base para futuras oportunidades.
       </p>
 
-      <a href="biblioteca.html" class="button">
+      <a
+        href="biblioteca.html"
+        class="button"
+      >
         Abrir biblioteca
       </a>
+
+    </div>
+
+    <div class="card">
+
+      <div class="icon">
+        🧠
+      </div>
+
+      <h3>
+        Conocimiento IA
+      </h3>
+
+      <p>
+        Cargá documentación propia para ampliar
+        la base de conocimiento que consulta el asistente.
+      </p>
+
+      <a
+        href="conocimientoiaasistente.html"
+        class="button"
+      >
+        Administrar conocimiento
+      </a>
+
     </div>
 
   </div>
@@ -673,7 +879,10 @@ footer {
 
       </div>
 
-      <a href="biblioteca.html" class="button">
+      <a
+        href="biblioteca.html"
+        class="button"
+      >
         Administrar biblioteca
       </a>
 
@@ -687,7 +896,10 @@ footer {
           PRODUCTOS
         </div>
 
-        <div id="libraryFolders" class="library-box-value">
+        <div
+          id="libraryFolders"
+          class="library-box-value"
+        >
           0
         </div>
 
@@ -699,8 +911,66 @@ footer {
           PROPUESTAS BASE
         </div>
 
-        <div id="libraryProposals" class="library-box-value">
+        <div
+          id="libraryProposals"
+          class="library-box-value"
+        >
           0
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="knowledge-highlight">
+
+    <div class="knowledge-highlight-header">
+
+      <div>
+
+        <h3>
+          🧠 Centro de Conocimiento IA
+        </h3>
+
+        <p>
+          Documentación adicional que podrá consultar el asistente.
+        </p>
+
+      </div>
+
+      <a
+        href="conocimientoiaasistente.html"
+        class="button"
+      >
+        Administrar conocimiento
+      </a>
+
+    </div>
+
+    <div class="knowledge-info">
+
+      <div class="knowledge-box">
+
+        <div class="knowledge-box-title">
+          OBJETIVO
+        </div>
+
+        <div class="knowledge-box-text">
+          Ampliar el conocimiento del asistente con documentación interna.
+        </div>
+
+      </div>
+
+      <div class="knowledge-box">
+
+        <div class="knowledge-box-title">
+          FUNCIONAMIENTO
+        </div>
+
+        <div class="knowledge-box-text">
+          Los documentos cargados se utilizan como fuente adicional cuando la IA no está disponible.
         </div>
 
       </div>
@@ -725,7 +995,9 @@ footer {
 
       </div>
 
-      <div id="recentOpportunities"></div>
+      <div
+        id="recentOpportunities"
+      ></div>
 
     </div>
 
@@ -734,10 +1006,16 @@ footer {
 </main>
 
 <footer>
+
   PREVENTA IA · Herramienta inteligente para Preventa
+
 </footer>
 
 <script>
+
+/* ==========================================
+   OPORTUNIDADES
+========================================== */
 
 function getOpportunities() {
 
@@ -749,13 +1027,16 @@ function getOpportunities() {
       )
     ) || [];
 
-  } catch(error) {
+  }
+
+  catch(error) {
 
     return [];
 
   }
 
 }
+
 
 /* ==========================================
    BIBLIOTECA
@@ -770,6 +1051,7 @@ const LIBRARY_DB_VERSION =
 const LIBRARY_STORE =
   "proposals";
 
+
 function getLibraryFolders() {
 
   try {
@@ -780,13 +1062,16 @@ function getLibraryFolders() {
       )
     ) || [];
 
-  } catch(error) {
+  }
+
+  catch(error) {
 
     return [];
 
   }
 
 }
+
 
 function openLibraryDatabase() {
 
@@ -799,38 +1084,45 @@ function openLibraryDatabase() {
           LIBRARY_DB_VERSION
         );
 
+
       request.onupgradeneeded =
         function(event) {
 
-          const db =
+          const database =
             event.target.result;
 
+
           if (
-            !db.objectStoreNames.contains(
+            !database.objectStoreNames.contains(
               LIBRARY_STORE
             )
           ) {
 
             const store =
-              db.createObjectStore(
+              database.createObjectStore(
                 LIBRARY_STORE,
                 {
-                  keyPath: "id",
-                  autoIncrement: true
+                  keyPath:
+                    "id",
+                  autoIncrement:
+                    true
                 }
               );
+
 
             store.createIndex(
               "folder",
               "folder",
               {
-                unique: false
+                unique:
+                  false
               }
             );
 
           }
 
         };
+
 
       request.onsuccess =
         function(event) {
@@ -841,10 +1133,13 @@ function openLibraryDatabase() {
 
         };
 
+
       request.onerror =
         function() {
 
-          resolve(null);
+          resolve(
+            null
+          );
 
         };
 
@@ -852,6 +1147,7 @@ function openLibraryDatabase() {
   );
 
 }
+
 
 function countLibraryProposals() {
 
@@ -861,12 +1157,14 @@ function countLibraryProposals() {
       const db =
         await openLibraryDatabase();
 
+
       if (!db) {
 
         resolve(0);
         return;
 
       }
+
 
       if (
         !db.objectStoreNames.contains(
@@ -879,6 +1177,7 @@ function countLibraryProposals() {
 
       }
 
+
       try {
 
         const transaction =
@@ -887,13 +1186,16 @@ function countLibraryProposals() {
             "readonly"
           );
 
+
         const store =
           transaction.objectStore(
             LIBRARY_STORE
           );
 
+
         const request =
           store.count();
+
 
         request.onsuccess =
           function() {
@@ -904,6 +1206,7 @@ function countLibraryProposals() {
 
           };
 
+
         request.onerror =
           function() {
 
@@ -911,7 +1214,9 @@ function countLibraryProposals() {
 
           };
 
-      } catch(error) {
+      }
+
+      catch(error) {
 
         resolve(0);
 
@@ -922,18 +1227,22 @@ function countLibraryProposals() {
 
 }
 
+
 async function updateLibrarySummary() {
 
   const folders =
     getLibraryFolders();
+
 
   document.getElementById(
     "libraryFolders"
   ).textContent =
     folders.length;
 
+
   const proposals =
     await countLibraryProposals();
+
 
   document.getElementById(
     "libraryProposals"
@@ -942,19 +1251,24 @@ async function updateLibrarySummary() {
 
 }
 
+
 /* ==========================================
    DINERO
 ========================================== */
 
-function toNumber(value) {
+function toNumber(
+  value
+) {
 
   if (
-    typeof value === "number"
+    typeof value ===
+    "number"
   ) {
 
     return value;
 
   }
+
 
   const texto =
     String(
@@ -973,18 +1287,25 @@ function toNumber(value) {
       "."
     );
 
+
   const numero =
     parseFloat(
       texto
     );
 
-  return isNaN(numero)
+
+  return isNaN(
+    numero
+  )
     ? 0
     : numero;
 
 }
 
-function money(value) {
+
+function money(
+  value
+) {
 
   return (
     "USD " +
@@ -993,19 +1314,24 @@ function money(value) {
     ).toLocaleString(
       "es-AR",
       {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
+        minimumFractionDigits:
+          0,
+        maximumFractionDigits:
+          0
       }
     )
   );
 
 }
 
+
 /* ==========================================
    ESTADOS
 ========================================== */
 
-function statusName(status) {
+function statusName(
+  status
+) {
 
   const names = {
 
@@ -1026,6 +1352,7 @@ function statusName(status) {
 
   };
 
+
   return (
     names[status] ||
     "Sin estado"
@@ -1033,42 +1360,63 @@ function statusName(status) {
 
 }
 
+
 /* ==========================================
    METRICAS
 ========================================== */
 
-function updateMetrics(opportunities) {
+function updateMetrics(
+  opportunities
+) {
 
   const total =
     opportunities.length;
 
+
   const analysis =
     opportunities.filter(
-      x =>
-        x.status === "analysis"
+      function(item) {
+
+        return item.status ===
+          "analysis";
+
+      }
     ).length;
+
 
   const quoted =
     opportunities.filter(
-      x =>
-        !!x.quote
+      function(item) {
+
+        return !!item.quote;
+
+      }
     ).length;
+
 
   const won =
     opportunities.filter(
-      x =>
-        x.status === "won"
+      function(item) {
+
+        return item.status ===
+          "won";
+
+      }
     ).length;
+
 
   const totalQuoted =
     opportunities.reduce(
       function(total, opportunity) {
 
-        if (!opportunity.quote) {
+        if (
+          !opportunity.quote
+        ) {
 
           return total;
 
         }
+
 
         return total +
           toNumber(
@@ -1079,25 +1427,30 @@ function updateMetrics(opportunities) {
       0
     );
 
+
   document.getElementById(
     "totalOpportunities"
   ).textContent =
     total;
+
 
   document.getElementById(
     "analysisCount"
   ).textContent =
     analysis;
 
+
   document.getElementById(
     "quoteCount"
   ).textContent =
     quoted;
 
+
   document.getElementById(
     "wonCount"
   ).textContent =
     won;
+
 
   document.getElementById(
     "totalQuoted"
@@ -1108,21 +1461,34 @@ function updateMetrics(opportunities) {
 
 }
 
+
 /* ==========================================
    GRAFICO ESTADOS
 ========================================== */
 
-function renderStatusChart(opportunities) {
+function renderStatusChart(
+  opportunities
+) {
 
   const counts = {
 
-    analysis: 0,
-    quote: 0,
-    proposal: 0,
-    won: 0,
-    lost: 0
+    analysis:
+      0,
+
+    quote:
+      0,
+
+    proposal:
+      0,
+
+    won:
+      0,
+
+    lost:
+      0
 
   };
+
 
   opportunities.forEach(
     function(opportunity) {
@@ -1130,19 +1496,26 @@ function renderStatusChart(opportunities) {
       const status =
         opportunity.status;
 
+
       if (
-        counts[status] !== undefined
+        counts[
+          status
+        ] !== undefined
       ) {
 
-        counts[status]++;
+        counts[
+          status
+        ]++;
 
       }
 
     }
   );
 
+
   const total =
     opportunities.length;
+
 
   const colors = {
 
@@ -1163,10 +1536,14 @@ function renderStatusChart(opportunities) {
 
   };
 
-  const partes = [];
+
+  const partes =
+    [];
+
 
   let acumulado =
     0;
+
 
   Object.keys(
     counts
@@ -1174,15 +1551,18 @@ function renderStatusChart(opportunities) {
     function(key) {
 
       if (
-        counts[key] === 0
+        counts[key] ===
+        0
       ) {
 
         return;
 
       }
 
+
       const inicio =
         acumulado;
+
 
       const porcentaje =
         (
@@ -1191,8 +1571,10 @@ function renderStatusChart(opportunities) {
         ) *
         100;
 
+
       acumulado +=
         porcentaje;
+
 
       partes.push(
         colors[key] +
@@ -1206,19 +1588,24 @@ function renderStatusChart(opportunities) {
     }
   );
 
+
   const donut =
     document.getElementById(
       "statusDonut"
     );
 
+
   if (
-    total === 0
+    total ===
+    0
   ) {
 
     donut.style.background =
       "#e5e7eb";
 
-  } else {
+  }
+
+  else {
 
     donut.style.background =
       "conic-gradient(" +
@@ -1227,18 +1614,22 @@ function renderStatusChart(opportunities) {
 
   }
 
+
   document.getElementById(
     "statusCenter"
   ).textContent =
     total;
+
 
   const legend =
     document.getElementById(
       "statusLegend"
     );
 
+
   legend.innerHTML =
     "";
+
 
   Object.keys(
     counts
@@ -1246,49 +1637,60 @@ function renderStatusChart(opportunities) {
     function(key) {
 
       if (
-        counts[key] === 0
+        counts[key] ===
+        0
       ) {
 
         return;
 
       }
 
+
       const div =
         document.createElement(
           "div"
         );
 
+
       div.className =
         "legend-item";
+
 
       const dot =
         document.createElement(
           "span"
         );
 
+
       dot.className =
         "legend-dot";
 
+
       dot.style.background =
         colors[key];
+
 
       const text =
         document.createElement(
           "span"
         );
 
+
       text.textContent =
         statusName(key) +
         " · " +
         counts[key];
 
+
       div.appendChild(
         dot
       );
 
+
       div.appendChild(
         text
       );
+
 
       legend.appendChild(
         div
@@ -1297,8 +1699,10 @@ function renderStatusChart(opportunities) {
     }
   );
 
+
   if (
-    total === 0
+    total ===
+    0
   ) {
 
     legend.innerHTML =
@@ -1310,43 +1714,57 @@ function renderStatusChart(opportunities) {
 
 }
 
+
 /* ==========================================
    GRAFICO COTIZACIONES
 ========================================== */
 
-function renderQuoteChart(opportunities) {
+function renderQuoteChart(
+  opportunities
+) {
 
   const total =
     opportunities.length;
 
+
   const quoted =
     opportunities.filter(
-      x =>
-        !!x.quote
+      function(item) {
+
+        return !!item.quote;
+
+      }
     ).length;
+
 
   const pending =
     total -
     quoted;
+
 
   const donut =
     document.getElementById(
       "quoteDonut"
     );
 
+
   if (
-    total === 0
+    total ===
+    0
   ) {
 
     donut.style.background =
       "#e5e7eb";
+
 
     document.getElementById(
       "quoteCenter"
     ).textContent =
       "0%";
 
-  } else {
+  }
+
+  else {
 
     const porcentaje =
       (
@@ -1354,6 +1772,7 @@ function renderQuoteChart(opportunities) {
         total
       ) *
       100;
+
 
     donut.style.background =
       "conic-gradient(" +
@@ -1363,6 +1782,7 @@ function renderQuoteChart(opportunities) {
       "#d1d5db " +
       porcentaje +
       "% 100%)";
+
 
     document.getElementById(
       "quoteCenter"
@@ -1374,10 +1794,12 @@ function renderQuoteChart(opportunities) {
 
   }
 
+
   const legend =
     document.getElementById(
       "quoteLegend"
     );
+
 
   legend.innerHTML =
     "<div class='legend-item'>" +
@@ -1406,22 +1828,28 @@ function renderQuoteChart(opportunities) {
 
 }
 
+
 /* ==========================================
    ULTIMAS OPORTUNIDADES
 ========================================== */
 
-function renderRecent(opportunities) {
+function renderRecent(
+  opportunities
+) {
 
   const container =
     document.getElementById(
       "recentOpportunities"
     );
 
+
   container.innerHTML =
     "";
 
+
   if (
-    opportunities.length === 0
+    opportunities.length ===
+    0
   ) {
 
     container.innerHTML =
@@ -1439,9 +1867,11 @@ function renderRecent(opportunities) {
 
       "</div>";
 
+
     return;
 
   }
+
 
   opportunities
     .slice(
@@ -1456,33 +1886,41 @@ function renderRecent(opportunities) {
             "div"
           );
 
+
         item.className =
           "recent-item";
 
+
         const quote =
           opportunity.quote;
+
 
         const info =
           document.createElement(
             "div"
           );
 
+
         info.className =
           "recent-info";
+
 
         const title =
           document.createElement(
             "h4"
           );
 
+
         title.textContent =
           opportunity.project ||
           "Sin nombre";
+
 
         const client =
           document.createElement(
             "p"
           );
+
 
         client.textContent =
           "👤 " +
@@ -1491,50 +1929,61 @@ function renderRecent(opportunities) {
             "Sin cliente"
           );
 
+
         const status =
           document.createElement(
             "p"
           );
+
 
         status.textContent =
           statusName(
             opportunity.status
           );
 
+
         info.appendChild(
           title
         );
+
 
         info.appendChild(
           client
         );
 
+
         info.appendChild(
           status
         );
+
 
         const value =
           document.createElement(
             "div"
           );
 
+
         value.className =
           "recent-value";
+
 
         const small =
           document.createElement(
             "small"
           );
 
+
         small.textContent =
           quote
             ? "PRIMER AÑO"
             : "COTIZACIÓN";
 
+
         const strong =
           document.createElement(
             "strong"
           );
+
 
         strong.textContent =
           quote
@@ -1544,21 +1993,26 @@ function renderRecent(opportunities) {
               )
             : "Pendiente";
 
+
         value.appendChild(
           small
         );
+
 
         value.appendChild(
           strong
         );
 
+
         item.appendChild(
           info
         );
 
+
         item.appendChild(
           value
         );
+
 
         container.appendChild(
           item
@@ -1569,6 +2023,7 @@ function renderRecent(opportunities) {
 
 }
 
+
 /* ==========================================
    INICIO
 ========================================== */
@@ -1578,21 +2033,26 @@ function renderRecent(opportunities) {
   const opportunities =
     getOpportunities();
 
+
   updateMetrics(
     opportunities
   );
+
 
   renderStatusChart(
     opportunities
   );
 
+
   renderQuoteChart(
     opportunities
   );
 
+
   renderRecent(
     opportunities
   );
+
 
   await updateLibrarySummary();
 
