@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -9,8 +8,7 @@
 
 <title>Asistente IA | PREVENTA IA</title>
 
-<!-- Librerías para leer documentos cargados en el Centro de Conocimiento -->
-
+<!-- Librerías para leer documentos -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs" type="module"></script>
@@ -334,7 +332,7 @@ button:disabled {
 
       "¿Qué hace Onboarding Addoc?"
 
-      "Buscá en la documentación qué información hay sobre workflows."
+      "¿Qué información aparece en la documentación sobre DocIntro?"
 
     </div>
 
@@ -361,8 +359,6 @@ let documentosConocimiento = [];
 
 let documentosTextoCache = new Map();
 
-let pdfjsReady = false;
-
 
 /* =====================================================
    CONFIGURACIÓN CENTRO DE CONOCIMIENTO
@@ -381,91 +377,61 @@ let knowledgeDB = null;
 
 
 /* =====================================================
-   PREPARAR PDF.JS
+   CONFIGURACIÓN PDF.JS
 ===================================================== */
+
+let pdfjsReady = null;
 
 async function prepararPDFJS() {
 
-  try {
-
-    if (
-      window.pdfjsLib
-    ) {
-
-      pdfjsReady = true;
-
-      console.log(
-        "PREVENTA IA - PDF.js disponible."
-      );
-
-      return true;
-
-    }
-
-
-    const modulo =
-      await import(
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs"
-      );
-
-
-    if (
-      modulo &&
-      modulo.getDocument
-    ) {
-
-      window.pdfjsLib =
-        modulo;
-
-      pdfjsReady = true;
-
-      console.log(
-        "PREVENTA IA - PDF.js cargado correctamente como módulo."
-      );
-
-      return true;
-
-    }
-
-
-    if (
-      modulo &&
-      modulo.default &&
-      modulo.default.getDocument
-    ) {
-
-      window.pdfjsLib =
-        modulo.default;
-
-      pdfjsReady = true;
-
-      console.log(
-        "PREVENTA IA - PDF.js cargado correctamente."
-      );
-
-      return true;
-
-    }
-
-
-    throw new Error(
-      "PDF.js no expuso getDocument."
-    );
-
+  if (pdfjsReady) {
+    return pdfjsReady;
   }
 
-  catch(error) {
+  pdfjsReady = new Promise(async function(resolve) {
 
-    console.error(
-      "No se pudo cargar PDF.js:",
-      error
-    );
+    try {
 
-    pdfjsReady = false;
+      const module =
+        await import(
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs"
+        );
 
-    return false;
+      if (module) {
 
-  }
+        window.pdfjsLib = module;
+
+        if (
+          window.pdfjsLib.GlobalWorkerOptions
+        ) {
+
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
+
+        }
+
+      }
+
+      resolve(
+        window.pdfjsLib || null
+      );
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "No se pudo cargar PDF.js:",
+        error
+      );
+
+      resolve(null);
+
+    }
+
+  });
+
+  return pdfjsReady;
 
 }
 
@@ -533,10 +499,6 @@ async function cargarConocimiento() {
     }
 
     catch(error) {
-
-      console.error(
-        error
-      );
 
       throw new Error(
         "conocimiento.json no contiene un JSON válido."
@@ -871,127 +833,78 @@ function buscarPreguntaFrecuente(
   const equivalencias = [
 
     {
-      palabras: [
-        "perfil",
-        "digital"
-      ],
-      clave:
-        "que_es_perfil_digital"
+      palabras: ["perfil", "digital"],
+      clave: "que_es_perfil_digital"
     },
 
     {
-      palabras: [
-        "thuban"
-      ],
-      clave:
-        "que_es_thuban"
+      palabras: ["thuban"],
+      clave: "que_es_thuban"
     },
 
     {
-      palabras: [
-        "captika"
-      ],
-      clave:
-        "que_es_captika"
+      palabras: ["captika"],
+      clave: "que_es_captika"
     },
 
     {
-      palabras: [
-        "edatalia"
-      ],
-      clave:
-        "que_es_edatalia"
+      palabras: ["edatalia"],
+      clave: "que_es_edatalia"
     },
 
     {
-      palabras: [
-        "onboarding"
-      ],
-      clave:
-        "que_es_onboarding"
+      palabras: ["onboarding"],
+      clave: "que_es_onboarding"
     },
 
     {
-      palabras: [
-        "firmas",
-        "addoc"
-      ],
-      clave:
-        "que_es_firmas_addoc"
+      palabras: ["firmas", "addoc"],
+      clave: "que_es_firmas_addoc"
     },
 
     {
-      palabras: [
-        "islas"
-      ],
-      clave:
-        "que_es_islas"
+      palabras: ["islas"],
+      clave: "que_es_islas"
     },
 
     {
-      palabras: [
-        "visualizador",
-        "addoc"
-      ],
-      clave:
-        "que_es_visualizador_addoc"
+      palabras: ["visualizador", "addoc"],
+      clave: "que_es_visualizador_addoc"
     },
 
     {
-      palabras: [
-        "documenta"
-      ],
-      clave:
-        "que_es_documenta"
+      palabras: ["documenta"],
+      clave: "que_es_documenta"
     },
 
     {
-      palabras: [
-        "adea"
-      ],
-      clave:
-        "que_es_adea_doc"
+      palabras: ["adea"],
+      clave: "que_es_adea_doc"
     },
 
     {
-      palabras: [
-        "workflow"
-      ],
-      clave:
-        "que_es_workflow"
+      palabras: ["workflow"],
+      clave: "que_es_workflow"
     },
 
     {
-      palabras: [
-        "full",
-        "text"
-      ],
-      clave:
-        "que_es_full_text"
+      palabras: ["full", "text"],
+      clave: "que_es_full_text"
     },
 
     {
-      palabras: [
-        "ocr"
-      ],
-      clave:
-        "que_es_ocr"
+      palabras: ["ocr"],
+      clave: "que_es_ocr"
     },
 
     {
-      palabras: [
-        "storage"
-      ],
-      clave:
-        "que_es_storage"
+      palabras: ["storage"],
+      clave: "que_es_storage"
     },
 
     {
-      palabras: [
-        "multicliente"
-      ],
-      clave:
-        "que_es_multicliente"
+      palabras: ["multicliente"],
+      clave: "que_es_multicliente"
     }
 
   ];
@@ -1022,8 +935,7 @@ function buscarPreguntaFrecuente(
 
       return {
 
-        tipo:
-          "faq",
+        tipo: "faq",
 
         titulo:
           equivalencia.clave,
@@ -1033,8 +945,7 @@ function buscarPreguntaFrecuente(
             equivalencia.clave
           ],
 
-        puntuacion:
-          100
+        puntuacion: 100
 
       };
 
@@ -1270,10 +1181,7 @@ function construirRespuestaProducto(
       "Principales funcionalidades:\n";
 
     datos.funcionalidades
-      .slice(
-        0,
-        12
-      )
+      .slice(0, 12)
       .forEach(
         function(item) {
 
@@ -1301,10 +1209,7 @@ function construirRespuestaProducto(
       "¿Cuándo considerarlo?\n";
 
     datos.cuando_usarlo
-      .slice(
-        0,
-        8
-      )
+      .slice(0, 8)
       .forEach(
         function(item) {
 
@@ -1365,10 +1270,7 @@ function construirRespuestaProducto(
       "Consideraciones de Preventa:\n";
 
     datos.consideraciones_preventa
-      .slice(
-        0,
-        8
-      )
+      .slice(0, 8)
       .forEach(
         function(item) {
 
@@ -1402,92 +1304,107 @@ async function extraerTextoDOCX(
   blob
 ) {
 
-  if (
-    typeof JSZip ===
-    "undefined"
-  ) {
+  try {
 
-    return "";
+    if (
+      typeof JSZip ===
+      "undefined"
+    ) {
 
-  }
-
-  const arrayBuffer =
-    await blob.arrayBuffer();
-
-  const zip =
-    await JSZip.loadAsync(
-      arrayBuffer
-    );
-
-  const documentFile =
-    zip.file(
-      "word/document.xml"
-    );
-
-  if (!documentFile) {
-
-    return "";
-
-  }
-
-  const xml =
-    await documentFile.async(
-      "string"
-    );
-
-  const parser =
-    new DOMParser();
-
-  const xmlDoc =
-    parser.parseFromString(
-      xml,
-      "application/xml"
-    );
-
-  const paragraphs =
-    Array.from(
-      xmlDoc.getElementsByTagName(
-        "w:p"
-      )
-    );
-
-  const textos = [];
-
-  paragraphs.forEach(
-    function(parrafo) {
-
-      const nodos =
-        Array.from(
-          parrafo.getElementsByTagName(
-            "w:t"
-          )
-        );
-
-      const texto =
-        nodos
-          .map(
-            function(nodo) {
-              return nodo.textContent || "";
-            }
-          )
-          .join("");
-
-      if (
-        texto.trim()
-      ) {
-
-        textos.push(
-          texto.trim()
-        );
-
-      }
+      return "";
 
     }
-  );
 
-  return textos.join(
-    "\n"
-  );
+    const arrayBuffer =
+      await blob.arrayBuffer();
+
+    const zip =
+      await JSZip.loadAsync(
+        arrayBuffer
+      );
+
+    const documentFile =
+      zip.file(
+        "word/document.xml"
+      );
+
+    if (!documentFile) {
+
+      return "";
+
+    }
+
+    const xml =
+      await documentFile.async(
+        "string"
+      );
+
+    const parser =
+      new DOMParser();
+
+    const xmlDoc =
+      parser.parseFromString(
+        xml,
+        "application/xml"
+      );
+
+    const paragraphs =
+      Array.from(
+        xmlDoc.getElementsByTagName(
+          "w:p"
+        )
+      );
+
+    const textos = [];
+
+    paragraphs.forEach(
+      function(parrafo) {
+
+        const nodos =
+          Array.from(
+            parrafo.getElementsByTagName(
+              "w:t"
+            )
+          );
+
+        const texto =
+          nodos
+            .map(
+              function(nodo) {
+                return nodo.textContent || "";
+              }
+            )
+            .join("");
+
+        if (
+          texto.trim()
+        ) {
+
+          textos.push(
+            texto.trim()
+          );
+
+        }
+
+      }
+    );
+
+    return textos.join(
+      "\n"
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error leyendo DOCX:",
+      error
+    );
+
+    return "";
+
+  }
 
 }
 
@@ -1502,22 +1419,16 @@ async function extraerTextoPDF(
 
   try {
 
-    if (
-      !pdfjsReady ||
-      !window.pdfjsLib ||
-      !window.pdfjsLib.getDocument
-    ) {
+    const pdfjs =
+      await prepararPDFJS();
 
-      const disponible =
-        await prepararPDFJS();
+    if (!pdfjs) {
 
-      if (!disponible) {
+      console.error(
+        "PDF.js no está disponible."
+      );
 
-        throw new Error(
-          "PDF.js no está disponible."
-        );
-
-      }
+      return "";
 
     }
 
@@ -1525,7 +1436,7 @@ async function extraerTextoPDF(
       await blob.arrayBuffer();
 
     const pdf =
-      await window.pdfjsLib.getDocument(
+      await pdfjs.getDocument(
         {
           data:
             arrayBuffer
@@ -1535,13 +1446,21 @@ async function extraerTextoPDF(
     const paginas = [];
 
     /*
-      Ahora leemos TODAS las páginas del PDF.
-      No limitamos a 30 páginas.
+      Aumentamos a 100 páginas.
+      Esto permite trabajar con PDFs técnicos
+      más grandes sin quedarse solamente con
+      las primeras 30.
     */
+
+    const maxPaginas =
+      Math.min(
+        pdf.numPages,
+        100
+      );
 
     for (
       let paginaNumero = 1;
-      paginaNumero <= pdf.numPages;
+      paginaNumero <= maxPaginas;
       paginaNumero++
     ) {
 
@@ -1558,10 +1477,7 @@ async function extraerTextoPDF(
           .map(
             function(item) {
 
-              return (
-                item.str ||
-                ""
-              );
+              return item.str || "";
 
             }
           )
@@ -1585,14 +1501,14 @@ async function extraerTextoPDF(
     const resultado =
       paginas.join(
         "\n\n"
-      ).trim();
+      );
 
     console.log(
-      "PREVENTA IA - PDF leído:",
+      "PDF leído correctamente:",
       pdf.numPages,
-      "páginas.",
-      "Caracteres:",
-      resultado.length
+      "páginas. Texto:",
+      resultado.length,
+      "caracteres."
     );
 
     return resultado;
@@ -1746,18 +1662,10 @@ async function extraerTextoDocumento(
   try {
 
     if (
-      type.includes(
-        "text/"
-      ) ||
-      nombre.endsWith(
-        ".txt"
-      ) ||
-      nombre.endsWith(
-        ".json"
-      ) ||
-      type.includes(
-        "json"
-      )
+      type.includes("text/") ||
+      nombre.endsWith(".txt") ||
+      nombre.endsWith(".json") ||
+      type.includes("json")
     ) {
 
       texto =
@@ -1766,12 +1674,8 @@ async function extraerTextoDocumento(
     }
 
     else if (
-      nombre.endsWith(
-        ".docx"
-      ) ||
-      type.includes(
-        "wordprocessingml"
-      )
+      nombre.endsWith(".docx") ||
+      type.includes("wordprocessingml")
     ) {
 
       texto =
@@ -1782,12 +1686,8 @@ async function extraerTextoDocumento(
     }
 
     else if (
-      nombre.endsWith(
-        ".pdf"
-      ) ||
-      type.includes(
-        "pdf"
-      )
+      nombre.endsWith(".pdf") ||
+      type.includes("pdf")
     ) {
 
       texto =
@@ -1798,18 +1698,10 @@ async function extraerTextoDocumento(
     }
 
     else if (
-      nombre.endsWith(
-        ".xlsx"
-      ) ||
-      nombre.endsWith(
-        ".xls"
-      ) ||
-      type.includes(
-        "spreadsheet"
-      ) ||
-      type.includes(
-        "excel"
-      )
+      nombre.endsWith(".xlsx") ||
+      nombre.endsWith(".xls") ||
+      type.includes("spreadsheet") ||
+      type.includes("excel")
     ) {
 
       texto =
@@ -1850,7 +1742,7 @@ async function extraerTextoDocumento(
 
 
 /* =====================================================
-   EXTRAER FRAGMENTOS RELEVANTES DEL DOCUMENTO
+   CREAR FRAGMENTOS RELEVANTES
 ===================================================== */
 
 function obtenerFragmentosRelevantes(
@@ -1858,210 +1750,188 @@ function obtenerFragmentosRelevantes(
   palabras
 ) {
 
+  const original =
+    String(
+      texto || ""
+    );
+
   if (
-    !texto ||
-    !palabras.length
+    !original.trim()
   ) {
 
     return [];
 
   }
 
-  const fragmentos = [];
-
-  const textoNormalizado =
+  const normalizado =
     normalizarTexto(
-      texto
+      original
     );
 
-  /*
-    Buscamos cada palabra y generamos
-    fragmentos alrededor de las coincidencias.
-  */
+  const fragmentos = [];
+
+  const posiciones = [];
 
   palabras.forEach(
     function(palabra) {
 
-      let posicion =
-        0;
+      const termino =
+        normalizarTexto(
+          palabra
+        );
 
-      let cantidad =
-        0;
+      if (!termino) {
+        return;
+      }
 
-      while (
-        cantidad < 8
-      ) {
+      let inicioBusqueda = 0;
 
-        posicion =
-          textoNormalizado.indexOf(
-            palabra,
-            posicion
+      while (true) {
+
+        const posicion =
+          normalizado.indexOf(
+            termino,
+            inicioBusqueda
           );
 
         if (
-          posicion < 0
+          posicion === -1
         ) {
 
           break;
 
         }
 
+        posiciones.push(
+          posicion
+        );
+
+        inicioBusqueda =
+          posicion +
+          termino.length;
+
+      }
+
+    }
+  );
+
+  if (
+    !posiciones.length
+  ) {
+
+    return [];
+
+  }
+
+  posiciones.sort(
+    function(a, b) {
+      return a - b;
+    }
+  );
+
+  const posicionesUnicas = [];
+
+  posiciones.forEach(
+    function(posicion) {
+
+      if (
+        !posicionesUnicas.length ||
+        Math.abs(
+          posicion -
+          posicionesUnicas[
+            posicionesUnicas.length - 1
+          ]
+        ) > 500
+      ) {
+
+        posicionesUnicas.push(
+          posicion
+        );
+
+      }
+
+    }
+  );
+
+  posicionesUnicas
+    .slice(0, 5)
+    .forEach(
+      function(posicion) {
+
+        /*
+          El texto normalizado y el original
+          pueden no tener exactamente la misma
+          longitud por los acentos.
+          Para mantenerlo sencillo buscamos
+          alrededor de una proporción aproximada.
+        */
+
+        const proporcion =
+          original.length /
+          Math.max(
+            normalizado.length,
+            1
+          );
+
+        const posicionOriginal =
+          Math.floor(
+            posicion *
+            proporcion
+          );
+
         const inicio =
           Math.max(
             0,
-            posicion - 500
+            posicionOriginal -
+            500
           );
 
         const fin =
           Math.min(
-            texto.length,
-            posicion + 1000
+            original.length,
+            posicionOriginal +
+            1200
           );
 
-        const fragmento =
-          texto.substring(
+        let fragmento =
+          original.substring(
             inicio,
             fin
           ).trim();
 
         if (
-          fragmento
+          inicio > 0
         ) {
 
-          fragmentos.push({
-            texto:
-              fragmento,
-
-            posicion:
-              posicion,
-
-            palabra:
-              palabra
-          });
+          fragmento =
+            "..." +
+            fragmento;
 
         }
 
-        posicion =
-          posicion +
-          palabra.length;
+        if (
+          fin < original.length
+        ) {
 
-        cantidad++;
+          fragmento +=
+            "...";
 
-      }
+        }
 
-    }
-  );
-
-  /*
-    Eliminar fragmentos prácticamente iguales.
-  */
-
-  const unicos = [];
-
-  fragmentos.forEach(
-    function(item) {
-
-      const yaExiste =
-        unicos.some(
-          function(existente) {
-
-            return (
-              normalizarTexto(
-                existente.texto
-              ).includes(
-                normalizarTexto(
-                  item.texto
-                ).substring(
-                  0,
-                  100
-                )
-              )
-            );
-
-          }
+        fragmentos.push(
+          fragmento
         );
-
-      if (
-        !yaExiste
-      ) {
-
-        unicos.push(
-          item
-        );
-
-      }
-
-    }
-  );
-
-  /*
-    Puntuar fragmentos.
-    Los que contienen más palabras
-    relevantes reciben mayor prioridad.
-  */
-
-  const puntuados =
-    unicos.map(
-      function(item) {
-
-        const fragmentoNormalizado =
-          normalizarTexto(
-            item.texto
-          );
-
-        let puntuacion =
-          0;
-
-        palabras.forEach(
-          function(palabra) {
-
-            if (
-              fragmentoNormalizado.includes(
-                palabra
-              )
-            ) {
-
-              puntuacion += 1;
-
-            }
-
-          }
-        );
-
-        return {
-
-          texto:
-            item.texto,
-
-          puntuacion:
-            puntuacion
-
-        };
 
       }
     );
 
-  puntuados.sort(
-    function(a, b) {
-
-      return (
-        b.puntuacion -
-        a.puntuacion
-      );
-
-    }
-  );
-
-  return puntuados.slice(
-    0,
-    5
-  );
+  return fragmentos;
 
 }
 
 
 /* =====================================================
-   BUSCAR DOCUMENTOS
+   BUSCAR EN DOCUMENTOS
 ===================================================== */
 
 async function buscarEnDocumentos(
@@ -2078,6 +1948,11 @@ async function buscarEnDocumentos(
 
   const palabras =
     obtenerPalabras(
+      pregunta
+    );
+
+  const preguntaNormalizada =
+    normalizarTexto(
       pregunta
     );
 
@@ -2101,27 +1976,34 @@ async function buscarEnDocumentos(
 
     }
 
+    const nombre =
+      normalizarTexto(
+        documento.name ||
+        documento.originalName ||
+        ""
+      );
+
+    const categoria =
+      normalizarTexto(
+        documento.category ||
+        ""
+      );
+
+    const notas =
+      normalizarTexto(
+        documento.notes ||
+        ""
+      );
+
     const textoBusqueda =
       normalizarTexto(
-        (
-          documento.name ||
-          ""
-        ) +
-        " " +
-        (
-          documento.category ||
-          ""
-        ) +
-        " " +
-        (
-          documento.notes ||
-          ""
-        ) +
-        " " +
         texto
       );
 
     let coincidencias =
+      0;
+
+    let coincidenciasTexto =
       0;
 
     palabras.forEach(
@@ -2135,30 +2017,70 @@ async function buscarEnDocumentos(
 
           coincidencias++;
 
+          coincidenciasTexto++;
+
+        }
+
+        else if (
+          nombre.includes(
+            palabra
+          ) ||
+          categoria.includes(
+            palabra
+          ) ||
+          notas.includes(
+            palabra
+          )
+        ) {
+
+          coincidencias++;
+
         }
 
       }
     );
 
     /*
-      Si aparecen varias palabras de la pregunta
-      dentro del mismo documento, lo consideramos
-      especialmente relevante.
+      Si la pregunta contiene directamente
+      el nombre del documento, darle prioridad.
     */
 
-    const fragmentos =
-      obtenerFragmentosRelevantes(
-        texto,
-        palabras
-      );
-
     if (
-      coincidencias > 0 &&
-      fragmentos.length
+      nombre &&
+      preguntaNormalizada.includes(
+        nombre
+      )
     ) {
 
-      const mejorPuntuacion =
-        fragmentos[0].puntuacion;
+      coincidencias += 8;
+
+    }
+
+    /*
+      Si encontramos coincidencias directamente
+      dentro del texto del PDF, darle mucha más
+      prioridad que a una coincidencia solamente
+      en el nombre.
+    */
+
+    if (
+      coincidenciasTexto > 0
+    ) {
+
+      coincidencias +=
+        coincidenciasTexto * 3;
+
+    }
+
+    if (
+      coincidencias > 0
+    ) {
+
+      const fragmentos =
+        obtenerFragmentosRelevantes(
+          texto,
+          palabras
+        );
 
       resultados.push({
 
@@ -2167,32 +2089,25 @@ async function buscarEnDocumentos(
           documento.originalName ||
           "Documento",
 
+        archivo:
+          documento.originalName ||
+          "",
+
         categoria:
           documento.category ||
           "Sin categoría",
 
-        texto:
-          fragmentos
-            .slice(
-              0,
-              3
-            )
-            .map(
-              function(fragmento) {
+        textoCompleto:
+          texto,
 
-                return fragmento.texto;
-
-              }
-            )
-            .join(
-              "\n\n---\n\n"
-            ),
+        fragmentos:
+          fragmentos,
 
         coincidencias:
           coincidencias,
 
-        puntuacion:
-          mejorPuntuacion
+        coincidenciasTexto:
+          coincidenciasTexto
 
       });
 
@@ -2204,8 +2119,6 @@ async function buscarEnDocumentos(
     function(a, b) {
 
       return (
-        b.puntuacion -
-        a.puntuacion ||
         b.coincidencias -
         a.coincidencias
       );
@@ -2213,15 +2126,112 @@ async function buscarEnDocumentos(
     }
   );
 
-  console.log(
-    "PREVENTA IA - resultados documentales:",
-    resultados
-  );
-
   return resultados.slice(
     0,
     5
   );
+
+}
+
+
+/* =====================================================
+   CONSTRUIR RESPUESTA DOCUMENTAL
+===================================================== */
+
+function construirRespuestaDocumental(
+  resultados
+) {
+
+  if (
+    !resultados.length
+  ) {
+
+    return null;
+
+  }
+
+  let respuesta =
+    "📄 Encontré información en la documentación interna:\n\n";
+
+  resultados.forEach(
+    function(item) {
+
+      respuesta +=
+        "━━━━━━━━━━━━━━━━━━\n" +
+        "📌 " +
+        item.documento +
+        "\n";
+
+      if (
+        item.categoria
+      ) {
+
+        respuesta +=
+          "Categoría: " +
+          item.categoria +
+          "\n\n";
+
+      }
+
+      /*
+        Si tenemos fragmentos concretos,
+        mostramos esos fragmentos.
+      */
+
+      if (
+        item.fragmentos &&
+        item.fragmentos.length
+      ) {
+
+        item.fragmentos
+          .slice(0, 3)
+          .forEach(
+            function(fragmento) {
+
+              respuesta +=
+                fragmento +
+                "\n\n";
+
+            }
+          );
+
+      }
+
+      /*
+        Si por alguna razón no pudimos
+        localizar el fragmento, mostramos
+        un comienzo del documento.
+      */
+
+      else if (
+        item.textoCompleto
+      ) {
+
+        respuesta +=
+          item.textoCompleto.substring(
+            0,
+            1800
+          ) +
+          "\n\n";
+
+      }
+
+      respuesta +=
+        "📎 Fuente: " +
+        (
+          item.archivo ||
+          item.documento
+        ) +
+        "\n\n";
+
+    }
+  );
+
+  respuesta +=
+    "━━━━━━━━━━━━━━━━━━\n" +
+    "💡 Modo básico: información obtenida directamente de los documentos cargados en el Centro de Conocimiento.";
+
+  return respuesta;
 
 }
 
@@ -2235,10 +2245,16 @@ async function buscarLocalmente(
 ) {
 
   /*
-    IMPORTANTE:
-    Primero buscamos en los documentos cargados.
-    Si encontramos información concreta,
-    la usamos antes que conocimiento.json.
+    =====================================================
+    1. DOCUMENTOS PRIMERO
+    =====================================================
+
+    Esta es la modificación principal.
+
+    Antes una coincidencia en conocimiento.json
+    podía ganar antes que el PDF.
+
+    Ahora primero buscamos en los documentos.
   */
 
   const documentos =
@@ -2250,52 +2266,26 @@ async function buscarLocalmente(
     documentos.length
   ) {
 
-    let respuesta =
-      "📄 Encontré información específica en la documentación cargada:\n\n";
+    const respuestaDocumental =
+      construirRespuestaDocumental(
+        documentos
+      );
 
-    documentos.forEach(
-      function(item) {
+    if (
+      respuestaDocumental
+    ) {
 
-        respuesta +=
-          "📌 " +
-          item.documento +
-          "\n" +
-          "Categoría: " +
-          item.categoria +
-          "\n\n" +
-          item.texto +
-          "\n\n";
+      return respuestaDocumental;
 
-      }
-    );
-
-    respuesta +=
-      "━━━━━━━━━━━━━━━━━━\n" +
-      "📚 Fuente: documentación del Centro de Conocimiento IA.\n" +
-      "💡 Modo básico: respuesta basada directamente en documentos cargados.";
-
-    return respuesta;
+    }
 
   }
 
 
   /*
-    Si los documentos no tienen información,
-    mantenemos la búsqueda existente en conocimiento.json.
-  */
-
-  if (!conocimiento) {
-
-    return (
-      "🔴 La base de conocimiento estructurada no está disponible.\n\n" +
-      "Verificá que conocimiento.json esté en la misma carpeta que asistente.html."
-    );
-
-  }
-
-
-  /*
-    1. FAQ
+    =====================================================
+    2. FAQ
+    =====================================================
   */
 
   const faq =
@@ -2305,22 +2295,21 @@ async function buscarLocalmente(
 
   if (faq) {
 
-    let respuesta =
+    return (
       "🟢 " +
       faq.texto +
-      "\n\n";
-
-    respuesta +=
+      "\n\n" +
       "━━━━━━━━━━━━━━━━━━\n" +
-      "💡 Modo básico: respuesta basada en conocimiento interno.";
-
-    return respuesta;
+      "💡 Modo básico: respuesta basada en conocimiento interno."
+    );
 
   }
 
 
   /*
-    2. CATÁLOGO
+    =====================================================
+    3. CATÁLOGO
+    =====================================================
   */
 
   const catalogo =
@@ -2341,8 +2330,19 @@ async function buscarLocalmente(
 
 
   /*
-    3. BÚSQUEDA GENERAL
+    =====================================================
+    4. BÚSQUEDA GENERAL EN conocimiento.json
+    =====================================================
   */
+
+  if (!conocimiento) {
+
+    return (
+      "🔴 La base de conocimiento estructurada no está disponible.\n\n" +
+      "Tampoco encontré información en los documentos cargados."
+    );
+
+  }
 
   const palabras =
     obtenerPalabras(
@@ -2552,9 +2552,8 @@ async function buscarLocalmente(
 
   return (
     "🟢 Modo básico activo.\n\n" +
-    "No encontré una respuesta específica en la base de conocimiento interna ni en los documentos cargados.\n\n" +
-    "Podés preguntarme sobre Perfil Digital, Onboarding Addoc, Firmas Addoc, Islas, Visualizador Addoc, Thuban, Captika, Edatalia, OCR, Full Text, workflows, relevamiento, cotización, migraciones, integraciones o gestión documental.\n\n" +
-    "💡 Cuando tengamos créditos de IA, podremos complementar esta consulta con IA generativa."
+    "No encontré una respuesta específica en la documentación cargada ni en la base de conocimiento interna.\n\n" +
+    "Podés preguntarme sobre Perfil Digital, Onboarding Addoc, Firmas Addoc, Islas, Visualizador Addoc, Thuban, Captika, Edatalia, OCR, Full Text, workflows, relevamiento, cotización, migraciones, integraciones o gestión documental."
   );
 
 }
@@ -2687,8 +2686,31 @@ async function prepararDocumentosParaIA(
         "Categoría: " +
         item.categoria +
         "\n" +
-        "Contenido relevante:\n" +
-        item.texto +
+        "Contenido relevante:\n";
+
+      if (
+        item.fragmentos &&
+        item.fragmentos.length
+      ) {
+
+        texto +=
+          item.fragmentos.join(
+            "\n\n"
+          );
+
+      }
+
+      else {
+
+        texto +=
+          item.textoCompleto.substring(
+            0,
+            6000
+          );
+
+      }
+
+      texto +=
         "\n\n";
 
     }
@@ -2702,6 +2724,22 @@ async function prepararDocumentosParaIA(
 /* =====================================================
    INTENTAR IA REAL
 ===================================================== */
+
+/*
+  IMPORTANTE:
+
+  Esta función se mantiene.
+
+  La IA REAL continúa utilizando:
+
+  POST /api/chat
+
+  Si hay créditos/configuración,
+  responde la IA real.
+
+  Si no hay créditos,
+  sendMessage() utiliza buscarLocalmente().
+*/
 
 async function intentarIA(
   pregunta
@@ -2727,18 +2765,6 @@ async function intentarIA(
       0,
       120000
     );
-
-  /*
-    =================================================
-    IA REAL
-    =================================================
-
-    ESTA PARTE SE MANTIENE.
-
-    Sigue utilizando /api/chat exactamente
-    como antes.
-
-  */
 
   const response =
     await fetch(
@@ -2868,6 +2894,13 @@ async function actualizarEstadoDocumentos() {
     documentosConocimiento =
       await getKnowledgeDocuments();
 
+    /*
+      Limpiamos cache por si se agregaron
+      documentos nuevos.
+    */
+
+    documentosTextoCache.clear();
+
     if (
       conocimiento &&
       documentosConocimiento.length
@@ -2897,6 +2930,13 @@ async function actualizarEstadoDocumentos() {
         "🟡 Hay " +
         documentosConocimiento.length +
         " documento(s) cargado(s), pero no está disponible conocimiento.json.";
+
+    }
+
+    else {
+
+      element.textContent =
+        "⚠️ No hay documentos cargados.";
 
     }
 
@@ -2970,8 +3010,13 @@ async function sendMessage() {
   try {
 
     /*
-      Primero seguimos intentando
-      la IA REAL exactamente como antes.
+      =================================================
+      IA REAL
+      =================================================
+
+      NO SE ELIMINA.
+
+      Primero seguimos intentando la IA real.
     */
 
     const respuestaIA =
@@ -3002,8 +3047,14 @@ async function sendMessage() {
     );
 
     /*
-      Fallback local.
-      NO consume API.
+      =================================================
+      FALLBACK LOCAL
+      =================================================
+
+      Si la IA real falla por falta de créditos,
+      buscamos localmente.
+
+      AHORA LOS DOCUMENTOS TIENEN PRIORIDAD.
     */
 
     const respuestaLocal =
@@ -3022,12 +3073,11 @@ async function sendMessage() {
       "status";
 
     if (
-      conocimiento &&
       documentosConocimiento.length
     ) {
 
       status.textContent =
-        "🟢 Modo básico activo — documentos del Centro de Conocimiento + conocimiento interno.";
+        "🟢 Modo básico activo — búsqueda en documentos del Centro de Conocimiento + conocimiento interno.";
 
     }
 
