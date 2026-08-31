@@ -91,30 +91,29 @@
 },
 
 "productos_propios": {
-
-```
 "Visualizador Addoc": {
-  "tipo": "Propio",
-  "categoria": "Visualización y consulta documental",
-  "definicion": "Visualizador orientado principalmente a buscar, consultar y visualizar documentación digitalizada.",
-  "funcionalidades": [
-    "Organización mediante campos definidos durante la digitalización.",
-    "OCR para extraer determinados datos.",
-    "Uso de campos indexados como criterios de búsqueda.",
-    "Consulta de documentación mediante datos indexados.",
-    "Búsqueda Full Text dentro del contenido documental.",
-    "Visualización web de documentos."
-  ],
-  "ejemplo": "Si durante la digitalización se definen los campos DNI, apellido, nombre y fecha, esos datos pueden utilizarse posteriormente para localizar el documento.",
-  "full_text": "La búsqueda Full Text permite buscar palabras o textos dentro del contenido de los documentos.",
-  "diferencia_con_gestion_documental": "El visualizador está orientado principalmente a consulta y búsqueda. No debe asumirse automáticamente que dispone de una plataforma completa de gestión documental con workflows, circuitos, expedientes y otros componentes de gestión.",
-  "consideraciones_preventa": [
-    "No asumir workflows de gestión documental como funcionalidad estándar.",
-    "Validar cada necesidad adicional.",
-    "Analizar si el cliente necesita solamente consulta o también gestión documental."
-  ]
+"tipo": "Propio",
+"categoria": "Visualización y consulta documental",
+"definicion": "Visualizador orientado principalmente a buscar, consultar y visualizar documentación digitalizada.",
+"funcionalidades": [
+"Organización mediante campos definidos durante la digitalización.",
+"OCR para extraer determinados datos.",
+"Uso de campos indexados como criterios de búsqueda.",
+"Consulta de documentación mediante datos indexados.",
+"Búsqueda Full Text dentro del contenido documental.",
+"Visualización web de documentos."
+],
+"ejemplo": "Si durante la digitalización se definen los campos DNI, apellido, nombre y fecha, esos datos pueden utilizarse posteriormente para localizar el documento.",
+"full_text": "La búsqueda Full Text permite buscar palabras o textos dentro del contenido de los documentos.",
+"diferencia_con_gestion_documental": "El visualizador está orientado principalmente a consulta y búsqueda. No debe asumirse automáticamente que dispone de una plataforma completa de gestión documental con workflows, circuitos, expedientes y otros componentes de gestión.",
+"consideraciones_preventa": [
+"No asumir workflows de gestión documental como funcionalidad estándar.",
+"Validar cada necesidad adicional.",
+"Analizar si el cliente necesita solamente consulta o también gestión documental."
+]
 },
 
+```
 "Islas": {
   "tipo": "Propio / nuevo visualizador",
   "nombre_interno": "Islas",
@@ -340,115 +339,114 @@
 },
 
 "partners": {
-
-```
 "Thuban": {
-  "tipo": "Partner",
-  "categoria": "Gestión documental",
-  "definicion": "Plataforma de gestión documental orientada a centralizar, organizar, consultar y administrar documentos y expedientes digitales.",
-  "cuando_usarlo": [
-    "Gestión documental integral.",
-    "Gestión de expedientes.",
-    "Necesidad de clases documentales.",
-    "Necesidad de permisos.",
-    "Necesidad de workflows.",
-    "Necesidad de alertas.",
-    "Necesidad de integraciones.",
-    "Necesidad de administración documental más allá de un simple visualizador."
-  ],
-  "funcionalidades": [
-    "Gestión documental.",
-    "Organización documental.",
-    "Clasificación documental.",
-    "Clases documentales.",
-    "Búsqueda.",
-    "Consulta.",
-    "Workflows.",
-    "Circuitos documentales.",
-    "Alertas.",
-    "Eventos.",
-    "Usuarios.",
-    "Grupos.",
-    "Perfiles.",
-    "Permisos.",
-    "Visores.",
-    "Reportes.",
-    "Integraciones.",
-    "Administración de soluciones."
-  ],
-  "componentes_tecnicos": [
-    "Thuban Web.",
-    "Thuban Server.",
-    "Planificador.",
-    "Jobs.",
-    "DocIntro.",
-    "Workflow.",
-    "Alertas.",
-    "Visores.",
-    "APIs."
-  ],
-  "docintro": {
-    "definicion": "Componente orientado a automatizar procesamiento, identificación, ordenamiento y almacenamiento de lotes masivos de archivos.",
-    "fuentes": [
-      "Directorios de red.",
-      "Correo electrónico.",
-      "Otros repositorios de imágenes.",
-      "Bases de datos.",
-      "Fuentes personalizadas."
-    ],
-    "procesos": [
-      "Indexación.",
-      "Validación.",
-      "Reconocimiento de códigos de barras.",
-      "Transformación.",
-      "Conversión de formatos.",
-      "Mejora de imágenes.",
-      "Eliminación de páginas en blanco.",
-      "División de documentos.",
-      "Combinación de documentos.",
-      "Envío de correos."
-    ]
-  },
-  "seguridad": [
-    "Usuarios.",
-    "Grupos.",
-    "Perfiles.",
-    "Permisos.",
-    "Políticas de acceso.",
-    "Integración con Active Directory según implementación.",
-    "2FA según configuración."
-  ],
-  "integraciones": [
-    "APIs.",
-    "Active Directory.",
-    "Microsoft 365.",
-    "Bases de datos.",
-    "Servicios externos."
-  ],
-  "cotizacion": {
-    "principio": "No cotizar solamente la licencia o plataforma.",
-    "componentes": [
-      "Licenciamiento / modalidad.",
-      "Implementación.",
-      "Relevamiento funcional.",
-      "Parametrización.",
-      "Clases documentales.",
-      "Workflows.",
-      "Pasos de workflows.",
-      "Alertas.",
-      "Integraciones.",
-      "Migraciones.",
-      "Capacitación.",
-      "Soporte."
-    ],
-    "referencia_interna": "En propuestas anteriores se trabajó con bolsas de horas, incluyendo planes de 350 horas según alcance.",
-    "regla": "Que una funcionalidad exista en el producto no significa que la configuración o implementación específica esté automáticamente incluida."
-  },
-  "documentacion_publica": {
-    "nota": "La documentación pública y técnica de Thuban contempla workflows, perfiles, permisos, alertas, visores, configuraciones, integraciones y diferentes componentes de administración."
-  }
+"tipo": "Partner",
+"categoria": "Gestión documental",
+"definicion": "Plataforma de gestión documental orientada a centralizar, organizar, consultar y administrar documentos y expedientes digitales.",
+"cuando_usarlo": [
+"Gestión documental integral.",
+"Gestión de expedientes.",
+"Necesidad de clases documentales.",
+"Necesidad de permisos.",
+"Necesidad de workflows.",
+"Necesidad de alertas.",
+"Necesidad de integraciones.",
+"Necesidad de administración documental más allá de un simple visualizador."
+],
+"funcionalidades": [
+"Gestión documental.",
+"Organización documental.",
+"Clasificación documental.",
+"Clases documentales.",
+"Búsqueda.",
+"Consulta.",
+"Workflows.",
+"Circuitos documentales.",
+"Alertas.",
+"Eventos.",
+"Usuarios.",
+"Grupos.",
+"Perfiles.",
+"Permisos.",
+"Visores.",
+"Reportes.",
+"Integraciones.",
+"Administración de soluciones."
+],
+"componentes_tecnicos": [
+"Thuban Web.",
+"Thuban Server.",
+"Planificador.",
+"Jobs.",
+"DocIntro.",
+"Workflow.",
+"Alertas.",
+"Visores.",
+"APIs."
+],
+"docintro": {
+"definicion": "Componente orientado a automatizar procesamiento, identificación, ordenamiento y almacenamiento de lotes masivos de archivos.",
+"fuentes": [
+"Directorios de red.",
+"Correo electrónico.",
+"Otros repositorios de imágenes.",
+"Bases de datos.",
+"Fuentes personalizadas."
+],
+"procesos": [
+"Indexación.",
+"Validación.",
+"Reconocimiento de códigos de barras.",
+"Transformación.",
+"Conversión de formatos.",
+"Mejora de imágenes.",
+"Eliminación de páginas en blanco.",
+"División de documentos.",
+"Combinación de documentos.",
+"Envío de correos."
+]
+},
+"seguridad": [
+"Usuarios.",
+"Grupos.",
+"Perfiles.",
+"Permisos.",
+"Políticas de acceso.",
+"Integración con Active Directory según implementación.",
+"2FA según configuración."
+],
+"integraciones": [
+"APIs.",
+"Active Directory.",
+"Microsoft 365.",
+"Bases de datos.",
+"Servicios externos."
+],
+"cotizacion": {
+"principio": "No cotizar solamente la licencia o plataforma.",
+"componentes": [
+"Licenciamiento / modalidad.",
+"Implementación.",
+"Relevamiento funcional.",
+"Parametrización.",
+"Clases documentales.",
+"Workflows.",
+"Pasos de workflows.",
+"Alertas.",
+"Integraciones.",
+"Migraciones.",
+"Capacitación.",
+"Soporte."
+],
+"referencia_interna": "En propuestas anteriores se trabajó con bolsas de horas, incluyendo planes de 350 horas según alcance.",
+"regla": "Que una funcionalidad exista en el producto no significa que la configuración o implementación específica esté automáticamente incluida."
+},
+"documentacion_publica": {
+"nota": "La documentación pública y técnica de Thuban contempla workflows, perfiles, permisos, alertas, visores, configuraciones, integraciones y diferentes componentes de administración."
+}
 },
 
+```
 "Captika": {
   "tipo": "Partner",
   "categoria": "Captura documental",
