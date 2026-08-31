@@ -202,18 +202,60 @@
 
       setTimeout(function() {
 
-        const iaMessage = document.createElement("div");
+  const iaMessage = document.createElement("div");
 
-        iaMessage.className = "message ia";
+  iaMessage.className = "message ia";
 
-        iaMessage.textContent =
-          "Estoy procesando tu consulta. 🤖 Esta es una primera versión del asistente. Más adelante vamos a conectarme con una IA real para poder analizar información, documentos y requerimientos de Preventa.";
+  const q = question.toLowerCase();
 
-        messages.appendChild(iaMessage);
+  let answer = "";
 
-        messages.scrollTop = messages.scrollHeight;
+  if (q.includes("thuban")) {
 
-      }, 500);
+    answer =
+      "Thuban es una plataforma de gestión documental que permite centralizar, organizar, consultar y administrar documentación digital. 🤖";
+
+  } else if (
+    q.includes("relevamiento") ||
+    q.includes("preguntas") ||
+    q.includes("cliente")
+  ) {
+
+    answer =
+      "Para un relevamiento de Preventa te recomiendo preguntar: 1) ¿Qué documentación manejan? 2) ¿Cuántos usuarios tendrán? 3) ¿Qué volumen de documentos tienen? 4) ¿Necesitan OCR? 5) ¿Necesitan búsquedas por texto o campos? 6) ¿Existen workflows? 7) ¿Necesitan firma digital? 8) ¿Qué sistemas necesitan integrar?";
+
+  } else if (
+    q.includes("openkm") ||
+    q.includes("migración") ||
+    q.includes("migracion")
+  ) {
+
+    answer =
+      "Para una migración desde OpenKM conviene relevar versión, cantidad de documentos, estructura documental, metadatos, usuarios, permisos, workflows, volumen de información y necesidades de integración.";
+
+  } else if (
+    q.includes("propuesta") ||
+    q.includes("propuesta técnica") ||
+    q.includes("propuesta tecnica")
+  ) {
+
+    answer =
+      "Para preparar una propuesta técnica conviene identificar: alcance, funcionalidades, arquitectura, implementación, migración, integraciones, soporte, supuestos y exclusiones.";
+
+  } else {
+
+    answer =
+      "Todavía estoy aprendiendo 🤖. Probá preguntarme sobre Thuban, OpenKM, migraciones, relevamientos o propuestas técnicas.";
+
+  }
+
+  iaMessage.textContent = answer;
+
+  messages.appendChild(iaMessage);
+
+  messages.scrollTop = messages.scrollHeight;
+
+}, 500);
 
     }
 
