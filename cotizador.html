@@ -9,6 +9,9 @@
 
 <title>Cotizador | PREVENTA IA</title>
 
+<!-- JSZIP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <style>
 
 * {
@@ -181,6 +184,14 @@ select.prefilled {
   background: #1d4ed8;
 }
 
+.docx-button {
+  background: #7c3aed;
+}
+
+.docx-button:hover {
+  background: #6d28d9;
+}
+
 .results {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -260,6 +271,17 @@ select.prefilled {
   display: none;
 }
 
+.proposal-box {
+  display: none;
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 10px;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  color: #5b21b6;
+  line-height: 1.5;
+}
+
 @media (max-width: 700px) {
 
   header {
@@ -270,6 +292,11 @@ select.prefilled {
   .fields,
   .results {
     grid-template-columns: 1fr;
+  }
+
+  .total-row {
+    flex-direction: column;
+    gap: 5px;
   }
 
 }
@@ -308,7 +335,7 @@ select.prefilled {
   ></div>
 
 
-  <!-- DATOS DE LA COTIZACIÓN -->
+  <!-- DATOS -->
 
   <div class="card">
 
@@ -559,6 +586,9 @@ select.prefilled {
     ></div>
 
 
+    <div class="proposal-box" id="proposalBox"></div>
+
+
     <div class="buttons">
 
       <button
@@ -574,6 +604,14 @@ select.prefilled {
         onclick="saveQuoteToOpportunity()"
       >
         💾 Guardar en oportunidad
+      </button>
+
+
+      <button
+        class="button docx-button"
+        onclick="generateFinalProposal()"
+      >
+        📄 Generar propuesta final
       </button>
 
 
@@ -761,25 +799,20 @@ select.prefilled {
    OPORTUNIDAD ACTUAL
 ========================================= */
 
-let currentOpportunity =
-  null;
+let currentOpportunity = null;
 
 
 /* =========================================
    BIBLIOTECA
 ========================================= */
 
-let libraryDatabase =
-  null;
-
+let libraryDatabase = null;
 
 const LIBRARY_DB_NAME =
   "preventa_ia_biblioteca";
 
-
 const LIBRARY_DB_VERSION =
   1;
-
 
 const LIBRARY_STORE =
   "proposals";
@@ -895,8 +928,26 @@ function getLibraryFiles(
       request.onsuccess =
         function() {
 
+          const files =
+            request.result || [];
+
+
+          files.sort(
+            function(a, b) {
+
+              return new Date(
+                b.createdAt
+              ) -
+              new Date(
+                a.createdAt
+              );
+
+            }
+          );
+
+
           resolve(
-            request.result || []
+            files
           );
 
         };
@@ -918,7 +969,7 @@ function getLibraryFiles(
 
 
 /* =========================================
-   CARGAR PRODUCTOS
+   PRODUCTOS
 ========================================= */
 
 async function loadProducts() {
@@ -984,9 +1035,7 @@ async function loadProducts() {
 
 
   /*
-    Si la oportunidad ya tiene
-    un producto guardado,
-    intentamos seleccionarlo.
+    Recuperar producto guardado.
   */
 
   if (
@@ -1139,7 +1188,7 @@ async function productChanged() {
 
 
     status.textContent =
-      "⚠️ No pude comprobar la propuesta técnica de la biblioteca.";
+      "⚠️ No pude comprobar la propuesta técnica.";
 
   }
 
@@ -1147,7 +1196,7 @@ async function productChanged() {
 
 
 /* =========================================
-   LOAD OPPORTUNITY
+   CARGAR OPORTUNIDAD
 ========================================= */
 
 async function loadCurrentOpportunity() {
@@ -1387,14 +1436,14 @@ async function loadCurrentOpportunity() {
 
   setTimeout(
     calculate,
-    50
+    100
   );
 
 }
 
 
 /* =========================================
-   SET INPUT
+   INPUT
 ========================================= */
 
 function setInputValue(
@@ -1477,7 +1526,7 @@ function parseNumber(
 
 
 /* =========================================
-   STORAGE A GB
+   STORAGE
 ========================================= */
 
 function extraerGB(
@@ -1575,56 +1624,72 @@ function getUserPrice(
   if (
     users <= 0
   ) {
+
     return 0;
+
   }
 
 
   if (
     users <= 11
   ) {
+
     return 4.17;
+
   }
 
 
   if (
     users <= 49
   ) {
+
     return 2.20;
+
   }
 
 
   if (
     users <= 99
   ) {
+
     return 1.30;
+
   }
 
 
   if (
     users <= 249
   ) {
+
     return 1.10;
+
   }
 
 
   if (
     users <= 499
   ) {
+
     return 0.90;
+
   }
 
 
   if (
     users <= 999
   ) {
+
     return 0.90;
+
   }
 
 
   if (
     users <= 3500
   ) {
+
     return 0.80;
+
   }
 
 
@@ -1958,12 +2023,12 @@ function calculate() {
     client:
       document.getElementById(
         "client"
-      ).value,
+      ).value.trim(),
 
     opportunity:
       document.getElementById(
         "opportunity"
-      ).value,
+      ).value.trim(),
 
     product:
       productFolder
@@ -2020,7 +2085,7 @@ function calculate() {
 
 
 /* =========================================
-   GUARDAR EN OPORTUNIDAD
+   GUARDAR COTIZACION
 ========================================= */
 
 function saveQuoteToOpportunity() {
@@ -2078,17 +2143,9 @@ function saveQuoteToOpportunity() {
     window.cotizacion;
 
 
-  /*
-    GUARDAR COTIZACION
-  */
-
   opportunities[index].quote =
     quote;
 
-
-  /*
-    GUARDAR PRODUCTO TAMBIEN
-  */
 
   opportunities[index].product =
     quote.product ||
@@ -2099,11 +2156,6 @@ function saveQuoteToOpportunity() {
     quote.productFolderId ||
     "";
 
-
-  /*
-    Si el producto existe,
-    también actualizamos solution.
-  */
 
   if (
     quote.product
@@ -2118,11 +2170,6 @@ function saveQuoteToOpportunity() {
   opportunities[index].updatedAt =
     new Date().toISOString();
 
-
-  /*
-    Si estaba en análisis,
-    pasa a cotizando.
-  */
 
   if (
     opportunities[index].status ===
@@ -2190,6 +2237,1171 @@ function saveQuoteToOpportunity() {
 
   connection.style.display =
     "block";
+
+}
+
+
+/* =========================================
+   GENERAR PROPUESTA FINAL
+========================================= */
+
+async function generateFinalProposal() {
+
+  calculate();
+
+
+  if (
+    !currentOpportunity
+  ) {
+
+    alert(
+      "Primero entrá al cotizador desde una oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  const quote =
+    window.cotizacion;
+
+
+  if (
+    !quote
+  ) {
+
+    alert(
+      "Primero calculá la cotización."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !quote.productFolderId
+  ) {
+
+    alert(
+      "Seleccioná primero el Producto / Solución."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !libraryDatabase
+  ) {
+
+    alert(
+      "La Biblioteca Técnica todavía no está disponible."
+    );
+
+    return;
+
+  }
+
+
+  const status =
+    document.getElementById(
+      "success"
+    );
+
+
+  const proposalBox =
+    document.getElementById(
+      "proposalBox"
+    );
+
+
+  try {
+
+    status.style.display =
+      "block";
+
+
+    status.innerText =
+      "📄 Buscando la propuesta técnica base...";
+
+
+    const files =
+      await getLibraryFiles(
+        quote.productFolderId
+      );
+
+
+    if (
+      !files.length
+    ) {
+
+      throw new Error(
+        "No hay una propuesta técnica cargada para el producto seleccionado."
+      );
+
+    }
+
+
+    /*
+      Tomamos la propuesta más reciente.
+    */
+
+    const baseFile =
+      files[0];
+
+
+    status.innerText =
+      "📝 Preparando la propuesta económica...";
+
+
+    const finalBlob =
+      await addEconomicProposal(
+        baseFile.blob,
+        quote
+      );
+
+
+    /*
+      Nombre final
+    */
+
+    const client =
+      sanitizeFileName(
+        quote.client ||
+        "Cliente"
+      );
+
+
+    const product =
+      sanitizeFileName(
+        quote.product ||
+        "Propuesta"
+      );
+
+
+    const finalFileName =
+      "Propuesta_" +
+      product +
+      "_" +
+      client +
+      ".docx";
+
+
+    /*
+      Descargar
+    */
+
+    const url =
+      URL.createObjectURL(
+        finalBlob
+      );
+
+
+    const link =
+      document.createElement(
+        "a"
+      );
+
+
+    link.href =
+      url;
+
+
+    link.download =
+      finalFileName;
+
+
+    document.body.appendChild(
+      link
+    );
+
+
+    link.click();
+
+
+    document.body.removeChild(
+      link
+    );
+
+
+    setTimeout(
+      function() {
+
+        URL.revokeObjectURL(
+          url
+        );
+
+      },
+      1000
+    );
+
+
+    status.innerText =
+      "✅ Propuesta final generada correctamente.";
+
+
+    proposalBox.innerHTML =
+      "<strong>📄 Propuesta generada</strong><br><br>" +
+      "Archivo: " +
+      escapeHTML(
+        finalFileName
+      ) +
+      "<br>" +
+      "Producto: " +
+      escapeHTML(
+        quote.product
+      ) +
+      "<br>" +
+      "Se descargó automáticamente en tu equipo.";
+
+
+    proposalBox.style.display =
+      "block";
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+
+    status.innerText =
+      "❌ No se pudo generar la propuesta.";
+
+
+    alert(
+      error.message ||
+      "Ocurrió un error al generar el Word."
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   MODIFICAR DOCX
+========================================= */
+
+async function addEconomicProposal(
+  baseBlob,
+  quote
+) {
+
+  /*
+    Un DOCX es un ZIP que contiene,
+    entre otras cosas, word/document.xml.
+  */
+
+  const arrayBuffer =
+    await baseBlob.arrayBuffer();
+
+
+  const zip =
+    await JSZip.loadAsync(
+      arrayBuffer
+    );
+
+
+  const documentFile =
+    zip.file(
+      "word/document.xml"
+    );
+
+
+  if (!documentFile) {
+
+    throw new Error(
+      "El Word no contiene word/document.xml."
+    );
+
+  }
+
+
+  let xml =
+    await documentFile.async(
+      "string"
+    );
+
+
+  /*
+    Construimos la nueva página.
+  */
+
+  const economicXML =
+    buildEconomicPage(
+      quote
+    );
+
+
+  /*
+    Insertar antes del cierre
+    del cuerpo del documento.
+  */
+
+  const bodyEnd =
+    xml.lastIndexOf(
+      "</w:body>"
+    );
+
+
+  if (
+    bodyEnd === -1
+  ) {
+
+    throw new Error(
+      "No pude encontrar el cuerpo del documento Word."
+    );
+
+  }
+
+
+  xml =
+    xml.slice(
+      0,
+      bodyEnd
+    ) +
+    economicXML +
+    xml.slice(
+      bodyEnd
+    );
+
+
+  zip.file(
+    "word/document.xml",
+    xml
+  );
+
+
+  return await zip.generateAsync({
+    type: "blob",
+    mimeType:
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  });
+
+}
+
+
+/* =========================================
+   CONSTRUIR PAGINA ECONOMICA
+========================================= */
+
+function buildEconomicPage(
+  quote
+) {
+
+  const rows = [];
+
+
+  /*
+    USUARIOS
+    Solo mostrar si > 0
+  */
+
+  if (
+    Number(
+      quote.users
+    ) > 0
+  ) {
+
+    rows.push({
+
+      concept:
+        "Usuarios",
+
+      unit:
+        "Usuario / mes",
+
+      quantity:
+        quote.users,
+
+      unitPrice:
+        moneyPlain(
+          quote.userPrice
+        ),
+
+      total:
+        moneyPlain(
+          quote.usersCost
+        )
+
+    });
+
+  }
+
+
+  /*
+    STORAGE
+  */
+
+  if (
+    Number(
+      quote.packs
+    ) > 0 &&
+    Number(
+      quote.storageCost
+    ) > 0
+  ) {
+
+    rows.push({
+
+      concept:
+        "Storage",
+
+      unit:
+        quote.storageQuoted +
+        " GB / mes",
+
+      quantity:
+        quote.packs,
+
+      unitPrice:
+        moneyPlain(
+          2
+        ),
+
+      total:
+        moneyPlain(
+          quote.storageCost
+        )
+
+    });
+
+  }
+
+
+  /*
+    FIRMAS
+  */
+
+  if (
+    Number(
+      quote.signatures
+    ) > 0
+  ) {
+
+    rows.push({
+
+      concept:
+        "Firmas",
+
+      unit:
+        "Firma / mes",
+
+      quantity:
+        quote.signatures,
+
+      unitPrice:
+        moneyPlain(
+          0.20
+        ),
+
+      total:
+        moneyPlain(
+          quote.signatureCost
+        )
+
+    });
+
+  }
+
+
+  /*
+    SETUP
+  */
+
+  if (
+    Number(
+      quote.setup
+    ) > 0
+  ) {
+
+    rows.push({
+
+      concept:
+        "Parametrización / Setup",
+
+      unit:
+        "Hora",
+
+      quantity:
+        quote.setup,
+
+      unitPrice:
+        moneyPlain(
+          25
+        ),
+
+      total:
+        moneyPlain(
+          quote.setupCost
+        )
+
+    });
+
+  }
+
+
+  /*
+    SOPORTE
+  */
+
+  if (
+    Number(
+      quote.support
+    ) > 0
+  ) {
+
+    rows.push({
+
+      concept:
+        "Soporte Addoc",
+
+      unit:
+        "Hora / mes",
+
+      quantity:
+        quote.support,
+
+      unitPrice:
+        moneyPlain(
+          25
+        ),
+
+      total:
+        moneyPlain(
+          quote.supportCost
+        )
+
+    });
+
+  }
+
+
+  let tableRows =
+    "";
+
+
+  /*
+    ENCABEZADO
+  */
+
+  tableRows +=
+    "<w:tr>" +
+
+      tableCell(
+        "Concepto",
+        true
+      ) +
+
+      tableCell(
+        "Unidad",
+        true
+      ) +
+
+      tableCell(
+        "Cantidad",
+        true
+      ) +
+
+      tableCell(
+        "Precio unitario",
+        true
+      ) +
+
+      tableCell(
+        "Precio total",
+        true
+      ) +
+
+    "</w:tr>";
+
+
+  /*
+    FILAS
+  */
+
+  rows.forEach(
+    function(row) {
+
+      tableRows +=
+        "<w:tr>" +
+
+          tableCell(
+            row.concept,
+            false
+          ) +
+
+          tableCell(
+            row.unit,
+            false
+          ) +
+
+          tableCell(
+            String(
+              row.quantity
+            ),
+            false
+          ) +
+
+          tableCell(
+            "USD " +
+            row.unitPrice,
+            false
+          ) +
+
+          tableCell(
+            "USD " +
+            row.total,
+            false
+          ) +
+
+        "</w:tr>";
+
+    }
+  );
+
+
+  /*
+    SI NO HAY NADA
+  */
+
+  if (
+    rows.length === 0
+  ) {
+
+    tableRows +=
+      "<w:tr>" +
+
+        tableCell(
+          "No se cargaron conceptos económicos.",
+          false,
+          5
+        ) +
+
+      "</w:tr>";
+
+  }
+
+
+  /*
+    XML
+  */
+
+  const page =
+    "<w:p>" +
+
+      "<w:pPr>" +
+
+        "<w:spacing w:before=\"0\" w:after=\"0\"/>" +
+
+      "</w:pPr>" +
+
+      "<w:r>" +
+
+        "<w:br w:type=\"page\"/>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:pPr>" +
+
+        "<w:jc w:val=\"center\"/>" +
+
+        "<w:spacing w:after=\"200\"/>" +
+
+      "</w:pPr>" +
+
+      "<w:r>" +
+
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+          "<w:sz w:val=\"32\"/>" +
+
+        "</w:rPr>" +
+
+        "<w:t>PROPUESTA ECONÓMICA</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr><w:b/></w:rPr>" +
+
+        "<w:t>Cliente: </w:t>" +
+
+      "</w:r>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            quote.client ||
+            "Sin especificar"
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr><w:b/></w:rPr>" +
+
+        "<w:t>Oportunidad: </w:t>" +
+
+      "</w:r>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            quote.opportunity ||
+            "Sin especificar"
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr><w:b/></w:rPr>" +
+
+        "<w:t>Producto: </w:t>" +
+
+      "</w:r>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            quote.product ||
+            "Sin especificar"
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:t>Detalle económico</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:tbl>" +
+
+      "<w:tblPr>" +
+
+        "<w:tblBorders>" +
+
+          borderXML("top") +
+          borderXML("left") +
+          borderXML("bottom") +
+          borderXML("right") +
+          borderXML("insideH") +
+          borderXML("insideV") +
+
+        "</w:tblBorders>" +
+
+        "<w:tblLayout w:type=\"fixed\"/>" +
+
+      "</w:tblPr>" +
+
+      tableRows +
+
+    "</w:tbl>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:t></w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr><w:b/></w:rPr>" +
+
+        "<w:t>Total único / Setup: </w:t>" +
+
+      "</w:r>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            money(
+              quote.totalSetup
+            )
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr><w:b/></w:rPr>" +
+
+        "<w:t>Total mensual: </w:t>" +
+
+      "</w:r>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            money(
+              quote.totalMonthly
+            )
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+          "<w:sz w:val=\"28\"/>" +
+
+        "</w:rPr>" +
+
+        "<w:t>Costo total primer año: </w:t>" +
+
+      "</w:r>" +
+
+      "<w:r>" +
+
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+          "<w:sz w:val=\"28\"/>" +
+
+        "</w:rPr>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            money(
+              quote.totalYear
+            )
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>" +
+
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          "Fecha: " +
+
+          escapeXML(
+            new Date().toLocaleDateString(
+              "es-AR"
+            )
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>";
+
+
+  return page;
+
+}
+
+
+/* =========================================
+   CELDA TABLA
+========================================= */
+
+function tableCell(
+  text,
+  header,
+  span = 1
+) {
+
+  return (
+
+    "<w:tc>" +
+
+      "<w:tcPr>" +
+
+        (
+          span > 1
+            ? "<w:gridSpan w:val=\"" +
+              span +
+              "\"/>"
+            : ""
+        ) +
+
+        "<w:tcW w:w=\"1800\" w:type=\"dxa\"/>" +
+
+      "</w:tcPr>" +
+
+      "<w:p>" +
+
+        "<w:pPr>" +
+
+          "<w:jc w:val=\"" +
+          (
+            header
+              ? "center"
+              : "left"
+          ) +
+          "\"/>" +
+
+        "</w:pPr>" +
+
+        "<w:r>" +
+
+          "<w:rPr>" +
+
+            (
+              header
+                ? "<w:b/>"
+                : ""
+            ) +
+
+          "</w:rPr>" +
+
+          "<w:t>" +
+
+            escapeXML(
+              String(
+                text
+              )
+            ) +
+
+          "</w:t>" +
+
+        "</w:r>" +
+
+      "</w:p>" +
+
+    "</w:tc>"
+
+  );
+
+}
+
+
+/* =========================================
+   BORDES
+========================================= */
+
+function borderXML(
+  side
+) {
+
+  return (
+
+    "<w:" +
+    side +
+    " w:val=\"single\" w:sz=\"4\" w:space=\"0\" w:color=\"B7B7B7\"/>"
+
+  );
+
+}
+
+
+/* =========================================
+   DINERO SIMPLE
+========================================= */
+
+function moneyPlain(
+  value
+) {
+
+  return Number(
+    value || 0
+  ).toLocaleString(
+    "es-AR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
+  );
+
+}
+
+
+/* =========================================
+   ESCAPE XML
+========================================= */
+
+function escapeXML(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&apos;"
+  );
+
+}
+
+
+/* =========================================
+   NOMBRE ARCHIVO
+========================================= */
+
+function sanitizeFileName(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+  .replace(
+    /[<>:"/\\|?*]+/g,
+    "_"
+  )
+  .replace(
+    /\s+/g,
+    "_"
+  )
+  .substring(
+    0,
+    100
+  );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value ||
+    ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
@@ -2326,7 +3538,8 @@ function downloadExcel() {
       "Storage necesario",
       c.storageNeeded.toFixed(
         2
-      ) + " GB"
+      ) +
+      " GB"
     ],
 
     [
@@ -2448,7 +3661,7 @@ function downloadExcel() {
   catch(error) {
 
     console.warn(
-      "La biblioteca todavía no está disponible.",
+      "La Biblioteca todavía no está disponible.",
       error
     );
 
