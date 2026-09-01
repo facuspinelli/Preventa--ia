@@ -319,7 +319,6 @@ select.prefilled {
 
 </header>
 
-
 <main class="container">
 
   <h2>💰 Cotizador</h2>
@@ -328,13 +327,7 @@ select.prefilled {
     Calculá automáticamente los costos de implementación y costos mensuales.
   </p>
 
-
-  <!-- CONEXIÓN -->
-
   <div id="connection" class="connection"></div>
-
-
-  <!-- DATOS -->
 
   <div class="card">
 
@@ -342,19 +335,13 @@ select.prefilled {
 
     <div class="fields">
 
-
-      <!-- PRODUCTO -->
-
       <div class="field">
 
         <label for="product">
           🧩 Producto / Solución
         </label>
 
-        <select
-          id="product"
-          onchange="productChanged()"
-        >
+        <select id="product" onchange="productChanged()">
 
           <option value="">
             Seleccioná un producto
@@ -366,15 +353,9 @@ select.prefilled {
           Se toma de las carpetas creadas en la Biblioteca Técnica.
         </small>
 
-        <div
-          id="libraryStatus"
-          class="library-status"
-        ></div>
+        <div id="libraryStatus" class="library-status"></div>
 
       </div>
-
-
-      <!-- CLIENTE -->
 
       <div class="field">
 
@@ -390,9 +371,6 @@ select.prefilled {
 
       </div>
 
-
-      <!-- OPORTUNIDAD -->
-
       <div class="field">
 
         <label for="opportunity">
@@ -407,9 +385,6 @@ select.prefilled {
 
       </div>
 
-
-      <!-- SETUP -->
-
       <div class="field">
 
         <label for="setup">
@@ -419,7 +394,7 @@ select.prefilled {
         <input
           type="number"
           id="setup"
-          value="8"
+          value="0"
           min="0"
         >
 
@@ -428,9 +403,6 @@ select.prefilled {
         </small>
 
       </div>
-
-
-      <!-- USUARIOS -->
 
       <div class="field">
 
@@ -441,7 +413,7 @@ select.prefilled {
         <input
           type="number"
           id="users"
-          value="10"
+          value="0"
           min="0"
         >
 
@@ -450,9 +422,6 @@ select.prefilled {
         </small>
 
       </div>
-
-
-      <!-- FIRMAS -->
 
       <div class="field">
 
@@ -473,9 +442,6 @@ select.prefilled {
 
       </div>
 
-
-      <!-- PESO -->
-
       <div class="field">
 
         <label for="imageWeight">
@@ -494,9 +460,6 @@ select.prefilled {
         </small>
 
       </div>
-
-
-      <!-- IMAGENES -->
 
       <div class="field">
 
@@ -517,9 +480,6 @@ select.prefilled {
 
       </div>
 
-
-      <!-- STORAGE -->
-
       <div class="field">
 
         <label for="manualPacks">
@@ -539,9 +499,6 @@ select.prefilled {
 
       </div>
 
-
-      <!-- SOPORTE -->
-
       <div class="field">
 
         <label for="support">
@@ -551,7 +508,7 @@ select.prefilled {
         <input
           type="number"
           id="support"
-          value="5"
+          value="0"
           min="0"
         >
 
@@ -563,7 +520,6 @@ select.prefilled {
 
     </div>
 
-
     <div id="warning" class="warning"></div>
 
     <div id="info" class="info"></div>
@@ -572,37 +528,21 @@ select.prefilled {
 
     <div id="proposalBox" class="proposal-box"></div>
 
-
     <div class="buttons">
 
-      <button
-        class="button"
-        onclick="calculate()"
-      >
+      <button class="button" onclick="calculate()">
         🧮 Calcular cotización
       </button>
 
-
-      <button
-        class="button save-button"
-        onclick="saveQuoteToOpportunity()"
-      >
+      <button class="button save-button" onclick="saveQuoteToOpportunity()">
         💾 Guardar en oportunidad
       </button>
 
-
-      <button
-        class="button docx-button"
-        onclick="generateFinalProposal()"
-      >
+      <button class="button docx-button" onclick="generateFinalProposal()">
         📄 Generar propuesta final
       </button>
 
-
-      <button
-        class="button excel-button"
-        onclick="downloadExcel()"
-      >
+      <button class="button excel-button" onclick="downloadExcel()">
         📥 Descargar Excel
       </button>
 
@@ -610,13 +550,9 @@ select.prefilled {
 
   </div>
 
-
-  <!-- RESULTADOS -->
-
   <div class="card">
 
     <h3>📊 Resultado</h3>
-
 
     <div class="results">
 
@@ -626,15 +562,11 @@ select.prefilled {
           Costo Setup
         </div>
 
-        <div
-          class="result-value"
-          id="setupCost"
-        >
+        <div class="result-value" id="setupCost">
           USD 0,00
         </div>
 
       </div>
-
 
       <div class="result">
 
@@ -642,15 +574,11 @@ select.prefilled {
           Costo Usuarios
         </div>
 
-        <div
-          class="result-value"
-          id="usersCost"
-        >
+        <div class="result-value" id="usersCost">
           USD 0,00
         </div>
 
       </div>
-
 
       <div class="result">
 
@@ -658,15 +586,11 @@ select.prefilled {
           Costo Firmas
         </div>
 
-        <div
-          class="result-value"
-          id="signatureCost"
-        >
+        <div class="result-value" id="signatureCost">
           USD 0,00
         </div>
 
       </div>
-
 
       <div class="result">
 
@@ -674,10 +598,7 @@ select.prefilled {
           Costo Soporte
         </div>
 
-        <div
-          class="result-value"
-          id="supportCost"
-        >
+        <div class="result-value" id="supportCost">
           USD 0,00
         </div>
 
@@ -685,12 +606,9 @@ select.prefilled {
 
     </div>
 
-
     <div class="storage-box">
 
-      <strong>
-        💾 Storage
-      </strong>
+      <strong>💾 Storage</strong>
 
       <p>
         Necesidad calculada:
@@ -722,7 +640,6 @@ select.prefilled {
 
     </div>
 
-
     <div class="total">
 
       <div class="total-row">
@@ -737,7 +654,6 @@ select.prefilled {
 
       </div>
 
-
       <div class="total-row">
 
         <span>
@@ -749,7 +665,6 @@ select.prefilled {
         </strong>
 
       </div>
-
 
       <div class="total-final">
 
@@ -769,28 +684,14 @@ select.prefilled {
 
 </main>
 
-
 <script>
 
-/* =====================================================
-   VARIABLES
-===================================================== */
-
 let currentOpportunity = null;
-
 let libraryDatabase = null;
 
-
-/* =====================================================
-   CONFIGURACION BIBLIOTECA
-===================================================== */
-
 const LIBRARY_DB_NAME = "preventa_ia_biblioteca";
-
 const LIBRARY_DB_VERSION = 2;
-
 const LIBRARY_STORE = "proposals";
-
 const FINAL_STORE = "finalProposals";
 
 
@@ -839,13 +740,11 @@ function openLibraryDatabase() {
           LIBRARY_DB_VERSION
         );
 
-
       request.onupgradeneeded =
         function(event) {
 
           const database =
             event.target.result;
-
 
           if (
             !database.objectStoreNames.contains(
@@ -862,7 +761,6 @@ function openLibraryDatabase() {
                 }
               );
 
-
             store.createIndex(
               "folder",
               "folder",
@@ -872,7 +770,6 @@ function openLibraryDatabase() {
             );
 
           }
-
 
           if (
             !database.objectStoreNames.contains(
@@ -888,7 +785,6 @@ function openLibraryDatabase() {
                 }
               );
 
-
             finalStore.createIndex(
               "opportunityId",
               "opportunityId",
@@ -896,7 +792,6 @@ function openLibraryDatabase() {
                 unique: false
               }
             );
-
 
             finalStore.createIndex(
               "createdAt",
@@ -910,7 +805,6 @@ function openLibraryDatabase() {
 
         };
 
-
       request.onsuccess =
         function(event) {
 
@@ -922,7 +816,6 @@ function openLibraryDatabase() {
           );
 
         };
-
 
       request.onerror =
         function() {
@@ -943,7 +836,7 @@ function openLibraryDatabase() {
 
 
 /* =====================================================
-   OBTENER ARCHIVOS
+   ARCHIVOS DE BIBLIOTECA
 ===================================================== */
 
 function getLibraryFiles(folderId) {
@@ -959,7 +852,6 @@ function getLibraryFiles(folderId) {
 
       }
 
-
       if (
         !libraryDatabase.objectStoreNames.contains(
           LIBRARY_STORE
@@ -972,22 +864,18 @@ function getLibraryFiles(folderId) {
 
       }
 
-
       const transaction =
         libraryDatabase.transaction(
           LIBRARY_STORE,
           "readonly"
         );
 
-
       const store =
         transaction.objectStore(
           LIBRARY_STORE
         );
 
-
       let index;
-
 
       try {
 
@@ -1006,19 +894,16 @@ function getLibraryFiles(folderId) {
 
       }
 
-
       const request =
         index.getAll(
           folderId
         );
-
 
       request.onsuccess =
         function() {
 
           const files =
             request.result || [];
-
 
           files.sort(
             function(a, b) {
@@ -1035,13 +920,11 @@ function getLibraryFiles(folderId) {
             }
           );
 
-
           resolve(
             files
           );
 
         };
-
 
       request.onerror =
         function() {
@@ -1059,7 +942,7 @@ function getLibraryFiles(folderId) {
 
 
 /* =====================================================
-   CARGAR PRODUCTOS
+   PRODUCTOS
 ===================================================== */
 
 async function loadProducts() {
@@ -1069,35 +952,28 @@ async function loadProducts() {
       "product"
     );
 
-
   const folders =
     getLibraryFolders();
 
-
   select.innerHTML =
     "";
-
 
   const defaultOption =
     document.createElement(
       "option"
     );
 
-
   defaultOption.value =
     "";
-
 
   defaultOption.textContent =
     folders.length
       ? "Seleccioná un producto"
       : "No hay productos en la Biblioteca";
 
-
   select.appendChild(
     defaultOption
   );
-
 
   folders.forEach(
     function(folder) {
@@ -1107,14 +983,11 @@ async function loadProducts() {
           "option"
         );
 
-
       option.value =
         folder.id;
 
-
       option.textContent =
         folder.name;
-
 
       select.appendChild(
         option
@@ -1122,7 +995,6 @@ async function loadProducts() {
 
     }
   );
-
 
   if (
     currentOpportunity &&
@@ -1133,7 +1005,6 @@ async function loadProducts() {
       currentOpportunity.productFolderId;
 
   }
-
 
   else if (
     currentOpportunity &&
@@ -1156,7 +1027,6 @@ async function loadProducts() {
         }
       );
 
-
     if (encontrado) {
 
       select.value =
@@ -1166,14 +1036,13 @@ async function loadProducts() {
 
   }
 
-
   await productChanged();
 
 }
 
 
 /* =====================================================
-   PRODUCTO CAMBIADO
+   CAMBIO DE PRODUCTO
 ===================================================== */
 
 async function productChanged() {
@@ -1183,24 +1052,19 @@ async function productChanged() {
       "product"
     );
 
-
   const folderId =
     select.value;
-
 
   const status =
     document.getElementById(
       "libraryStatus"
     );
 
-
   status.className =
     "library-status";
 
-
   status.textContent =
     "";
-
 
   if (!folderId) {
 
@@ -1208,10 +1072,8 @@ async function productChanged() {
 
   }
 
-
   const folders =
     getLibraryFolders();
-
 
   const folder =
     folders.find(
@@ -1229,13 +1091,11 @@ async function productChanged() {
       }
     );
 
-
   if (!folder) {
 
     return;
 
   }
-
 
   try {
 
@@ -1244,7 +1104,6 @@ async function productChanged() {
         folderId
       );
 
-
     if (
       files.length
     ) {
@@ -1252,7 +1111,6 @@ async function productChanged() {
       status.classList.add(
         "library-found"
       );
-
 
       status.textContent =
         "📚 Propuesta técnica disponible: " +
@@ -1272,7 +1130,6 @@ async function productChanged() {
         "library-missing"
       );
 
-
       status.textContent =
         "⚠️ No hay una propuesta técnica cargada para " +
         folder.name +
@@ -1288,11 +1145,9 @@ async function productChanged() {
       error
     );
 
-
     status.classList.add(
       "library-missing"
     );
-
 
     status.textContent =
       "⚠️ No pude comprobar la propuesta técnica.";
@@ -1303,7 +1158,7 @@ async function productChanged() {
 
 
 /* =====================================================
-   CARGAR OPORTUNIDAD
+   OPORTUNIDAD
 ===================================================== */
 
 async function loadCurrentOpportunity() {
@@ -1313,15 +1168,31 @@ async function loadCurrentOpportunity() {
       "preventa_current_opportunity"
     );
 
+  /*
+    IMPORTANTE:
+
+    Si no existe una oportunidad actual,
+    el cotizador queda completamente limpio.
+
+    Valores iniciales:
+    Setup = 0
+    Usuarios = 0
+    Firmas = 0
+    Peso imagen = 70
+    Imágenes = 0
+    Packs = 0
+    Soporte = 0
+  */
 
   if (!stored) {
+
+    resetNewQuote();
 
     await loadProducts();
 
     return;
 
   }
-
 
   try {
 
@@ -1339,21 +1210,30 @@ async function loadCurrentOpportunity() {
       error
     );
 
+    currentOpportunity =
+      null;
+
+    resetNewQuote();
+
     await loadProducts();
 
     return;
 
   }
-
 
   if (!currentOpportunity) {
 
+    resetNewQuote();
+
     await loadProducts();
 
     return;
 
   }
 
+  /*
+    CLIENTE
+  */
 
   if (
     currentOpportunity.client
@@ -1366,6 +1246,9 @@ async function loadCurrentOpportunity() {
 
   }
 
+  /*
+    PROYECTO
+  */
 
   if (
     currentOpportunity.project
@@ -1378,6 +1261,9 @@ async function loadCurrentOpportunity() {
 
   }
 
+  /*
+    USUARIOS
+  */
 
   if (
     currentOpportunity.users
@@ -1387,7 +1273,6 @@ async function loadCurrentOpportunity() {
       parseNumber(
         currentOpportunity.users
       );
-
 
     if (
       usuarios > 0
@@ -1402,6 +1287,9 @@ async function loadCurrentOpportunity() {
 
   }
 
+  /*
+    STORAGE
+  */
 
   if (
     currentOpportunity.storage
@@ -1411,7 +1299,6 @@ async function loadCurrentOpportunity() {
       extraerGB(
         currentOpportunity.storage
       );
-
 
     if (
       storageGB > 0
@@ -1428,6 +1315,12 @@ async function loadCurrentOpportunity() {
 
   }
 
+  /*
+    COTIZACION EXISTENTE
+
+    Solamente se recupera si la oportunidad
+    realmente tiene una cotización guardada.
+  */
 
   if (
     currentOpportunity.quote
@@ -1436,56 +1329,51 @@ async function loadCurrentOpportunity() {
     const quote =
       currentOpportunity.quote;
 
-
     setInputValue(
       "setup",
-      quote.setup
+      quote.setup ?? 0
     );
-
 
     setInputValue(
       "users",
-      quote.users
+      quote.users ?? 0
     );
-
 
     setInputValue(
       "signatures",
-      quote.signatures
+      quote.signatures ?? 0
     );
-
 
     setInputValue(
       "imageWeight",
-      quote.imageWeight
+      quote.imageWeight ?? 70
     );
-
 
     setInputValue(
       "images",
-      quote.images
+      quote.images ?? 0
     );
-
 
     setInputValue(
       "manualPacks",
-      quote.manualPacks
+      quote.manualPacks ?? 0
     );
-
 
     setInputValue(
       "support",
-      quote.support
+      quote.support ?? 0
     );
 
   }
 
+  /*
+    CONEXION
+  */
 
   const connection =
     document.getElementById(
       "connection"
     );
-
 
   connection.textContent =
     currentOpportunity.quote
@@ -1501,18 +1389,81 @@ async function loadCurrentOpportunity() {
         " — " +
         currentOpportunity.project;
 
-
   connection.style.display =
     "block";
 
-
   await loadProducts();
-
 
   setTimeout(
     calculate,
     100
   );
+
+}
+
+
+/* =====================================================
+   NUEVA COTIZACION LIMPIA
+===================================================== */
+
+function resetNewQuote() {
+
+  currentOpportunity =
+    null;
+
+  document.getElementById(
+    "client"
+  ).value =
+    "";
+
+  document.getElementById(
+    "opportunity"
+  ).value =
+    "";
+
+  document.getElementById(
+    "setup"
+  ).value =
+    0;
+
+  document.getElementById(
+    "users"
+  ).value =
+    0;
+
+  document.getElementById(
+    "signatures"
+  ).value =
+    0;
+
+  /*
+    ÚNICO VALOR PREDETERMINADO
+  */
+
+  document.getElementById(
+    "imageWeight"
+  ).value =
+    70;
+
+  document.getElementById(
+    "images"
+  ).value =
+    0;
+
+  document.getElementById(
+    "manualPacks"
+  ).value =
+    0;
+
+  document.getElementById(
+    "support"
+  ).value =
+    0;
+
+  document.getElementById(
+    "connection"
+  ).style.display =
+    "none";
 
 }
 
@@ -1535,16 +1486,13 @@ function setInputValue(
 
   }
 
-
   const input =
     document.getElementById(
       id
     );
 
-
   input.value =
     value;
-
 
   input.classList.add(
     "prefilled"
@@ -1569,7 +1517,6 @@ function parseNumber(
 
   }
 
-
   const texto =
     String(
       value || ""
@@ -1583,7 +1530,6 @@ function parseNumber(
       "."
     );
 
-
   const numero =
     parseFloat(
       texto.replace(
@@ -1591,7 +1537,6 @@ function parseNumber(
         ""
       )
     );
-
 
   return isNaN(numero)
     ? 0
@@ -1618,12 +1563,10 @@ function extraerGB(
       "."
     );
 
-
   const match =
     texto.match(
       /([\d.]+)\s*(tb|gb|mb)?/
     );
-
 
   if (!match) {
 
@@ -1631,17 +1574,14 @@ function extraerGB(
 
   }
 
-
   const numero =
     parseFloat(
       match[1]
     );
 
-
   const unidad =
     match[2] ||
     "gb";
-
 
   if (
     unidad === "tb"
@@ -1651,7 +1591,6 @@ function extraerGB(
 
   }
 
-
   if (
     unidad === "mb"
   ) {
@@ -1659,7 +1598,6 @@ function extraerGB(
     return numero / 1024;
 
   }
-
 
   return numero;
 
@@ -1723,7 +1661,6 @@ function getUserPrice(
 
   }
 
-
   if (
     users <= 11
   ) {
@@ -1731,7 +1668,6 @@ function getUserPrice(
     return 4.17;
 
   }
-
 
   if (
     users <= 49
@@ -1741,7 +1677,6 @@ function getUserPrice(
 
   }
 
-
   if (
     users <= 99
   ) {
@@ -1749,7 +1684,6 @@ function getUserPrice(
     return 1.30;
 
   }
-
 
   if (
     users <= 249
@@ -1759,7 +1693,6 @@ function getUserPrice(
 
   }
 
-
   if (
     users <= 499
   ) {
@@ -1767,7 +1700,6 @@ function getUserPrice(
     return 0.90;
 
   }
-
 
   if (
     users <= 999
@@ -1777,7 +1709,6 @@ function getUserPrice(
 
   }
 
-
   if (
     users <= 3500
   ) {
@@ -1785,7 +1716,6 @@ function getUserPrice(
     return 0.80;
 
   }
-
 
   return 0.80;
 
@@ -1805,14 +1735,12 @@ function calculate() {
       ).value
     ) || 0;
 
-
   const users =
     Number(
       document.getElementById(
         "users"
       ).value
     ) || 0;
-
 
   const signatures =
     Number(
@@ -1821,14 +1749,12 @@ function calculate() {
       ).value
     ) || 0;
 
-
   const imageWeight =
     Number(
       document.getElementById(
         "imageWeight"
       ).value
     ) || 0;
-
 
   const images =
     Number(
@@ -1837,14 +1763,12 @@ function calculate() {
       ).value
     ) || 0;
 
-
   const manualPacks =
     Number(
       document.getElementById(
         "manualPacks"
       ).value
     ) || 0;
-
 
   const support =
     Number(
@@ -1853,36 +1777,32 @@ function calculate() {
       ).value
     ) || 0;
 
-
   const warning =
     document.getElementById(
       "warning"
     );
-
 
   const info =
     document.getElementById(
       "info"
     );
 
-
   const success =
     document.getElementById(
       "success"
     );
 
-
   warning.style.display =
     "none";
-
 
   info.style.display =
     "none";
 
-
   success.style.display =
     "none";
 
+
+  /* ADVERTENCIAS */
 
   if (
     users > 3500
@@ -1895,7 +1815,6 @@ function calculate() {
       "block";
 
   }
-
 
   if (
     support > 0 &&
@@ -1911,44 +1830,41 @@ function calculate() {
   }
 
 
+  /* COSTOS */
+
   const setupCost =
     setup * 25;
-
 
   const userPrice =
     getUserPrice(
       users
     );
 
-
   const usersCost =
     users *
     userPrice;
 
-
   const signatureCost =
     signatures *
     0.20;
-
 
   const supportCost =
     support *
     25;
 
 
+  /* STORAGE */
+
   const totalKB =
     imageWeight *
     images;
-
 
   const storageNeeded =
     totalKB /
     1024 /
     1024;
 
-
   let packs;
-
 
   if (
     manualPacks > 0
@@ -1969,36 +1885,41 @@ function calculate() {
 
   }
 
+  /*
+    Mantenemos 1 pack mínimo.
+    Esto significa que aunque no se carguen
+    imágenes todavía, el sistema muestra
+    50 GB como storage mínimo cotizable.
+  */
 
   if (
     packs < 1
   ) {
 
-    packs = 1;
+    packs =
+      1;
 
   }
-
 
   const storageQuoted =
     packs *
     50;
-
 
   const storageCost =
     packs *
     2;
 
 
+  /* TOTALES */
+
   const totalSetup =
     setupCost;
-
 
   const totalMonthly =
     usersCost +
     signatureCost +
     storageCost +
     supportCost;
-
 
   const totalYear =
     totalSetup +
@@ -2008,13 +1929,14 @@ function calculate() {
     );
 
 
+  /* MOSTRAR */
+
   document.getElementById(
     "setupCost"
   ).innerText =
     money(
       setupCost
     );
-
 
   document.getElementById(
     "usersCost"
@@ -2023,7 +1945,6 @@ function calculate() {
       usersCost
     );
 
-
   document.getElementById(
     "signatureCost"
   ).innerText =
@@ -2031,14 +1952,12 @@ function calculate() {
       signatureCost
     );
 
-
   document.getElementById(
     "supportCost"
   ).innerText =
     money(
       supportCost
     );
-
 
   document.getElementById(
     "storageNeeded"
@@ -2048,19 +1967,16 @@ function calculate() {
     ) +
     " GB";
 
-
   document.getElementById(
     "storageQuoted"
   ).innerText =
     storageQuoted +
     " GB";
 
-
   document.getElementById(
     "storagePacks"
   ).innerText =
     packs;
-
 
   document.getElementById(
     "storageCost"
@@ -2069,7 +1985,6 @@ function calculate() {
       storageCost
     );
 
-
   document.getElementById(
     "totalSetup"
   ).innerText =
@@ -2077,14 +1992,12 @@ function calculate() {
       totalSetup
     );
 
-
   document.getElementById(
     "totalMonthly"
   ).innerText =
     money(
       totalMonthly
     );
-
 
   document.getElementById(
     "totalYear"
@@ -2094,19 +2007,18 @@ function calculate() {
     );
 
 
+  /* PRODUCTO */
+
   const productSelect =
     document.getElementById(
       "product"
     );
 
-
   const productFolderId =
     productSelect.value;
 
-
   const folders =
     getLibraryFolders();
-
 
   const productFolder =
     folders.find(
@@ -2124,6 +2036,8 @@ function calculate() {
       }
     );
 
+
+  /* COTIZACION EN MEMORIA */
 
   window.cotizacion = {
 
@@ -2182,7 +2096,6 @@ function calculate() {
         "."
       : "✅ Cotización calculada correctamente.";
 
-
   info.style.display =
     "block";
 
@@ -2197,7 +2110,6 @@ function saveQuoteToOpportunity() {
 
   calculate();
 
-
   if (
     !currentOpportunity
   ) {
@@ -2210,14 +2122,12 @@ function saveQuoteToOpportunity() {
 
   }
 
-
   const opportunities =
     JSON.parse(
       localStorage.getItem(
         "preventa_opportunities"
       )
     ) || [];
-
 
   const index =
     opportunities.findIndex(
@@ -2235,7 +2145,6 @@ function saveQuoteToOpportunity() {
       }
     );
 
-
   if (
     index === -1
   ) {
@@ -2248,24 +2157,19 @@ function saveQuoteToOpportunity() {
 
   }
 
-
   const quote =
     window.cotizacion;
 
-
   opportunities[index].quote =
     quote;
-
 
   opportunities[index].product =
     quote.product ||
     "";
 
-
   opportunities[index].productFolderId =
     quote.productFolderId ||
     "";
-
 
   if (
     quote.product
@@ -2276,10 +2180,8 @@ function saveQuoteToOpportunity() {
 
   }
 
-
   opportunities[index].updatedAt =
     new Date().toISOString();
-
 
   if (
     opportunities[index].status ===
@@ -2291,7 +2193,6 @@ function saveQuoteToOpportunity() {
 
   }
 
-
   localStorage.setItem(
     "preventa_opportunities",
     JSON.stringify(
@@ -2299,10 +2200,8 @@ function saveQuoteToOpportunity() {
     )
   );
 
-
   currentOpportunity =
     opportunities[index];
-
 
   localStorage.setItem(
     "preventa_current_opportunity",
@@ -2311,26 +2210,21 @@ function saveQuoteToOpportunity() {
     )
   );
 
-
   const success =
     document.getElementById(
       "success"
     );
 
-
   success.innerText =
     "✅ Cotización guardada correctamente en la oportunidad.";
 
-
   success.style.display =
     "block";
-
 
   const connection =
     document.getElementById(
       "connection"
     );
-
 
   connection.textContent =
     "🔗 Oportunidad actualizada: " +
@@ -2344,7 +2238,6 @@ function saveQuoteToOpportunity() {
         : ""
     ) +
     " · Cotización guardada.";
-
 
   connection.style.display =
     "block";
@@ -2360,7 +2253,6 @@ async function generateFinalProposal() {
 
   calculate();
 
-
   if (
     !currentOpportunity
   ) {
@@ -2373,10 +2265,8 @@ async function generateFinalProposal() {
 
   }
 
-
   const quote =
     window.cotizacion;
-
 
   if (
     !quote
@@ -2390,7 +2280,6 @@ async function generateFinalProposal() {
 
   }
 
-
   if (
     !quote.productFolderId
   ) {
@@ -2402,7 +2291,6 @@ async function generateFinalProposal() {
     return;
 
   }
-
 
   if (
     !libraryDatabase
@@ -2416,34 +2304,28 @@ async function generateFinalProposal() {
 
   }
 
-
   const success =
     document.getElementById(
       "success"
     );
-
 
   const proposalBox =
     document.getElementById(
       "proposalBox"
     );
 
-
   try {
 
     success.style.display =
       "block";
 
-
     success.innerText =
       "📄 Buscando la propuesta técnica base...";
-
 
     const files =
       await getLibraryFiles(
         quote.productFolderId
       );
-
 
     if (
       !files.length
@@ -2455,10 +2337,8 @@ async function generateFinalProposal() {
 
     }
 
-
     const baseFile =
       files[0];
-
 
     if (
       !baseFile.blob
@@ -2470,10 +2350,8 @@ async function generateFinalProposal() {
 
     }
 
-
     success.innerText =
       "📝 Agregando la propuesta económica...";
-
 
     const finalBlob =
       await addEconomicProposal(
@@ -2481,10 +2359,8 @@ async function generateFinalProposal() {
         quote
       );
 
-
     success.innerText =
       "💾 Guardando propuesta final en el Repositorio...";
-
 
     const savedProposal =
       await saveFinalProposal(
@@ -2494,20 +2370,17 @@ async function generateFinalProposal() {
         baseFile
       );
 
-
     const client =
       sanitizeFileName(
         quote.client ||
         "Cliente"
       );
 
-
     const product =
       sanitizeFileName(
         quote.product ||
         "Propuesta"
       );
-
 
     const finalFileName =
       "Propuesta_" +
@@ -2516,39 +2389,31 @@ async function generateFinalProposal() {
       client +
       ".docx";
 
-
     const url =
       URL.createObjectURL(
         finalBlob
       );
-
 
     const link =
       document.createElement(
         "a"
       );
 
-
     link.href =
       url;
 
-
     link.download =
       finalFileName;
-
 
     document.body.appendChild(
       link
     );
 
-
     link.click();
-
 
     document.body.removeChild(
       link
     );
-
 
     setTimeout(
       function() {
@@ -2561,19 +2426,15 @@ async function generateFinalProposal() {
       1000
     );
 
-
     saveFinalProposalReference(
       savedProposal
     );
 
-
     success.innerText =
       "✅ Propuesta final generada, guardada en el Repositorio y descargada correctamente.";
 
-
     success.style.display =
       "block";
-
 
     proposalBox.innerHTML =
 
@@ -2605,7 +2466,6 @@ async function generateFinalProposal() {
       "<br>" +
       "✅ También fue descargado a tu computadora.";
 
-
     proposalBox.style.display =
       "block";
 
@@ -2618,14 +2478,11 @@ async function generateFinalProposal() {
       error
     );
 
-
     success.innerText =
       "❌ No se pudo generar la propuesta final.";
 
-
     success.style.display =
       "block";
-
 
     alert(
       error.message ||
@@ -2663,7 +2520,6 @@ function saveFinalProposal(
 
       }
 
-
       if (
         !libraryDatabase.objectStoreNames.contains(
           FINAL_STORE
@@ -2680,37 +2536,31 @@ function saveFinalProposal(
 
       }
 
-
       const transaction =
         libraryDatabase.transaction(
           FINAL_STORE,
           "readwrite"
         );
 
-
       const store =
         transaction.objectStore(
           FINAL_STORE
         );
-
 
       const index =
         store.index(
           "opportunityId"
         );
 
-
       const opportunityId =
         String(
           opportunity.id
         );
 
-
       const request =
         index.getAll(
           opportunityId
         );
-
 
       request.onsuccess =
         function() {
@@ -2718,7 +2568,6 @@ function saveFinalProposal(
           const anteriores =
             request.result ||
             [];
-
 
           anteriores.forEach(
             function(item) {
@@ -2730,13 +2579,11 @@ function saveFinalProposal(
             }
           );
 
-
           const client =
             sanitizeFileName(
               quote.client ||
               "Cliente"
             );
-
 
           const product =
             sanitizeFileName(
@@ -2744,14 +2591,12 @@ function saveFinalProposal(
               "Propuesta"
             );
 
-
           const fileName =
             "Propuesta_" +
             product +
             "_" +
             client +
             ".docx";
-
 
           const registro = {
 
@@ -2806,12 +2651,10 @@ function saveFinalProposal(
 
           };
 
-
           const addRequest =
             store.add(
               registro
             );
-
 
           addRequest.onsuccess =
             function() {
@@ -2821,7 +2664,6 @@ function saveFinalProposal(
               );
 
             };
-
 
           addRequest.onerror =
             function() {
@@ -2833,7 +2675,6 @@ function saveFinalProposal(
             };
 
         };
-
 
       request.onerror =
         function() {
@@ -2851,7 +2692,7 @@ function saveFinalProposal(
 
 
 /* =====================================================
-   GUARDAR REFERENCIA
+   REFERENCIA EN OPORTUNIDAD
 ===================================================== */
 
 function saveFinalProposalReference(
@@ -2867,7 +2708,6 @@ function saveFinalProposalReference(
 
   }
 
-
   try {
 
     const opportunities =
@@ -2876,7 +2716,6 @@ function saveFinalProposalReference(
           "preventa_opportunities"
         )
       ) || [];
-
 
     const index =
       opportunities.findIndex(
@@ -2894,7 +2733,6 @@ function saveFinalProposalReference(
         }
       );
 
-
     if (
       index === -1
     ) {
@@ -2902,7 +2740,6 @@ function saveFinalProposalReference(
       return;
 
     }
-
 
     opportunities[index].finalProposal = {
 
@@ -2920,10 +2757,8 @@ function saveFinalProposalReference(
 
     };
 
-
     opportunities[index].updatedAt =
       new Date().toISOString();
-
 
     if (
       opportunities[index].status ===
@@ -2937,7 +2772,6 @@ function saveFinalProposalReference(
 
     }
 
-
     localStorage.setItem(
       "preventa_opportunities",
       JSON.stringify(
@@ -2945,10 +2779,8 @@ function saveFinalProposalReference(
       )
     );
 
-
     currentOpportunity =
       opportunities[index];
-
 
     localStorage.setItem(
       "preventa_current_opportunity",
@@ -2972,7 +2804,7 @@ function saveFinalProposalReference(
 
 
 /* =====================================================
-   AGREGAR PROPUESTA ECONOMICA
+   AGREGAR PROPUESTA ECONOMICA AL WORD
 ===================================================== */
 
 async function addEconomicProposal(
@@ -2991,22 +2823,18 @@ async function addEconomicProposal(
 
   }
 
-
   const arrayBuffer =
     await baseBlob.arrayBuffer();
-
 
   const zip =
     await JSZip.loadAsync(
       arrayBuffer
     );
 
-
   const documentFile =
     zip.file(
       "word/document.xml"
     );
-
 
   if (!documentFile) {
 
@@ -3016,24 +2844,20 @@ async function addEconomicProposal(
 
   }
 
-
   let xml =
     await documentFile.async(
       "string"
     );
-
 
   const economicXML =
     buildEconomicPage(
       quote
     );
 
-
   const bodyEnd =
     xml.lastIndexOf(
       "</w:body>"
     );
-
 
   if (
     bodyEnd === -1
@@ -3045,7 +2869,6 @@ async function addEconomicProposal(
 
   }
 
-
   xml =
     xml.slice(
       0,
@@ -3056,12 +2879,10 @@ async function addEconomicProposal(
       bodyEnd
     );
 
-
   zip.file(
     "word/document.xml",
     xml
   );
-
 
   return await zip.generateAsync({
 
@@ -3077,7 +2898,7 @@ async function addEconomicProposal(
 
 
 /* =====================================================
-   CONSTRUIR PAGINA ECONOMICA
+   PAGINA ECONOMICA
 ===================================================== */
 
 function buildEconomicPage(
@@ -3085,7 +2906,6 @@ function buildEconomicPage(
 ) {
 
   const rows = [];
-
 
   if (
     Number(
@@ -3118,7 +2938,6 @@ function buildEconomicPage(
 
   }
 
-
   if (
     Number(
       quote.packs
@@ -3149,7 +2968,6 @@ function buildEconomicPage(
     });
 
   }
-
 
   if (
     Number(
@@ -3182,7 +3000,6 @@ function buildEconomicPage(
 
   }
 
-
   if (
     Number(
       quote.setup
@@ -3213,7 +3030,6 @@ function buildEconomicPage(
     });
 
   }
-
 
   if (
     Number(
@@ -3246,10 +3062,8 @@ function buildEconomicPage(
 
   }
 
-
   let tableRows =
     "";
-
 
   tableRows +=
     "<w:tr>" +
@@ -3280,7 +3094,6 @@ function buildEconomicPage(
       ) +
 
     "</w:tr>";
-
 
   rows.forEach(
     function(row) {
@@ -3322,7 +3135,6 @@ function buildEconomicPage(
     }
   );
 
-
   if (
     rows.length === 0
   ) {
@@ -3338,7 +3150,6 @@ function buildEconomicPage(
 
   }
 
-
   const page =
 
     "<w:p>" +
@@ -3350,7 +3161,6 @@ function buildEconomicPage(
       "</w:r>" +
 
     "</w:p>" +
-
 
     "<w:p>" +
 
@@ -3378,13 +3188,11 @@ function buildEconomicPage(
 
     "</w:p>" +
 
-
     paragraphBoldValue(
       "Cliente: ",
       quote.client ||
       "Sin especificar"
     ) +
-
 
     paragraphBoldValue(
       "Oportunidad: ",
@@ -3392,13 +3200,11 @@ function buildEconomicPage(
       "Sin especificar"
     ) +
 
-
     paragraphBoldValue(
       "Producto: ",
       quote.product ||
       "Sin especificar"
     ) +
-
 
     "<w:p>" +
 
@@ -3415,7 +3221,6 @@ function buildEconomicPage(
       "</w:r>" +
 
     "</w:p>" +
-
 
     "<w:tbl>" +
 
@@ -3445,7 +3250,6 @@ function buildEconomicPage(
 
     "</w:tbl>" +
 
-
     "<w:p>" +
 
       "<w:r>" +
@@ -3456,7 +3260,6 @@ function buildEconomicPage(
 
     "</w:p>" +
 
-
     paragraphBoldValue(
       "Total único / Setup: ",
       money(
@@ -3464,14 +3267,12 @@ function buildEconomicPage(
       )
     ) +
 
-
     paragraphBoldValue(
       "Total mensual: ",
       money(
         quote.totalMonthly
       )
     ) +
-
 
     "<w:p>" +
 
@@ -3513,7 +3314,6 @@ function buildEconomicPage(
 
     "</w:p>" +
 
-
     "<w:p>" +
 
       "<w:r>" +
@@ -3533,7 +3333,6 @@ function buildEconomicPage(
       "</w:r>" +
 
     "</w:p>";
-
 
   return page;
 
@@ -3807,10 +3606,8 @@ function downloadExcel() {
 
   calculate();
 
-
   const c =
     window.cotizacion;
-
 
   const rows = [
 
@@ -3942,7 +3739,6 @@ function downloadExcel() {
 
   ];
 
-
   const csv =
     rows.map(
       function(row) {
@@ -3956,13 +3752,11 @@ function downloadExcel() {
                 ""
               );
 
-
             text =
               text.replace(
                 /"/g,
                 '""'
               );
-
 
             return (
               '"' +
@@ -3976,7 +3770,6 @@ function downloadExcel() {
       }
     ).join("\n");
 
-
   const blob =
     new Blob(
       [
@@ -3989,39 +3782,31 @@ function downloadExcel() {
       }
     );
 
-
   const url =
     URL.createObjectURL(
       blob
     );
-
 
   const link =
     document.createElement(
       "a"
     );
 
-
   link.href =
     url;
 
-
   link.download =
     "Cotizacion_Preventa_IA.csv";
-
 
   document.body.appendChild(
     link
   );
 
-
   link.click();
-
 
   document.body.removeChild(
     link
   );
-
 
   setTimeout(
     function() {
@@ -4058,9 +3843,7 @@ function downloadExcel() {
 
   }
 
-
   await loadCurrentOpportunity();
-
 
   calculate();
 
