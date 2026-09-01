@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
@@ -8,8 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Cotizador | PREVENTA IA</title>
-
-<!-- JSZIP -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
@@ -314,506 +311,466 @@ select.prefilled {
 
 <header>
 
-  <h1>
-    💰 PREVENTA IA
-  </h1>
+  <h1>💰 PREVENTA IA</h1>
 
-<a
-href="index.html"
-class="back"
-
->
-
-```
-← Volver al inicio
-```
-
+  <a href="index.html" class="back">
+    ← Volver al inicio
   </a>
 
 </header>
 
+
 <main class="container">
 
-  <h2>
-    💰 Cotizador
-  </h2>
+  <h2>💰 Cotizador</h2>
 
   <p class="subtitle">
     Calculá automáticamente los costos de implementación y costos mensuales.
   </p>
 
+
   <!-- CONEXIÓN -->
 
-  <div
-    id="connection"
-    class="connection"
-  ></div>
+  <div id="connection" class="connection"></div>
+
 
   <!-- DATOS -->
 
   <div class="card">
 
-```
-<h3>
-  📋 Datos de la cotización
-</h3>
+    <h3>📋 Datos de la cotización</h3>
+
+    <div class="fields">
 
 
-<div class="fields">
+      <!-- PRODUCTO -->
+
+      <div class="field">
+
+        <label for="product">
+          🧩 Producto / Solución
+        </label>
+
+        <select
+          id="product"
+          onchange="productChanged()"
+        >
+
+          <option value="">
+            Seleccioná un producto
+          </option>
+
+        </select>
+
+        <small>
+          Se toma de las carpetas creadas en la Biblioteca Técnica.
+        </small>
+
+        <div
+          id="libraryStatus"
+          class="library-status"
+        ></div>
+
+      </div>
 
 
-  <!-- PRODUCTO -->
+      <!-- CLIENTE -->
 
-  <div class="field">
+      <div class="field">
 
-    <label for="product">
-      🧩 Producto / Solución
-    </label>
+        <label for="client">
+          Cliente
+        </label>
 
-    <select
-      id="product"
-      onchange="productChanged()"
-    >
+        <input
+          type="text"
+          id="client"
+          placeholder="Nombre del cliente"
+        >
 
-      <option value="">
-        Seleccioná un producto
-      </option>
+      </div>
 
-    </select>
 
-    <small>
-      Se toma de las carpetas creadas en la Biblioteca Técnica.
-    </small>
+      <!-- OPORTUNIDAD -->
 
-    <div
-      id="libraryStatus"
-      class="library-status"
-    ></div>
+      <div class="field">
+
+        <label for="opportunity">
+          Oportunidad
+        </label>
+
+        <input
+          type="text"
+          id="opportunity"
+          placeholder="Nombre de la oportunidad"
+        >
+
+      </div>
+
+
+      <!-- SETUP -->
+
+      <div class="field">
+
+        <label for="setup">
+          Horas de parametrización / Setup
+        </label>
+
+        <input
+          type="number"
+          id="setup"
+          value="8"
+          min="0"
+        >
+
+        <small>
+          Costo: USD 25 por hora.
+        </small>
+
+      </div>
+
+
+      <!-- USUARIOS -->
+
+      <div class="field">
+
+        <label for="users">
+          Cantidad de usuarios
+        </label>
+
+        <input
+          type="number"
+          id="users"
+          value="10"
+          min="0"
+        >
+
+        <small>
+          El precio depende del tramo de usuarios.
+        </small>
+
+      </div>
+
+
+      <!-- FIRMAS -->
+
+      <div class="field">
+
+        <label for="signatures">
+          Firmas por mes
+        </label>
+
+        <input
+          type="number"
+          id="signatures"
+          value="0"
+          min="0"
+        >
+
+        <small>
+          Costo: USD 0,20 por firma.
+        </small>
+
+      </div>
+
+
+      <!-- PESO -->
+
+      <div class="field">
+
+        <label for="imageWeight">
+          Peso promedio de una imagen (KB)
+        </label>
+
+        <input
+          type="number"
+          id="imageWeight"
+          value="70"
+          min="0"
+        >
+
+        <small>
+          Referencia habitual: 70 KB por imagen.
+        </small>
+
+      </div>
+
+
+      <!-- IMAGENES -->
+
+      <div class="field">
+
+        <label for="images">
+          Cantidad de imágenes
+        </label>
+
+        <input
+          type="number"
+          id="images"
+          value="0"
+          min="0"
+        >
+
+        <small>
+          Se calcula automáticamente el almacenamiento necesario.
+        </small>
+
+      </div>
+
+
+      <!-- STORAGE -->
+
+      <div class="field">
+
+        <label for="manualPacks">
+          Packs de Storage
+        </label>
+
+        <input
+          type="number"
+          id="manualPacks"
+          value="0"
+          min="0"
+        >
+
+        <small>
+          1 pack = 50 GB · 2 = 100 GB · 3 = 150 GB.
+        </small>
+
+      </div>
+
+
+      <!-- SOPORTE -->
+
+      <div class="field">
+
+        <label for="support">
+          Horas de soporte Addoc
+        </label>
+
+        <input
+          type="number"
+          id="support"
+          value="5"
+          min="0"
+        >
+
+        <small>
+          Costo: USD 25 por hora.
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div id="warning" class="warning"></div>
+
+    <div id="info" class="info"></div>
+
+    <div id="success" class="success"></div>
+
+    <div id="proposalBox" class="proposal-box"></div>
+
+
+    <div class="buttons">
+
+      <button
+        class="button"
+        onclick="calculate()"
+      >
+        🧮 Calcular cotización
+      </button>
+
+
+      <button
+        class="button save-button"
+        onclick="saveQuoteToOpportunity()"
+      >
+        💾 Guardar en oportunidad
+      </button>
+
+
+      <button
+        class="button docx-button"
+        onclick="generateFinalProposal()"
+      >
+        📄 Generar propuesta final
+      </button>
+
+
+      <button
+        class="button excel-button"
+        onclick="downloadExcel()"
+      >
+        📥 Descargar Excel
+      </button>
+
+    </div>
 
   </div>
 
-
-  <!-- CLIENTE -->
-
-  <div class="field">
-
-    <label for="client">
-      Cliente
-    </label>
-
-    <input
-      type="text"
-      id="client"
-      placeholder="Nombre del cliente"
-    >
-
-  </div>
-
-
-  <!-- OPORTUNIDAD -->
-
-  <div class="field">
-
-    <label for="opportunity">
-      Oportunidad
-    </label>
-
-    <input
-      type="text"
-      id="opportunity"
-      placeholder="Nombre de la oportunidad"
-    >
-
-  </div>
-
-
-  <!-- SETUP -->
-
-  <div class="field">
-
-    <label for="setup">
-      Horas de parametrización / Setup
-    </label>
-
-    <input
-      type="number"
-      id="setup"
-      value="8"
-      min="0"
-    >
-
-    <small>
-      Costo: USD 25 por hora.
-    </small>
-
-  </div>
-
-
-  <!-- USUARIOS -->
-
-  <div class="field">
-
-    <label for="users">
-      Cantidad de usuarios
-    </label>
-
-    <input
-      type="number"
-      id="users"
-      value="10"
-      min="0"
-    >
-
-    <small>
-      El precio depende del tramo de usuarios.
-    </small>
-
-  </div>
-
-
-  <!-- FIRMAS -->
-
-  <div class="field">
-
-    <label for="signatures">
-      Firmas por mes
-    </label>
-
-    <input
-      type="number"
-      id="signatures"
-      value="0"
-      min="0"
-    >
-
-    <small>
-      Costo: USD 0,20 por firma.
-    </small>
-
-  </div>
-
-
-  <!-- PESO -->
-
-  <div class="field">
-
-    <label for="imageWeight">
-      Peso promedio de una imagen (KB)
-    </label>
-
-    <input
-      type="number"
-      id="imageWeight"
-      value="70"
-      min="0"
-    >
-
-    <small>
-      Referencia habitual: 70 KB por imagen.
-    </small>
-
-  </div>
-
-
-  <!-- IMAGENES -->
-
-  <div class="field">
-
-    <label for="images">
-      Cantidad de imágenes
-    </label>
-
-    <input
-      type="number"
-      id="images"
-      value="0"
-      min="0"
-    >
-
-    <small>
-      Se calcula automáticamente el almacenamiento necesario.
-    </small>
-
-  </div>
-
-
-  <!-- STORAGE -->
-
-  <div class="field">
-
-    <label for="manualPacks">
-      Packs de Storage
-    </label>
-
-    <input
-      type="number"
-      id="manualPacks"
-      value="0"
-      min="0"
-    >
-
-    <small>
-      1 pack = 50 GB · 2 = 100 GB · 3 = 150 GB.
-    </small>
-
-  </div>
-
-
-  <!-- SOPORTE -->
-
-  <div class="field">
-
-    <label for="support">
-      Horas de soporte Addoc
-    </label>
-
-    <input
-      type="number"
-      id="support"
-      value="5"
-      min="0"
-    >
-
-    <small>
-      Costo: USD 25 por hora.
-    </small>
-
-  </div>
-
-
-</div>
-
-
-<div
-  id="warning"
-  class="warning"
-></div>
-
-
-<div
-  id="info"
-  class="info"
-></div>
-
-
-<div
-  id="success"
-  class="success"
-></div>
-
-
-<div
-  id="proposalBox"
-  class="proposal-box"
-></div>
-
-
-<div class="buttons">
-
-
-  <button
-    class="button"
-    onclick="calculate()"
-  >
-    🧮 Calcular cotización
-  </button>
-
-
-  <button
-    class="button save-button"
-    onclick="saveQuoteToOpportunity()"
-  >
-    💾 Guardar en oportunidad
-  </button>
-
-
-  <button
-    class="button docx-button"
-    onclick="generateFinalProposal()"
-  >
-    📄 Generar propuesta final
-  </button>
-
-
-  <button
-    class="button excel-button"
-    onclick="downloadExcel()"
-  >
-    📥 Descargar Excel
-  </button>
-
-
-</div>
-```
-
-  </div>
 
   <!-- RESULTADOS -->
 
   <div class="card">
 
-```
-<h3>
-  📊 Resultado
-</h3>
+    <h3>📊 Resultado</h3>
 
 
-<div class="results">
+    <div class="results">
+
+      <div class="result">
+
+        <div class="result-title">
+          Costo Setup
+        </div>
+
+        <div
+          class="result-value"
+          id="setupCost"
+        >
+          USD 0,00
+        </div>
+
+      </div>
 
 
-  <div class="result">
+      <div class="result">
 
-    <div class="result-title">
-      Costo Setup
+        <div class="result-title">
+          Costo Usuarios
+        </div>
+
+        <div
+          class="result-value"
+          id="usersCost"
+        >
+          USD 0,00
+        </div>
+
+      </div>
+
+
+      <div class="result">
+
+        <div class="result-title">
+          Costo Firmas
+        </div>
+
+        <div
+          class="result-value"
+          id="signatureCost"
+        >
+          USD 0,00
+        </div>
+
+      </div>
+
+
+      <div class="result">
+
+        <div class="result-title">
+          Costo Soporte
+        </div>
+
+        <div
+          class="result-value"
+          id="supportCost"
+        >
+          USD 0,00
+        </div>
+
+      </div>
+
     </div>
 
-    <div
-      class="result-value"
-      id="setupCost"
-    >
-      USD 0,00
+
+    <div class="storage-box">
+
+      <strong>
+        💾 Storage
+      </strong>
+
+      <p>
+        Necesidad calculada:
+        <strong id="storageNeeded">
+          0 GB
+        </strong>
+      </p>
+
+      <p>
+        Storage a cotizar:
+        <strong id="storageQuoted">
+          50 GB
+        </strong>
+      </p>
+
+      <p>
+        Cantidad de packs:
+        <strong id="storagePacks">
+          1
+        </strong>
+      </p>
+
+      <p>
+        Costo Storage:
+        <strong id="storageCost">
+          USD 2,00
+        </strong>
+      </p>
+
     </div>
 
-  </div>
+
+    <div class="total">
+
+      <div class="total-row">
+
+        <span>
+          Total único / Setup
+        </span>
+
+        <strong id="totalSetup">
+          USD 0,00
+        </strong>
+
+      </div>
 
 
-  <div class="result">
+      <div class="total-row">
 
-    <div class="result-title">
-      Costo Usuarios
+        <span>
+          Total mensual
+        </span>
+
+        <strong id="totalMonthly">
+          USD 0,00
+        </strong>
+
+      </div>
+
+
+      <div class="total-final">
+
+        <div>
+          Costo total primer año
+        </div>
+
+        <div id="totalYear">
+          USD 0,00
+        </div>
+
+      </div>
+
     </div>
-
-    <div
-      class="result-value"
-      id="usersCost"
-    >
-      USD 0,00
-    </div>
-
-  </div>
-
-
-  <div class="result">
-
-    <div class="result-title">
-      Costo Firmas
-    </div>
-
-    <div
-      class="result-value"
-      id="signatureCost"
-    >
-      USD 0,00
-    </div>
-
-  </div>
-
-
-  <div class="result">
-
-    <div class="result-title">
-      Costo Soporte
-    </div>
-
-    <div
-      class="result-value"
-      id="supportCost"
-    >
-      USD 0,00
-    </div>
-
-  </div>
-
-
-</div>
-
-
-<div class="storage-box">
-
-  <strong>
-    💾 Storage
-  </strong>
-
-  <p>
-    Necesidad calculada:
-    <strong id="storageNeeded">
-      0 GB
-    </strong>
-  </p>
-
-  <p>
-    Storage a cotizar:
-    <strong id="storageQuoted">
-      50 GB
-    </strong>
-  </p>
-
-  <p>
-    Cantidad de packs:
-    <strong id="storagePacks">
-      1
-    </strong>
-  </p>
-
-  <p>
-    Costo Storage:
-    <strong id="storageCost">
-      USD 2,00
-    </strong>
-  </p>
-
-</div>
-
-
-<div class="total">
-
-  <div class="total-row">
-
-    <span>
-      Total único / Setup
-    </span>
-
-    <strong id="totalSetup">
-      USD 0,00
-    </strong>
-
-  </div>
-
-
-  <div class="total-row">
-
-    <span>
-      Total mensual
-    </span>
-
-    <strong id="totalMonthly">
-      USD 0,00
-    </strong>
-
-  </div>
-
-
-  <div class="total-final">
-
-    <div>
-      Costo total primer año
-    </div>
-
-    <div id="totalYear">
-      USD 0,00
-    </div>
-
-  </div>
-
-</div>
-```
 
   </div>
 
 </main>
 
-<script>
 
+<script>
 
 /* =====================================================
    VARIABLES
@@ -828,17 +785,13 @@ let libraryDatabase = null;
    CONFIGURACION BIBLIOTECA
 ===================================================== */
 
-const LIBRARY_DB_NAME =
-  "preventa_ia_biblioteca";
+const LIBRARY_DB_NAME = "preventa_ia_biblioteca";
 
-const LIBRARY_DB_VERSION =
-  2;
+const LIBRARY_DB_VERSION = 2;
 
-const LIBRARY_STORE =
-  "proposals";
+const LIBRARY_STORE = "proposals";
 
-const FINAL_STORE =
-  "finalProposals";
+const FINAL_STORE = "finalProposals";
 
 
 /* =====================================================
@@ -894,10 +847,6 @@ function openLibraryDatabase() {
             event.target.result;
 
 
-          /*
-            Mantener propuestas originales.
-          */
-
           if (
             !database.objectStoreNames.contains(
               LIBRARY_STORE
@@ -924,10 +873,6 @@ function openLibraryDatabase() {
 
           }
 
-
-          /*
-            Propuestas finales.
-          */
 
           if (
             !database.objectStoreNames.contains(
@@ -972,7 +917,6 @@ function openLibraryDatabase() {
           libraryDatabase =
             event.target.result;
 
-
           resolve(
             libraryDatabase
           );
@@ -999,12 +943,10 @@ function openLibraryDatabase() {
 
 
 /* =====================================================
-   OBTENER ARCHIVOS DE UNA CARPETA
+   OBTENER ARCHIVOS
 ===================================================== */
 
-function getLibraryFiles(
-  folderId
-) {
+function getLibraryFiles(folderId) {
 
   return new Promise(
     function(resolve, reject) {
@@ -1182,10 +1124,6 @@ async function loadProducts() {
   );
 
 
-  /*
-    Recuperar producto.
-  */
-
   if (
     currentOpportunity &&
     currentOpportunity.productFolderId
@@ -1195,6 +1133,7 @@ async function loadProducts() {
       currentOpportunity.productFolderId;
 
   }
+
 
   else if (
     currentOpportunity &&
@@ -1234,7 +1173,7 @@ async function loadProducts() {
 
 
 /* =====================================================
-   CAMBIO DE PRODUCTO
+   PRODUCTO CAMBIADO
 ===================================================== */
 
 async function productChanged() {
@@ -1364,7 +1303,7 @@ async function productChanged() {
 
 
 /* =====================================================
-   CARGAR OPORTUNIDAD ACTUAL
+   CARGAR OPORTUNIDAD
 ===================================================== */
 
 async function loadCurrentOpportunity() {
@@ -1416,10 +1355,6 @@ async function loadCurrentOpportunity() {
   }
 
 
-  /*
-    CLIENTE
-  */
-
   if (
     currentOpportunity.client
   ) {
@@ -1432,10 +1367,6 @@ async function loadCurrentOpportunity() {
   }
 
 
-  /*
-    PROYECTO
-  */
-
   if (
     currentOpportunity.project
   ) {
@@ -1447,10 +1378,6 @@ async function loadCurrentOpportunity() {
 
   }
 
-
-  /*
-    USUARIOS
-  */
 
   if (
     currentOpportunity.users
@@ -1475,10 +1402,6 @@ async function loadCurrentOpportunity() {
 
   }
 
-
-  /*
-    STORAGE
-  */
 
   if (
     currentOpportunity.storage
@@ -1505,10 +1428,6 @@ async function loadCurrentOpportunity() {
 
   }
 
-
-  /*
-    COTIZACION EXISTENTE
-  */
 
   if (
     currentOpportunity.quote
@@ -1561,10 +1480,6 @@ async function loadCurrentOpportunity() {
 
   }
 
-
-  /*
-    CONEXION
-  */
 
   const connection =
     document.getElementById(
@@ -1969,10 +1884,6 @@ function calculate() {
     "none";
 
 
-  /*
-    ADVERTENCIAS
-  */
-
   if (
     users > 3500
   ) {
@@ -2000,10 +1911,6 @@ function calculate() {
   }
 
 
-  /*
-    COSTOS
-  */
-
   const setupCost =
     setup * 25;
 
@@ -2028,10 +1935,6 @@ function calculate() {
     support *
     25;
 
-
-  /*
-    STORAGE
-  */
 
   const totalKB =
     imageWeight *
@@ -2086,10 +1989,6 @@ function calculate() {
     2;
 
 
-  /*
-    TOTALES
-  */
-
   const totalSetup =
     setupCost;
 
@@ -2108,10 +2007,6 @@ function calculate() {
       12
     );
 
-
-  /*
-    MOSTRAR
-  */
 
   document.getElementById(
     "setupCost"
@@ -2199,10 +2094,6 @@ function calculate() {
     );
 
 
-  /*
-    PRODUCTO
-  */
-
   const productSelect =
     document.getElementById(
       "product"
@@ -2233,10 +2124,6 @@ function calculate() {
       }
     );
 
-
-  /*
-    COTIZACION EN MEMORIA
-  */
 
   window.cotizacion = {
 
@@ -2569,11 +2456,6 @@ async function generateFinalProposal() {
     }
 
 
-    /*
-      Se toma la propuesta
-      más reciente.
-    */
-
     const baseFile =
       files[0];
 
@@ -2593,10 +2475,6 @@ async function generateFinalProposal() {
       "📝 Agregando la propuesta económica...";
 
 
-    /*
-      Crear Word final.
-    */
-
     const finalBlob =
       await addEconomicProposal(
         baseFile.blob,
@@ -2608,10 +2486,6 @@ async function generateFinalProposal() {
       "💾 Guardando propuesta final en el Repositorio...";
 
 
-    /*
-      Guardar propuesta final.
-    */
-
     const savedProposal =
       await saveFinalProposal(
         finalBlob,
@@ -2620,10 +2494,6 @@ async function generateFinalProposal() {
         baseFile
       );
 
-
-    /*
-      NOMBRE DEL ARCHIVO
-    */
 
     const client =
       sanitizeFileName(
@@ -2646,10 +2516,6 @@ async function generateFinalProposal() {
       client +
       ".docx";
 
-
-    /*
-      Descargar automáticamente.
-    */
 
     const url =
       URL.createObjectURL(
@@ -2696,18 +2562,10 @@ async function generateFinalProposal() {
     );
 
 
-    /*
-      Guardar referencia.
-    */
-
     saveFinalProposalReference(
       savedProposal
     );
 
-
-    /*
-      MENSAJE
-    */
 
     success.innerText =
       "✅ Propuesta final generada, guardada en el Repositorio y descargada correctamente.";
@@ -2862,11 +2720,6 @@ function saveFinalProposal(
             [];
 
 
-          /*
-            Borrar versiones anteriores
-            de la misma oportunidad.
-          */
-
           anteriores.forEach(
             function(item) {
 
@@ -2998,7 +2851,7 @@ function saveFinalProposal(
 
 
 /* =====================================================
-   GUARDAR REFERENCIA EN OPORTUNIDAD
+   GUARDAR REFERENCIA
 ===================================================== */
 
 function saveFinalProposalReference(
@@ -3119,7 +2972,7 @@ function saveFinalProposalReference(
 
 
 /* =====================================================
-   AGREGAR PROPUESTA ECONOMICA AL WORD
+   AGREGAR PROPUESTA ECONOMICA
 ===================================================== */
 
 async function addEconomicProposal(
@@ -3169,10 +3022,6 @@ async function addEconomicProposal(
       "string"
     );
 
-
-  /*
-    Agregar página económica.
-  */
 
   const economicXML =
     buildEconomicPage(
@@ -3238,10 +3087,6 @@ function buildEconomicPage(
   const rows = [];
 
 
-  /*
-    USUARIOS
-  */
-
   if (
     Number(
       quote.users
@@ -3273,10 +3118,6 @@ function buildEconomicPage(
 
   }
 
-
-  /*
-    STORAGE
-  */
 
   if (
     Number(
@@ -3310,10 +3151,6 @@ function buildEconomicPage(
   }
 
 
-  /*
-    FIRMAS
-  */
-
   if (
     Number(
       quote.signatures
@@ -3346,10 +3183,6 @@ function buildEconomicPage(
   }
 
 
-  /*
-    SETUP
-  */
-
   if (
     Number(
       quote.setup
@@ -3381,10 +3214,6 @@ function buildEconomicPage(
 
   }
 
-
-  /*
-    SOPORTE
-  */
 
   if (
     Number(
@@ -3422,10 +3251,6 @@ function buildEconomicPage(
     "";
 
 
-  /*
-    ENCABEZADO
-  */
-
   tableRows +=
     "<w:tr>" +
 
@@ -3456,10 +3281,6 @@ function buildEconomicPage(
 
     "</w:tr>";
 
-
-  /*
-    FILAS
-  */
 
   rows.forEach(
     function(row) {
@@ -3502,10 +3323,6 @@ function buildEconomicPage(
   );
 
 
-  /*
-    SIN CONCEPTOS
-  */
-
   if (
     rows.length === 0
   ) {
@@ -3522,10 +3339,6 @@ function buildEconomicPage(
   }
 
 
-  /*
-    PAGINA ECONOMICA
-  */
-
   const page =
 
     "<w:p>" +
@@ -3538,10 +3351,6 @@ function buildEconomicPage(
 
     "</w:p>" +
 
-
-    /*
-      TITULO
-    */
 
     "<w:p>" +
 
@@ -3570,20 +3379,12 @@ function buildEconomicPage(
     "</w:p>" +
 
 
-    /*
-      CLIENTE
-    */
-
     paragraphBoldValue(
       "Cliente: ",
       quote.client ||
       "Sin especificar"
     ) +
 
-
-    /*
-      OPORTUNIDAD
-    */
 
     paragraphBoldValue(
       "Oportunidad: ",
@@ -3592,20 +3393,12 @@ function buildEconomicPage(
     ) +
 
 
-    /*
-      PRODUCTO
-    */
-
     paragraphBoldValue(
       "Producto: ",
       quote.product ||
       "Sin especificar"
     ) +
 
-
-    /*
-      DETALLE
-    */
 
     "<w:p>" +
 
@@ -3623,10 +3416,6 @@ function buildEconomicPage(
 
     "</w:p>" +
 
-
-    /*
-      TABLA
-    */
 
     "<w:tbl>" +
 
@@ -3657,10 +3446,6 @@ function buildEconomicPage(
     "</w:tbl>" +
 
 
-    /*
-      ESPACIO
-    */
-
     "<w:p>" +
 
       "<w:r>" +
@@ -3672,10 +3457,6 @@ function buildEconomicPage(
     "</w:p>" +
 
 
-    /*
-      TOTAL SETUP
-    */
-
     paragraphBoldValue(
       "Total único / Setup: ",
       money(
@@ -3684,10 +3465,6 @@ function buildEconomicPage(
     ) +
 
 
-    /*
-      TOTAL MENSUAL
-    */
-
     paragraphBoldValue(
       "Total mensual: ",
       money(
@@ -3695,10 +3472,6 @@ function buildEconomicPage(
       )
     ) +
 
-
-    /*
-      TOTAL PRIMER AÑO
-    */
 
     "<w:p>" +
 
@@ -3741,10 +3514,6 @@ function buildEconomicPage(
     "</w:p>" +
 
 
-    /*
-      FECHA
-    */
-
     "<w:p>" +
 
       "<w:r>" +
@@ -3772,7 +3541,7 @@ function buildEconomicPage(
 
 
 /* =====================================================
-   PARAGRAFO CON NEGRITA
+   PARAGRAFO
 ===================================================== */
 
 function paragraphBoldValue(
@@ -3822,7 +3591,7 @@ function paragraphBoldValue(
 
 
 /* =====================================================
-   CELDA TABLA
+   CELDA
 ===================================================== */
 
 function tableCell(
@@ -4031,7 +3800,7 @@ function escapeHTML(
 
 
 /* =====================================================
-   EXCEL
+   EXCEL / CSV
 ===================================================== */
 
 function downloadExcel() {
