@@ -19,20 +19,22 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #f3f6fa;
+  background: #f4f6f8;
   color: #172033;
-  min-height: 100vh;
+  line-height: 1.5;
 }
 
+/* HEADER */
+
 header {
-  background: #0b1426;
+  background: #0b1324;
   color: white;
   padding: 18px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 25px;
-  box-shadow: 0 4px 18px rgba(11, 20, 38, 0.18);
+  box-shadow: 0 3px 15px rgba(15, 23, 42, 0.15);
 }
 
 .logo {
@@ -46,25 +48,24 @@ nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 7px;
+  gap: 16px;
 }
 
 nav a {
   color: #cbd5e1;
   text-decoration: none;
   font-size: 13px;
-  padding: 8px 10px;
-  border-radius: 6px;
   transition: 0.2s;
 }
 
 nav a:hover {
-  background: #17243d;
   color: white;
 }
 
+/* HERO */
+
 .hero {
-  background: linear-gradient(135deg, #0b1426 0%, #162a4a 100%);
+  background: linear-gradient(135deg, #0b1324 0%, #16233d 100%);
   color: white;
   padding: 58px 30px 62px;
   text-align: center;
@@ -72,22 +73,24 @@ nav a:hover {
 
 .hero h1 {
   font-size: 42px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   letter-spacing: 0.5px;
 }
 
 .hero p {
   font-size: 17px;
   color: #cbd5e1;
-  max-width: 760px;
+  max-width: 780px;
   margin: auto;
   line-height: 1.6;
 }
 
+/* CONTENEDOR */
+
 .container {
   max-width: 1180px;
-  margin: 0 auto;
-  padding: 35px 25px 50px;
+  margin: 38px auto;
+  padding: 0 25px;
 }
 
 /* METRICAS */
@@ -97,36 +100,28 @@ nav a:hover {
   grid-template-columns: repeat(5, 1fr);
   gap: 15px;
   margin-bottom: 30px;
-  margin-top: -5px;
 }
 
 .metric {
   background: white;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 20px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
-  transition: 0.2s;
-}
-
-.metric:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
 }
 
 .metric-title {
   color: #64748b;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: bold;
-  margin-bottom: 9px;
+  margin-bottom: 8px;
   line-height: 1.4;
-  letter-spacing: 0.4px;
 }
 
 .metric-value {
+  color: #0f172a;
   font-size: 25px;
   font-weight: bold;
-  color: #0f1f38;
 }
 
 /* GRAFICOS */
@@ -135,20 +130,20 @@ nav a:hover {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  margin-bottom: 42px;
+  margin-bottom: 45px;
 }
 
 .chart-card {
   background: white;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
   padding: 25px;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
 }
 
 .chart-card h3 {
-  margin-bottom: 22px;
   color: #172033;
+  margin-bottom: 22px;
   font-size: 17px;
 }
 
@@ -161,23 +156,23 @@ nav a:hover {
 }
 
 .donut {
-  width: 175px;
-  height: 175px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   position: relative;
   background: #e2e8f0;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.03);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.04);
 }
 
 .donut::after {
   content: "";
   position: absolute;
-  width: 102px;
-  height: 102px;
+  width: 105px;
+  height: 105px;
   background: white;
   border-radius: 50%;
-  left: 36.5px;
-  top: 36.5px;
+  left: 37.5px;
+  top: 37.5px;
 }
 
 .donut-center {
@@ -185,10 +180,10 @@ nav a:hover {
   z-index: 2;
   width: 100%;
   text-align: center;
-  top: 64px;
+  top: 67px;
   font-size: 25px;
   font-weight: bold;
-  color: #0f1f38;
+  color: #0f172a;
 }
 
 .legend {
@@ -213,48 +208,34 @@ nav a:hover {
 
 /* SECCIONES */
 
-.section {
-  margin-bottom: 38px;
-}
-
 .section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 20px;
-  margin-bottom: 17px;
+  margin-bottom: 18px;
 }
 
 .section-title {
-  font-size: 23px;
   color: #172033;
+  font-size: 25px;
+  margin-bottom: 5px;
 }
 
 .section-description {
   color: #64748b;
-  font-size: 13px;
-  margin-top: 5px;
-  line-height: 1.5;
+  font-size: 14px;
 }
 
-/* ASISTENTE DESTACADO */
+/* ASISTENTE */
 
 .assistant-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f1f6fd 100%);
-  border: 1px solid #cbd8e8;
-  border-radius: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #dbe3ee;
+  border-radius: 17px;
   padding: 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 25px;
-  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
-  transition: 0.2s;
-}
-
-.assistant-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+  margin-bottom: 45px;
+  box-shadow: 0 7px 24px rgba(15, 23, 42, 0.07);
 }
 
 .assistant-content {
@@ -264,11 +245,10 @@ nav a:hover {
 }
 
 .assistant-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 14px;
-  background: #0f2747;
-  color: white;
+  width: 62px;
+  height: 62px;
+  border-radius: 15px;
+  background: #eaf2ff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -277,94 +257,70 @@ nav a:hover {
 }
 
 .assistant-card h3 {
-  font-size: 21px;
-  margin-bottom: 7px;
-  color: #0f1f38;
+  font-size: 20px;
+  margin-bottom: 6px;
 }
 
 .assistant-card p {
   color: #64748b;
-  line-height: 1.5;
+  max-width: 720px;
   font-size: 14px;
-  max-width: 650px;
 }
 
-/* TARJETAS */
+/* HERRAMIENTAS */
 
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  gap: 20px;
+  margin-bottom: 45px;
 }
 
 .card {
   background: white;
-  padding: 24px;
-  border-radius: 14px;
+  padding: 27px;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.045);
   transition: 0.2s;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.045);
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.09);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
   border-color: #cbd5e1;
 }
 
 .card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 11px;
-  background: #eef3f8;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: #eef4ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  font-size: 27px;
   margin-bottom: 15px;
 }
 
 .card h3 {
-  font-size: 18px;
-  margin-bottom: 8px;
+  font-size: 19px;
   color: #172033;
+  margin-bottom: 9px;
 }
 
 .card p {
   color: #64748b;
-  line-height: 1.5;
-  margin-bottom: 17px;
   font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 19px;
 }
 
-/* COTIZADOR DESTACADO */
+/* COTIZADOR */
 
 .quote-card {
-  border: 1px solid #9fb5cf;
-  background: linear-gradient(135deg, #ffffff 0%, #f2f7fc 100%);
-}
-
-.quote-card .card-icon {
-  background: #dce8f4;
-}
-
-/* BOTONES */
-
-.button {
-  display: inline-block;
-  background: #174a7e;
-  color: white;
-  text-decoration: none;
-  padding: 10px 17px;
-  border-radius: 7px;
-  font-size: 13px;
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-.button:hover {
-  background: #10385f;
-  transform: translateY(-1px);
+  border: 1px solid #c7d7f5;
+  background: linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%);
 }
 
 /* CONOCIMIENTO */
@@ -372,21 +328,22 @@ nav a:hover {
 .knowledge-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  gap: 20px;
+  margin-bottom: 35px;
 }
 
 .knowledge-card {
   background: white;
-  border-radius: 14px;
-  padding: 25px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.045);
+  border-radius: 16px;
+  padding: 27px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.045);
   transition: 0.2s;
 }
 
 .knowledge-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 9px 25px rgba(15, 23, 42, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
 }
 
 .knowledge-card-header {
@@ -399,8 +356,8 @@ nav a:hover {
 .knowledge-card-icon {
   width: 48px;
   height: 48px;
-  border-radius: 11px;
-  background: #eef3f8;
+  border-radius: 12px;
+  background: #eef4ff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -408,86 +365,99 @@ nav a:hover {
 }
 
 .knowledge-card h3 {
-  font-size: 18px;
-  color: #172033;
+  font-size: 19px;
 }
 
 .knowledge-card p {
   color: #64748b;
-  line-height: 1.55;
   font-size: 14px;
-  margin-bottom: 18px;
+  line-height: 1.55;
+  margin-bottom: 15px;
 }
 
 .knowledge-card-info {
-  background: #f7f9fc;
+  background: #f8fafc;
+  border: 1px solid #e8edf3;
   border-radius: 9px;
-  padding: 13px;
+  padding: 11px 13px;
   color: #475569;
   font-size: 12px;
   line-height: 1.5;
+  margin-bottom: 16px;
 }
 
 /* REPOSITORIO */
 
 .repository-card {
-  background: #0f1f38;
+  background: #0f172a;
   color: white;
-  border-radius: 14px;
-  padding: 25px;
+  border-radius: 16px;
+  padding: 27px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  box-shadow: 0 8px 25px rgba(15, 31, 56, 0.15);
+  gap: 25px;
+  margin-bottom: 45px;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.16);
 }
 
 .repository-content {
   display: flex;
   align-items: center;
-  gap: 17px;
+  gap: 18px;
 }
 
 .repository-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 11px;
-  background: #1e3659;
+  width: 55px;
+  height: 55px;
+  border-radius: 13px;
+  background: #1e293b;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  font-size: 28px;
+  flex-shrink: 0;
 }
 
 .repository-card h3 {
-  font-size: 18px;
-  margin-bottom: 6px;
+  font-size: 20px;
+  margin-bottom: 5px;
 }
 
 .repository-card p {
-  color: #b8c6d8;
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+/* BOTONES */
+
+.button {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  padding: 10px 17px;
+  border-radius: 8px;
   font-size: 13px;
-  line-height: 1.5;
+  font-weight: bold;
+  transition: 0.2s;
+  white-space: nowrap;
 }
 
-.repository-card .button {
-  background: white;
-  color: #0f1f38;
+.button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
-.repository-card .button:hover {
-  background: #e8eef5;
-}
-
-/* BIBLIOTECA RESUMEN */
+/* RESUMEN BIBLIOTECA */
 
 .library-highlight {
-  margin-bottom: 35px;
+  margin-bottom: 45px;
   background: white;
   border: 1px solid #e2e8f0;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 25px;
-  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.045);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.045);
 }
 
 .library-highlight-header {
@@ -499,7 +469,7 @@ nav a:hover {
 }
 
 .library-highlight-header h3 {
-  color: #172033;
+  margin: 0;
 }
 
 .library-highlight-header p {
@@ -515,62 +485,58 @@ nav a:hover {
 }
 
 .library-box {
-  background: #f7f9fc;
-  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e8edf3;
+  border-radius: 11px;
   padding: 18px;
-  border: 1px solid #edf1f5;
 }
 
 .library-box-title {
   color: #64748b;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: bold;
   margin-bottom: 6px;
 }
 
 .library-box-value {
+  color: #0f172a;
   font-size: 25px;
   font-weight: bold;
-  color: #0f1f38;
 }
 
-/* ULTIMAS */
+/* ULTIMAS OPORTUNIDADES */
 
 .recent {
-  margin-top: 35px;
+  margin-top: 5px;
 }
 
 .recent-card {
   background: white;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
   overflow: hidden;
-  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.045);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.045);
 }
 
 .recent-header {
-  padding: 18px 20px;
-  border-bottom: 1px solid #e5eaf0;
+  padding: 19px 22px;
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 15px;
 }
 
-.recent-header h3 {
-  color: #172033;
-}
-
 .recent-header a {
-  color: #174a7e;
+  color: #2563eb;
   text-decoration: none;
   font-size: 13px;
   font-weight: bold;
 }
 
 .recent-item {
-  padding: 17px 20px;
-  border-bottom: 1px solid #f0f3f7;
+  padding: 17px 22px;
+  border-bottom: 1px solid #f1f5f9;
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -582,7 +548,6 @@ nav a:hover {
 
 .recent-info h4 {
   margin-bottom: 6px;
-  color: #172033;
 }
 
 .recent-info p {
@@ -598,7 +563,7 @@ nav a:hover {
 .recent-value small {
   display: block;
   color: #64748b;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .recent-value strong {
@@ -617,9 +582,10 @@ nav a:hover {
 
 footer {
   text-align: center;
-  padding: 30px;
+  padding: 35px 20px;
+  margin-top: 45px;
   color: #94a3b8;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* RESPONSIVE */
@@ -630,16 +596,13 @@ footer {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  nav {
-    justify-content: center;
-  }
-
 }
 
 @media (max-width: 800px) {
 
   header {
     flex-direction: column;
+    gap: 15px;
   }
 
   nav {
@@ -671,21 +634,16 @@ footer {
 
 @media (max-width: 600px) {
 
-  .metrics {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .hero h1 {
-    font-size: 32px;
-  }
-
-  .hero p {
-    font-size: 15px;
+    font-size: 34px;
   }
 
   .container {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 0 15px;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .recent-item {
@@ -701,11 +659,7 @@ footer {
   }
 
   nav {
-    gap: 3px;
-  }
-
-  nav a {
-    font-size: 12px;
+    gap: 10px;
   }
 
 }
@@ -742,12 +696,14 @@ footer {
 
 <section class="hero">
 
-  <h1>PREVENTA IA</h1>
+  <h1>
+    PREVENTA IA
+  </h1>
 
   <p>
     Tu asistente inteligente para analizar documentos,
     gestionar oportunidades, cotizar y generar propuestas
-    comerciales a partir de tu conocimiento técnico.
+    comerciales a partir de tus propuestas técnicas base.
   </p>
 
 </section>
@@ -903,316 +859,302 @@ footer {
 
   </div>
 
-  <section class="section">
+  <div class="section-heading">
 
 ```
-<div class="section-heading">
+<div>
+
+  <h2 class="section-title">
+    🤖 Asistente IA
+  </h2>
+
+  <p class="section-description">
+    El punto central para consultar y obtener ayuda durante tus tareas de Preventa.
+  </p>
+
+</div>
+```
+
+  </div>
+
+  <div class="assistant-card">
+
+```
+<div class="assistant-content">
+
+  <div class="assistant-icon">
+    🤖
+  </div>
 
   <div>
 
-    <h2 class="section-title">
-      🤖 Asistente IA
-    </h2>
+    <h3>
+      Asistente IA
+    </h3>
 
-    <p class="section-description">
-      El punto central para consultar y obtener ayuda durante tus tareas de Preventa.
+    <p>
+      Consultá información, analizá situaciones de Preventa
+      y obtené asistencia utilizando el conocimiento disponible
+      en PREVENTA IA.
     </p>
 
   </div>
 
 </div>
 
-<div class="assistant-card">
-
-  <div class="assistant-content">
-
-    <div class="assistant-icon">
-      🤖
-    </div>
-
-    <div>
-
-      <h3>
-        Asistente IA
-      </h3>
-
-      <p>
-        Consultá información, analizá situaciones de Preventa
-        y obtené asistencia utilizando el conocimiento disponible
-        en PREVENTA IA.
-      </p>
-
-    </div>
+<a
+  href="asistente.html"
+  class="button"
+>
+  Abrir asistente →
+</a>
+```
 
   </div>
 
+  <div class="section-heading">
+
+```
+<div>
+
+  <h2 class="section-title">
+    🛠️ Herramientas de Preventa
+  </h2>
+
+  <p class="section-description">
+    Las herramientas principales para trabajar oportunidades, documentos y cotizaciones.
+  </p>
+
+</div>
+```
+
+  </div>
+
+  <div class="cards">
+
+```
+<div class="card">
+
+  <div class="card-icon">
+    📄
+  </div>
+
+  <h3>
+    Documentos
+  </h3>
+
+  <p>
+    Subí pliegos y documentos para extraer
+    información relevante para Preventa.
+  </p>
+
   <a
-    href="asistente.html"
+    href="documentos.html"
     class="button"
   >
-    Abrir asistente →
+    Analizar documento
+  </a>
+
+</div>
+
+<div class="card">
+
+  <div class="card-icon">
+    🎯
+  </div>
+
+  <h3>
+    Análisis
+  </h3>
+
+  <p>
+    Revisá requerimientos, riesgos,
+    datos faltantes y soluciones sugeridas.
+  </p>
+
+  <a
+    href="analisis.html"
+    class="button"
+  >
+    Abrir análisis
+  </a>
+
+</div>
+
+<div class="card">
+
+  <div class="card-icon">
+    💼
+  </div>
+
+  <h3>
+    Oportunidades
+  </h3>
+
+  <p>
+    Gestioná clientes, proyectos, estados,
+    requerimientos y cotizaciones.
+  </p>
+
+  <a
+    href="oportunidades.html"
+    class="button"
+  >
+    Ver oportunidades
+  </a>
+
+</div>
+
+<div class="card quote-card">
+
+  <div class="card-icon">
+    💰
+  </div>
+
+  <h3>
+    Cotizador
+  </h3>
+
+  <p>
+    Calculá setup, usuarios, storage,
+    firmas, soporte y costo anual.
+  </p>
+
+  <a
+    href="cotizador.html"
+    class="button"
+  >
+    Abrir cotizador
   </a>
 
 </div>
 ```
 
-  </section>
+  </div>
 
-  <section class="section">
+  <div class="section-heading">
 
 ```
-<div class="section-heading">
+<div>
 
-  <div>
+  <h2 class="section-title">
+    🧠 Conocimiento
+  </h2>
 
-    <h2 class="section-title">
-      🛠️ Herramientas de Preventa
-    </h2>
-
-    <p class="section-description">
-      Las herramientas principales para trabajar oportunidades, documentos y cotizaciones.
-    </p>
-
-  </div>
-
-</div>
-
-<div class="cards">
-
-  <div class="card">
-
-    <div class="card-icon">
-      📄
-    </div>
-
-    <h3>
-      Documentos
-    </h3>
-
-    <p>
-      Subí pliegos y documentos para extraer
-      información relevante para Preventa.
-    </p>
-
-    <a
-      href="documentos.html"
-      class="button"
-    >
-      Analizar documento
-    </a>
-
-  </div>
-
-  <div class="card">
-
-    <div class="card-icon">
-      🎯
-    </div>
-
-    <h3>
-      Análisis
-    </h3>
-
-    <p>
-      Revisá requerimientos, riesgos,
-      datos faltantes y soluciones sugeridas.
-    </p>
-
-    <a
-      href="analisis.html"
-      class="button"
-    >
-      Abrir análisis
-    </a>
-
-  </div>
-
-  <div class="card">
-
-    <div class="card-icon">
-      💼
-    </div>
-
-    <h3>
-      Oportunidades
-    </h3>
-
-    <p>
-      Gestioná clientes, proyectos, estados,
-      requerimientos y cotizaciones.
-    </p>
-
-    <a
-      href="oportunidades.html"
-      class="button"
-    >
-      Ver oportunidades
-    </a>
-
-  </div>
-
-  <div class="card quote-card">
-
-    <div class="card-icon">
-      💰
-    </div>
-
-    <h3>
-      Cotizador
-    </h3>
-
-    <p>
-      Calculá setup, usuarios, storage,
-      firmas, soporte y costo anual.
-    </p>
-
-    <a
-      href="cotizador.html"
-      class="button"
-    >
-      Abrir cotizador
-    </a>
-
-  </div>
+  <p class="section-description">
+    Fuentes de información que alimentan y complementan el conocimiento de PREVENTA IA.
+  </p>
 
 </div>
 ```
 
-  </section>
+  </div>
 
-  <section class="section">
+  <div class="knowledge-grid">
 
 ```
-<div class="section-heading">
+<div class="knowledge-card">
 
-  <div>
+  <div class="knowledge-card-header">
 
-    <h2 class="section-title">
-      🧠 Conocimiento
-    </h2>
+    <div class="knowledge-card-icon">
+      📚
+    </div>
 
-    <p class="section-description">
-      Fuentes de información que alimentan y complementan el conocimiento de PREVENTA IA.
-    </p>
+    <h3>
+      Biblioteca Técnica
+    </h3>
 
   </div>
 
-</div>
+  <p>
+    Administrá las propuestas técnicas originales
+    que utilizás como base para futuras oportunidades.
+  </p>
 
-<div class="knowledge-grid">
-
-  <div class="knowledge-card">
-
-    <div class="knowledge-card-header">
-
-      <div class="knowledge-card-icon">
-        📚
-      </div>
-
-      <h3>
-        Biblioteca Técnica
-      </h3>
-
-    </div>
-
-    <p>
-      Administrá las propuestas técnicas originales
-      que utilizás como base para futuras oportunidades.
-    </p>
-
-    <div class="knowledge-card-info">
-      📌 Base técnica estructurada para productos,
-      funcionalidades y propuestas.
-    </div>
-
-    <br>
-
-    <a
-      href="biblioteca.html"
-      class="button"
-    >
-      Abrir biblioteca
-    </a>
-
-  </div>
-
-  <div class="knowledge-card">
-
-    <div class="knowledge-card-header">
-
-      <div class="knowledge-card-icon">
-        🧠
-      </div>
-
-      <h3>
-        Conocimiento IA
-      </h3>
-
-    </div>
-
-    <p>
-      Cargá documentación propia para ampliar
-      la información que puede consultar el asistente.
-    </p>
-
-    <div class="knowledge-card-info">
-      📌 Documentos cargados en la plataforma,
-      independientes de la Biblioteca Técnica.
-    </div>
-
-    <br>
-
-    <a
-      href="conocimientoiaasistente.html"
-      class="button"
-    >
-      Administrar conocimiento
-    </a>
-
-  </div>
-
-</div>
-```
-
-  </section>
-
-  <section class="section">
-
-```
-<div class="repository-card">
-
-  <div class="repository-content">
-
-    <div class="repository-icon">
-      🗂️
-    </div>
-
-    <div>
-
-      <h3>
-        Repositorio
-      </h3>
-
-      <p>
-        Consultá oportunidades, cotizaciones
-        y propuestas finales generadas.
-      </p>
-
-    </div>
-
+  <div class="knowledge-card-info">
+    📌 Base técnica estructurada para productos,
+    funcionalidades y propuestas.
   </div>
 
   <a
-    href="repositorio.html"
+    href="biblioteca.html"
     class="button"
   >
-    Abrir repositorio →
+    Abrir biblioteca
+  </a>
+
+</div>
+
+<div class="knowledge-card">
+
+  <div class="knowledge-card-header">
+
+    <div class="knowledge-card-icon">
+      🧠
+    </div>
+
+    <h3>
+      Conocimiento IA
+    </h3>
+
+  </div>
+
+  <p>
+    Cargá documentación propia para ampliar
+    la información que puede consultar el asistente.
+  </p>
+
+  <div class="knowledge-card-info">
+    📌 Documentos cargados en la plataforma,
+    independientes de la Biblioteca Técnica.
+  </div>
+
+  <a
+    href="conocimientoiaasistente.html"
+    class="button"
+  >
+    Administrar conocimiento
   </a>
 
 </div>
 ```
 
-  </section>
+  </div>
+
+  <div class="repository-card">
+
+```
+<div class="repository-content">
+
+  <div class="repository-icon">
+    🗂️
+  </div>
+
+  <div>
+
+    <h3>
+      Repositorio
+    </h3>
+
+    <p>
+      Consultá oportunidades, cotizaciones
+      y propuestas finales generadas.
+    </p>
+
+  </div>
+
+</div>
+
+<a
+  href="repositorio.html"
+  class="button"
+>
+  Abrir repositorio →
+</a>
+```
+
+  </div>
 
   <section class="library-highlight">
 
@@ -1313,6 +1255,10 @@ PREVENTA IA · Herramienta inteligente para Preventa
 
 <script>
 
+/* ==========================================
+   OPORTUNIDADES
+========================================== */
+
 function getOpportunities() {
 
   try {
@@ -1333,6 +1279,10 @@ function getOpportunities() {
 
 }
 
+
+/* ==========================================
+   BIBLIOTECA
+========================================== */
 
 const LIBRARY_DB_NAME =
   "preventa_ia_biblioteca";
@@ -1376,11 +1326,13 @@ function openLibraryDatabase() {
           LIBRARY_DB_VERSION
         );
 
+
       request.onupgradeneeded =
         function(event) {
 
           const database =
             event.target.result;
+
 
           if (
             !database.objectStoreNames.contains(
@@ -1392,22 +1344,27 @@ function openLibraryDatabase() {
               database.createObjectStore(
                 LIBRARY_STORE,
                 {
-                  keyPath: "id",
-                  autoIncrement: true
+                  keyPath:
+                    "id",
+                  autoIncrement:
+                    true
                 }
               );
+
 
             store.createIndex(
               "folder",
               "folder",
               {
-                unique: false
+                unique:
+                  false
               }
             );
 
           }
 
         };
+
 
       request.onsuccess =
         function(event) {
@@ -1418,10 +1375,13 @@ function openLibraryDatabase() {
 
         };
 
+
       request.onerror =
         function() {
 
-          resolve(null);
+          resolve(
+            null
+          );
 
         };
 
@@ -1439,12 +1399,14 @@ function countLibraryProposals() {
       const db =
         await openLibraryDatabase();
 
+
       if (!db) {
 
         resolve(0);
         return;
 
       }
+
 
       if (
         !db.objectStoreNames.contains(
@@ -1457,6 +1419,7 @@ function countLibraryProposals() {
 
       }
 
+
       try {
 
         const transaction =
@@ -1465,13 +1428,16 @@ function countLibraryProposals() {
             "readonly"
           );
 
+
         const store =
           transaction.objectStore(
             LIBRARY_STORE
           );
 
+
         const request =
           store.count();
+
 
         request.onsuccess =
           function() {
@@ -1481,6 +1447,7 @@ function countLibraryProposals() {
             );
 
           };
+
 
         request.onerror =
           function() {
@@ -1508,13 +1475,16 @@ async function updateLibrarySummary() {
   const folders =
     getLibraryFolders();
 
+
   document.getElementById(
     "libraryFolders"
   ).textContent =
     folders.length;
 
+
   const proposals =
     await countLibraryProposals();
+
 
   document.getElementById(
     "libraryProposals"
@@ -1523,6 +1493,10 @@ async function updateLibrarySummary() {
 
 }
 
+
+/* ==========================================
+   DINERO
+========================================== */
 
 function toNumber(
   value
@@ -1536,6 +1510,7 @@ function toNumber(
     return value;
 
   }
+
 
   const texto =
     String(
@@ -1554,10 +1529,12 @@ function toNumber(
       "."
     );
 
+
   const numero =
     parseFloat(
       texto
     );
+
 
   return isNaN(
     numero
@@ -1579,14 +1556,20 @@ function money(
     ).toLocaleString(
       "es-AR",
       {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
+        minimumFractionDigits:
+          0,
+        maximumFractionDigits:
+          0
       }
     )
   );
 
 }
 
+
+/* ==========================================
+   ESTADOS
+========================================== */
 
 function statusName(
   status
@@ -1611,6 +1594,7 @@ function statusName(
 
   };
 
+
   return (
     names[status] ||
     "Sin estado"
@@ -1619,12 +1603,17 @@ function statusName(
 }
 
 
+/* ==========================================
+   METRICAS
+========================================== */
+
 function updateMetrics(
   opportunities
 ) {
 
   const total =
     opportunities.length;
+
 
   const analysis =
     opportunities.filter(
@@ -1636,6 +1625,7 @@ function updateMetrics(
       }
     ).length;
 
+
   const quoted =
     opportunities.filter(
       function(item) {
@@ -1644,6 +1634,7 @@ function updateMetrics(
 
       }
     ).length;
+
 
   const won =
     opportunities.filter(
@@ -1654,6 +1645,7 @@ function updateMetrics(
 
       }
     ).length;
+
 
   const totalQuoted =
     opportunities.reduce(
@@ -1667,6 +1659,7 @@ function updateMetrics(
 
         }
 
+
         return total +
           toNumber(
             opportunity.quote.totalYear
@@ -1676,25 +1669,30 @@ function updateMetrics(
       0
     );
 
+
   document.getElementById(
     "totalOpportunities"
   ).textContent =
     total;
+
 
   document.getElementById(
     "analysisCount"
   ).textContent =
     analysis;
 
+
   document.getElementById(
     "quoteCount"
   ).textContent =
     quoted;
 
+
   document.getElementById(
     "wonCount"
   ).textContent =
     won;
+
 
   document.getElementById(
     "totalQuoted"
@@ -1706,19 +1704,33 @@ function updateMetrics(
 }
 
 
+/* ==========================================
+   GRAFICO ESTADOS
+========================================== */
+
 function renderStatusChart(
   opportunities
 ) {
 
   const counts = {
 
-    analysis: 0,
-    quote: 0,
-    proposal: 0,
-    won: 0,
-    lost: 0
+    analysis:
+      0,
+
+    quote:
+      0,
+
+    proposal:
+      0,
+
+    won:
+      0,
+
+    lost:
+      0
 
   };
+
 
   opportunities.forEach(
     function(opportunity) {
@@ -1726,20 +1738,26 @@ function renderStatusChart(
       const status =
         opportunity.status;
 
+
       if (
-        counts[status] !==
-        undefined
+        counts[
+          status
+        ] !== undefined
       ) {
 
-        counts[status]++;
+        counts[
+          status
+        ]++;
 
       }
 
     }
   );
 
+
   const total =
     opportunities.length;
+
 
   const colors = {
 
@@ -1760,11 +1778,14 @@ function renderStatusChart(
 
   };
 
+
   const partes =
     [];
 
+
   let acumulado =
     0;
+
 
   Object.keys(
     counts
@@ -1780,8 +1801,10 @@ function renderStatusChart(
 
       }
 
+
       const inicio =
         acumulado;
+
 
       const porcentaje =
         (
@@ -1790,8 +1813,10 @@ function renderStatusChart(
         ) *
         100;
 
+
       acumulado +=
         porcentaje;
+
 
       partes.push(
         colors[key] +
@@ -1805,10 +1830,12 @@ function renderStatusChart(
     }
   );
 
+
   const donut =
     document.getElementById(
       "statusDonut"
     );
+
 
   if (
     total ===
@@ -1829,18 +1856,22 @@ function renderStatusChart(
 
   }
 
+
   document.getElementById(
     "statusCenter"
   ).textContent =
     total;
+
 
   const legend =
     document.getElementById(
       "statusLegend"
     );
 
+
   legend.innerHTML =
     "";
+
 
   Object.keys(
     counts
@@ -1856,42 +1887,52 @@ function renderStatusChart(
 
       }
 
+
       const div =
         document.createElement(
           "div"
         );
 
+
       div.className =
         "legend-item";
+
 
       const dot =
         document.createElement(
           "span"
         );
 
+
       dot.className =
         "legend-dot";
 
+
       dot.style.background =
         colors[key];
+
 
       const text =
         document.createElement(
           "span"
         );
 
+
       text.textContent =
         statusName(key) +
         " · " +
         counts[key];
 
+
       div.appendChild(
         dot
       );
 
+
       div.appendChild(
         text
       );
+
 
       legend.appendChild(
         div
@@ -1899,6 +1940,7 @@ function renderStatusChart(
 
     }
   );
+
 
   if (
     total ===
@@ -1915,12 +1957,17 @@ function renderStatusChart(
 }
 
 
+/* ==========================================
+   GRAFICO COTIZACIONES
+========================================== */
+
 function renderQuoteChart(
   opportunities
 ) {
 
   const total =
     opportunities.length;
+
 
   const quoted =
     opportunities.filter(
@@ -1931,14 +1978,17 @@ function renderQuoteChart(
       }
     ).length;
 
+
   const pending =
     total -
     quoted;
+
 
   const donut =
     document.getElementById(
       "quoteDonut"
     );
+
 
   if (
     total ===
@@ -1947,6 +1997,7 @@ function renderQuoteChart(
 
     donut.style.background =
       "#e2e8f0";
+
 
     document.getElementById(
       "quoteCenter"
@@ -1964,6 +2015,7 @@ function renderQuoteChart(
       ) *
       100;
 
+
     donut.style.background =
       "conic-gradient(" +
       "#22c55e 0% " +
@@ -1972,6 +2024,7 @@ function renderQuoteChart(
       "#d1d5db " +
       porcentaje +
       "% 100%)";
+
 
     document.getElementById(
       "quoteCenter"
@@ -1983,28 +2036,44 @@ function renderQuoteChart(
 
   }
 
+
   const legend =
     document.getElementById(
       "quoteLegend"
     );
 
+
   legend.innerHTML =
     "<div class='legend-item'>" +
-      "<span class='legend-dot' style='background:#22c55e'></span>" +
-      "<span>Cotizadas · " +
+
+      "<span class='legend-dot' " +
+      "style='background:#22c55e'></span>" +
+
+      "<span>" +
+      "Cotizadas · " +
       quoted +
       "</span>" +
+
     "</div>" +
 
     "<div class='legend-item'>" +
-      "<span class='legend-dot' style='background:#d1d5db'></span>" +
-      "<span>Pendientes · " +
+
+      "<span class='legend-dot' " +
+      "style='background:#d1d5db'></span>" +
+
+      "<span>" +
+      "Pendientes · " +
       pending +
       "</span>" +
+
     "</div>";
 
 }
 
+
+/* ==========================================
+   ULTIMAS OPORTUNIDADES
+========================================== */
 
 function renderRecent(
   opportunities
@@ -2015,8 +2084,10 @@ function renderRecent(
       "recentOpportunities"
     );
 
+
   container.innerHTML =
     "";
+
 
   if (
     opportunities.length ===
@@ -2025,16 +2096,24 @@ function renderRecent(
 
     container.innerHTML =
       "<div class='empty'>" +
-        "<p>Todavía no hay oportunidades creadas.</p>" +
+
+        "<p>" +
+        "Todavía no hay oportunidades creadas." +
+        "</p>" +
+
         "<br>" +
+
         "<a href='oportunidades.html' class='button'>" +
         "Crear oportunidad" +
         "</a>" +
+
       "</div>";
+
 
     return;
 
   }
+
 
   opportunities
     .slice(
@@ -2049,33 +2128,41 @@ function renderRecent(
             "div"
           );
 
+
         item.className =
           "recent-item";
 
+
         const quote =
           opportunity.quote;
+
 
         const info =
           document.createElement(
             "div"
           );
 
+
         info.className =
           "recent-info";
+
 
         const title =
           document.createElement(
             "h4"
           );
 
+
         title.textContent =
           opportunity.project ||
           "Sin nombre";
+
 
         const client =
           document.createElement(
             "p"
           );
+
 
         client.textContent =
           "👤 " +
@@ -2084,50 +2171,61 @@ function renderRecent(
             "Sin cliente"
           );
 
+
         const status =
           document.createElement(
             "p"
           );
+
 
         status.textContent =
           statusName(
             opportunity.status
           );
 
+
         info.appendChild(
           title
         );
+
 
         info.appendChild(
           client
         );
 
+
         info.appendChild(
           status
         );
+
 
         const value =
           document.createElement(
             "div"
           );
 
+
         value.className =
           "recent-value";
+
 
         const small =
           document.createElement(
             "small"
           );
 
+
         small.textContent =
           quote
             ? "PRIMER AÑO"
             : "COTIZACIÓN";
 
+
         const strong =
           document.createElement(
             "strong"
           );
+
 
         strong.textContent =
           quote
@@ -2137,21 +2235,26 @@ function renderRecent(
               )
             : "Pendiente";
 
+
         value.appendChild(
           small
         );
+
 
         value.appendChild(
           strong
         );
 
+
         item.appendChild(
           info
         );
 
+
         item.appendChild(
           value
         );
+
 
         container.appendChild(
           item
@@ -2163,26 +2266,35 @@ function renderRecent(
 }
 
 
+/* ==========================================
+   INICIO
+========================================== */
+
 (async function() {
 
   const opportunities =
     getOpportunities();
 
+
   updateMetrics(
     opportunities
   );
+
 
   renderStatusChart(
     opportunities
   );
 
+
   renderQuoteChart(
     opportunities
   );
 
+
   renderRecent(
     opportunities
   );
+
 
   await updateLibrarySummary();
 
