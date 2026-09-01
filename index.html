@@ -1,52 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>PREVENTA IA</title>
 
 <style>
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-:root {
-  --navy: #0b1628;
-  --navy-2: #111f35;
-  --blue: #2563eb;
-  --blue-light: #eff6ff;
-  --text: #172033;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --background: #f5f7fa;
-  --white: #ffffff;
-  --success: #16a34a;
-  --warning: #f59e0b;
-  --danger: #dc2626;
-}
-
 body {
   font-family: Arial, sans-serif;
-  background: var(--background);
-  color: var(--text);
+  background: #f3f6fa;
+  color: #172033;
   line-height: 1.5;
 }
 
 header {
-  background: linear-gradient(135deg, var(--navy), var(--navy-2));
+  background: #0f172a;
   color: white;
   padding: 18px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 25px;
-  box-shadow: 0 4px 18px rgba(11, 22, 40, 0.18);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.16);
 }
 
 .logo {
-  font-size: 22px;
+  font-size: 21px;
   font-weight: bold;
   letter-spacing: 0.3px;
   white-space: nowrap;
@@ -63,33 +52,32 @@ nav a {
   color: #cbd5e1;
   text-decoration: none;
   font-size: 13px;
-  padding: 8px 10px;
-  border-radius: 7px;
+  padding: 7px 10px;
+  border-radius: 6px;
   transition: 0.2s;
 }
 
 nav a:hover {
+  background: #1e293b;
   color: white;
-  background: rgba(255,255,255,0.08);
 }
 
 .hero {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  padding: 48px 30px 42px;
+  background: linear-gradient(135deg, #0f172a, #172554);
+  color: white;
+  padding: 52px 25px 58px;
   text-align: center;
-  border-bottom: 1px solid var(--border);
 }
 
 .hero h1 {
-  color: var(--navy);
   font-size: 40px;
   margin-bottom: 10px;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.5px;
 }
 
 .hero p {
+  color: #cbd5e1;
   font-size: 17px;
-  color: var(--muted);
   max-width: 760px;
   margin: auto;
   line-height: 1.6;
@@ -97,357 +85,337 @@ nav a:hover {
 
 .container {
   max-width: 1180px;
-  margin: 32px auto;
-  padding: 0 25px;
+  margin: 0 auto;
+  padding: 32px 25px 50px;
 }
+
+/* METRICAS */
 
 .metrics {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 14px;
-  margin-bottom: 28px;
+  margin-bottom: 38px;
+  margin-top: -55px;
+  position: relative;
+  z-index: 2;
 }
 
 .metric {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 19px;
-  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
 }
 
 .metric-title {
-  color: var(--muted);
+  color: #64748b;
   font-size: 10px;
   font-weight: bold;
-  letter-spacing: 0.4px;
   margin-bottom: 7px;
   line-height: 1.4;
+  letter-spacing: 0.3px;
 }
 
 .metric-value {
-  color: var(--navy);
+  color: #0f172a;
   font-size: 24px;
   font-weight: bold;
 }
 
-.charts {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-  margin-bottom: 38px;
-}
-
-.chart-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 24px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
-}
-
-.chart-card h3 {
-  color: var(--navy);
-  font-size: 17px;
-  margin-bottom: 20px;
-}
-
-.chart-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  min-height: 190px;
-  flex-wrap: wrap;
-}
-
-.donut {
-  width: 175px;
-  height: 175px;
-  border-radius: 50%;
-  position: relative;
-  background: #e5e7eb;
-  box-shadow: 0 4px 15px rgba(15,23,42,0.08);
-}
-
-.donut::after {
-  content: "";
-  position: absolute;
-  width: 103px;
-  height: 103px;
-  background: white;
-  border-radius: 50%;
-  left: 36px;
-  top: 36px;
-}
-
-.donut-center {
-  position: absolute;
-  z-index: 2;
-  width: 100%;
-  text-align: center;
-  top: 65px;
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--navy);
-}
-
-.legend {
-  min-width: 165px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  color: var(--text);
-}
-
-.legend-dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
+/* SECCIONES */
 
 .section-heading {
-  margin: 38px 0 17px;
+  margin-bottom: 18px;
 }
 
 .section-title {
-  color: var(--navy);
+  color: #0f172a;
   font-size: 23px;
   margin-bottom: 4px;
 }
 
 .section-description {
-  color: var(--muted);
+  color: #64748b;
   font-size: 14px;
 }
 
-.assistant-card {
-  background: linear-gradient(135deg, var(--navy), #172d4d);
-  color: white;
+/* PROTAGONISTAS */
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  margin-bottom: 42px;
+}
+
+.featured-card {
+  position: relative;
+  background: white;
+  border: 1px solid #dbe3ee;
   border-radius: 16px;
-  padding: 28px;
+  padding: 30px;
+  min-height: 235px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  gap: 25px;
-  box-shadow: 0 8px 25px rgba(11, 22, 40, 0.16);
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+  transition: 0.2s;
 }
 
-.assistant-content {
+.featured-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
+}
+
+.featured-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #2563eb;
+}
+
+.featured-card.quote-featured::before {
+  background: #0f766e;
+}
+
+.featured-top {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  align-items: flex-start;
+  gap: 18px;
 }
 
-.assistant-icon {
-  width: 62px;
-  height: 62px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.1);
+.featured-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 13px;
+  background: #eff6ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 31px;
+  font-size: 30px;
   flex-shrink: 0;
 }
 
-.assistant-card h3 {
-  font-size: 21px;
-  margin-bottom: 6px;
+.quote-featured .featured-icon {
+  background: #ecfdf5;
 }
 
-.assistant-card p {
-  color: #cbd5e1;
-  max-width: 700px;
-  font-size: 14px;
-  line-height: 1.6;
+.featured-card h3 {
+  color: #0f172a;
+  font-size: 23px;
+  margin-bottom: 7px;
 }
+
+.featured-card p {
+  color: #64748b;
+  font-size: 14px;
+  max-width: 470px;
+}
+
+.featured-footer {
+  margin-top: 24px;
+}
+
+/* BOTONES */
 
 .button {
   display: inline-block;
-  background: var(--blue);
+  background: #2563eb;
   color: white;
   text-decoration: none;
-  border: none;
   padding: 10px 17px;
-  border-radius: 8px;
+  border-radius: 7px;
   font-size: 13px;
   font-weight: bold;
+  border: none;
   cursor: pointer;
   transition: 0.2s;
-  white-space: nowrap;
 }
 
 .button:hover {
   background: #1d4ed8;
-  transform: translateY(-1px);
 }
 
-.assistant-card .button {
-  background: white;
-  color: var(--navy);
+.quote-featured .button {
+  background: #0f766e;
 }
 
-.assistant-card .button:hover {
-  background: #f1f5f9;
+.quote-featured .button:hover {
+  background: #0d6158;
 }
 
-.cards {
+/* HERRAMIENTAS */
+
+.tools-section {
+  margin-bottom: 42px;
+}
+
+.tools-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 17px;
 }
 
 .card {
-  background: var(--white);
-  padding: 24px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+  background: white;
+  padding: 23px;
+  border-radius: 13px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 5px 17px rgba(15, 23, 42, 0.045);
   transition: 0.2s;
 }
 
-.card:hover,
-.knowledge-card:hover,
-.repository-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 9px 25px rgba(15, 23, 42, 0.09);
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
 }
 
 .card-icon {
-  font-size: 30px;
-  margin-bottom: 12px;
-}
-
-.card h3 {
-  color: var(--navy);
-  font-size: 19px;
-  margin-bottom: 8px;
-}
-
-.card p {
-  color: var(--muted);
-  line-height: 1.55;
-  font-size: 14px;
-  margin-bottom: 17px;
-}
-
-.quote-card {
-  border-color: #bfdbfe;
-  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.08);
-}
-
-.knowledge-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 17px;
-}
-
-.knowledge-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px;
-  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
-  transition: 0.2s;
-}
-
-.knowledge-card-header {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin-bottom: 12px;
-}
-
-.knowledge-card-icon {
   width: 43px;
   height: 43px;
-  border-radius: 10px;
-  background: var(--blue-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-}
-
-.knowledge-card h3 {
-  color: var(--navy);
-  font-size: 18px;
-}
-
-.knowledge-card p {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.55;
-  margin-bottom: 14px;
-}
-
-.knowledge-card-info {
-  background: #f8fafc;
-  border: 1px solid #edf2f7;
-  border-radius: 9px;
-  padding: 11px 12px;
-  color: #475569;
-  font-size: 12px;
-  line-height: 1.5;
-  margin-bottom: 17px;
-}
-
-.repository-card {
-  margin-top: 18px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 22px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
-  transition: 0.2s;
-}
-
-.repository-content {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.repository-icon {
-  width: 47px;
-  height: 47px;
   border-radius: 10px;
   background: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 23px;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  color: #172033;
+  font-size: 18px;
+  margin-bottom: 7px;
+}
+
+.card p {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.55;
+  margin-bottom: 17px;
+}
+
+/* CONOCIMIENTO */
+
+.knowledge-section {
+  margin-bottom: 42px;
+}
+
+.knowledge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.knowledge-card {
+  background: white;
+  border: 1px solid #dbe3ee;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+}
+
+.knowledge-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 13px;
+}
+
+.knowledge-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 11px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+}
+
+.knowledge-card h3 {
+  font-size: 19px;
+  color: #0f172a;
+}
+
+.knowledge-card p {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.55;
+  margin-bottom: 15px;
+}
+
+.knowledge-card-info {
+  background: #f8fafc;
+  border-left: 3px solid #2563eb;
+  padding: 11px 13px;
+  border-radius: 7px;
+  color: #475569;
+  font-size: 12px;
+  margin-bottom: 17px;
+}
+
+/* REPOSITORIO */
+
+.repository-section {
+  margin-bottom: 42px;
+}
+
+.repository-card {
+  background: white;
+  border: 1px solid #dbe3ee;
+  border-radius: 14px;
+  padding: 24px 27px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+}
+
+.repository-content {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.repository-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 11px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 27px;
 }
 
 .repository-card h3 {
-  color: var(--navy);
-  font-size: 18px;
-  margin-bottom: 3px;
+  font-size: 19px;
+  color: #0f172a;
+  margin-bottom: 4px;
 }
 
 .repository-card p {
-  color: var(--muted);
+  color: #64748b;
   font-size: 13px;
 }
 
+/* RESUMEN BIBLIOTECA */
+
 .library-highlight {
-  margin-top: 18px;
+  margin-bottom: 42px;
   background: white;
-  border: 1px solid var(--border);
+  border: 1px solid #dbe3ee;
   border-radius: 14px;
-  padding: 24px;
-  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+  padding: 25px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
 }
 
 .library-highlight-header {
@@ -459,14 +427,13 @@ nav a:hover {
 }
 
 .library-highlight-header h3 {
-  color: var(--navy);
-  margin: 0;
-  font-size: 17px;
+  color: #0f172a;
+  font-size: 18px;
+  margin-bottom: 3px;
 }
 
 .library-highlight-header p {
-  margin-top: 4px;
-  color: var(--muted);
+  color: #64748b;
   font-size: 13px;
 }
 
@@ -478,39 +445,125 @@ nav a:hover {
 
 .library-box {
   background: #f8fafc;
-  border: 1px solid #edf2f7;
+  border: 1px solid #eef2f7;
   border-radius: 10px;
   padding: 17px;
 }
 
 .library-box-title {
-  color: var(--muted);
+  color: #64748b;
   font-size: 10px;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
 .library-box-value {
-  color: var(--navy);
+  color: #0f172a;
   font-size: 24px;
   font-weight: bold;
 }
 
+/* GRAFICOS */
+
+.charts-section {
+  margin-bottom: 42px;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #dbe3ee;
+  padding: 24px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+}
+
+.chart-card h3 {
+  color: #0f172a;
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+
+.chart-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.donut {
+  width: 165px;
+  height: 165px;
+  border-radius: 50%;
+  position: relative;
+  background: #e2e8f0;
+}
+
+.donut::after {
+  content: "";
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  background: white;
+  border-radius: 50%;
+  left: 34.5px;
+  top: 34.5px;
+}
+
+.donut-center {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+  top: 61px;
+  font-size: 23px;
+  font-weight: bold;
+  color: #0f172a;
+}
+
+.legend {
+  min-width: 165px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.legend-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ULTIMAS */
+
 .recent {
-  margin-top: 35px;
+  margin-bottom: 25px;
 }
 
 .recent-card {
   background: white;
   border-radius: 14px;
-  border: 1px solid var(--border);
+  border: 1px solid #dbe3ee;
   overflow: hidden;
-  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
 }
 
 .recent-header {
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--border);
+  padding: 18px 21px;
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -518,19 +571,19 @@ nav a:hover {
 }
 
 .recent-header h3 {
-  color: var(--navy);
+  color: #0f172a;
   font-size: 17px;
 }
 
 .recent-header a {
-  color: var(--blue);
+  color: #2563eb;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
 }
 
 .recent-item {
-  padding: 16px 20px;
+  padding: 16px 21px;
   border-bottom: 1px solid #f1f5f9;
   display: flex;
   justify-content: space-between;
@@ -542,14 +595,15 @@ nav a:hover {
 }
 
 .recent-info h4 {
-  color: var(--navy);
+  color: #172033;
+  font-size: 14px;
   margin-bottom: 5px;
 }
 
 .recent-info p {
-  color: var(--muted);
+  color: #64748b;
   font-size: 12px;
-  margin: 3px 0;
+  margin: 2px 0;
 }
 
 .recent-value {
@@ -558,40 +612,49 @@ nav a:hover {
 
 .recent-value small {
   display: block;
-  color: var(--muted);
+  color: #94a3b8;
   font-size: 10px;
 }
 
 .recent-value strong {
   display: block;
-  color: var(--navy);
-  margin-top: 4px;
+  color: #172033;
+  margin-top: 3px;
+  font-size: 13px;
 }
 
 .empty {
-  padding: 35px;
+  padding: 32px;
   text-align: center;
-  color: var(--muted);
+  color: #64748b;
 }
 
+/* FOOTER */
+
 footer {
+  background: #0f172a;
   text-align: center;
-  padding: 32px;
+  padding: 25px;
   color: #94a3b8;
   font-size: 12px;
 }
 
-@media (max-width: 1050px) {
-  header {
-    padding: 17px 25px;
-  }
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
 
   .metrics {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
 }
 
 @media (max-width: 800px) {
+
   header {
     flex-direction: column;
     align-items: flex-start;
@@ -601,47 +664,69 @@ footer {
     justify-content: flex-start;
   }
 
-  .charts,
-  .cards,
-  .knowledge-grid {
+  .featured-grid,
+  .knowledge-grid,
+  .charts {
     grid-template-columns: 1fr;
   }
 
-  .assistant-card,
   .repository-card {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .library-highlight-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 
 @media (max-width: 600px) {
+
+  .hero {
+    padding: 42px 20px 55px;
+  }
+
+  .hero h1 {
+    font-size: 31px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
   .container {
-    padding: 0 16px;
+    padding: 25px 17px 40px;
   }
 
   .metrics {
     grid-template-columns: repeat(2, 1fr);
+    margin-top: -42px;
   }
 
-  .hero {
-    padding: 38px 20px;
+  .metric {
+    padding: 15px;
   }
 
-  .hero h1 {
-    font-size: 32px;
+  .metric-value {
+    font-size: 21px;
   }
 
-  .chart-area {
-    flex-direction: column;
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-card {
+    padding: 23px;
+  }
+
+  .featured-card h3 {
+    font-size: 20px;
   }
 
   .library-data {
     grid-template-columns: 1fr;
+  }
+
+  .library-highlight-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .recent-item {
@@ -651,294 +736,483 @@ footer {
   .recent-value {
     text-align: left;
   }
+
+  .chart-area {
+    flex-direction: column;
+  }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
 <header>
-  <div class="logo">PREVENTA IA</div>
+
+  <div class="logo">
+    PREVENTA IA
+  </div>
 
   <nav>
+
     <a href="index.html">Inicio</a>
-    <a href="asistente.html">Asistente</a>
+    <a href="asistente.html">Asistente IA</a>
     <a href="cotizador.html">Cotizador</a>
     <a href="oportunidades.html">Oportunidades</a>
     <a href="documentos.html">Documentos</a>
     <a href="analisis.html">Análisis</a>
-    <a href="biblioteca.html">Biblioteca</a>
-    <a href="conocimientoiaasistente.html">Conocimiento IA</a>
+    <a href="biblioteca.html">Conocimiento</a>
     <a href="repositorio.html">Repositorio</a>
+
   </nav>
+
 </header>
 
 <section class="hero">
-  <h1>PREVENTA IA</h1>
+
+  <h1>
+    PREVENTA IA
+  </h1>
 
   <p>
     Tu asistente inteligente para analizar documentos,
-    gestionar oportunidades, cotizar y generar propuestas
-    comerciales a partir de tus propuestas técnicas base.
+    gestionar oportunidades, cotizar y preparar propuestas
+    comerciales de forma más rápida y organizada.
   </p>
+
 </section>
 
 <main class="container">
 
-  <div class="metrics">
+  <section class="metrics">
 
     <div class="metric">
-      <div class="metric-title">OPORTUNIDADES</div>
-      <div id="totalOpportunities" class="metric-value">0</div>
+
+      <div class="metric-title">
+        OPORTUNIDADES
+      </div>
+
+      <div
+        id="totalOpportunities"
+        class="metric-value"
+      >
+        0
+      </div>
+
     </div>
 
     <div class="metric">
-      <div class="metric-title">EN ANÁLISIS</div>
-      <div id="analysisCount" class="metric-value">0</div>
+
+      <div class="metric-title">
+        EN ANÁLISIS
+      </div>
+
+      <div
+        id="analysisCount"
+        class="metric-value"
+      >
+        0
+      </div>
+
     </div>
 
     <div class="metric">
-      <div class="metric-title">COTIZADAS</div>
-      <div id="quoteCount" class="metric-value">0</div>
+
+      <div class="metric-title">
+        COTIZADAS
+      </div>
+
+      <div
+        id="quoteCount"
+        class="metric-value"
+      >
+        0
+      </div>
+
     </div>
 
     <div class="metric">
-      <div class="metric-title">GANADAS</div>
-      <div id="wonCount" class="metric-value">0</div>
+
+      <div class="metric-title">
+        GANADAS
+      </div>
+
+      <div
+        id="wonCount"
+        class="metric-value"
+      >
+        0
+      </div>
+
     </div>
 
     <div class="metric">
-      <div class="metric-title">VALOR 1ER AÑO COTIZADO</div>
-      <div id="totalQuoted" class="metric-value">USD 0</div>
+
+      <div class="metric-title">
+        VALOR 1ER AÑO COTIZADO
+      </div>
+
+      <div
+        id="totalQuoted"
+        class="metric-value"
+      >
+        USD 0
+      </div>
+
     </div>
 
-  </div>
+  </section>
 
-  <div class="charts">
 
-    <div class="chart-card">
-      <h3>📊 Estado de oportunidades</h3>
+  <section>
 
-      <div class="chart-area">
-        <div id="statusDonut" class="donut">
-          <div id="statusCenter" class="donut-center">0</div>
+    <div class="section-heading">
+
+      <h2 class="section-title">
+        ⭐ Herramientas principales
+      </h2>
+
+      <p class="section-description">
+        Las dos herramientas centrales para tu trabajo diario de Preventa.
+      </p>
+
+    </div>
+
+    <div class="featured-grid">
+
+      <div class="featured-card">
+
+        <div class="featured-top">
+
+          <div class="featured-icon">
+            🤖
+          </div>
+
+          <div>
+
+            <h3>
+              Asistente IA
+            </h3>
+
+            <p>
+              Consultá información, analizá situaciones de Preventa
+              y obtené asistencia utilizando el conocimiento disponible
+              en PREVENTA IA.
+            </p>
+
+          </div>
+
         </div>
 
-        <div id="statusLegend" class="legend"></div>
-      </div>
-    </div>
+        <div class="featured-footer">
 
-    <div class="chart-card">
-      <h3>💰 Oportunidades cotizadas</h3>
+          <a
+            href="asistente.html"
+            class="button"
+          >
+            Abrir asistente →
+          </a>
 
-      <div class="chart-area">
-        <div id="quoteDonut" class="donut">
-          <div id="quoteCenter" class="donut-center">0%</div>
         </div>
 
-        <div id="quoteLegend" class="legend"></div>
       </div>
+
+
+      <div class="featured-card quote-featured">
+
+        <div class="featured-top">
+
+          <div class="featured-icon">
+            💰
+          </div>
+
+          <div>
+
+            <h3>
+              Cotizador
+            </h3>
+
+            <p>
+              Calculá setup, usuarios, storage, firmas,
+              soporte y costo anual para preparar tus cotizaciones.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="featured-footer">
+
+          <a
+            href="cotizador.html"
+            class="button"
+          >
+            Abrir cotizador →
+          </a>
+
+        </div>
+
+      </div>
+
     </div>
 
-  </div>
+  </section>
 
-  <div class="section-heading">
-    <h2 class="section-title">🤖 Asistente IA</h2>
-    <p class="section-description">
-      El punto central para consultar y obtener ayuda durante tus tareas de Preventa.
-    </p>
-  </div>
 
-  <div class="assistant-card">
+  <section class="tools-section">
 
-    <div class="assistant-content">
+    <div class="section-heading">
 
-      <div class="assistant-icon">🤖</div>
+      <h2 class="section-title">
+        🛠️ Herramientas de Preventa
+      </h2>
 
-      <div>
-        <h3>Asistente IA</h3>
+      <p class="section-description">
+        Herramientas para trabajar oportunidades, documentos y análisis.
+      </p>
+
+    </div>
+
+    <div class="tools-grid">
+
+      <div class="card">
+
+        <div class="card-icon">
+          💼
+        </div>
+
+        <h3>
+          Oportunidades
+        </h3>
 
         <p>
-          Consultá información, analizá situaciones de Preventa
-          y obtené asistencia utilizando el conocimiento disponible
-          en PREVENTA IA.
+          Gestioná clientes, proyectos, estados,
+          requerimientos y cotizaciones.
         </p>
+
+        <a
+          href="oportunidades.html"
+          class="button"
+        >
+          Ver oportunidades
+        </a>
+
       </div>
 
-    </div>
 
-    <a href="asistente.html" class="button">
-      Abrir asistente →
-    </a>
+      <div class="card">
 
-  </div>
+        <div class="card-icon">
+          📄
+        </div>
 
-  <div class="section-heading">
-    <h2 class="section-title">🛠️ Herramientas de Preventa</h2>
-    <p class="section-description">
-      Las herramientas principales para trabajar oportunidades, documentos y cotizaciones.
-    </p>
-  </div>
-
-  <div class="cards">
-
-    <div class="card">
-      <div class="card-icon">📄</div>
-
-      <h3>Documentos</h3>
-
-      <p>
-        Subí pliegos y documentos para extraer
-        información relevante para Preventa.
-      </p>
-
-      <a href="documentos.html" class="button">
-        Analizar documento
-      </a>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">🎯</div>
-
-      <h3>Análisis</h3>
-
-      <p>
-        Revisá requerimientos, riesgos,
-        datos faltantes y soluciones sugeridas.
-      </p>
-
-      <a href="analisis.html" class="button">
-        Abrir análisis
-      </a>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">💼</div>
-
-      <h3>Oportunidades</h3>
-
-      <p>
-        Gestioná clientes, proyectos, estados,
-        requerimientos y cotizaciones.
-      </p>
-
-      <a href="oportunidades.html" class="button">
-        Ver oportunidades
-      </a>
-    </div>
-
-    <div class="card quote-card">
-      <div class="card-icon">💰</div>
-
-      <h3>Cotizador</h3>
-
-      <p>
-        Calculá setup, usuarios, storage,
-        firmas, soporte y costo anual.
-      </p>
-
-      <a href="cotizador.html" class="button">
-        Abrir cotizador
-      </a>
-    </div>
-
-  </div>
-
-  <div class="section-heading">
-    <h2 class="section-title">🧠 Conocimiento</h2>
-    <p class="section-description">
-      Fuentes de información que alimentan y complementan el conocimiento de PREVENTA IA.
-    </p>
-  </div>
-
-  <div class="knowledge-grid">
-
-    <div class="knowledge-card">
-
-      <div class="knowledge-card-header">
-        <div class="knowledge-card-icon">📚</div>
-
-        <h3>Biblioteca Técnica</h3>
-      </div>
-
-      <p>
-        Administrá las propuestas técnicas originales
-        que utilizás como base para futuras oportunidades.
-      </p>
-
-      <div class="knowledge-card-info">
-        📌 Base técnica estructurada para productos,
-        funcionalidades y propuestas.
-      </div>
-
-      <a href="biblioteca.html" class="button">
-        Abrir biblioteca
-      </a>
-
-    </div>
-
-    <div class="knowledge-card">
-
-      <div class="knowledge-card-header">
-        <div class="knowledge-card-icon">🧠</div>
-
-        <h3>Conocimiento IA</h3>
-      </div>
-
-      <p>
-        Cargá documentación propia para ampliar
-        la información que puede consultar el asistente.
-      </p>
-
-      <div class="knowledge-card-info">
-        📌 Documentos cargados en la plataforma,
-        independientes de la Biblioteca Técnica.
-      </div>
-
-      <a href="conocimientoiaasistente.html" class="button">
-        Administrar conocimiento
-      </a>
-
-    </div>
-
-  </div>
-
-  <div class="repository-card">
-
-    <div class="repository-content">
-
-      <div class="repository-icon">🗂️</div>
-
-      <div>
-        <h3>Repositorio</h3>
+        <h3>
+          Documentos
+        </h3>
 
         <p>
-          Consultá oportunidades, cotizaciones
-          y propuestas finales generadas.
+          Subí pliegos y documentos para extraer
+          información relevante para Preventa.
         </p>
+
+        <a
+          href="documentos.html"
+          class="button"
+        >
+          Analizar documento
+        </a>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-icon">
+          🎯
+        </div>
+
+        <h3>
+          Análisis
+        </h3>
+
+        <p>
+          Revisá requerimientos, riesgos,
+          datos faltantes y soluciones sugeridas.
+        </p>
+
+        <a
+          href="analisis.html"
+          class="button"
+        >
+          Abrir análisis
+        </a>
+
       </div>
 
     </div>
 
-    <a href="repositorio.html" class="button">
-      Abrir repositorio →
-    </a>
+  </section>
 
-  </div>
+
+  <section class="knowledge-section">
+
+    <div class="section-heading">
+
+      <h2 class="section-title">
+        🧠 Conocimiento
+      </h2>
+
+      <p class="section-description">
+        Fuentes de información que alimentan y complementan el conocimiento de PREVENTA IA.
+      </p>
+
+    </div>
+
+    <div class="knowledge-grid">
+
+      <div class="knowledge-card">
+
+        <div class="knowledge-card-header">
+
+          <div class="knowledge-card-icon">
+            📚
+          </div>
+
+          <h3>
+            Biblioteca Técnica
+          </h3>
+
+        </div>
+
+        <p>
+          Administrá las propuestas técnicas originales
+          que utilizás como base para futuras oportunidades.
+        </p>
+
+        <div class="knowledge-card-info">
+          📌 Base técnica estructurada para productos,
+          funcionalidades y propuestas.
+        </div>
+
+        <a
+          href="biblioteca.html"
+          class="button"
+        >
+          Abrir biblioteca
+        </a>
+
+      </div>
+
+
+      <div class="knowledge-card">
+
+        <div class="knowledge-card-header">
+
+          <div class="knowledge-card-icon">
+            🧠
+          </div>
+
+          <h3>
+            Conocimiento IA
+          </h3>
+
+        </div>
+
+        <p>
+          Cargá documentación propia para ampliar
+          la información que puede consultar el asistente.
+        </p>
+
+        <div class="knowledge-card-info">
+          📌 Documentos cargados en la plataforma,
+          independientes de la Biblioteca Técnica.
+        </div>
+
+        <a
+          href="conocimientoiaasistente.html"
+          class="button"
+        >
+          Administrar conocimiento
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="repository-section">
+
+    <div class="section-heading">
+
+      <h2 class="section-title">
+        📁 Gestión
+      </h2>
+
+      <p class="section-description">
+        Acceso a la información generada durante el trabajo de Preventa.
+      </p>
+
+    </div>
+
+    <div class="repository-card">
+
+      <div class="repository-content">
+
+        <div class="repository-icon">
+          🗂️
+        </div>
+
+        <div>
+
+          <h3>
+            Repositorio
+          </h3>
+
+          <p>
+            Consultá oportunidades, cotizaciones
+            y propuestas finales generadas.
+          </p>
+
+        </div>
+
+      </div>
+
+      <a
+        href="repositorio.html"
+        class="button"
+      >
+        Abrir repositorio →
+      </a>
+
+    </div>
+
+  </section>
+
 
   <section class="library-highlight">
 
     <div class="library-highlight-header">
 
       <div>
-        <h3>📚 Resumen de Biblioteca Técnica</h3>
+
+        <h3>
+          📚 Resumen de Biblioteca Técnica
+        </h3>
 
         <p>
           Estado actual de tus propuestas técnicas base.
         </p>
+
       </div>
 
-      <a href="biblioteca.html" class="button">
+      <a
+        href="biblioteca.html"
+        class="button"
+      >
         Administrar biblioteca
       </a>
 
@@ -947,32 +1221,145 @@ footer {
     <div class="library-data">
 
       <div class="library-box">
-        <div class="library-box-title">PRODUCTOS</div>
-        <div id="libraryFolders" class="library-box-value">0</div>
+
+        <div class="library-box-title">
+          PRODUCTOS
+        </div>
+
+        <div
+          id="libraryFolders"
+          class="library-box-value"
+        >
+          0
+        </div>
+
       </div>
 
       <div class="library-box">
-        <div class="library-box-title">PROPUESTAS BASE</div>
-        <div id="libraryProposals" class="library-box-value">0</div>
+
+        <div class="library-box-title">
+          PROPUESTAS BASE
+        </div>
+
+        <div
+          id="libraryProposals"
+          class="library-box-value"
+        >
+          0
+        </div>
+
       </div>
 
     </div>
 
   </section>
 
+
+  <section class="charts-section">
+
+    <div class="section-heading">
+
+      <h2 class="section-title">
+        📊 Seguimiento
+      </h2>
+
+      <p class="section-description">
+        Una vista rápida del estado actual de tus oportunidades.
+      </p>
+
+    </div>
+
+    <div class="charts">
+
+      <div class="chart-card">
+
+        <h3>
+          📊 Estado de oportunidades
+        </h3>
+
+        <div class="chart-area">
+
+          <div
+            id="statusDonut"
+            class="donut"
+          >
+
+            <div
+              id="statusCenter"
+              class="donut-center"
+            >
+              0
+            </div>
+
+          </div>
+
+          <div
+            id="statusLegend"
+            class="legend"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="chart-card">
+
+        <h3>
+          💰 Oportunidades cotizadas
+        </h3>
+
+        <div class="chart-area">
+
+          <div
+            id="quoteDonut"
+            class="donut"
+          >
+
+            <div
+              id="quoteCenter"
+              class="donut-center"
+            >
+              0%
+            </div>
+
+          </div>
+
+          <div
+            id="quoteLegend"
+            class="legend"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
   <section class="recent">
 
     <div class="recent-card">
 
       <div class="recent-header">
-        <h3>🕐 Últimas oportunidades</h3>
 
-        <a href="repositorio.html">
+        <h3>
+          🕐 Últimas oportunidades
+        </h3>
+
+        <a
+          href="repositorio.html"
+        >
           Ver repositorio →
         </a>
+
       </div>
 
-      <div id="recentOpportunities"></div>
+      <div
+        id="recentOpportunities"
+      ></div>
 
     </div>
 
@@ -981,265 +1368,591 @@ footer {
 </main>
 
 <footer>
+
   PREVENTA IA · Herramienta inteligente para Preventa
+
 </footer>
 
 <script>
+
+/* ==========================================
+   OPORTUNIDADES
+========================================== */
+
 function getOpportunities() {
+
   try {
+
     return JSON.parse(
-      localStorage.getItem("preventa_opportunities")
+      localStorage.getItem(
+        "preventa_opportunities"
+      )
     ) || [];
-  } catch (error) {
-    return [];
+
   }
+
+  catch(error) {
+
+    return [];
+
+  }
+
 }
 
-const LIBRARY_DB_NAME = "preventa_ia_biblioteca";
-const LIBRARY_DB_VERSION = 1;
-const LIBRARY_STORE = "proposals";
+
+/* ==========================================
+   BIBLIOTECA
+========================================== */
+
+const LIBRARY_DB_NAME =
+  "preventa_ia_biblioteca";
+
+const LIBRARY_DB_VERSION =
+  1;
+
+const LIBRARY_STORE =
+  "proposals";
+
 
 function getLibraryFolders() {
+
   try {
+
     return JSON.parse(
-      localStorage.getItem("preventa_library_folders")
+      localStorage.getItem(
+        "preventa_library_folders"
+      )
     ) || [];
-  } catch (error) {
-    return [];
+
   }
+
+  catch(error) {
+
+    return [];
+
+  }
+
 }
+
 
 function openLibraryDatabase() {
-  return new Promise(function(resolve) {
-    const request = indexedDB.open(
-      LIBRARY_DB_NAME,
-      LIBRARY_DB_VERSION
-    );
 
-    request.onupgradeneeded = function(event) {
-      const database = event.target.result;
+  return new Promise(
+    function(resolve) {
 
-      if (!database.objectStoreNames.contains(LIBRARY_STORE)) {
-        const store = database.createObjectStore(
-          LIBRARY_STORE,
-          {
-            keyPath: "id",
-            autoIncrement: true
-          }
+      const request =
+        indexedDB.open(
+          LIBRARY_DB_NAME,
+          LIBRARY_DB_VERSION
         );
 
-        store.createIndex(
-          "folder",
-          "folder",
-          {
-            unique: false
+
+      request.onupgradeneeded =
+        function(event) {
+
+          const database =
+            event.target.result;
+
+
+          if (
+            !database.objectStoreNames.contains(
+              LIBRARY_STORE
+            )
+          ) {
+
+            const store =
+              database.createObjectStore(
+                LIBRARY_STORE,
+                {
+                  keyPath:
+                    "id",
+                  autoIncrement:
+                    true
+                }
+              );
+
+
+            store.createIndex(
+              "folder",
+              "folder",
+              {
+                unique:
+                  false
+              }
+            );
+
           }
-        );
-      }
-    };
 
-    request.onsuccess = function(event) {
-      resolve(event.target.result);
-    };
+        };
 
-    request.onerror = function() {
-      resolve(null);
-    };
-  });
+
+      request.onsuccess =
+        function(event) {
+
+          resolve(
+            event.target.result
+          );
+
+        };
+
+
+      request.onerror =
+        function() {
+
+          resolve(
+            null
+          );
+
+        };
+
+    }
+  );
+
 }
+
 
 function countLibraryProposals() {
-  return new Promise(async function(resolve) {
-    const db = await openLibraryDatabase();
 
-    if (!db) {
-      resolve(0);
-      return;
-    }
+  return new Promise(
+    async function(resolve) {
 
-    if (!db.objectStoreNames.contains(LIBRARY_STORE)) {
-      resolve(0);
-      return;
-    }
+      const db =
+        await openLibraryDatabase();
 
-    try {
-      const transaction = db.transaction(
-        LIBRARY_STORE,
-        "readonly"
-      );
 
-      const store = transaction.objectStore(
-        LIBRARY_STORE
-      );
+      if (!db) {
 
-      const request = store.count();
-
-      request.onsuccess = function() {
-        resolve(request.result || 0);
-      };
-
-      request.onerror = function() {
         resolve(0);
-      };
-    } catch (error) {
-      resolve(0);
+        return;
+
+      }
+
+
+      if (
+        !db.objectStoreNames.contains(
+          LIBRARY_STORE
+        )
+      ) {
+
+        resolve(0);
+        return;
+
+      }
+
+
+      try {
+
+        const transaction =
+          db.transaction(
+            LIBRARY_STORE,
+            "readonly"
+          );
+
+
+        const store =
+          transaction.objectStore(
+            LIBRARY_STORE
+          );
+
+
+        const request =
+          store.count();
+
+
+        request.onsuccess =
+          function() {
+
+            resolve(
+              request.result || 0
+            );
+
+          };
+
+
+        request.onerror =
+          function() {
+
+            resolve(0);
+
+          };
+
+      }
+
+      catch(error) {
+
+        resolve(0);
+
+      }
+
     }
-  });
+  );
+
 }
+
 
 async function updateLibrarySummary() {
-  const folders = getLibraryFolders();
 
-  document.getElementById(
-    "libraryFolders"
-  ).textContent = folders.length;
+  const folders =
+    getLibraryFolders();
 
-  const proposals = await countLibraryProposals();
 
-  document.getElementById(
-    "libraryProposals"
-  ).textContent = proposals;
-}
+  const foldersElement =
+    document.getElementById(
+      "libraryFolders"
+    );
 
-function toNumber(value) {
-  if (typeof value === "number") {
-    return value;
+
+  if (foldersElement) {
+
+    foldersElement.textContent =
+      folders.length;
+
   }
 
-  const texto = String(value || "")
-    .replace(/[^\d.,-]/g, "")
-    .replace(/\./g, "")
-    .replace(",", ".");
 
-  const numero = parseFloat(texto);
+  const proposals =
+    await countLibraryProposals();
 
-  return isNaN(numero) ? 0 : numero;
+
+  const proposalsElement =
+    document.getElementById(
+      "libraryProposals"
+    );
+
+
+  if (proposalsElement) {
+
+    proposalsElement.textContent =
+      proposals;
+
+  }
+
 }
 
-function money(value) {
+
+/* ==========================================
+   DINERO
+========================================== */
+
+function toNumber(
+  value
+) {
+
+  if (
+    typeof value ===
+    "number"
+  ) {
+
+    return value;
+
+  }
+
+
+  const texto =
+    String(
+      value || ""
+    )
+    .replace(
+      /[^\d.,-]/g,
+      ""
+    )
+    .replace(
+      /\./g,
+      ""
+    )
+    .replace(
+      ",",
+      "."
+    );
+
+
+  const numero =
+    parseFloat(
+      texto
+    );
+
+
+  return isNaN(
+    numero
+  )
+    ? 0
+    : numero;
+
+}
+
+
+function money(
+  value
+) {
+
   return (
     "USD " +
-    Number(value || 0).toLocaleString(
+    Number(
+      value || 0
+    ).toLocaleString(
       "es-AR",
       {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
+        minimumFractionDigits:
+          0,
+        maximumFractionDigits:
+          0
       }
     )
   );
+
 }
 
-function statusName(status) {
+
+/* ==========================================
+   ESTADOS
+========================================== */
+
+function statusName(
+  status
+) {
+
   const names = {
-    analysis: "En análisis",
-    quote: "Cotizando",
-    proposal: "Propuesta",
-    won: "Ganada",
-    lost: "Perdida"
+
+    analysis:
+      "En análisis",
+
+    quote:
+      "Cotizando",
+
+    proposal:
+      "Propuesta",
+
+    won:
+      "Ganada",
+
+    lost:
+      "Perdida"
+
   };
 
-  return names[status] || "Sin estado";
+
+  return (
+    names[status] ||
+    "Sin estado"
+  );
+
 }
 
-function updateMetrics(opportunities) {
-  const total = opportunities.length;
 
-  const analysis = opportunities.filter(
-    function(item) {
-      return item.status === "analysis";
-    }
-  ).length;
+/* ==========================================
+   METRICAS
+========================================== */
 
-  const quoted = opportunities.filter(
-    function(item) {
-      return !!item.quote;
-    }
-  ).length;
+function updateMetrics(
+  opportunities
+) {
 
-  const won = opportunities.filter(
-    function(item) {
-      return item.status === "won";
-    }
-  ).length;
+  const total =
+    opportunities.length;
 
-  const totalQuoted = opportunities.reduce(
-    function(totalValue, opportunity) {
-      if (!opportunity.quote) {
-        return totalValue;
+
+  const analysis =
+    opportunities.filter(
+      function(item) {
+
+        return item.status ===
+          "analysis";
+
       }
+    ).length;
 
-      return totalValue + toNumber(
-        opportunity.quote.totalYear
-      );
-    },
-    0
-  );
+
+  const quoted =
+    opportunities.filter(
+      function(item) {
+
+        return !!item.quote;
+
+      }
+    ).length;
+
+
+  const won =
+    opportunities.filter(
+      function(item) {
+
+        return item.status ===
+          "won";
+
+      }
+    ).length;
+
+
+  const totalQuoted =
+    opportunities.reduce(
+      function(total, opportunity) {
+
+        if (
+          !opportunity.quote
+        ) {
+
+          return total;
+
+        }
+
+
+        return total +
+          toNumber(
+            opportunity.quote.totalYear
+          );
+
+      },
+      0
+    );
+
 
   document.getElementById(
     "totalOpportunities"
-  ).textContent = total;
+  ).textContent =
+    total;
+
 
   document.getElementById(
     "analysisCount"
-  ).textContent = analysis;
+  ).textContent =
+    analysis;
+
 
   document.getElementById(
     "quoteCount"
-  ).textContent = quoted;
+  ).textContent =
+    quoted;
+
 
   document.getElementById(
     "wonCount"
-  ).textContent = won;
+  ).textContent =
+    won;
+
 
   document.getElementById(
     "totalQuoted"
-  ).textContent = money(totalQuoted);
+  ).textContent =
+    money(
+      totalQuoted
+    );
+
 }
 
-function renderStatusChart(opportunities) {
+
+/* ==========================================
+   GRAFICO ESTADOS
+========================================== */
+
+function renderStatusChart(
+  opportunities
+) {
+
   const counts = {
-    analysis: 0,
-    quote: 0,
-    proposal: 0,
-    won: 0,
-    lost: 0
+
+    analysis:
+      0,
+
+    quote:
+      0,
+
+    proposal:
+      0,
+
+    won:
+      0,
+
+    lost:
+      0
+
   };
+
 
   opportunities.forEach(
     function(opportunity) {
-      const status = opportunity.status;
 
-      if (counts[status] !== undefined) {
-        counts[status]++;
+      const status =
+        opportunity.status;
+
+
+      if (
+        counts[
+          status
+        ] !== undefined
+      ) {
+
+        counts[
+          status
+        ]++;
+
       }
+
     }
   );
 
-  const total = opportunities.length;
+
+  const total =
+    opportunities.length;
+
 
   const colors = {
-    analysis: "#f59e0b",
-    quote: "#3b82f6",
-    proposal: "#6366f1",
-    won: "#22c55e",
-    lost: "#ef4444"
+
+    analysis:
+      "#f59e0b",
+
+    quote:
+      "#3b82f6",
+
+    proposal:
+      "#6366f1",
+
+    won:
+      "#22c55e",
+
+    lost:
+      "#ef4444"
+
   };
 
-  const partes = [];
-  let acumulado = 0;
 
-  Object.keys(counts).forEach(
+  const partes =
+    [];
+
+
+  let acumulado =
+    0;
+
+
+  Object.keys(
+    counts
+  ).forEach(
     function(key) {
-      if (counts[key] === 0) {
+
+      if (
+        counts[key] ===
+        0
+      ) {
+
         return;
+
       }
 
-      const inicio = acumulado;
+
+      const inicio =
+        acumulado;
+
 
       const porcentaje =
-        (counts[key] / total) * 100;
+        (
+          counts[key] /
+          total
+        ) *
+        100;
 
-      acumulado += porcentaje;
+
+      acumulado +=
+        porcentaje;
+
 
       partes.push(
         colors[key] +
@@ -1249,90 +1962,195 @@ function renderStatusChart(opportunities) {
         acumulado +
         "%"
       );
+
     }
   );
 
-  const donut = document.getElementById(
-    "statusDonut"
-  );
 
-  if (total === 0) {
-    donut.style.background = "#e5e7eb";
-  } else {
+  const donut =
+    document.getElementById(
+      "statusDonut"
+    );
+
+
+  if (
+    total ===
+    0
+  ) {
+
+    donut.style.background =
+      "#e2e8f0";
+
+  }
+
+  else {
+
     donut.style.background =
       "conic-gradient(" +
       partes.join(", ") +
       ")";
+
   }
+
 
   document.getElementById(
     "statusCenter"
-  ).textContent = total;
+  ).textContent =
+    total;
 
-  const legend = document.getElementById(
-    "statusLegend"
-  );
 
-  legend.innerHTML = "";
+  const legend =
+    document.getElementById(
+      "statusLegend"
+    );
 
-  Object.keys(counts).forEach(
+
+  legend.innerHTML =
+    "";
+
+
+  Object.keys(
+    counts
+  ).forEach(
     function(key) {
-      if (counts[key] === 0) {
+
+      if (
+        counts[key] ===
+        0
+      ) {
+
         return;
+
       }
 
-      const div = document.createElement("div");
-      div.className = "legend-item";
 
-      const dot = document.createElement("span");
-      dot.className = "legend-dot";
-      dot.style.background = colors[key];
+      const div =
+        document.createElement(
+          "div"
+        );
 
-      const text = document.createElement("span");
+
+      div.className =
+        "legend-item";
+
+
+      const dot =
+        document.createElement(
+          "span"
+        );
+
+
+      dot.className =
+        "legend-dot";
+
+
+      dot.style.background =
+        colors[key];
+
+
+      const text =
+        document.createElement(
+          "span"
+        );
+
 
       text.textContent =
         statusName(key) +
         " · " +
         counts[key];
 
-      div.appendChild(dot);
-      div.appendChild(text);
-      legend.appendChild(div);
+
+      div.appendChild(
+        dot
+      );
+
+
+      div.appendChild(
+        text
+      );
+
+
+      legend.appendChild(
+        div
+      );
+
     }
   );
 
-  if (total === 0) {
+
+  if (
+    total ===
+    0
+  ) {
+
     legend.innerHTML =
       "<div class='legend-item'>" +
       "Todavía no hay oportunidades." +
       "</div>";
+
   }
+
 }
 
-function renderQuoteChart(opportunities) {
-  const total = opportunities.length;
 
-  const quoted = opportunities.filter(
-    function(item) {
-      return !!item.quote;
-    }
-  ).length;
+/* ==========================================
+   GRAFICO COTIZACIONES
+========================================== */
 
-  const pending = total - quoted;
+function renderQuoteChart(
+  opportunities
+) {
 
-  const donut = document.getElementById(
-    "quoteDonut"
-  );
+  const total =
+    opportunities.length;
 
-  if (total === 0) {
-    donut.style.background = "#e5e7eb";
+
+  const quoted =
+    opportunities.filter(
+      function(item) {
+
+        return !!item.quote;
+
+      }
+    ).length;
+
+
+  const pending =
+    total -
+    quoted;
+
+
+  const donut =
+    document.getElementById(
+      "quoteDonut"
+    );
+
+
+  if (
+    total ===
+    0
+  ) {
+
+    donut.style.background =
+      "#e2e8f0";
+
 
     document.getElementById(
       "quoteCenter"
-    ).textContent = "0%";
-  } else {
+    ).textContent =
+      "0%";
+
+  }
+
+  else {
+
     const porcentaje =
-      (quoted / total) * 100;
+      (
+        quoted /
+        total
+      ) *
+      100;
+
 
     donut.style.background =
       "conic-gradient(" +
@@ -1343,71 +2161,145 @@ function renderQuoteChart(opportunities) {
       porcentaje +
       "% 100%)";
 
+
     document.getElementById(
       "quoteCenter"
     ).textContent =
-      Math.round(porcentaje) +
+      Math.round(
+        porcentaje
+      ) +
       "%";
+
   }
 
-  const legend = document.getElementById(
-    "quoteLegend"
-  );
+
+  const legend =
+    document.getElementById(
+      "quoteLegend"
+    );
+
 
   legend.innerHTML =
     "<div class='legend-item'>" +
-      "<span class='legend-dot' style='background:#22c55e'></span>" +
-      "<span>Cotizadas · " +
+
+      "<span class='legend-dot' " +
+      "style='background:#22c55e'></span>" +
+
+      "<span>" +
+      "Cotizadas · " +
       quoted +
       "</span>" +
+
     "</div>" +
 
     "<div class='legend-item'>" +
-      "<span class='legend-dot' style='background:#d1d5db'></span>" +
-      "<span>Pendientes · " +
+
+      "<span class='legend-dot' " +
+      "style='background:#d1d5db'></span>" +
+
+      "<span>" +
+      "Pendientes · " +
       pending +
       "</span>" +
+
     "</div>";
+
 }
 
-function renderRecent(opportunities) {
-  const container = document.getElementById(
-    "recentOpportunities"
-  );
 
-  container.innerHTML = "";
+/* ==========================================
+   ULTIMAS OPORTUNIDADES
+========================================== */
 
-  if (opportunities.length === 0) {
+function renderRecent(
+  opportunities
+) {
+
+  const container =
+    document.getElementById(
+      "recentOpportunities"
+    );
+
+
+  container.innerHTML =
+    "";
+
+
+  if (
+    opportunities.length ===
+    0
+  ) {
+
     container.innerHTML =
       "<div class='empty'>" +
-        "<p>Todavía no hay oportunidades creadas.</p>" +
+
+        "<p>" +
+        "Todavía no hay oportunidades creadas." +
+        "</p>" +
+
         "<br>" +
+
         "<a href='oportunidades.html' class='button'>" +
-          "Crear oportunidad" +
+        "Crear oportunidad" +
         "</a>" +
+
       "</div>";
 
+
     return;
+
   }
 
+
   opportunities
-    .slice(0, 5)
+    .slice(
+      0,
+      5
+    )
     .forEach(
       function(opportunity) {
-        const item = document.createElement("div");
-        item.className = "recent-item";
 
-        const quote = opportunity.quote;
+        const item =
+          document.createElement(
+            "div"
+          );
 
-        const info = document.createElement("div");
-        info.className = "recent-info";
 
-        const title = document.createElement("h4");
+        item.className =
+          "recent-item";
+
+
+        const quote =
+          opportunity.quote;
+
+
+        const info =
+          document.createElement(
+            "div"
+          );
+
+
+        info.className =
+          "recent-info";
+
+
+        const title =
+          document.createElement(
+            "h4"
+          );
+
+
         title.textContent =
           opportunity.project ||
           "Sin nombre";
 
-        const client = document.createElement("p");
+
+        const client =
+          document.createElement(
+            "p"
+          );
+
+
         client.textContent =
           "👤 " +
           (
@@ -1415,26 +2307,62 @@ function renderRecent(opportunities) {
             "Sin cliente"
           );
 
-        const status = document.createElement("p");
+
+        const status =
+          document.createElement(
+            "p"
+          );
+
+
         status.textContent =
           statusName(
             opportunity.status
           );
 
-        info.appendChild(title);
-        info.appendChild(client);
-        info.appendChild(status);
 
-        const value = document.createElement("div");
-        value.className = "recent-value";
+        info.appendChild(
+          title
+        );
 
-        const small = document.createElement("small");
+
+        info.appendChild(
+          client
+        );
+
+
+        info.appendChild(
+          status
+        );
+
+
+        const value =
+          document.createElement(
+            "div"
+          );
+
+
+        value.className =
+          "recent-value";
+
+
+        const small =
+          document.createElement(
+            "small"
+          );
+
+
         small.textContent =
           quote
             ? "PRIMER AÑO"
             : "COTIZACIÓN";
 
-        const strong = document.createElement("strong");
+
+        const strong =
+          document.createElement(
+            "strong"
+          );
+
+
         strong.textContent =
           quote
             ? (
@@ -1443,28 +2371,73 @@ function renderRecent(opportunities) {
               )
             : "Pendiente";
 
-        value.appendChild(small);
-        value.appendChild(strong);
 
-        item.appendChild(info);
-        item.appendChild(value);
+        value.appendChild(
+          small
+        );
 
-        container.appendChild(item);
+
+        value.appendChild(
+          strong
+        );
+
+
+        item.appendChild(
+          info
+        );
+
+
+        item.appendChild(
+          value
+        );
+
+
+        container.appendChild(
+          item
+        );
+
       }
     );
+
 }
 
-(async function() {
-  const opportunities = getOpportunities();
 
-  updateMetrics(opportunities);
-  renderStatusChart(opportunities);
-  renderQuoteChart(opportunities);
-  renderRecent(opportunities);
+/* ==========================================
+   INICIO
+========================================== */
+
+(async function() {
+
+  const opportunities =
+    getOpportunities();
+
+
+  updateMetrics(
+    opportunities
+  );
+
+
+  renderStatusChart(
+    opportunities
+  );
+
+
+  renderQuoteChart(
+    opportunities
+  );
+
+
+  renderRecent(
+    opportunities
+  );
+
 
   await updateLibrarySummary();
+
 })();
+
 </script>
 
 </body>
+
 </html>
