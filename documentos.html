@@ -719,7 +719,7 @@ textarea:focus {
 
 </main>
 
-
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script type="module">
 
 
@@ -841,21 +841,14 @@ async function leerTXT(file) {
 
 async function leerPDF(file) {
 
-  const buffer =
-    await file.arrayBuffer();
+  const buffer = await file.arrayBuffer();
 
-
-  const pdf =
-    await getDocument({
-      data: buffer
-    }).promise;
-
+  const pdf = await getDocument({
+    data: buffer
+  }).promise;
 
   const paginas = [];
-
-
   let textoCompleto = "";
-
 
   for (
     let numeroPagina = 1;
@@ -863,21 +856,17 @@ async function leerPDF(file) {
     numeroPagina++
   ) {
 
-    const page =
-      await pdf.getPage(
-        numeroPagina
-      );
-
+    const page = await pdf.getPage(
+      numeroPagina
+    );
 
     const content =
       await page.getTextContent();
 
-
     const textoPagina =
       content.items
         .map(
-          item =>
-            item.str
+          item => item.str
         )
         .join(" ")
         .replace(
@@ -886,46 +875,180 @@ async function leerPDF(file) {
         )
         .trim();
 
-
     paginas.push({
-
-      page:
-        numeroPagina,
-
-      text:
-        textoPagina
-
+      page: numeroPagina,
+      text: textoPagina
     });
-
 
     textoCompleto +=
       "\n" +
       textoPagina;
-
   }
 
-
   return {
-
-    text:
-      textoCompleto,
-
-    pages:
-      paginas,
-
-    numPages:
-      pdf.numPages
-
+    text: textoCompleto,
+    pages: paginas,
+    numPages: pdf.numPages,
+    pdf
   };
+}
+/* =====================================================
+   EXTRAER TEXTO
+===================================================== */
+/* =====================================================
+   OCR
+===================================================== */
 
+async function ocrPaginaPDF(
+  pdf,
+  numeroPagina,
+  status
+) {
+
+  const page =
+    await pdf.getPage(
+      numeroPagina
+    );
+
+  const viewport =
+    page.getViewport({
+      scale: 2
+    });
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+  const context =
+    canvas.getContext(
+      "2d"
+    );
+
+  canvas.width =
+    viewport.width;
+
+  canvas.height =
+    viewport.height;
+
+  await page.render({
+    canvasContext: context,
+    viewport: viewport
+  }).promise;
+
+  if (
+    status
+  ) {
+    status.textContent =
+      "🔎 OCR: leyendo página " +
+      numeroPagina +
+      "...";
+  }
+
+  const resultado =
+    await Tesseract.recognize(
+      canvas,
+      "spa+eng",
+      {
+        logger: mensaje => {
+
+          if (
+            mensaje.status ===
+            "recognizing text"
+          ) {
+
+            const porcentaje =
+              Math.round(
+                (mensaje.progress || 0) *
+                100
+              );
+
+            if (status) {
+
+              status.textContent =
+                "🔎 OCR: página " +
+                numeroPagina +
+                " — " +
+                porcentaje +
+                "%";
+            }
+          }
+        }
+      }
+    );
+
+  return (
+    resultado.data.text ||
+    ""
+  )
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim();
 }
 
 
 /* =====================================================
-   EXTRAER TEXTO
+   OCR PDF COMPLETO
 ===================================================== */
 
-async function extraerTexto(file) {
+async function ejecutarOCR(
+  pdf,
+  paginasOriginales,
+  status
+) {
+
+  const paginas = [];
+
+  let textoCompleto = "";
+
+  for (
+    let numeroPagina = 1;
+    numeroPagina <= pdf.numPages;
+    numeroPagina++
+  ) {
+
+    const textoOCR =
+      await ocrPaginaPDF(
+        pdf,
+        numeroPagina,
+        status
+      );
+
+    const textoOriginal =
+      paginasOriginales[
+        numeroPagina - 1
+      ]?.text || "";
+
+    const textoFinal =
+      textoOriginal.length >
+      textoOCR.length
+        ? textoOriginal
+        : textoOCR;
+
+    paginas.push({
+      page: numeroPagina,
+      text: textoFinal,
+      ocr: textoOCR.length > 0
+    });
+
+    textoCompleto +=
+      "\n" +
+      textoFinal;
+  }
+
+  return {
+    text: textoCompleto,
+    pages: paginas,
+    numPages: pdf.numPages,
+    usedOCR: true
+  };
+}
+async function extraerTexto(
+  file,
+  status
+) {
 
   const extension =
     file.name
@@ -934,6 +1057,10 @@ async function extraerTexto(file) {
       .toLowerCase();
 
 
+  /* =========================
+     TXT
+  ========================= */
+
   if (
     extension === "txt"
   ) {
@@ -941,27 +1068,82 @@ async function extraerTexto(file) {
     return await leerTXT(
       file
     );
-
   }
 
+
+  /* =========================
+     PDF
+  ========================= */
 
   if (
     extension === "pdf"
   ) {
 
-    return await leerPDF(
-      file
-    );
+    const resultado =
+      await leerPDF(
+        file
+      );
 
+    const texto =
+      resultado.text
+        .replace(
+          /\s+/g,
+          " "
+        )
+        .trim();
+
+
+    /*
+      Si el PDF tiene muy poco texto,
+      probablemente sea un escaneo.
+    */
+
+    const necesitaOCR =
+      texto.length < 80;
+
+
+    if (
+      necesitaOCR
+    ) {
+
+      if (status) {
+
+        status.textContent =
+          "📷 PDF escaneado detectado. Activando OCR...";
+      }
+
+      return await ejecutarOCR(
+        resultado.pdf,
+        resultado.pages,
+        status
+      );
+    }
+
+
+    /*
+      PDF normal con texto.
+    */
+
+    return {
+      text:
+        resultado.text,
+
+      pages:
+        resultado.pages,
+
+      numPages:
+        resultado.numPages,
+
+      usedOCR:
+        false
+    };
   }
 
 
   throw new Error(
     "Por ahora el modo gratuito soporta PDF y TXT."
   );
-
 }
-
 
 /* =====================================================
    NORMALIZAR
@@ -2679,9 +2861,10 @@ async function() {
   try {
 
     const resultado =
-      await extraerTexto(
-        file
-      );
+  await extraerTexto(
+    file,
+    status
+  );
 
 
     textoDocumento =
