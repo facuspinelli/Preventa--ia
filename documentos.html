@@ -1291,21 +1291,45 @@ function extraerNumeros(
   texto
 ) {
 
-  const regex =
-    /\b\d{1,3}(?:[.,]\d{3})*(?:[.,]\d+)?\s*(?:usuarios?|users?|cuentas?|documentos?|expedientes?|legajos?|gb|tb|mb|kb|gigabytes?|terabytes?|megabytes?|workflows?|flujos?|circuitos?|firmas?|meses?|semanas?|dias?|días?|servidores?)?\b/gi;
+  const encontrados = [];
+
+  const patrones = [
+
+    /\b\d{1,3}(?:[.,]\d{3})+(?:[.,]\d+)?\s*(?:usuarios?|users?|cuentas?)\b/gi,
+
+    /\b\d+(?:[.,]\d+)?\s*(?:usuarios?|users?|cuentas?)\b/gi,
+
+    /\b\d{1,3}(?:[.,]\d{3})+(?:[.,]\d+)?\s*(?:documentos?|expedientes?|legajos?)\b/gi,
+
+    /\b\d+(?:[.,]\d+)?\s*(?:documentos?|expedientes?|legajos?)\b/gi,
+
+    /\b\d+(?:[.,]\d+)?\s*(?:gb|tb|mb|gigabytes?|terabytes?|megabytes?)\b/gi,
+
+    /\b\d+(?:[.,]\d+)?\s*(?:workflows?|flujos?|circuitos?)\b/gi,
+
+    /\b\d+(?:[.,]\d+)?\s*(?:firmas?)\b/gi,
+
+    /\b\d+(?:[.,]\d+)?\s*(?:meses?|semanas?|d[ií]as?)\b/gi
+
+  ];
 
 
-  const encontrados =
-    texto.match(
-      regex
-    );
+  patrones.forEach(
+    function(regex) {
 
+      const matches =
+        texto.match(regex);
 
-  if (!encontrados) {
+      if (matches) {
 
-    return [];
+        encontrados.push(
+          ...matches
+        );
 
-  }
+      }
+
+    }
+  );
 
 
   return [
@@ -1323,6 +1347,7 @@ function extraerNumeros(
    CATEGORIAS
 ===================================================== */
 
+
 const categorias = {
 
   users: {
@@ -1331,14 +1356,19 @@ const categorias = {
       "Usuarios",
 
     patrones: [
-      "usuarios",
-      "usuario",
       "usuarios concurrentes",
-      "users",
-      "cuentas de usuario",
+      "usuarios totales",
       "cantidad de usuarios",
-      "usuarios totales"
-    ]
+      "número de usuarios",
+      "numero de usuarios",
+      "usuarios previstos",
+      "usuarios estimados",
+      "usuarios esperados",
+      "cantidad de cuentas",
+      "cuentas de usuario"
+    ],
+
+    requiereNumero: true
 
   },
 
@@ -1349,17 +1379,21 @@ const categorias = {
       "Documentos",
 
     patrones: [
-      "documentos",
-      "documento",
+      "tipos documentales",
+      "clases documentales",
+      "documentación a gestionar",
+      "documentacion a gestionar",
+      "tipos de documentos",
+      "clases de documentos",
       "legajos",
       "expedientes",
       "contratos",
       "comprobantes",
       "recibos",
-      "formularios",
-      "clases documentales",
-      "tipos documentales"
-    ]
+      "formularios"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1372,12 +1406,14 @@ const categorias = {
     patrones: [
       "volumen documental",
       "cantidad de documentos",
-      "millones de documentos",
+      "volumen de documentos",
       "documentos anuales",
       "documentos mensuales",
       "crecimiento documental",
-      "volumen"
-    ]
+      "crecimiento de documentos"
+    ],
+
+    requiereNumero: true
 
   },
 
@@ -1388,13 +1424,20 @@ const categorias = {
       "Storage",
 
     patrones: [
-      "storage",
-      "almacenamiento",
+      "almacenamiento requerido",
+      "capacidad de almacenamiento",
+      "espacio de almacenamiento",
+      "storage requerido",
+      "storage necesario",
+      "storage estimado",
+      "capacidad requerida",
       "gb",
       "tb",
       "gigabytes",
       "terabytes"
-    ]
+    ],
+
+    requiereNumero: true
 
   },
 
@@ -1405,13 +1448,23 @@ const categorias = {
       "OCR / Digitalización",
 
     patrones: [
-      "ocr",
-      "digitalizacion",
-      "digitalización",
-      "reconocimiento optico",
-      "reconocimiento óptico",
-      "captura de documentos"
-    ]
+      "se requiere ocr",
+      "se requiere reconocimiento óptico",
+      "se requiere reconocimiento optico",
+      "debe contar con ocr",
+      "deberá contar con ocr",
+      "debera contar con ocr",
+      "debe permitir ocr",
+      "deberá permitir ocr",
+      "debera permitir ocr",
+      "ocr requerido",
+      "ocr obligatorio",
+      "digitalización requerida",
+      "digitalizacion requerida",
+      "captura de documentos requerida"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1422,14 +1475,21 @@ const categorias = {
       "Full Text",
 
     patrones: [
-      "full text",
-      "fulltext",
-      "texto completo",
-      "busqueda full text",
       "búsqueda full text",
-      "indexacion",
-      "indexación"
-    ]
+      "busqueda full text",
+      "full text requerido",
+      "fulltext requerido",
+      "búsqueda de texto completo",
+      "busqueda de texto completo",
+      "texto completo requerido",
+      "indexación requerida",
+      "indexacion requerida",
+      "debe permitir búsqueda",
+      "deberá permitir búsqueda",
+      "debera permitir busqueda"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1440,17 +1500,24 @@ const categorias = {
       "Workflows",
 
     patrones: [
-      "workflow",
-      "workflows",
-      "flujo de trabajo",
-      "aprobacion",
-      "aprobación",
-      "circuito",
-      "circuitos",
-      "estados",
-      "validacion",
-      "validación"
-    ]
+      "workflow requerido",
+      "workflows requeridos",
+      "flujo de trabajo requerido",
+      "flujos de trabajo requeridos",
+      "circuito requerido",
+      "circuitos requeridos",
+      "workflow de aprobación",
+      "workflow de aprobacion",
+      "flujo de aprobación",
+      "flujo de aprobacion",
+      "circuito de aprobación",
+      "circuito de aprobacion",
+      "debe permitir aprobación",
+      "deberá permitir aprobación",
+      "debera permitir aprobacion"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1461,12 +1528,20 @@ const categorias = {
       "Firmas",
 
     patrones: [
-      "firma",
-      "firmas",
-      "firma digital",
-      "firma electrónica",
-      "firma electronica"
-    ]
+      "firma digital requerida",
+      "firma electrónica requerida",
+      "firma electronica requerida",
+      "firmas requeridas",
+      "firma digital obligatoria",
+      "firma electrónica obligatoria",
+      "firma electronica obligatoria",
+      "debe permitir firma",
+      "deberá permitir firma",
+      "debera permitir firma",
+      "se requiere firma"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1477,14 +1552,21 @@ const categorias = {
       "Integraciones",
 
     patrones: [
-      "integracion",
-      "integración",
-      "integraciones",
-      "api",
-      "web service",
-      "soap",
-      "rest"
-    ]
+      "integración requerida",
+      "integracion requerida",
+      "integraciones requeridas",
+      "debe integrarse",
+      "deberá integrarse",
+      "debera integrarse",
+      "integración con",
+      "integracion con",
+      "api requerida",
+      "web service requerido",
+      "integración vía api",
+      "integracion via api"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1495,15 +1577,23 @@ const categorias = {
       "Infraestructura",
 
     patrones: [
-      "infraestructura",
-      "servidor",
-      "servidores",
-      "cloud",
+      "infraestructura requerida",
+      "infraestructura propuesta",
+      "infraestructura necesaria",
+      "cloud requerido",
+      "cloud requerida",
+      "on premise requerido",
+      "on-premise requerido",
       "on premise",
       "on-premise",
-      "base de datos",
-      "docker"
-    ]
+      "ambiente cloud",
+      "ambiente on premise",
+      "ambiente on-premise",
+      "servidor requerido",
+      "servidores requeridos"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1514,16 +1604,20 @@ const categorias = {
       "Seguridad",
 
     patrones: [
-      "seguridad",
-      "autenticacion",
-      "autenticación",
-      "autorizacion",
-      "autorización",
-      "permisos",
-      "auditoria",
-      "auditoría",
-      "trazabilidad"
-    ]
+      "seguridad requerida",
+      "requisitos de seguridad",
+      "requerimientos de seguridad",
+      "autenticación requerida",
+      "autenticacion requerida",
+      "autorización requerida",
+      "autorizacion requerida",
+      "permisos requeridos",
+      "auditoría requerida",
+      "auditoria requerida",
+      "trazabilidad requerida"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1534,13 +1628,20 @@ const categorias = {
       "Migración",
 
     patrones: [
-      "migracion",
-      "migración",
-      "migrar",
-      "openkm",
+      "migración requerida",
+      "migracion requerida",
+      "migración de datos",
+      "migracion de datos",
+      "migración documental",
+      "migracion documental",
+      "migrar documentos",
+      "migrar información",
+      "migrar informacion",
       "sistema actual",
-      "datos existentes"
-    ]
+      "openkm"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1551,11 +1652,16 @@ const categorias = {
       "Soporte",
 
     patrones: [
-      "soporte",
-      "sla",
-      "mantenimiento",
-      "mesa de ayuda"
-    ]
+      "soporte requerido",
+      "soporte incluido",
+      "nivel de soporte",
+      "sla requerido",
+      "sla requerido",
+      "mantenimiento requerido",
+      "mesa de ayuda requerida"
+    ],
+
+    requiereNumero: false
 
   },
 
@@ -1566,22 +1672,24 @@ const categorias = {
       "Plazos",
 
     patrones: [
-      "plazo",
-      "plazos",
-      "fecha",
-      "fechas",
-      "cronograma",
-      "implementacion",
-      "implementación",
-      "meses",
-      "semanas"
-    ]
+      "plazo de implementación",
+      "plazo de implementacion",
+      "fecha límite",
+      "fecha limite",
+      "fecha de entrega",
+      "cronograma de implementación",
+      "cronograma de implementacion",
+      "tiempo de implementación",
+      "tiempo de implementacion",
+      "duración del proyecto",
+      "duracion del proyecto"
+    ],
+
+    requiereNumero: true
 
   }
 
 };
-
-
 /* =====================================================
    EXTRAER DATOS DE CATEGORIA
 ===================================================== */
@@ -1614,16 +1722,60 @@ function extraerCategoria(
 
           const coincide =
             categoria.patrones.some(
-              patron =>
-                normalizada.includes(
+              function(patron) {
+
+                return normalizada.includes(
                   normalizar(
                     patron
                   )
-                )
+                );
+
+              }
             );
 
 
           if (!coincide) {
+
+            return;
+
+          }
+
+
+          const numeros =
+            extraerNumeros(
+              oracion
+            );
+
+
+          /*
+            Para categorías que necesitan
+            una cantidad concreta, descartamos
+            frases que no tengan números.
+          */
+
+          if (
+            categoria.requiereNumero &&
+            !numeros.length
+          ) {
+
+            return;
+
+          }
+
+
+          /*
+            Evitar frases demasiado genéricas.
+          */
+
+          const textoLimpio =
+            limpiar(
+              oracion
+            );
+
+
+          if (
+            textoLimpio.length < 15
+          ) {
 
             return;
 
@@ -1637,13 +1789,11 @@ function extraerCategoria(
 
             texto:
               recortar(
-                oracion
+                textoLimpio
               ),
 
             numeros:
-              extraerNumeros(
-                oracion
-              )
+              numeros
 
           });
 
@@ -1654,12 +1804,16 @@ function extraerCategoria(
   );
 
 
+  /*
+    ELIMINAR DUPLICADOS
+  */
+
   const vistos =
     new Set();
 
 
-  return resultados
-    .filter(
+  const unicos =
+    resultados.filter(
       function(item) {
 
         const clave =
@@ -1687,14 +1841,43 @@ function extraerCategoria(
         return true;
 
       }
-    )
-    .slice(
-      0,
-      8
     );
 
-}
 
+  /*
+    PRIORIZAR FRASES CON DATOS CONCRETOS
+  */
+
+  unicos.sort(
+    function(a, b) {
+
+      const datosA =
+        a.numeros
+          ? a.numeros.length
+          : 0;
+
+      const datosB =
+        b.numeros
+          ? b.numeros.length
+          : 0;
+
+
+      return datosB - datosA;
+
+    }
+  );
+
+
+  /*
+    MÁXIMO 5 RESULTADOS POR CATEGORÍA
+  */
+
+  return unicos.slice(
+    0,
+    5
+  );
+
+}
 
 /* =====================================================
    OBJETIVO
