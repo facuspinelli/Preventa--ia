@@ -10,6 +10,10 @@
 
 <style>
 
+/* =========================================================
+   DISEÑO ORIGINAL / AMIGABLE
+========================================================= */
+
 * {
   box-sizing: border-box;
 }
@@ -22,7 +26,7 @@ body {
 }
 
 header {
-  background: #111827;
+  background: linear-gradient(135deg, #111827, #1e3a8a);
   color: white;
   padding: 18px 30px;
   display: flex;
@@ -39,6 +43,11 @@ header a {
   color: white;
   text-decoration: none;
   margin-left: 20px;
+  font-weight: 500;
+}
+
+header a:hover {
+  opacity: .8;
 }
 
 .container {
@@ -67,10 +76,18 @@ textarea {
   border-radius: 10px;
   padding: 12px;
   font-size: 15px;
+  font-family: Arial, sans-serif;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.10);
 }
 
 input[type="file"] {
   margin-top: 10px;
+  padding: 8px;
 }
 
 button {
@@ -82,10 +99,16 @@ button {
   cursor: pointer;
   font-size: 14px;
   margin-top: 12px;
+  font-weight: 600;
 }
 
 button:hover {
   background: #1d4ed8;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: wait;
 }
 
 .status {
@@ -111,6 +134,10 @@ button:hover {
   display: none;
 }
 
+.result-box.visible {
+  display: block;
+}
+
 .result-box h3 {
   margin-top: 0;
   font-size: 16px;
@@ -131,6 +158,7 @@ button:hover {
   padding: 12px;
   margin-bottom: 10px;
   border-radius: 6px;
+  line-height: 1.45;
 }
 
 .evidence-item strong {
@@ -145,6 +173,17 @@ button:hover {
 
 .hidden {
   display: none !important;
+}
+
+.file-name {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.section-title {
+  margin-top: 25px;
+  margin-bottom: 12px;
 }
 
 </style>
@@ -170,6 +209,10 @@ button:hover {
 <div class="container">
 
 
+  <!-- =====================================================
+       CARGA DEL DOCUMENTO
+  ====================================================== -->
+
   <div class="card">
 
     <h2>📄 Análisis de Documentos</h2>
@@ -186,12 +229,20 @@ button:hover {
       accept=".pdf,.txt"
     >
 
+    <div
+      id="fileName"
+      class="file-name"
+    ></div>
+
     <textarea
       id="consulta"
       placeholder="Ejemplo: buscame usuarios, storage, versión cloud, firmas, migración, nombres, fechas, etc."
     ></textarea>
 
-    <button onclick="analyzeDocument()">
+    <button
+      id="btnAnalizar"
+      onclick="analyzeDocument()"
+    >
       🔎 Analizar documento
     </button>
 
@@ -202,6 +253,10 @@ button:hover {
 
   </div>
 
+
+  <!-- =====================================================
+       RESULTADOS
+  ====================================================== -->
 
   <div class="card">
 
@@ -396,6 +451,9 @@ button:hover {
 </div>
 
 
+<!-- =========================================================
+     LIBRERÍAS
+========================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
@@ -413,11 +471,13 @@ GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
 
+/* =========================================================
+   VARIABLES
+========================================================= */
 
 let documentoActual = null;
 let textoDocumento = "";
 let paginasDocumento = [];
-
 
 
 /* =========================================================
@@ -426,11 +486,7 @@ let paginasDocumento = [];
 
 document
   .getElementById("archivo")
-  .addEventListener(
-    "change",
-    showFile
-  );
-
+  .addEventListener("change", showFile);
 
 
 function showFile(event) {
@@ -444,8 +500,18 @@ function showFile(event) {
 
   documentoActual = file;
 
-}
+  const fileName =
+    document.getElementById("fileName");
 
+  if (fileName) {
+
+    fileName.textContent =
+      "📎 Archivo seleccionado: " +
+      file.name;
+
+  }
+
+}
 
 
 /* =========================================================
@@ -465,9 +531,9 @@ async function leerTXT(file) {
       {
         page: 1,
         text: texto,
-        ocr: false,
         nativeText: texto,
-        ocrText: ""
+        ocrText: "",
+        ocr: false
       }
     ],
 
@@ -482,27 +548,22 @@ async function leerTXT(file) {
 }
 
 
-
 /* =========================================================
-   RECONSTRUIR TEXTO NATIVO DEL PDF
+   RECONSTRUIR TEXTO PDF
 ========================================================= */
 
 function reconstruirTextoPDF(items) {
 
-  if (
-    !items ||
-    items.length === 0
-  ) {
+  if (!items || items.length === 0) {
     return "";
   }
 
 
   const elementos =
     items
-      .filter(
-        item =>
-          item &&
-          typeof item.str === "string"
+      .filter(item =>
+        item &&
+        typeof item.str === "string"
       )
       .map(item => {
 
@@ -514,32 +575,23 @@ function reconstruirTextoPDF(items) {
           texto: item.str,
 
           x:
-            Number(
-              transform[4] || 0
-            ),
+            Number(transform[4] || 0),
 
           y:
-            Number(
-              transform[5] || 0
-            ),
+            Number(transform[5] || 0),
 
           ancho:
-            Number(
-              item.width || 0
-            )
+            Number(item.width || 0)
 
         };
 
       })
-      .filter(
-        item =>
-          item.texto.trim() !== ""
+      .filter(item =>
+        item.texto.trim() !== ""
       );
 
 
-  if (
-    elementos.length === 0
-  ) {
+  if (elementos.length === 0) {
     return "";
   }
 
@@ -552,18 +604,13 @@ function reconstruirTextoPDF(items) {
     let lineaEncontrada = null;
 
 
-    for (
-      const linea of lineas
-    ) {
+    for (const linea of lineas) {
 
       if (
-        Math.abs(
-          linea.y - item.y
-        ) < 4
+        Math.abs(linea.y - item.y) < 4
       ) {
 
-        lineaEncontrada =
-          linea;
+        lineaEncontrada = linea;
 
         break;
 
@@ -572,28 +619,19 @@ function reconstruirTextoPDF(items) {
     }
 
 
-    if (
-      !lineaEncontrada
-    ) {
+    if (!lineaEncontrada) {
 
       lineaEncontrada = {
-
         y: item.y,
-
         items: []
-
       };
 
-      lineas.push(
-        lineaEncontrada
-      );
+      lineas.push(lineaEncontrada);
 
     }
 
 
-    lineaEncontrada.items.push(
-      item
-    );
+    lineaEncontrada.items.push(item);
 
   });
 
@@ -621,9 +659,7 @@ function reconstruirTextoPDF(items) {
     linea.items.forEach(
       (item, index) => {
 
-        if (
-          index === 0
-        ) {
+        if (index === 0) {
 
           textoLinea =
             item.texto;
@@ -634,9 +670,7 @@ function reconstruirTextoPDF(items) {
 
 
         const anterior =
-          linea.items[
-            index - 1
-          ];
+          linea.items[index - 1];
 
 
         const finalAnterior =
@@ -649,18 +683,20 @@ function reconstruirTextoPDF(items) {
           finalAnterior;
 
 
-        if (
-          espacio > 2
-        ) {
+        /*
+         * Agregamos espacio únicamente
+         * cuando existe separación física
+         * entre dos fragmentos.
+         */
 
-          textoLinea +=
-            " ";
+        if (espacio > 2) {
+
+          textoLinea += " ";
 
         }
 
 
-        textoLinea +=
-          item.texto;
+        textoLinea += item.texto;
 
       }
     );
@@ -668,16 +704,11 @@ function reconstruirTextoPDF(items) {
 
     textoLinea =
       textoLinea
-        .replace(
-          /\s+/g,
-          " "
-        )
+        .replace(/\s+/g, " ")
         .trim();
 
 
-    if (
-      textoLinea
-    ) {
+    if (textoLinea) {
 
       resultado.push(
         textoLinea
@@ -688,12 +719,9 @@ function reconstruirTextoPDF(items) {
   });
 
 
-  return resultado.join(
-    "\n"
-  );
+  return resultado.join("\n");
 
 }
-
 
 
 /* =========================================================
@@ -703,26 +731,35 @@ function reconstruirTextoPDF(items) {
 function textoPDFPareceRoto(texto) {
 
   const limpio =
-    String(
-      texto || ""
-    ).trim();
+    String(texto || "").trim();
 
 
-  if (
-    !limpio
-  ) {
-
+  if (!limpio) {
     return true;
-
   }
 
+
+  /*
+   * Caso típico:
+   *
+   * C
+   * antidad
+   *
+   * de
+   *
+   * U
+   * suarios
+   *
+   * Si sucede demasiado,
+   * preferimos OCR.
+   */
 
   const lineas =
     limpio.split("\n");
 
 
-  let lineasRaras = 0;
-  let lineasTotales = 0;
+  let raras = 0;
+  let totales = 0;
 
 
   lineas.forEach(linea => {
@@ -731,25 +768,21 @@ function textoPDFPareceRoto(texto) {
       linea.trim();
 
 
-    if (
-      !valor
-    ) {
+    if (!valor) {
       return;
     }
 
 
-    lineasTotales++;
+    totales++;
 
 
     const partes =
       valor.split(/\s+/);
 
 
-    if (
-      partes.length >= 3
-    ) {
+    if (partes.length >= 3) {
 
-      const partesCortas =
+      const cortas =
         partes.filter(
           parte =>
             parte.length <= 2
@@ -757,11 +790,10 @@ function textoPDFPareceRoto(texto) {
 
 
       if (
-        partesCortas /
-        partes.length >= 0.6
+        cortas / partes.length >= .6
       ) {
 
-        lineasRaras++;
+        raras++;
 
       }
 
@@ -770,22 +802,16 @@ function textoPDFPareceRoto(texto) {
   });
 
 
-  if (
-    lineasTotales === 0
-  ) {
-
+  if (totales === 0) {
     return true;
-
   }
 
 
   return (
-    lineasRaras /
-    lineasTotales
-  ) > 0.25;
+    raras / totales
+  ) > .25;
 
 }
-
 
 
 /* =========================================================
@@ -860,34 +886,26 @@ async function leerPDF(file) {
 
   return {
 
-    pdf:
-
-      pdf,
+    pdf,
 
     text:
-
       textoCompleto,
 
     pages:
-
       paginas,
 
     numPages:
-
       pdf.numPages,
 
     usedOCR:
-
       false,
 
     ocrPages:
-
       0
 
   };
 
 }
-
 
 
 /* =========================================================
@@ -925,15 +943,17 @@ async function ocrPaginaPDF(
 
 
   canvas.width =
-    viewport.width;
+    Math.ceil(
+      viewport.width
+    );
 
   canvas.height =
-    viewport.height;
+    Math.ceil(
+      viewport.height
+    );
 
 
-  if (
-    status
-  ) {
+  if (status) {
 
     status.textContent =
       "🔎 OCR: leyendo página " +
@@ -968,9 +988,7 @@ async function ocrPaginaPDF(
         logger:
           info => {
 
-            if (
-              !status
-            ) {
+            if (!status) {
               return;
             }
 
@@ -1015,6 +1033,72 @@ async function ocrPaginaPDF(
 }
 
 
+/* =========================================================
+   NORMALIZAR OCR
+========================================================= */
+
+function normalizarOCR(texto) {
+
+  return String(texto || "")
+    .replace(/\r/g, "")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+}
+
+
+/* =========================================================
+   QUITAR DUPLICADOS DE TEXTO
+========================================================= */
+
+function textoSinDuplicados(
+  texto
+) {
+
+  const lineas =
+    String(texto || "")
+      .split("\n")
+      .map(linea =>
+        linea.trim()
+      )
+      .filter(Boolean);
+
+
+  const vistos =
+    new Set();
+
+
+  const salida = [];
+
+
+  lineas.forEach(linea => {
+
+    const clave =
+      normalizar(linea);
+
+
+    if (!clave) {
+      return;
+    }
+
+
+    if (vistos.has(clave)) {
+      return;
+    }
+
+
+    vistos.add(clave);
+
+    salida.push(linea);
+
+  });
+
+
+  return salida.join("\n");
+
+}
+
 
 /* =========================================================
    OCR COMPLETO
@@ -1028,16 +1112,14 @@ async function ejecutarOCR(
   const paginas =
     datosPDF.pages;
 
-
   const pdf =
     datosPDF.pdf;
-
 
   let textoCompleto =
     "";
 
-
-  let paginasOCR = 0;
+  let paginasOCR =
+    0;
 
 
   for (
@@ -1052,115 +1134,105 @@ async function ejecutarOCR(
       ];
 
 
-    const textoOriginal =
-      pagina.nativeText ||
-      pagina.text ||
-      "";
-
-
-    const textoOCR =
-      await ocrPaginaPDF(
-        pdf,
-        numeroPagina,
-        status
+    const textoNativo =
+      normalizarOCR(
+        pagina.nativeText ||
+        ""
       );
-
-
-    if (
-      textoOCR.length > 0
-    ) {
-
-      paginasOCR++;
-
-    }
 
 
     /*
-     * IMPORTANTE:
+     * OCR SIEMPRE.
      *
-     * No concatenamos directamente
-     * texto nativo + OCR.
-     *
-     * Eso provocaba:
-     *
-     * texto roto
-     * +
-     * texto correcto
-     *
-     * y por lo tanto duplicación.
+     * Esto permite detectar información
+     * incluso cuando el PDF tiene una capa
+     * de texto defectuosa.
      */
 
-
-    const textoRoto =
-      textoPDFPareceRoto(
-        textoOriginal
+    const textoOCR =
+      normalizarOCR(
+        await ocrPaginaPDF(
+          pdf,
+          numeroPagina,
+          status
+        )
       );
 
 
-    let textoFinal = "";
-
-
-    if (
-      !textoOriginal
-    ) {
-
-      textoFinal =
-        textoOCR;
-
+    if (textoOCR) {
+      paginasOCR++;
     }
-    else if (
-      textoRoto
-    ) {
 
-      /*
-       * Si el PDF tiene un texto nativo
-       * roto, el OCR pasa a ser
-       * el texto principal.
-       */
 
-      textoFinal =
+    const nativoRoto =
+      textoPDFPareceRoto(
+        textoNativo
+      );
+
+
+    /*
+     * Si el texto nativo está roto,
+     * OCR es la fuente principal.
+     *
+     * Si el nativo está bien,
+     * usamos el nativo para mostrar
+     * y conservamos OCR para búsqueda.
+     *
+     * NUNCA mostramos ambos juntos.
+     */
+
+    let textoPrincipal;
+
+
+    if (nativoRoto) {
+
+      textoPrincipal =
         textoOCR ||
-        textoOriginal;
+        textoNativo;
 
     }
     else {
 
-      /*
-       * Si el texto nativo es correcto,
-       * lo usamos como principal.
-       *
-       * El OCR queda guardado aparte
-       * para búsqueda/evidencia.
-       */
-
-      textoFinal =
-        textoOriginal;
+      textoPrincipal =
+        textoNativo ||
+        textoOCR;
 
     }
 
 
     pagina.text =
-      textoFinal;
+      textoPrincipal;
 
     pagina.nativeText =
-      textoOriginal;
+      textoNativo;
 
     pagina.ocrText =
       textoOCR;
 
     pagina.ocr =
-      textoOCR.length > 0;
+      Boolean(
+        textoOCR
+      );
 
+
+    /*
+     * Para el texto general usamos
+     * la fuente principal solamente.
+     *
+     * Así evitamos duplicados.
+     */
 
     textoCompleto +=
       "\n" +
-      textoFinal;
+      textoPrincipal;
 
   }
 
 
   datosPDF.text =
-    textoCompleto;
+    textoSinDuplicados(
+      textoCompleto
+    );
 
 
   datosPDF.ocrPages =
@@ -1174,7 +1246,6 @@ async function ejecutarOCR(
   return datosPDF;
 
 }
-
 
 
 /* =========================================================
@@ -1229,20 +1300,15 @@ async function extraerTexto(
 }
 
 
-
 /* =========================================================
    NORMALIZAR
 ========================================================= */
 
 function normalizar(texto) {
 
-  return String(
-    texto || ""
-  )
+  return String(texto || "")
     .toLowerCase()
-    .normalize(
-      "NFD"
-    )
+    .normalize("NFD")
     .replace(
       /[\u0300-\u036f]/g,
       ""
@@ -1256,16 +1322,13 @@ function normalizar(texto) {
 }
 
 
-
 /* =========================================================
    LIMPIAR
 ========================================================= */
 
 function limpiar(texto) {
 
-  return String(
-    texto || ""
-  )
+  return String(texto || "")
     .replace(
       /\s+/g,
       " "
@@ -1275,7 +1338,6 @@ function limpiar(texto) {
 }
 
 
-
 /* =========================================================
    CONCEPTOS PREVENTA
 ========================================================= */
@@ -1283,7 +1345,6 @@ function limpiar(texto) {
 const conceptosPreventa = {
 
   usuarios: [
-
     "usuarios",
     "usuario",
     "users",
@@ -1299,12 +1360,9 @@ const conceptosPreventa = {
     "licencias",
     "personas",
     "empleados"
-
   ],
 
-
   storage: [
-
     "storage",
     "almacenamiento",
     "capacidad",
@@ -1315,12 +1373,9 @@ const conceptosPreventa = {
     "gigabytes",
     "terabytes",
     "megabytes"
-
   ],
 
-
   documentos: [
-
     "documentos",
     "documento",
     "tipo de documento",
@@ -1331,12 +1386,9 @@ const conceptosPreventa = {
     "contratos",
     "comprobantes",
     "formularios"
-
   ],
 
-
   volumen: [
-
     "volumen documental",
     "volumen de documentos",
     "cantidad de documentos",
@@ -1346,24 +1398,18 @@ const conceptosPreventa = {
     "documentos anuales",
     "volumen mensual",
     "volumen anual"
-
   ],
 
-
   ocr: [
-
     "ocr",
     "reconocimiento optico",
     "digitalizacion",
     "escaneo",
     "escaneado",
     "documentos escaneados"
-
   ],
 
-
   fulltext: [
-
     "full text",
     "fulltext",
     "texto completo",
@@ -1371,12 +1417,9 @@ const conceptosPreventa = {
     "buscador",
     "motor de busqueda",
     "indexacion"
-
   ],
 
-
   workflows: [
-
     "workflow",
     "workflows",
     "flujo",
@@ -1385,12 +1428,9 @@ const conceptosPreventa = {
     "aprobacion",
     "circuito",
     "circuitos"
-
   ],
 
-
   firmas: [
-
     "firma",
     "firmas",
     "firma electronica",
@@ -1398,12 +1438,9 @@ const conceptosPreventa = {
     "firmado",
     "certificado digital",
     "certificados digitales"
-
   ],
 
-
   integraciones: [
-
     "integracion",
     "integraciones",
     "api",
@@ -1413,12 +1450,9 @@ const conceptosPreventa = {
     "erp",
     "sap",
     "complif"
-
   ],
 
-
   infraestructura: [
-
     "infraestructura",
     "cloud",
     "cloud computing",
@@ -1435,12 +1469,9 @@ const conceptosPreventa = {
     "servidores",
     "datacenter",
     "data center"
-
   ],
 
-
   seguridad: [
-
     "seguridad",
     "autenticacion",
     "autorizacion",
@@ -1451,36 +1482,27 @@ const conceptosPreventa = {
     "active directory",
     "auditoria",
     "encriptacion"
-
   ],
 
-
   migracion: [
-
     "migracion",
     "migrar",
     "migracion de documentos",
     "importacion",
     "documenta",
     "openkm"
-
   ],
 
-
   soporte: [
-
     "soporte",
     "mantenimiento",
     "mesa de ayuda",
     "help desk",
     "sla",
     "horario de soporte"
-
   ],
 
-
   plazos: [
-
     "plazo",
     "plazos",
     "fecha",
@@ -1490,12 +1512,9 @@ const conceptosPreventa = {
     "cronograma",
     "tiempo",
     "duracion"
-
   ],
 
-
   pricing: [
-
     "precio",
     "precios",
     "costo",
@@ -1507,11 +1526,9 @@ const conceptosPreventa = {
     "storage",
     "almacenamiento",
     "volumen"
-
   ]
 
 };
-
 
 
 /* =========================================================
@@ -1528,9 +1545,7 @@ function interpretarBusqueda(
     );
 
 
-  if (
-    !texto
-  ) {
+  if (!texto) {
 
     return Object.keys(
       conceptosPreventa
@@ -1558,9 +1573,7 @@ function interpretarBusqueda(
         );
 
 
-      if (
-        encontrado
-      ) {
+      if (encontrado) {
 
         categorias.push(
           categoria
@@ -1571,11 +1584,6 @@ function interpretarBusqueda(
     }
   );
 
-
-  /*
-   * Si no reconocemos una categoría,
-   * hacemos análisis general.
-   */
 
   if (
     categorias.length === 0
@@ -1593,7 +1601,6 @@ function interpretarBusqueda(
 }
 
 
-
 /* =========================================================
    EXTRAER CONTEXTO
 ========================================================= */
@@ -1606,9 +1613,7 @@ function extraerContexto(
 ) {
 
   const original =
-    String(
-      texto || ""
-    );
+    String(texto || "");
 
 
   const normal =
@@ -1629,12 +1634,8 @@ function extraerContexto(
     );
 
 
-  if (
-    posicion === -1
-  ) {
-
+  if (posicion === -1) {
     return null;
-
   }
 
 
@@ -1654,6 +1655,11 @@ function extraerContexto(
     );
 
 
+  /*
+   * Usamos el texto original para
+   * conservar acentos y formato.
+   */
+
   return {
 
     page:
@@ -1664,14 +1670,8 @@ function extraerContexto(
 
     text:
       original.substring(
-        Math.max(
-          0,
-          inicio
-        ),
-        Math.min(
-          original.length,
-          fin
-        )
+        inicio,
+        fin
       ).trim(),
 
     ocr:
@@ -1681,6 +1681,87 @@ function extraerContexto(
 
 }
 
+
+/* =========================================================
+   OBTENER FUENTES DE UNA PÁGINA
+========================================================= */
+
+function obtenerFuentesPagina(
+  pagina
+) {
+
+  const fuentes = [];
+
+
+  if (
+    pagina.nativeText
+  ) {
+
+    fuentes.push({
+
+      text:
+        pagina.nativeText,
+
+      source:
+        "Texto PDF",
+
+      ocr:
+        false
+
+    });
+
+  }
+
+
+  if (
+    pagina.ocrText
+  ) {
+
+    fuentes.push({
+
+      text:
+        pagina.ocrText,
+
+      source:
+        "OCR",
+
+      ocr:
+        true
+
+    });
+
+  }
+
+
+  /*
+   * Si por algún motivo no existen
+   * las fuentes anteriores usamos text.
+   */
+
+  if (
+    fuentes.length === 0 &&
+    pagina.text
+  ) {
+
+    fuentes.push({
+
+      text:
+        pagina.text,
+
+      source:
+        "Documento",
+
+      ocr:
+        false
+
+    });
+
+  }
+
+
+  return fuentes;
+
+}
 
 
 /* =========================================================
@@ -1698,9 +1779,8 @@ function buscarConceptos(
   categorias.forEach(
     categoria => {
 
-      resultados[
-        categoria
-      ] = [];
+      resultados[categoria] = [];
+
 
       const terminos =
         conceptosPreventa[
@@ -1711,41 +1791,14 @@ function buscarConceptos(
       paginas.forEach(
         pagina => {
 
-          const textosParaBuscar = [
-
-            {
-              text:
-                pagina.nativeText ||
-                pagina.text ||
-                "",
-
-              ocr:
-                false
-
-            },
-
-            {
-              text:
-                pagina.ocrText ||
-                "",
-
-              ocr:
-                true
-
-            }
-
-          ];
+          const fuentes =
+            obtenerFuentesPagina(
+              pagina
+            );
 
 
-          textosParaBuscar.forEach(
+          fuentes.forEach(
             fuente => {
-
-              if (
-                !fuente.text
-              ) {
-                return;
-              }
-
 
               terminos.forEach(
                 termino => {
@@ -1762,6 +1815,10 @@ function buscarConceptos(
                   if (
                     contexto
                   ) {
+
+                    contexto.source =
+                      fuente.source;
+
 
                     resultados[
                       categoria
@@ -1781,21 +1838,13 @@ function buscarConceptos(
       );
 
 
-      /*
-       * Eliminamos duplicados.
-       */
-
       const vistos =
         new Set();
 
 
-      resultados[
-        categoria
-      ] =
-        resultados[
-          categoria
-        ].filter(
-          item => {
+      resultados[categoria] =
+        resultados[categoria]
+          .filter(item => {
 
             const clave =
               item.page +
@@ -1823,12 +1872,11 @@ function buscarConceptos(
 
             return true;
 
-          }
-        )
-        .slice(
-          0,
-          8
-        );
+          })
+          .slice(
+            0,
+            8
+          );
 
     }
   );
@@ -1837,7 +1885,6 @@ function buscarConceptos(
   return resultados;
 
 }
-
 
 
 /* =========================================================
@@ -1855,42 +1902,20 @@ function extraerDirecto(
   paginas.forEach(
     pagina => {
 
-      const fuentes = [
-
-        {
-          texto:
-            pagina.nativeText ||
-            pagina.text ||
-            "",
-
-          ocr:
-            false
-
-        },
-
-        {
-          texto:
-            pagina.ocrText ||
-            "",
-
-          ocr:
-            true
-
-        }
-
-      ];
+      const fuentes =
+        obtenerFuentesPagina(
+          pagina
+        );
 
 
       fuentes.forEach(
         fuente => {
 
           const texto =
-            fuente.texto;
+            fuente.text;
 
 
-          if (
-            !texto
-          ) {
+          if (!texto) {
             return;
           }
 
@@ -2059,7 +2084,6 @@ function extraerDirecto(
 }
 
 
-
 /* =========================================================
    FORMATEAR CATEGORÍA
 ========================================================= */
@@ -2126,7 +2150,6 @@ function formatearCategoria(
 }
 
 
-
 /* =========================================================
    RECORTAR
 ========================================================= */
@@ -2162,7 +2185,6 @@ function recortar(
 }
 
 
-
 /* =========================================================
    ESCAPAR HTML
 ========================================================= */
@@ -2196,7 +2218,6 @@ function escapeHTML(
     );
 
 }
-
 
 
 /* =========================================================
@@ -2261,6 +2282,7 @@ function mostrarResultados(
           "visible"
         );
 
+
         caja.style.display =
           "block";
 
@@ -2275,8 +2297,14 @@ function mostrarResultados(
       }
       else {
 
+        caja.classList.remove(
+          "visible"
+        );
+
+
         caja.style.display =
           "none";
+
 
         contenido.textContent =
           "";
@@ -2287,9 +2315,9 @@ function mostrarResultados(
   );
 
 
-  /*
-   * Riesgos
-   */
+  /* =======================================================
+     RIESGOS
+  ====================================================== */
 
   const riesgos = [];
 
@@ -2301,18 +2329,11 @@ function mostrarResultados(
 
 
   if (
-    texto.includes(
-      "pendiente"
-    ) ||
-    texto.includes(
-      "no definido"
-    ) ||
-    texto.includes(
-      "a confirmar"
-    ) ||
-    texto.includes(
-      "por definir"
-    )
+    texto.includes("pendiente") ||
+    texto.includes("no definido") ||
+    texto.includes("a confirmar") ||
+    texto.includes("por definir") ||
+    texto.includes("debe confirmar")
   ) {
 
     riesgos.push(
@@ -2323,12 +2344,8 @@ function mostrarResultados(
 
 
   if (
-    texto.includes(
-      "migracion"
-    ) ||
-    texto.includes(
-      "migrar"
-    )
+    texto.includes("migracion") ||
+    texto.includes("migrar")
   ) {
 
     riesgos.push(
@@ -2339,13 +2356,34 @@ function mostrarResultados(
 
 
   if (
-    texto.includes(
-      "integracion"
-    )
+    texto.includes("integracion")
   ) {
 
     riesgos.push(
       "Se identifican integraciones que deben validarse técnicamente."
+    );
+
+  }
+
+
+  if (
+    texto.includes("on premise") ||
+    texto.includes("on-premise")
+  ) {
+
+    riesgos.push(
+      "Se requiere validar infraestructura y dimensionamiento del entorno On-Premise."
+    );
+
+  }
+
+
+  if (
+    texto.includes("cloud")
+  ) {
+
+    riesgos.push(
+      "Se identifica un requerimiento Cloud que debe validarse en cuanto a arquitectura y dimensionamiento."
     );
 
   }
@@ -2382,6 +2420,12 @@ function mostrarResultados(
     cajaRiesgos.style.display =
       "block";
 
+
+    cajaRiesgos.classList.add(
+      "visible"
+    );
+
+
     textoRiesgos.textContent =
       riesgos
         .map(
@@ -2396,9 +2440,9 @@ function mostrarResultados(
   }
 
 
-  /*
-   * Información faltante
-   */
+  /* =======================================================
+     INFORMACIÓN FALTANTE
+  ====================================================== */
 
   const faltantes = [];
 
@@ -2425,9 +2469,7 @@ function mostrarResultados(
         ).length > 0;
 
 
-      if (
-        !tiene
-      ) {
+      if (!tiene) {
 
         faltantes.push(
           categoria
@@ -2460,6 +2502,11 @@ function mostrarResultados(
       "block";
 
 
+    cajaMissing.classList.add(
+      "visible"
+    );
+
+
     if (
       faltantes.length > 0
     ) {
@@ -2484,6 +2531,45 @@ function mostrarResultados(
 }
 
 
+/* =========================================================
+   PALABRAS VACÍAS
+========================================================= */
+
+const palabrasVacias = new Set([
+
+  "buscame",
+  "buscar",
+  "busca",
+  "dame",
+  "decime",
+  "decir",
+  "quiero",
+  "necesito",
+  "necesitamos",
+  "informacion",
+  "información",
+  "sobre",
+  "del",
+  "de",
+  "la",
+  "el",
+  "los",
+  "las",
+  "un",
+  "una",
+  "que",
+  "qué",
+  "hay",
+  "me",
+  "por",
+  "para",
+  "en",
+  "con",
+  "y",
+  "o"
+
+]);
+
 
 /* =========================================================
    BUSCAR TEXTO LIBRE
@@ -2500,12 +2586,8 @@ function buscarTextoLibre(
     ).trim();
 
 
-  if (
-    !consulta
-  ) {
-
+  if (!consulta) {
     return [];
-
   }
 
 
@@ -2515,57 +2597,51 @@ function buscarTextoLibre(
     );
 
 
+  const palabras =
+    consultaNormal
+      .split(/\s+/)
+      .filter(
+        palabra =>
+          palabra.length >= 3
+      )
+      .filter(
+        palabra =>
+          !palabrasVacias.has(
+            palabra
+          )
+      );
+
+
   const resultados = [];
 
 
   paginas.forEach(
     pagina => {
 
-      const fuentes = [
-
-        {
-          texto:
-            pagina.nativeText ||
-            pagina.text ||
-            "",
-
-          tipo:
-            "Texto PDF"
-
-        },
-
-        {
-          texto:
-            pagina.ocrText ||
-            "",
-
-          tipo:
-            "OCR"
-
-        }
-
-      ];
+      const fuentes =
+        obtenerFuentesPagina(
+          pagina
+        );
 
 
       fuentes.forEach(
         fuente => {
 
-          if (
-            !fuente.texto
-          ) {
+          const textoNormal =
+            normalizar(
+              fuente.text
+            );
+
+
+          if (!textoNormal) {
             return;
           }
 
 
-          const textoNormal =
-            normalizar(
-              fuente.texto
-            );
-
-
           /*
-           * Primero buscamos la consulta
-           * completa.
+           * =================================================
+           * 1. CONSULTA COMPLETA
+           * =================================================
            */
 
           if (
@@ -2576,16 +2652,14 @@ function buscarTextoLibre(
 
             const contexto =
               extraerContexto(
-                fuente.texto,
+                fuente.text,
                 consulta,
                 pagina.page,
-                fuente.tipo === "OCR"
+                fuente.ocr
               );
 
 
-            if (
-              contexto
-            ) {
+            if (contexto) {
 
               resultados.push({
 
@@ -2593,7 +2667,7 @@ function buscarTextoLibre(
                   pagina.page,
 
                 source:
-                  fuente.tipo,
+                  fuente.source,
 
                 text:
                   contexto.text,
@@ -2609,35 +2683,10 @@ function buscarTextoLibre(
 
 
           /*
-           * Luego buscamos cada palabra
-           * importante de la consulta.
+           * =================================================
+           * 2. PALABRAS IMPORTANTES
+           * =================================================
            */
-
-          const palabras =
-            consultaNormal
-              .split(/\s+/)
-              .filter(
-                palabra =>
-                  palabra.length >= 3
-              )
-              .filter(
-                palabra =>
-                  ![
-                    "buscame",
-                    "buscar",
-                    "busca",
-                    "dame",
-                    "decime",
-                    "decir",
-                    "quiero",
-                    "necesito",
-                    "informacion",
-                    "informacion"
-                  ].includes(
-                    palabra
-                  )
-              );
-
 
           palabras.forEach(
             palabra => {
@@ -2650,16 +2699,14 @@ function buscarTextoLibre(
 
                 const contexto =
                   extraerContexto(
-                    fuente.texto,
+                    fuente.text,
                     palabra,
                     pagina.page,
-                    fuente.tipo === "OCR"
+                    fuente.ocr
                   );
 
 
-                if (
-                  contexto
-                ) {
+                if (contexto) {
 
                   resultados.push({
 
@@ -2667,7 +2714,7 @@ function buscarTextoLibre(
                       pagina.page,
 
                     source:
-                      fuente.tipo,
+                      fuente.source,
 
                     text:
                       contexto.text,
@@ -2692,7 +2739,9 @@ function buscarTextoLibre(
 
 
   /*
-   * Eliminamos duplicados.
+   * =======================================================
+   * DEDUPLICAR
+   * =======================================================
    */
 
   const vistos =
@@ -2744,7 +2793,6 @@ function buscarTextoLibre(
 }
 
 
-
 /* =========================================================
    MOSTRAR CONSULTA ESPECÍFICA
 ========================================================= */
@@ -2760,15 +2808,19 @@ function mostrarConsultaEspecifica(
     );
 
 
-  if (
-    !evidence
-  ) {
+  if (!evidence) {
     return;
   }
 
 
   let html = "";
 
+
+  /*
+   * =======================================================
+   * CONSULTA DEL USUARIO
+   * =======================================================
+   */
 
   if (
     pregunta &&
@@ -2830,15 +2882,26 @@ function mostrarConsultaEspecifica(
   }
 
 
+  /*
+   * =======================================================
+   * ANÁLISIS GENERAL
+   * =======================================================
+   */
+
   html +=
-    "<h3>📋 Evidencia del análisis preventivo</h3>";
+    "<h3 class='section-title'>📋 Análisis preventivo general</h3>";
+
+
+  html +=
+    "<div class='evidence-item'>" +
+    "Además de la consulta específica, se analizaron automáticamente los principales aspectos técnicos y comerciales del documento." +
+    "</div>";
 
 
   evidence.innerHTML =
     html;
 
 }
-
 
 
 /* =========================================================
@@ -2865,19 +2928,35 @@ async function analyzeDocument() {
     );
 
 
+  const boton =
+    document.getElementById(
+      "btnAnalizar"
+    );
+
+
   const file =
     archivo.files[0];
 
 
-  if (
-    !file
-  ) {
+  if (!file) {
 
     alert(
       "Primero cargá un documento."
     );
 
     return;
+
+  }
+
+
+  /*
+   * Evitamos dos análisis simultáneos.
+   */
+
+  if (boton) {
+
+    boton.disabled =
+      true;
 
   }
 
@@ -2891,6 +2970,12 @@ async function analyzeDocument() {
 
 
   try {
+
+    /*
+     * =====================================================
+     * 1. EXTRAER TEXTO
+     * =====================================================
+     */
 
     const datos =
       await extraerTexto(
@@ -2907,11 +2992,6 @@ async function analyzeDocument() {
       datos.pages;
 
 
-    /*
-     * Guardamos el documento actual
-     * en memoria para el resto del análisis.
-     */
-
     documentoActual =
       file;
 
@@ -2925,7 +3005,11 @@ async function analyzeDocument() {
 
 
     /*
-     * 1. Consulta específica
+     * =====================================================
+     * 2. CONSULTA ESPECÍFICA
+     *
+     * SIEMPRE SE EJECUTA.
+     * =====================================================
      */
 
     const resultadosConsulta =
@@ -2936,7 +3020,9 @@ async function analyzeDocument() {
 
 
     /*
-     * 2. Categorías Preventa
+     * =====================================================
+     * 3. ANÁLISIS GENERAL PREVENTA
+     * =====================================================
      */
 
     const categorias =
@@ -2951,6 +3037,12 @@ async function analyzeDocument() {
         categorias
       );
 
+
+    /*
+     * =====================================================
+     * 4. VALORES DIRECTOS
+     * =====================================================
+     */
 
     const directos = {};
 
@@ -2972,6 +3064,12 @@ async function analyzeDocument() {
     );
 
 
+    /*
+     * =====================================================
+     * 5. MOSTRAR TODO
+     * =====================================================
+     */
+
     mostrarResultados(
       resultados,
       directos
@@ -2983,6 +3081,12 @@ async function analyzeDocument() {
       pregunta
     );
 
+
+    /*
+     * =====================================================
+     * 6. FINAL
+     * =====================================================
+     */
 
     status.textContent =
       "✅ Análisis terminado. " +
@@ -2997,11 +3101,10 @@ async function analyzeDocument() {
       );
 
   }
-  catch (
-    error
-  ) {
+  catch (error) {
 
     console.error(
+      "ERROR ANALIZANDO DOCUMENTO:",
       error
     );
 
@@ -3011,13 +3114,28 @@ async function analyzeDocument() {
 
 
     alert(
-      "No se pudo analizar el documento. Revisá la consola para más información."
+      "No se pudo analizar el documento.\n\n" +
+      (
+        error &&
+        error.message
+          ? error.message
+          : "Error desconocido."
+      )
     );
+
+  }
+  finally {
+
+    if (boton) {
+
+      boton.disabled =
+        false;
+
+    }
 
   }
 
 }
-
 
 
 /* =========================================================
@@ -3025,9 +3143,7 @@ async function analyzeDocument() {
 ========================================================= */
 
 document
-  .getElementById(
-    "consulta"
-  )
+  .getElementById("consulta")
   .addEventListener(
     "keydown",
     event => {
@@ -3037,12 +3153,22 @@ document
         event.key === "Enter"
       ) {
 
+        event.preventDefault();
+
         analyzeDocument();
 
       }
 
     }
   );
+
+
+/* =========================================================
+   HACER LA FUNCIÓN ACCESIBLE AL BOTÓN HTML
+========================================================= */
+
+window.analyzeDocument =
+  analyzeDocument;
 
 
 </script>
