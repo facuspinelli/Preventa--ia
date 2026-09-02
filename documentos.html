@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -297,241 +298,245 @@ textarea:focus {
 
 </header>
 
-
 <main class="container">
 
   <div class="welcome">
 
-    <h2>📄 Análisis inteligente de documentos</h2>
+```
+<h2>📄 Análisis inteligente de documentos</h2>
 
-    <p>
-      Subí un documento y PREVENTA IA buscará información
-      relevante para Preventa.
-    </p>
+<p>
+  Subí un documento y PREVENTA IA buscará información
+  relevante para Preventa.
+</p>
+```
 
   </div>
-
 
   <div class="card">
 
-    <h3>1. 📁 Documento</h3>
+```
+<h3>1. 📁 Documento</h3>
 
-    <div class="upload-area">
+<div class="upload-area">
 
-      <div class="upload-icon">
-        📄
-      </div>
-
-      <strong>
-        Seleccioná un PDF o archivo TXT
-      </strong>
-
-      <br>
-
-      <input
-        type="file"
-        id="documentFile"
-        accept=".pdf,.txt"
-        onchange="showFile()"
-      >
-
-      <div
-        id="fileName"
-        class="file-name"
-      ></div>
-
-      <div
-        id="fileInfo"
-        class="file-info"
-      ></div>
-
-    </div>
-
+  <div class="upload-icon">
+    📄
   </div>
 
+  <strong>
+    Seleccioná un PDF o archivo TXT
+  </strong>
+
+  <br>
+
+  <input
+    type="file"
+    id="documentFile"
+    accept=".pdf,.txt"
+    onchange="showFile()"
+  >
+
+  <div
+    id="fileName"
+    class="file-name"
+  ></div>
+
+  <div
+    id="fileInfo"
+    class="file-info"
+  ></div>
+
+</div>
+```
+
+  </div>
 
   <div class="card">
 
-    <h3>2. 🔎 ¿Qué querés analizar?</h3>
+```
+<h3>2. 🔎 ¿Qué querés analizar?</h3>
 
-    <p>
-      Podés dejarlo vacío para hacer un análisis general de Preventa.
-    </p>
+<p>
+  Podés dejarlo vacío para hacer un análisis general de Preventa.
+</p>
 
-    <textarea
-      id="analysisQuestion"
-      placeholder="Ejemplo: Analizá usuarios, documentos, storage, OCR, workflows, firmas, infraestructura, integraciones, migración, soporte, riesgos y datos para cotizar."
-    ></textarea>
+<textarea
+  id="analysisQuestion"
+  placeholder="Ejemplo: Analizá usuarios, documentos, storage, OCR, workflows, firmas, infraestructura, integraciones, migración, soporte, riesgos y datos para cotizar."
+></textarea>
 
-    <button
-      class="button"
-      id="analyzeButton"
-      onclick="analyzeDocument()"
-    >
-      🔍 Analizar documento
-    </button>
+<button
+  class="button"
+  id="analyzeButton"
+  onclick="analyzeDocument()"
+>
+  🔍 Analizar documento
+</button>
 
-    <div
-      id="status"
-      class="status"
-    ></div>
+<div
+  id="status"
+  class="status"
+></div>
+```
 
   </div>
-
 
   <div
     id="result"
     class="card result"
   >
 
-    <h3>📊 Resultado del análisis</h3>
+```
+<h3>📊 Resultado del análisis</h3>
 
-    <div
-      id="summary"
-      class="summary"
-    ></div>
+<div
+  id="summary"
+  class="summary"
+></div>
 
-    <div
-      id="stats"
-      class="stats"
-    ></div>
-
-
-    <div class="grid">
-
-      <div class="analysis-item" id="box-objective">
-        <div class="analysis-title">🎯 Objetivo</div>
-        <div id="objective" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-client">
-        <div class="analysis-title">🏢 Cliente / Organización</div>
-        <div id="client" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-users">
-        <div class="analysis-title">👥 Usuarios</div>
-        <div id="users" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-documents">
-        <div class="analysis-title">📑 Documentos</div>
-        <div id="documents" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-volume">
-        <div class="analysis-title">📦 Volumen documental</div>
-        <div id="volume" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-storage">
-        <div class="analysis-title">💾 Storage</div>
-        <div id="storage" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-ocr">
-        <div class="analysis-title">🔎 OCR / Digitalización</div>
-        <div id="ocr" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-fulltext">
-        <div class="analysis-title">🔤 Full Text / Búsqueda</div>
-        <div id="fulltext" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-workflows">
-        <div class="analysis-title">🔄 Workflows</div>
-        <div id="workflows" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-signatures">
-        <div class="analysis-title">✍️ Firmas</div>
-        <div id="signatures" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-integrations">
-        <div class="analysis-title">🔌 Integraciones</div>
-        <div id="integrations" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-infrastructure">
-        <div class="analysis-title">🏗️ Infraestructura</div>
-        <div id="infrastructure" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-security">
-        <div class="analysis-title">🔐 Seguridad</div>
-        <div id="security" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-migration">
-        <div class="analysis-title">🔄 Migración</div>
-        <div id="migration" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-support">
-        <div class="analysis-title">🛠️ Soporte</div>
-        <div id="support" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-deadlines">
-        <div class="analysis-title">📅 Plazos</div>
-        <div id="deadlines" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-pricing">
-        <div class="analysis-title">💰 Datos para cotizar</div>
-        <div id="pricing" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-risks">
-        <div class="analysis-title">⚠️ Riesgos</div>
-        <div id="risks" class="analysis-value"></div>
-      </div>
-
-      <div class="analysis-item" id="box-missing">
-        <div class="analysis-title">❓ Información faltante</div>
-        <div id="missing" class="analysis-value"></div>
-      </div>
-
-    </div>
+<div
+  id="stats"
+  class="stats"
+></div>
 
 
-    <div class="evidence">
+<div class="grid">
 
-      <h3>📌 Evidencia encontrada</h3>
+  <div class="analysis-item" id="box-objective">
+    <div class="analysis-title">🎯 Objetivo</div>
+    <div id="objective" class="analysis-value"></div>
+  </div>
 
-      <div id="evidenceList"></div>
+  <div class="analysis-item" id="box-client">
+    <div class="analysis-title">🏢 Cliente / Organización</div>
+    <div id="client" class="analysis-value"></div>
+  </div>
 
-    </div>
+  <div class="analysis-item" id="box-users">
+    <div class="analysis-title">👥 Usuarios</div>
+    <div id="users" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-documents">
+    <div class="analysis-title">📑 Documentos</div>
+    <div id="documents" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-volume">
+    <div class="analysis-title">📦 Volumen documental</div>
+    <div id="volume" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-storage">
+    <div class="analysis-title">💾 Storage</div>
+    <div id="storage" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-ocr">
+    <div class="analysis-title">🔎 OCR / Digitalización</div>
+    <div id="ocr" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-fulltext">
+    <div class="analysis-title">🔤 Full Text / Búsqueda</div>
+    <div id="fulltext" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-workflows">
+    <div class="analysis-title">🔄 Workflows</div>
+    <div id="workflows" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-signatures">
+    <div class="analysis-title">✍️ Firmas</div>
+    <div id="signatures" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-integrations">
+    <div class="analysis-title">🔌 Integraciones</div>
+    <div id="integrations" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-infrastructure">
+    <div class="analysis-title">🏗️ Infraestructura</div>
+    <div id="infrastructure" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-security">
+    <div class="analysis-title">🔐 Seguridad</div>
+    <div id="security" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-migration">
+    <div class="analysis-title">🔄 Migración</div>
+    <div id="migration" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-support">
+    <div class="analysis-title">🛠️ Soporte</div>
+    <div id="support" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-deadlines">
+    <div class="analysis-title">📅 Plazos</div>
+    <div id="deadlines" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-pricing">
+    <div class="analysis-title">💰 Datos para cotizar</div>
+    <div id="pricing" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-risks">
+    <div class="analysis-title">⚠️ Riesgos</div>
+    <div id="risks" class="analysis-value"></div>
+  </div>
+
+  <div class="analysis-item" id="box-missing">
+    <div class="analysis-title">❓ Información faltante</div>
+    <div id="missing" class="analysis-value"></div>
+  </div>
+
+</div>
 
 
-    <div
-      id="resultMessage"
-      class="success"
-    ></div>
+<div class="evidence">
+
+  <h3>📌 Evidencia encontrada</h3>
+
+  <div id="evidenceList"></div>
+
+</div>
 
 
-    <div class="result-actions">
+<div
+  id="resultMessage"
+  class="success"
+></div>
 
-      <a
-        href="analisis.html"
-        id="analysisButton"
-        class="button primary"
-        style="display:none;"
-      >
-        🎯 Ver análisis de oportunidad
-      </a>
 
-    </div>
+<div class="result-actions">
+
+  <a
+    href="analisis.html"
+    id="analysisButton"
+    class="button primary"
+    style="display:none;"
+  >
+    🎯 Ver análisis de oportunidad
+  </a>
+
+</div>
+```
 
   </div>
 
 </main>
 
+<!-- OCR GRATUITO EN EL NAVEGADOR -->
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
 
 <script type="module">
 
@@ -573,6 +578,7 @@ window.showFile = function() {
     fileInfo.textContent = "";
 
     return;
+
   }
 
 
@@ -617,7 +623,9 @@ async function leerTXT(file) {
       }
     ],
 
-    numPages: 1
+    numPages: 1,
+
+    usedOCR: false
 
   };
 
@@ -664,12 +672,12 @@ async function leerPDF(file) {
       Conservamos separación entre elementos
       del PDF.
 
-      No usamos solamente espacios porque
-      muchos PDFs vienen como fichas:
+      Esto ayuda con documentos que vienen
+      como fichas:
 
-      Usuarios 293
-      Gb 152
-      Cloud AWS
+      Cantidad de Usuarios 293
+      Cantidad de storage total Gb 152
+      Versión cloud sas en aws
     */
 
     const textoPagina =
@@ -722,6 +730,237 @@ async function leerPDF(file) {
     pdf
 
   };
+
+}
+
+
+/* =====================================================
+   CALIDAD DEL TEXTO EXTRAIDO
+===================================================== */
+
+function evaluarCalidadTexto(
+  paginas
+) {
+
+  const texto =
+    paginas
+      .map(
+        pagina =>
+          pagina.text || ""
+      )
+      .join("\n");
+
+
+  const normalizado =
+    normalizar(
+      texto
+    );
+
+
+  const longitud =
+    texto
+      .replace(
+        /\s/g,
+        ""
+      )
+      .length;
+
+
+  /*
+    Buscamos señales que normalmente aparecen
+    en documentos de Preventa.
+
+    No hace falta que aparezcan todas.
+    La idea es detectar si el PDF tiene texto
+    pero ese texto parece incompleto o extraño.
+  */
+
+  const indicadores = [
+
+    "usuario",
+    "documento",
+    "storage",
+    "almacenamiento",
+    "ocr",
+    "firma",
+    "workflow",
+    "integracion",
+    "infraestructura",
+    "cloud",
+    "saas",
+    "aws",
+    "migracion",
+    "volumen"
+
+  ];
+
+
+  let encontrados = 0;
+
+
+  indicadores.forEach(
+    indicador => {
+
+      if (
+        normalizado.includes(
+          indicador
+        )
+      ) {
+
+        encontrados++;
+
+      }
+
+    }
+  );
+
+
+  /*
+    Caracteres alfanuméricos.
+    Si hay muy pocos en relación con el
+    documento, probablemente sea un PDF
+    escaneado o una extracción deficiente.
+  */
+
+  const alfanumericos =
+    (
+      texto.match(
+        /[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]/g
+      ) || []
+    ).length;
+
+
+  const proporcionAlfanumerica =
+    texto.length
+      ? alfanumericos / texto.length
+      : 0;
+
+
+  const sospechoso =
+
+    longitud < 80 ||
+
+    (
+      longitud >= 80 &&
+      encontrados === 0 &&
+      proporcionAlfanumerica < 0.45
+    ) ||
+
+    (
+      longitud >= 80 &&
+      encontrados === 0 &&
+      paginas.length <= 3
+    );
+
+
+  return {
+
+    sospechoso,
+
+    longitud,
+
+    indicadoresEncontrados:
+      encontrados,
+
+    proporcionAlfanumerica
+
+  };
+
+}
+
+
+/* =====================================================
+   CALIDAD POR PAGINA
+===================================================== */
+
+function paginaNecesitaOCR(
+  texto
+) {
+
+  const limpio =
+    String(texto || "")
+      .replace(
+        /\s/g,
+        ""
+      );
+
+
+  if (
+    limpio.length < 25
+  ) {
+
+    return true;
+
+  }
+
+
+  const normalizado =
+    normalizar(
+      texto
+    );
+
+
+  const caracteres =
+    (
+      String(texto)
+        .match(
+          /[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]/g
+        ) || []
+    ).length;
+
+
+  const proporcion =
+    texto.length
+      ? caracteres / texto.length
+      : 0;
+
+
+  if (
+    proporcion < 0.35
+  ) {
+
+    return true;
+
+  }
+
+
+  /*
+    Si hay texto suficiente y además aparecen
+    palabras normales, consideramos que la
+    extracción nativa probablemente sea válida.
+  */
+
+  const senales = [
+
+    "usuario",
+    "documento",
+    "storage",
+    "almacenamiento",
+    "firma",
+    "ocr",
+    "workflow",
+    "integracion",
+    "cloud",
+    "saas",
+    "migracion",
+    "volumen"
+
+  ];
+
+
+  const tieneSenal =
+    senales.some(
+      senal =>
+        normalizado.includes(
+          senal
+        )
+    );
+
+
+  return (
+    limpio.length < 50 &&
+    !tieneSenal
+  );
 
 }
 
@@ -865,6 +1104,7 @@ async function ejecutarOCR(
 
   const paginas = [];
   let textoCompleto = "";
+  let paginasOCR = 0;
 
 
   for (
@@ -873,25 +1113,76 @@ async function ejecutarOCR(
     numeroPagina++
   ) {
 
-    const textoOCR =
-      await ocrPaginaPDF(
-        pdf,
-        numeroPagina,
-        status
-      );
-
-
     const textoOriginal =
       paginasOriginales[
         numeroPagina - 1
       ]?.text || "";
 
 
-    const textoFinal =
-      textoOriginal.length >
-      textoOCR.length
-        ? textoOriginal
-        : textoOCR;
+    /*
+      No hacemos OCR a ciegas sobre todo.
+
+      Primero revisamos si la página realmente
+      necesita OCR.
+    */
+
+    const necesitaOCR =
+      paginaNecesitaOCR(
+        textoOriginal
+      );
+
+
+    let textoFinal =
+      textoOriginal;
+
+
+    let usadoOCR =
+      false;
+
+
+    if (
+      necesitaOCR
+    ) {
+
+      const textoOCR =
+        await ocrPaginaPDF(
+          pdf,
+          numeroPagina,
+          status
+        );
+
+
+      /*
+        Si OCR encontró algo razonable,
+        usamos OCR para esa página.
+
+        Si OCR no encontró nada, conservamos
+        el texto nativo.
+      */
+
+      if (
+        textoOCR.length >
+        textoOriginal.length
+      ) {
+
+        textoFinal =
+          textoOCR;
+
+      }
+
+
+      if (
+        textoOCR.length > 0
+      ) {
+
+        usadoOCR =
+          true;
+
+        paginasOCR++;
+
+      }
+
+    }
 
 
     paginas.push({
@@ -903,7 +1194,7 @@ async function ejecutarOCR(
         textoFinal,
 
       ocr:
-        textoOCR.length > 0
+        usadoOCR
 
     });
 
@@ -927,7 +1218,10 @@ async function ejecutarOCR(
       pdf.numPages,
 
     usedOCR:
-      true
+      paginasOCR > 0,
+
+    ocrPages:
+      paginasOCR
 
   };
 
@@ -971,23 +1265,32 @@ async function extraerTexto(
       );
 
 
-    const texto =
-      resultado.text
-        .replace(
-          /\s+/g,
-          " "
-        )
-        .trim();
+    const calidad =
+      evaluarCalidadTexto(
+        resultado.pages
+      );
 
+
+    /*
+      ANTES:
+
+      Solo se activaba OCR si había menos
+      de 80 caracteres.
+
+      AHORA:
+
+      También evaluamos si el texto extraído
+      parece incompleto, extraño o poco útil.
+    */
 
     if (
-      texto.length < 80
+      calidad.sospechoso
     ) {
 
       if (status) {
 
         status.textContent =
-          "📷 PDF escaneado detectado. Activando OCR...";
+          "📷 El texto del PDF parece incompleto. Activando OCR gratuito...";
 
       }
 
@@ -1013,7 +1316,10 @@ async function extraerTexto(
         resultado.numPages,
 
       usedOCR:
-        false
+        false,
+
+      ocrPages:
+        0
 
     };
 
@@ -1165,16 +1471,6 @@ function recortar(
 
 /* =====================================================
    NUMEROS
-   ACEPTA:
-
-   293 usuarios
-   usuarios 293
-
-   152 GB
-   GB 152
-
-   5 workflows
-   workflows 5
 ===================================================== */
 
 function extraerNumeros(texto) {
@@ -1675,6 +1971,13 @@ function extraerDirecto(
 
   /*
     USUARIOS
+
+    Detecta:
+
+    Cantidad de Usuarios 293
+    Usuarios 293
+    Usuarios: 293
+    293 usuarios
   */
 
   if (
@@ -1683,13 +1986,17 @@ function extraerDirecto(
 
     const patrones = [
 
-      /\busuarios?\s*[:\-]?\s*(\d[\d.,]*)\b/gi,
+      /\bcantidad\s+de\s+usuarios?\s*[:=\-]?\s*(\d[\d.,]*)\b/gi,
+
+      /\busuarios?\s+(?:totales?|concurrentes?|previstos?|estimados?|esperados?)?\s*[:=\-]?\s*(\d[\d.,]*)\b/gi,
+
+      /\busuarios?\s*[:=\-]?\s*(\d[\d.,]*)\b/gi,
 
       /\b(\d[\d.,]*)\s*usuarios?\b/gi,
 
-      /\bcantidad\s+de\s+usuarios?\s*[:\-]?\s*(\d[\d.,]*)\b/gi,
+      /\b(\d[\d.,]*)\s*users?\b/gi,
 
-      /\b(\d[\d.,]*)\s*users?\b/gi
+      /\bcantidad\s+de\s+cuentas?\s*[:=\-]?\s*(\d[\d.,]*)\b/gi
 
     ];
 
@@ -1705,7 +2012,7 @@ function extraerDirecto(
 
           agregar(
             match[0],
-            [match[0]]
+            [match[1] || match[0]]
           );
 
         }
@@ -1718,6 +2025,14 @@ function extraerDirecto(
 
   /*
     STORAGE
+
+    Detecta:
+
+    Cantidad de storage total Gb 152
+    Storage 152 GB
+    152 GB
+    GB 152
+    Almacenamiento: 152 GB
   */
 
   if (
@@ -1726,11 +2041,15 @@ function extraerDirecto(
 
     const patrones = [
 
-      /\b(?:gb|tb|mb|gigabytes?|terabytes?|megabytes?)\s*[:\-]?\s*(\d[\d.,]*)\b/gi,
+      /\bcantidad\s+de\s+storage(?:\s+total)?\s*(?:gb|tb|mb)\s*(\d[\d.,]*)\b/gi,
 
-      /\b(\d[\d.,]*)\s*(?:gb|tb|mb|gigabytes?|terabytes?|megabytes?)\b/gi,
+      /\b(?:storage|almacenamiento)\s+(?:total\s+)?(\d[\d.,]*)\s*(gb|tb|mb|gigabytes?|terabytes?|megabytes?)\b/gi,
 
-      /\b(?:storage|almacenamiento)\s*[:\-]?\s*(\d[\d.,]*)\s*(gb|tb|mb)?\b/gi
+      /\b(?:storage|almacenamiento)\s*[:=\-]?\s*(\d[\d.,]*)\s*(gb|tb|mb|gigabytes?|terabytes?|megabytes?)?\b/gi,
+
+      /\b(\d[\d.,]*)\s*(gb|tb|mb|gigabytes?|terabytes?|megabytes?)\b/gi,
+
+      /\b(?:gb|tb|mb|gigabytes?|terabytes?|megabytes?)\s*[:=\-]?\s*(\d[\d.,]*)\b/gi
 
     ];
 
@@ -1759,6 +2078,12 @@ function extraerDirecto(
 
   /*
     VOLUMEN
+
+    Detecta:
+
+    Volumen de documentos 200 por mes
+    200 documentos por mes
+    Documentos 200 por mes
   */
 
   if (
@@ -1767,11 +2092,13 @@ function extraerDirecto(
 
     const patrones = [
 
-      /\bvolumen\s+(?:de\s+)?documentos?\s*[:\-]?\s*(\d[\d.,]*)\s*(?:por\s+mes|mensuales?|por\s+año|anuales?)?/gi,
+      /\bvolumen\s+(?:de\s+)?documentos?\s*[:=\-]?\s*(\d[\d.,]*)\s*(por\s+mes|mensuales?|por\s+año|anuales?)?/gi,
 
-      /\b(\d[\d.,]*)\s+documentos?\s+(?:por\s+mes|mensuales?|por\s+año|anuales?)\b/gi,
+      /\b(\d[\d.,]*)\s+documentos?\s+(por\s+mes|mensuales?|por\s+año|anuales?)\b/gi,
 
-      /\bdocumentos?\s*[:\-]?\s*(\d[\d.,]*)\s+(?:por\s+mes|mensuales?|por\s+año|anuales?)\b/gi
+      /\bdocumentos?\s*[:=\-]?\s*(\d[\d.,]*)\s+(por\s+mes|mensuales?|por\s+año|anuales?)\b/gi,
+
+      /\bvolumen\s+documental\s*[:=\-]?\s*(\d[\d.,]*)/gi
 
     ];
 
@@ -1800,6 +2127,12 @@ function extraerDirecto(
 
   /*
     DOCUMENTOS
+
+    Detecta:
+
+    Documentos recibos de sueldo
+    Tipos de documentos: recibos de sueldo
+    Recibos de sueldo
   */
 
   if (
@@ -1808,9 +2141,9 @@ function extraerDirecto(
 
     const patrones = [
 
-      /\bdocumentos?\s*[:\-]?\s+([a-záéíóúñ][^.\n;]*)/gi,
+      /\bdocumentos?\s*[:=\-]?\s+([a-záéíóúñ][^.\n;]*)/gi,
 
-      /\btipos?\s+de\s+documentos?\s*[:\-]?\s+([^.\n;]*)/gi,
+      /\btipos?\s+de\s+documentos?\s*[:=\-]?\s+([^.\n;]*)/gi,
 
       /\brecibos?\s+de\s+sueldo\b/gi,
 
@@ -1818,7 +2151,11 @@ function extraerDirecto(
 
       /\bexpedientes?\b/gi,
 
-      /\bcontratos?\b/gi
+      /\bcontratos?\b/gi,
+
+      /\bcomprobantes?\b/gi,
+
+      /\bformularios?\b/gi
 
     ];
 
@@ -1846,6 +2183,13 @@ function extraerDirecto(
 
   /*
     INFRAESTRUCTURA
+
+    Detecta:
+
+    Versión cloud sas en aws
+    Cloud AWS
+    SaaS AWS
+    On-Premise
   */
 
   if (
@@ -1854,11 +2198,13 @@ function extraerDirecto(
 
     const patrones = [
 
-      /\b(?:version|versión)\s+(?:cloud|on[\s-]?premise|saas)[^.\n;]*/gi,
+      /\b(?:version|versión)\s+(?:cloud|on[\s-]?premise|saas|sas)(?:\s+en\s+|\s+)(?:aws|azure|gcp)\b[^.\n;]*/gi,
 
-      /\b(?:cloud|saas)\s+(?:en\s+)?(?:aws|azure|gcp)\b[^.\n;]*/gi,
+      /\b(?:cloud|saas|sas)\s+(?:en\s+)?(?:aws|azure|gcp)\b[^.\n;]*/gi,
 
-      /\b(?:cloud|saas|aws|azure|gcp|on[\s-]?premise)\b[^.\n;]*/gi
+      /\b(?:cloud|saas|sas|aws|azure|gcp|on[\s-]?premise)\b[^.\n;]*/gi,
+
+      /\bversi[oó]n\s+(?:cloud|on[\s-]?premise|saas|sas)\b[^.\n;]*/gi
 
     ];
 
@@ -1872,8 +2218,24 @@ function extraerDirecto(
           (match = regex.exec(t)) !== null
         ) {
 
+          let encontrado =
+            match[0];
+
+
+          /*
+            El OCR puede leer SaaS como SAS.
+            Lo mostramos correctamente.
+          */
+
+          encontrado =
+            encontrado.replace(
+              /\bsas\b/gi,
+              "SaaS"
+            );
+
+
           agregar(
-            match[0]
+            encontrado
           );
 
         }
@@ -1924,6 +2286,12 @@ function extraerDirecto(
 
   /*
     INTEGRACIONES
+
+    Detecta:
+
+    Contiene una Integración con Complif
+    Integración con Complif
+    Integrar con Complif
   */
 
   if (
@@ -1932,11 +2300,13 @@ function extraerDirecto(
 
     const patrones = [
 
-      /\bintegraci[oó]n(?:es)?\s+con\s+[^.\n;]+/gi,
+      /\b(?:contiene\s+una\s+)?integraci[oó]n(?:es)?\s+con\s+[^.\n;]+/gi,
 
       /\bintegrar\s+con\s+[^.\n;]+/gi,
 
-      /\bapi\s+con\s+[^.\n;]+/gi
+      /\bapi\s+con\s+[^.\n;]+/gi,
+
+      /\bdebe\s+integrarse\s+con\s+[^.\n;]+/gi
 
     ];
 
@@ -1964,6 +2334,12 @@ function extraerDirecto(
 
   /*
     MIGRACION
+
+    Detecta:
+
+    Migración de documentos desde Documenta Web
+    Migración desde Documenta Web
+    Migración hacia ...
   */
 
   if (
@@ -2174,8 +2550,6 @@ function extraerCategoria(
       /*
         SEGUNDO:
         método contextual anterior.
-        Esto conserva la capacidad de
-        analizar documentos redactados.
       */
 
       const oraciones =
@@ -3080,7 +3454,8 @@ function crearResumen(
 ===================================================== */
 
 function mostrarResultados(
-  data
+  data,
+  resultadoExtraccion = null
 ) {
 
   const result =
@@ -3108,7 +3483,17 @@ function mostrarResultados(
         : 0,
 
     analyzedAt:
-      new Date().toISOString()
+      new Date().toISOString(),
+
+    usedOCR:
+      resultadoExtraccion
+        ? !!resultadoExtraccion.usedOCR
+        : false,
+
+    ocrPages:
+      resultadoExtraccion
+        ? (resultadoExtraccion.ocrPages || 0)
+        : 0
 
   };
 
@@ -3247,7 +3632,8 @@ function mostrarResultados(
 
 
   crearStats(
-    data
+    data,
+    resultadoExtraccion
   );
 
 
@@ -3256,12 +3642,29 @@ function mostrarResultados(
   );
 
 
-  document.getElementById(
-    "resultMessage"
-  ).textContent =
+  let mensaje =
     "🟢 Documento leído y analizado localmente. " +
     "El resultado quedó guardado para la pantalla de Análisis. " +
     "No se utilizaron créditos de OpenAI.";
+
+
+  if (
+    resultadoExtraccion &&
+    resultadoExtraccion.usedOCR
+  ) {
+
+    mensaje +=
+      " Se utilizó OCR gratuito en " +
+      (resultadoExtraccion.ocrPages || 0) +
+      " página(s).";
+
+  }
+
+
+  document.getElementById(
+    "resultMessage"
+  ).textContent =
+    mensaje;
 
 
   document.getElementById(
@@ -3277,7 +3680,8 @@ function mostrarResultados(
 ===================================================== */
 
 function crearStats(
-  data
+  data,
+  resultadoExtraccion = null
 ) {
 
   const stats =
@@ -3304,6 +3708,20 @@ function crearStats(
     data.temas
 
   ];
+
+
+  if (
+    resultadoExtraccion &&
+    resultadoExtraccion.usedOCR
+  ) {
+
+    valores.push(
+      "🔎 OCR: " +
+      (resultadoExtraccion.ocrPages || 0) +
+      " página(s)"
+    );
+
+  }
 
 
   valores.forEach(
@@ -3537,7 +3955,8 @@ async function() {
 
 
     mostrarResultados(
-      data
+      data,
+      resultado
     );
 
 
