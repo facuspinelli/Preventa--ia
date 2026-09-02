@@ -102,7 +102,7 @@ input[type="file"] {
 
 textarea {
   width: 100%;
-  min-height: 100px;
+  min-height: 120px;
   resize: vertical;
   padding: 15px;
   border: 1px solid #d1d5db;
@@ -166,6 +166,60 @@ textarea:focus {
   margin-bottom: 25px;
   line-height: 1.6;
   white-space: pre-wrap;
+}
+
+.priority-card {
+  border: 2px solid #2563eb;
+  background: #eff6ff;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 28px;
+}
+
+.priority-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1d4ed8;
+  margin-bottom: 8px;
+}
+
+.priority-subtitle {
+  color: #4b5563;
+  margin-bottom: 18px;
+}
+
+.query-result {
+  background: white;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.query-result-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.query-result-text {
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.query-page {
+  margin-top: 8px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.query-empty {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  border-radius: 10px;
+  padding: 15px;
+  line-height: 1.5;
 }
 
 .grid {
@@ -265,6 +319,19 @@ textarea:focus {
   flex-wrap: wrap;
 }
 
+.section-title {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.general-note {
+  background: #f9fafb;
+  border-left: 4px solid #6b7280;
+  padding: 15px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
 @media (max-width: 700px) {
 
   header {
@@ -298,15 +365,18 @@ textarea:focus {
 
 </header>
 
+
 <main class="container">
+
 
   <div class="welcome">
 
     <h2>📄 Análisis inteligente de documentos</h2>
 
     <p>
-      Subí un documento y PREVENTA IA buscará información
-      relevante para Preventa.
+      Subí cualquier documento y PREVENTA IA lo leerá completo.
+      Podés preguntarle libremente lo que quieras y además realizará
+      un análisis general orientado a Preventa.
     </p>
 
   </div>
@@ -352,16 +422,16 @@ textarea:focus {
 
   <div class="card">
 
-    <h3>2. 🔎 ¿Qué querés analizar?</h3>
+    <h3>2. 🔎 ¿Qué querés preguntarle al documento?</h3>
 
     <p>
-      Escribí qué información querés buscar.
-      PREVENTA IA buscará también términos relacionados y similares.
+      Escribí cualquier pregunta. No hace falta utilizar términos
+      específicos de Preventa.
     </p>
 
     <textarea
       id="analysisQuestion"
-      placeholder="Ejemplo: Buscame usuarios, storage, cantidad de documentos, firmas e infraestructura."
+      placeholder="Ejemplos: ¿Cuántos usuarios tiene?&#10;&#10;¿Qué nombres de personas aparecen?&#10;&#10;¿Qué pide el cliente respecto de seguridad?&#10;&#10;Buscame todas las fechas importantes.&#10;&#10;¿Qué dice sobre almacenamiento?&#10;&#10;¿Quién es el responsable del proyecto?"
     ></textarea>
 
     <button
@@ -387,10 +457,15 @@ textarea:focus {
 
     <h3>📊 Resultado del análisis</h3>
 
+
     <div
       id="summary"
       class="summary"
     ></div>
+
+
+    <div id="prioritySection"></div>
+
 
     <div
       id="stats"
@@ -398,109 +473,136 @@ textarea:focus {
     ></div>
 
 
+    <h3 class="section-title">
+      📊 Análisis general de Preventa
+    </h3>
+
+
     <div class="grid">
+
 
       <div class="analysis-item" id="box-objective">
         <div class="analysis-title">🎯 Objetivo</div>
         <div id="objective" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-client">
         <div class="analysis-title">🏢 Cliente / Organización</div>
         <div id="client" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-users">
         <div class="analysis-title">👥 Usuarios</div>
         <div id="users" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-documents">
         <div class="analysis-title">📑 Documentos</div>
         <div id="documents" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-volume">
         <div class="analysis-title">📦 Volumen documental</div>
         <div id="volume" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-storage">
         <div class="analysis-title">💾 Storage</div>
         <div id="storage" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-ocr">
         <div class="analysis-title">🔎 OCR / Digitalización</div>
         <div id="ocr" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-fulltext">
         <div class="analysis-title">🔤 Full Text / Búsqueda</div>
         <div id="fulltext" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-workflows">
         <div class="analysis-title">🔄 Workflows</div>
         <div id="workflows" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-signatures">
         <div class="analysis-title">✍️ Firmas</div>
         <div id="signatures" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-integrations">
         <div class="analysis-title">🔌 Integraciones</div>
         <div id="integrations" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-infrastructure">
         <div class="analysis-title">🏗️ Infraestructura</div>
         <div id="infrastructure" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-security">
         <div class="analysis-title">🔐 Seguridad</div>
         <div id="security" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-migration">
         <div class="analysis-title">🔄 Migración</div>
         <div id="migration" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-support">
         <div class="analysis-title">🛠️ Soporte</div>
         <div id="support" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-deadlines">
         <div class="analysis-title">📅 Plazos</div>
         <div id="deadlines" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-pricing">
         <div class="analysis-title">💰 Datos para cotizar</div>
         <div id="pricing" class="analysis-value"></div>
       </div>
 
+
       <div class="analysis-item" id="box-risks">
         <div class="analysis-title">⚠️ Riesgos</div>
         <div id="risks" class="analysis-value"></div>
       </div>
+
 
       <div class="analysis-item" id="box-missing">
         <div class="analysis-title">❓ Información faltante</div>
         <div id="missing" class="analysis-value"></div>
       </div>
 
+
     </div>
 
 
     <div class="evidence">
 
-      <h3>📌 Evidencia encontrada</h3>
+      <h3>
+        📌 Evidencia encontrada
+      </h3>
 
       <div id="evidenceList"></div>
 
@@ -531,12 +633,15 @@ textarea:focus {
 </main>
 
 
-<!-- OCR GRATUITO EN EL NAVEGADOR -->
+<!-- =========================================================
+     TESSERACT OCR
+========================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 
 <script type="module">
+
 
 import {
   getDocument,
@@ -549,7 +654,9 @@ GlobalWorkerOptions.workerSrc =
 
 
 let documentoActual = null;
+
 let textoDocumento = "";
+
 let paginasDocumento = [];
 
 
@@ -575,6 +682,7 @@ window.showFile = function() {
   if (!file) {
 
     fileName.textContent = "";
+
     fileInfo.textContent = "";
 
     return;
@@ -614,7 +722,8 @@ async function leerTXT(file) {
 
   return {
 
-    text: texto,
+    text:
+      texto,
 
     pages: [
 
@@ -638,7 +747,7 @@ async function leerTXT(file) {
 
 
 /* =========================================================
-   PDF - TEXTO NATIVO
+   PDF
 ========================================================= */
 
 async function leerPDF(file) {
@@ -851,8 +960,7 @@ async function ocrPaginaPDF(
 
 
 /* =========================================================
-   OCR + PDF.JS
-   OCR EN TODAS LAS PÁGINAS
+   OCR COMPLETO
 ========================================================= */
 
 async function ejecutarOCR(
@@ -898,13 +1006,6 @@ async function ejecutarOCR(
 
       paginasOCR++;
 
-
-      /*
-       * Conservamos ambos:
-       *
-       * 1. Texto nativo del PDF
-       * 2. Texto obtenido por OCR
-       */
 
       textoFinal =
         textoOriginal
@@ -999,15 +1100,10 @@ async function extraerTexto(
     if (status) {
 
       status.textContent =
-        "🔎 Analizando PDF con texto + OCR gratuito...";
+        "🔎 Analizando PDF completo con texto + OCR...";
 
     }
 
-
-    /*
-     * Siempre hacemos OCR,
-     * aunque el PDF tenga texto.
-     */
 
     return await ejecutarOCR(
 
@@ -1088,73 +1184,62 @@ function limpiar(
 
 
 /* =========================================================
-   DICCIONARIO PREVENTA
+   CONCEPTOS GENERALES DE PREVENTA
 ========================================================= */
 
 const conceptosPreventa = {
 
-  usuarios: {
-
-    nombre:
-      "Usuarios",
-
+  objetivo: {
+    nombre: "Objetivo",
     terminos: [
+      "objetivo",
+      "alcance",
+      "propone",
+      "solucion",
+      "solución",
+      "necesidad",
+      "requerimiento",
+      "requerimientos"
+    ]
+  },
 
+  cliente: {
+    nombre: "Cliente / Organización",
+    terminos: [
+      "cliente",
+      "organizacion",
+      "organización",
+      "empresa",
+      "compania",
+      "compañia",
+      "razon social",
+      "razón social"
+    ]
+  },
+
+  usuarios: {
+    nombre: "Usuarios",
+    terminos: [
       "usuarios",
       "usuario",
       "users",
       "user",
       "usuarios totales",
       "usuarios concurrentes",
-      "usuarios previstos",
-      "usuarios estimados",
-      "usuarios esperados",
       "cantidad de usuarios",
-      "cantidad de cuentas",
       "cuentas",
       "licencias",
-      "personas",
       "empleados"
-
     ]
-
   },
-
-
-  storage: {
-
-    nombre:
-      "Storage",
-
-    terminos: [
-
-      "storage",
-      "almacenamiento",
-      "capacidad",
-      "espacio requerido",
-      "espacio de almacenamiento",
-      "gb",
-      "tb",
-      "gigabytes",
-      "terabytes",
-      "megabytes"
-
-    ]
-
-  },
-
 
   documentos: {
-
-    nombre:
-      "Documentos",
-
+    nombre: "Documentos",
     terminos: [
-
       "documentos",
       "documento",
-      "tipo de documento",
       "tipos de documentos",
+      "tipo de documento",
       "recibos de sueldo",
       "recibo de sueldo",
       "legajos",
@@ -1165,19 +1250,12 @@ const conceptosPreventa = {
       "contrato",
       "comprobantes",
       "formularios"
-
     ]
-
   },
 
-
   volumen: {
-
-    nombre:
-      "Volumen documental",
-
+    nombre: "Volumen documental",
     terminos: [
-
       "volumen documental",
       "volumen de documentos",
       "cantidad de documentos",
@@ -1187,19 +1265,28 @@ const conceptosPreventa = {
       "documentos anuales",
       "volumen mensual",
       "volumen anual"
-
     ]
-
   },
 
+  storage: {
+    nombre: "Storage",
+    terminos: [
+      "storage",
+      "almacenamiento",
+      "capacidad",
+      "espacio requerido",
+      "espacio de almacenamiento",
+      "gb",
+      "tb",
+      "gigabytes",
+      "terabytes",
+      "megabytes"
+    ]
+  },
 
   ocr: {
-
-    nombre:
-      "OCR / Digitalización",
-
+    nombre: "OCR / Digitalización",
     terminos: [
-
       "ocr",
       "reconocimiento optico",
       "reconocimiento óptico",
@@ -1208,19 +1295,12 @@ const conceptosPreventa = {
       "escaneo",
       "escaneado",
       "documentos escaneados"
-
     ]
-
   },
 
-
   fulltext: {
-
-    nombre:
-      "Full Text / Búsqueda",
-
+    nombre: "Full Text / Búsqueda",
     terminos: [
-
       "full text",
       "fulltext",
       "texto completo",
@@ -1231,19 +1311,12 @@ const conceptosPreventa = {
       "motor de búsqueda",
       "indexacion",
       "indexación"
-
     ]
-
   },
 
-
   workflows: {
-
-    nombre:
-      "Workflows",
-
+    nombre: "Workflows",
     terminos: [
-
       "workflow",
       "workflows",
       "flujo",
@@ -1253,19 +1326,12 @@ const conceptosPreventa = {
       "aprobación",
       "circuito",
       "circuitos"
-
     ]
-
   },
 
-
   firmas: {
-
-    nombre:
-      "Firmas",
-
+    nombre: "Firmas",
     terminos: [
-
       "firma",
       "firmas",
       "firma electronica",
@@ -1275,19 +1341,12 @@ const conceptosPreventa = {
       "firmado",
       "certificado digital",
       "certificados"
-
     ]
-
   },
 
-
   integraciones: {
-
-    nombre:
-      "Integraciones",
-
+    nombre: "Integraciones",
     terminos: [
-
       "integracion",
       "integración",
       "integraciones",
@@ -1300,24 +1359,15 @@ const conceptosPreventa = {
       "erp",
       "sap",
       "complif"
-
     ]
-
   },
 
-
   infraestructura: {
-
-    nombre:
-      "Infraestructura",
-
+    nombre: "Infraestructura",
     terminos: [
-
       "infraestructura",
       "cloud",
-      "cloud computing",
       "saas",
-      "sas",
       "aws",
       "azure",
       "gcp",
@@ -1329,19 +1379,12 @@ const conceptosPreventa = {
       "servidores",
       "datacenter",
       "data center"
-
     ]
-
   },
 
-
   seguridad: {
-
-    nombre:
-      "Seguridad",
-
+    nombre: "Seguridad",
     terminos: [
-
       "seguridad",
       "autenticacion",
       "autenticación",
@@ -1356,61 +1399,37 @@ const conceptosPreventa = {
       "auditoría",
       "encriptacion",
       "encriptación"
-
     ]
-
   },
 
-
   migracion: {
-
-    nombre:
-      "Migración",
-
+    nombre: "Migración",
     terminos: [
-
       "migracion",
       "migración",
       "migrar",
-      "migracion de documentos",
-      "migración de documentos",
       "importacion",
       "importación",
       "documenta",
       "openkm"
-
     ]
-
   },
 
-
   soporte: {
-
-    nombre:
-      "Soporte",
-
+    nombre: "Soporte",
     terminos: [
-
       "soporte",
       "mantenimiento",
       "mesa de ayuda",
       "help desk",
       "nivel de servicio",
-      "sla",
-      "horario de soporte"
-
+      "sla"
     ]
-
   },
 
-
   plazos: {
-
-    nombre:
-      "Plazos",
-
+    nombre: "Plazos",
     terminos: [
-
       "plazo",
       "plazos",
       "fecha",
@@ -1422,19 +1441,12 @@ const conceptosPreventa = {
       "tiempo",
       "duracion",
       "duración"
-
     ]
-
   },
 
-
   pricing: {
-
-    nombre:
-      "Datos para cotizar",
-
+    nombre: "Datos para cotizar",
     terminos: [
-
       "precio",
       "costo",
       "costos",
@@ -1446,19 +1458,127 @@ const conceptosPreventa = {
       "storage",
       "almacenamiento",
       "volumen"
-
     ]
-
   }
 
 };
 
 
 /* =========================================================
-   INTERPRETAR BÚSQUEDA DEL USUARIO
+   TÉRMINOS RELACIONADOS PARA PREGUNTAS
 ========================================================= */
 
-function interpretarBusqueda(
+const relacionesBusqueda = {
+
+  usuarios: [
+    "usuarios",
+    "usuario",
+    "users",
+    "user",
+    "cantidad de usuarios",
+    "usuarios totales",
+    "usuarios concurrentes",
+    "usuarios previstos",
+    "usuarios estimados",
+    "cuentas",
+    "licencias",
+    "empleados"
+  ],
+
+  nombres: [
+    "nombre",
+    "nombres",
+    "persona",
+    "personas",
+    "responsable",
+    "responsables",
+    "contacto",
+    "contactos"
+  ],
+
+  fechas: [
+    "fecha",
+    "fechas",
+    "día",
+    "dia",
+    "plazo",
+    "plazos",
+    "vencimiento",
+    "vencimientos",
+    "entrega",
+    "inicio",
+    "fin",
+    "desde",
+    "hasta"
+  ],
+
+  documentos: [
+    "documento",
+    "documentos",
+    "tipo de documento",
+    "tipos de documentos",
+    "legajo",
+    "legajos",
+    "expediente",
+    "expedientes",
+    "contrato",
+    "contratos"
+  ],
+
+  storage: [
+    "storage",
+    "almacenamiento",
+    "capacidad",
+    "espacio",
+    "gb",
+    "tb",
+    "gigabytes",
+    "terabytes"
+  ],
+
+  seguridad: [
+    "seguridad",
+    "autenticacion",
+    "autenticación",
+    "autorizacion",
+    "autorización",
+    "permisos",
+    "roles",
+    "sso",
+    "ldap",
+    "auditoria",
+    "auditoría"
+  ],
+
+  integraciones: [
+    "integracion",
+    "integración",
+    "integraciones",
+    "api",
+    "apis",
+    "webservice",
+    "web services",
+    "erp",
+    "sap"
+  ],
+
+  firmas: [
+    "firma",
+    "firmas",
+    "firma electronica",
+    "firma electrónica",
+    "firma digital",
+    "firmado"
+  ]
+
+};
+
+
+/* =========================================================
+   INTERPRETAR CONSULTA
+========================================================= */
+
+function interpretarConsulta(
   pregunta
 ) {
 
@@ -1468,71 +1588,138 @@ function interpretarBusqueda(
     );
 
 
-  const encontrados = [];
-
-
-  for (
-    const clave in conceptosPreventa
-  ) {
-
-    const concepto =
-      conceptosPreventa[
-        clave
-      ];
-
-
-    const coincide =
-      concepto.terminos.some(
-        termino =>
-          texto.includes(
-            normalizar(
-              termino
-            )
-          )
-      );
-
-
-    if (coincide) {
-
-      encontrados.push(
-        clave
-      );
-
-    }
-
-  }
+  const terminos = [];
 
 
   /*
-   * Si el usuario no especifica
-   * conceptos reconocidos,
-   * hacemos análisis completo.
+   * Primero tomamos palabras significativas
+   * de la pregunta.
    */
 
-  if (
-    encontrados.length === 0
-  ) {
+  const palabras =
+    texto
+      .split(" ")
+      .filter(
+        palabra =>
+          palabra.length >= 3 &&
+          ![
+            "que",
+            "qué",
+            "cual",
+            "cuál",
+            "como",
+            "cómo",
+            "donde",
+            "dónde",
+            "cuando",
+            "cuándo",
+            "quien",
+            "quién",
+            "buscame",
+            "busca",
+            "mostrar",
+            "mostrame",
+            "decime",
+            "dime",
+            "hay",
+            "del",
+            "los",
+            "las",
+            "una",
+            "uno",
+            "para",
+            "sobre"
+          ].includes(palabra)
+      );
 
-    return Object.keys(
-      conceptosPreventa
-    );
 
-  }
+  palabras.forEach(
+    palabra => {
+
+      if (
+        !terminos.includes(
+          palabra
+        )
+      ) {
+
+        terminos.push(
+          palabra
+        );
+
+      }
+
+    }
+  );
 
 
-  return encontrados;
+  /*
+   * Agregamos términos relacionados.
+   */
+
+  Object.entries(
+    relacionesBusqueda
+  ).forEach(
+    ([clave, relacionados]) => {
+
+      const coincide =
+        relacionados.some(
+          termino =>
+            texto.includes(
+              normalizar(
+                termino
+              )
+            )
+        );
+
+
+      if (coincide) {
+
+        relacionados.forEach(
+          termino => {
+
+            const limpio =
+              normalizar(
+                termino
+              );
+
+
+            if (
+              !terminos.includes(
+                limpio
+              )
+            ) {
+
+              terminos.push(
+                limpio
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+    }
+  );
+
+
+  return terminos.slice(
+    0,
+    50
+  );
 
 }
 
 
 /* =========================================================
-   EXTRAER CONTEXTO
+   CONTEXTO
 ========================================================= */
 
-function extraerContexto(
+function contextoDeCoincidencia(
   texto,
   termino,
-  longitud = 450
+  max = 650
 ) {
 
   const original =
@@ -1553,6 +1740,15 @@ function extraerContexto(
     );
 
 
+  if (
+    !buscado
+  ) {
+
+    return "";
+
+  }
+
+
   const posicion =
     normalizado.indexOf(
       buscado
@@ -1571,14 +1767,14 @@ function extraerContexto(
   const inicio =
     Math.max(
       0,
-      posicion - 180
+      posicion - 220
     );
 
 
   const fin =
     Math.min(
       original.length,
-      posicion + longitud
+      posicion + max
     );
 
 
@@ -1593,160 +1789,155 @@ function extraerContexto(
 
 
 /* =========================================================
-   BUSCAR CONCEPTOS
+   BÚSQUEDA LIBRE EN TODO EL DOCUMENTO
 ========================================================= */
 
-function buscarConceptos(
+function buscarConsultaLibre(
   paginas,
-  conceptosBuscados
+  pregunta
 ) {
 
-  const resultados = {};
+  const terminos =
+    interpretarConsulta(
+      pregunta
+    );
 
 
-  conceptosBuscados.forEach(
-    categoria => {
+  const encontrados = [];
 
-      resultados[
-        categoria
-      ] = [];
+  const vistos =
+    new Set();
 
 
-      const concepto =
-        conceptosPreventa[
-          categoria
-        ];
+  paginas.forEach(
+    pagina => {
+
+      const textoPagina =
+        pagina.text || "";
 
 
-      paginas.forEach(
-        pagina => {
-
-          const textoPagina =
-            pagina.text || "";
-
-
-          const textoNormalizado =
-            normalizar(
-              textoPagina
-            );
+      const normalizadoPagina =
+        normalizar(
+          textoPagina
+        );
 
 
-          concepto.terminos.forEach(
-            termino => {
+      terminos.forEach(
+        termino => {
 
-              const terminoNormalizado =
-                normalizar(
-                  termino
-                );
+          if (
+            !termino ||
+            !normalizadoPagina.includes(
+              termino
+            )
+          ) {
 
+            return;
 
-              if (
-                textoNormalizado.includes(
-                  terminoNormalizado
-                )
-              ) {
-
-                const contexto =
-                  extraerContexto(
-                    textoPagina,
-                    termino
-                  );
+          }
 
 
-                if (
-                  contexto
-                ) {
-
-                  resultados[
-                    categoria
-                  ].push({
-
-                    page:
-                      pagina.page,
-
-                    termino:
-                      termino,
-
-                    texto:
-                      contexto,
-
-                    ocr:
-                      pagina.ocr
-
-                  });
-
-                }
-
-              }
-
-            }
-          );
-
-        }
-      );
-
-
-      /*
-       * Duplicados
-       */
-
-      const unicos = [];
-
-      const vistos =
-        new Set();
-
-
-      resultados[
-        categoria
-      ].forEach(
-        item => {
-
-          const claveUnica =
-            normalizar(
-              item.texto
+          const contexto =
+            contextoDeCoincidencia(
+              textoPagina,
+              termino
             );
 
 
           if (
-            !vistos.has(
-              claveUnica
-            )
+            !contexto
           ) {
 
-            vistos.add(
-              claveUnica
-            );
-
-
-            unicos.push(
-              item
-            );
+            return;
 
           }
 
+
+          const clave =
+            pagina.page +
+            "|" +
+            normalizar(
+              contexto
+            );
+
+
+          if (
+            vistos.has(
+              clave
+            )
+          ) {
+
+            return;
+
+          }
+
+
+          vistos.add(
+            clave
+          );
+
+
+          encontrados.push({
+
+            page:
+              pagina.page,
+
+            termino:
+              termino,
+
+            texto:
+              contexto,
+
+            ocr:
+              pagina.ocr
+
+          });
+
         }
       );
-
-
-      resultados[
-        categoria
-      ] =
-        unicos.slice(
-          0,
-          8
-        );
 
     }
   );
 
 
-  return resultados;
+  /*
+   * Ordenamos para que aparezcan
+   * primero las coincidencias más útiles.
+   */
+
+  encontrados.sort(
+    (a, b) => {
+
+      const aLen =
+        a.texto.length;
+
+      const bLen =
+        b.texto.length;
+
+      return aLen - bLen;
+
+    }
+  );
+
+
+  return {
+
+    terminos:
+      terminos,
+
+    resultados:
+      encontrados.slice(
+        0,
+        30
+      )
+
+  };
 
 }
 
 
 /* =========================================================
-   EXTRAER VALORES DIRECTOS
+   EXTRAER VALORES IMPORTANTES
 ========================================================= */
 
 function extraerDirecto(
@@ -1795,7 +1986,7 @@ function extraerDirecto(
         ) {
 
           resultados.push(
-            match[1]
+            match[0]
           );
 
         }
@@ -1908,6 +2099,140 @@ function extraerDirecto(
 
 
 /* =========================================================
+   BUSCAR CATEGORÍA PREVENTA
+========================================================= */
+
+function buscarCategoria(
+  paginas,
+  categoria
+) {
+
+  const concepto =
+    conceptosPreventa[
+      categoria
+    ];
+
+
+  if (
+    !concepto
+  ) {
+
+    return [];
+
+  }
+
+
+  const resultados = [];
+
+  const vistos =
+    new Set();
+
+
+  paginas.forEach(
+    pagina => {
+
+      const texto =
+        pagina.text || "";
+
+
+      const normalizado =
+        normalizar(
+          texto
+        );
+
+
+      concepto.terminos.forEach(
+        termino => {
+
+          const terminoNormalizado =
+            normalizar(
+              termino
+            );
+
+
+          if (
+            !normalizado.includes(
+              terminoNormalizado
+            )
+          ) {
+
+            return;
+
+          }
+
+
+          const contexto =
+            contextoDeCoincidencia(
+              texto,
+              termino
+            );
+
+
+          if (
+            !contexto
+          ) {
+
+            return;
+
+          }
+
+
+          const clave =
+            pagina.page +
+            "|" +
+            normalizar(
+              contexto
+            );
+
+
+          if (
+            vistos.has(
+              clave
+            )
+          ) {
+
+            return;
+
+          }
+
+
+          vistos.add(
+            clave
+          );
+
+
+          resultados.push({
+
+            page:
+              pagina.page,
+
+            texto:
+              contexto,
+
+            termino:
+              termino,
+
+            ocr:
+              pagina.ocr
+
+          });
+
+        }
+      );
+
+    }
+  );
+
+
+  return resultados.slice(
+    0,
+    8
+  );
+
+}
+
+
+/* =========================================================
    FORMATEAR CATEGORÍA
 ========================================================= */
 
@@ -1958,7 +2283,7 @@ function formatearCategoria(
         "• " +
         recortar(
           item.texto,
-          300
+          350
         ) +
 
         (
@@ -1972,6 +2297,281 @@ function formatearCategoria(
     .join(
       "\n\n"
     );
+
+}
+
+
+/* =========================================================
+   ANÁLISIS GENERAL
+========================================================= */
+
+function generarAnalisisGeneral(
+  paginas,
+  texto
+) {
+
+  const categorias =
+    Object.keys(
+      conceptosPreventa
+    );
+
+
+  const resultados = {};
+
+
+  categorias.forEach(
+    categoria => {
+
+      resultados[
+        categoria
+      ] =
+        buscarCategoria(
+          paginas,
+          categoria
+        );
+
+    }
+  );
+
+
+  return resultados;
+
+}
+
+
+/* =========================================================
+   RIESGOS
+========================================================= */
+
+function generarRiesgos(
+  texto,
+  resultados
+) {
+
+  const riesgos = [];
+
+  const normalizado =
+    normalizar(
+      texto
+    );
+
+
+  const reglas = [
+
+    {
+      terminos: [
+        "no se especifica",
+        "no especificado",
+        "sin definir",
+        "a definir",
+        "pendiente"
+      ],
+      mensaje:
+        "El documento contiene información pendiente o sin definir."
+    },
+
+    {
+      terminos: [
+        "debera",
+        "deberá",
+        "obligatorio",
+        "requerimiento"
+      ],
+      mensaje:
+        "Existen requerimientos que deberán validarse funcional y técnicamente."
+    },
+
+    {
+      terminos: [
+        "migracion",
+        "migración",
+        "migrar"
+      ],
+      mensaje:
+        "Existe una posible complejidad de migración que debería relevarse."
+    },
+
+    {
+      terminos: [
+        "integracion",
+        "integración",
+        "api",
+        "webservice"
+      ],
+      mensaje:
+        "Existen integraciones que deberían validarse técnicamente."
+    },
+
+    {
+      terminos: [
+        "seguridad",
+        "sso",
+        "ldap",
+        "active directory"
+      ],
+      mensaje:
+        "Existen requerimientos de seguridad/autenticación que deben validarse."
+    }
+
+  ];
+
+
+  reglas.forEach(
+    regla => {
+
+      const encontrado =
+        regla.terminos.some(
+          termino =>
+            normalizado.includes(
+              normalizar(
+                termino
+              )
+            )
+        );
+
+
+      if (
+        encontrado
+      ) {
+
+        riesgos.push(
+          "⚠️ " +
+          regla.mensaje
+        );
+
+      }
+
+    }
+  );
+
+
+  if (
+    !resultados.usuarios ||
+    resultados.usuarios.length === 0
+  ) {
+
+    riesgos.push(
+      "⚠️ No se encontró una cantidad de usuarios claramente especificada."
+    );
+
+  }
+
+
+  if (
+    !resultados.storage ||
+    resultados.storage.length === 0
+  ) {
+
+    riesgos.push(
+      "⚠️ No se encontró una capacidad de almacenamiento claramente especificada."
+    );
+
+  }
+
+
+  if (
+    riesgos.length === 0
+  ) {
+
+    return "No se detectaron riesgos evidentes mediante las reglas automáticas actuales.";
+
+  }
+
+
+  return [
+    ...new Set(
+      riesgos
+    )
+  ].join(
+    "\n\n"
+  );
+
+}
+
+
+/* =========================================================
+   INFORMACIÓN FALTANTE
+========================================================= */
+
+function generarFaltantes(
+  resultados
+) {
+
+  const faltantes = [];
+
+
+  if (
+    !resultados.usuarios ||
+    resultados.usuarios.length === 0
+  ) {
+
+    faltantes.push(
+      "👥 Cantidad de usuarios."
+    );
+
+  }
+
+
+  if (
+    !resultados.storage ||
+    resultados.storage.length === 0
+  ) {
+
+    faltantes.push(
+      "💾 Capacidad de almacenamiento."
+    );
+
+  }
+
+
+  if (
+    !resultados.documentos ||
+    resultados.documentos.length === 0
+  ) {
+
+    faltantes.push(
+      "📑 Tipos de documentos a gestionar."
+    );
+
+  }
+
+
+  if (
+    !resultados.volumen ||
+    resultados.volumen.length === 0
+  ) {
+
+    faltantes.push(
+      "📦 Volumen documental esperado."
+    );
+
+  }
+
+
+  if (
+    !resultados.infrastructure &&
+    !resultados.infraestructura
+  ) {
+
+    faltantes.push(
+      "🏗️ Modalidad de infraestructura: Cloud / On-Premise."
+    );
+
+  }
+
+
+  if (
+    faltantes.length === 0
+  ) {
+
+    return "No se detectaron faltantes básicos mediante las reglas automáticas actuales.";
+
+  }
+
+
+  return faltantes.join(
+    "\n"
+  );
 
 }
 
@@ -2012,14 +2612,183 @@ function recortar(
 
 
 /* =========================================================
-   MOSTRAR RESULTADOS
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(
+  texto
+) {
+
+  return String(
+    texto || ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   MOSTRAR CONSULTA
+========================================================= */
+
+function mostrarConsulta(
+  busqueda,
+  pregunta
+) {
+
+  const contenedor =
+    document.getElementById(
+      "prioritySection"
+    );
+
+
+  contenedor.innerHTML =
+    "";
+
+
+  const card =
+    document.createElement(
+      "div"
+    );
+
+
+  card.className =
+    "priority-card";
+
+
+  let html = `
+
+    <div class="priority-title">
+      ⭐ Información solicitada
+    </div>
+
+    <div class="priority-subtitle">
+      Consulta: <strong>${escapeHTML(pregunta || "Análisis general")}</strong>
+    </div>
+
+  `;
+
+
+  if (
+    busqueda.resultados.length === 0
+  ) {
+
+    html += `
+
+      <div class="query-empty">
+
+        ⚠️ No encontré información relacionada con esta consulta
+        dentro del documento.
+
+        <br><br>
+
+        Esto significa que no se encontró evidencia suficiente
+        en el texto disponible ni en el OCR.
+
+      </div>
+
+    `;
+
+  } else {
+
+    busqueda.resultados
+      .slice(
+        0,
+        15
+      )
+      .forEach(
+        item => {
+
+          html += `
+
+            <div class="query-result">
+
+              <div class="query-result-title">
+
+                🔎 Coincidencia encontrada
+
+                ${
+                  item.termino
+                    ? " — " +
+                      escapeHTML(
+                        item.termino
+                      )
+                    : ""
+                }
+
+              </div>
+
+              <div class="query-result-text">
+
+                ${escapeHTML(
+                  recortar(
+                    item.texto,
+                    650
+                  )
+                )}
+
+              </div>
+
+              <div class="query-page">
+
+                📄 Página ${item.page}
+
+                ${
+                  item.ocr
+                    ? " — 🔎 Encontrado mediante OCR"
+                    : " — 📄 Texto del PDF"
+                }
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      );
+
+  }
+
+
+  card.innerHTML =
+    html;
+
+
+  contenedor.appendChild(
+    card
+  );
+
+}
+
+
+/* =========================================================
+   MOSTRAR RESULTADOS GENERALES
 ========================================================= */
 
 function mostrarResultados(
   resultados,
-  conceptosBuscados,
-  texto,
   paginas,
+  texto,
   usedOCR,
   ocrPages,
   pregunta
@@ -2031,145 +2800,113 @@ function mostrarResultados(
     );
 
 
-  result.style.display =
-    "block";
+  if (
+    result
+  ) {
+
+    result.style.display =
+      "block";
+
+  }
 
 
-  const nombresCampos = {
+  const campos = {
 
-    usuarios:
-      "users",
+    objetivo: "objective",
 
-    documentos:
-      "documents",
+    cliente: "client",
 
-    volumen:
-      "volume",
+    usuarios: "users",
 
-    storage:
-      "storage",
+    documentos: "documents",
 
-    ocr:
-      "ocr",
+    volumen: "volume",
 
-    fulltext:
-      "fulltext",
+    storage: "storage",
 
-    workflows:
-      "workflows",
+    ocr: "ocr",
 
-    firmas:
-      "signatures",
+    fulltext: "fulltext",
 
-    integraciones:
-      "integrations",
+    workflows: "workflows",
 
-    infraestructura:
-      "infrastructure",
+    firmas: "signatures",
 
-    seguridad:
-      "security",
+    integraciones: "integrations",
 
-    migracion:
-      "migration",
+    infraestructura: "infrastructure",
 
-    soporte:
-      "support",
+    seguridad: "security",
 
-    plazos:
-      "deadlines",
+    migracion: "migration",
 
-    pricing:
-      "pricing"
+    soporte: "support",
+
+    plazos: "deadlines",
+
+    pricing: "pricing"
 
   };
 
 
-  const nombresCajas = {
+  const cajas = {
 
-    usuarios:
-      "box-users",
+    objetivo: "box-objective",
 
-    documentos:
-      "box-documents",
+    cliente: "box-client",
 
-    volumen:
-      "box-volume",
+    usuarios: "box-users",
 
-    storage:
-      "box-storage",
+    documentos: "box-documents",
 
-    ocr:
-      "box-ocr",
+    volumen: "box-volume",
 
-    fulltext:
-      "box-fulltext",
+    storage: "box-storage",
 
-    workflows:
-      "box-workflows",
+    ocr: "box-ocr",
 
-    firmas:
-      "box-signatures",
+    fulltext: "box-fulltext",
 
-    integraciones:
-      "box-integrations",
+    workflows: "box-workflows",
 
-    infraestructura:
-      "box-infrastructure",
+    firmas: "box-signatures",
 
-    seguridad:
-      "box-security",
+    integraciones: "box-integrations",
 
-    migracion:
-      "box-migration",
+    infraestructura: "box-infrastructure",
 
-    soporte:
-      "box-support",
+    seguridad: "box-security",
 
-    plazos:
-      "box-deadlines",
+    migracion: "box-migration",
 
-    pricing:
-      "box-pricing"
+    soporte: "box-support",
+
+    plazos: "box-deadlines",
+
+    pricing: "box-pricing"
 
   };
 
 
-  const conceptosMostrados =
-    [];
-
-
-  conceptosBuscados.forEach(
+  Object.keys(
+    campos
+  ).forEach(
     categoria => {
 
-      const campo =
-        nombresCampos[
-          categoria
-        ];
-
-
-      const caja =
+      const elemento =
         document.getElementById(
-          nombresCajas[
+          campos[
             categoria
           ]
         );
 
 
-      const elemento =
+      const caja =
         document.getElementById(
-          campo
+          cajas[
+            categoria
+          ]
         );
-
-
-      if (
-        !elemento ||
-        !caja
-      ) {
-
-        return;
-
-      }
 
 
       const datos =
@@ -2178,11 +2915,13 @@ function mostrarResultados(
         ] || [];
 
 
-      const valoresDirectos =
-        extraerDirecto(
-          categoria,
-          texto
-        );
+      if (
+        !elemento
+      ) {
+
+        return;
+
+      }
 
 
       const valor =
@@ -2197,145 +2936,158 @@ function mostrarResultados(
         valor;
 
 
+      /*
+       * No usamos classList.
+       * Cambiamos directamente el estilo
+       * para evitar el error que teníamos.
+       */
+
       if (
-        datos.length > 0 ||
-        valoresDirectos.length > 0
+        caja
       ) {
 
-        caja.classList.add(
-          "found"
-        );
+        if (
+          datos.length > 0 ||
+          extraerDirecto(
+            categoria,
+            texto
+          ).length > 0
+        ) {
 
-      } else {
+          caja.style.borderLeft =
+            "4px solid #16a34a";
 
-        caja.classList.add(
-          "not-found"
-        );
+        } else {
+
+          caja.style.borderLeft =
+            "4px solid #f59e0b";
+
+        }
 
       }
-
-
-      conceptosMostrados.push(
-
-        "✓ " +
-        conceptosPreventa[
-          categoria
-        ].nombre
-
-      );
 
     }
   );
 
 
   /*
-   * Limpiamos campos que no fueron solicitados.
+   * Riesgos
    */
 
-  Object.entries(
-    nombresCampos
-  ).forEach(
-    ([categoria, campo]) => {
-
-      if (
-        conceptosBuscados.includes(
-          categoria
-        )
-      ) {
-
-        return;
-
-      }
+  const risks =
+    document.getElementById(
+      "risks"
+    );
 
 
-      const elemento =
-        document.getElementById(
-          campo
-        );
+  if (
+    risks
+  ) {
+
+    risks.textContent =
+      generarRiesgos(
+        texto,
+        resultados
+      );
+
+  }
 
 
-      const caja =
-        document.getElementById(
-          nombresCajas[
-            categoria
-          ]
-        );
+  /*
+   * Información faltante
+   */
+
+  const missing =
+    document.getElementById(
+      "missing"
+    );
 
 
-      if (elemento) {
+  if (
+    missing
+  ) {
 
-        elemento.textContent =
-          "No solicitado en esta búsqueda.";
+    missing.textContent =
+      generarFaltantes(
+        resultados
+      );
 
-      }
-
-
-      if (caja) {
-
-        caja.classList.remove(
-          "found",
-          "not-found"
-        );
-
-      }
-
-    }
-  );
+  }
 
 
   /*
    * Resumen
    */
 
-  document.getElementById(
-    "summary"
-  ).textContent =
-
-    "🔎 Búsqueda solicitada:\n" +
-
-    (
-      pregunta ||
-      "Análisis general de Preventa"
-    ) +
-
-    "\n\n" +
-
-    "PREVENTA IA buscará los conceptos indicados y sus términos relacionados:\n\n" +
-
-    conceptosMostrados.join(
-      "\n"
+  const summary =
+    document.getElementById(
+      "summary"
     );
+
+
+  if (
+    summary
+  ) {
+
+    summary.textContent =
+
+      "📄 Documento procesado correctamente.\n\n" +
+
+      "🔎 Consulta realizada:\n" +
+
+      (
+        pregunta ||
+        "No se ingresó una consulta específica."
+      ) +
+
+      "\n\n" +
+
+      "PREVENTA IA procesó el documento completo utilizando " +
+
+      "texto nativo del PDF + OCR de las páginas.";
+
+  }
 
 
   /*
    * Estadísticas
    */
 
-  document.getElementById(
-    "stats"
-  ).innerHTML = `
+  const stats =
+    document.getElementById(
+      "stats"
+    );
 
-    <div class="stat">
-      📄 Páginas: ${paginas.length}
-    </div>
 
-    <div class="stat">
-      🔎 OCR: ${usedOCR ? "Sí" : "No"}
-    </div>
+  if (
+    stats
+  ) {
 
-    <div class="stat">
-      📖 Páginas OCR: ${ocrPages}
-    </div>
+    stats.innerHTML = `
 
-    <div class="stat">
-      🎯 Conceptos buscados: ${conceptosBuscados.length}
-    </div>
+      <div class="stat">
+        📄 Páginas: ${paginas.length}
+      </div>
 
-  `;
+      <div class="stat">
+        🔎 OCR: ${usedOCR ? "Sí" : "No"}
+      </div>
+
+      <div class="stat">
+        📖 Páginas procesadas con OCR: ${ocrPages}
+      </div>
+
+      <div class="stat">
+        🔤 Caracteres extraídos: ${texto.length.toLocaleString("es-AR")}
+      </div>
+
+    `;
+
+  }
 
 
   /*
-   * Evidencia
+   * Evidencia general
    */
 
   const evidenceList =
@@ -2344,15 +3096,26 @@ function mostrarResultados(
     );
 
 
+  if (
+    !evidenceList
+  ) {
+
+    return;
+
+  }
+
+
   evidenceList.innerHTML =
     "";
 
 
-  let cantidadEvidencia =
+  let cantidad =
     0;
 
 
-  conceptosBuscados.forEach(
+  Object.keys(
+    resultados
+  ).forEach(
     categoria => {
 
       const datos =
@@ -2361,94 +3124,97 @@ function mostrarResultados(
         ] || [];
 
 
-      datos.forEach(
-        item => {
+      datos
+        .slice(
+          0,
+          2
+        )
+        .forEach(
+          item => {
 
-          if (
-            cantidadEvidencia >= 20
-          ) {
+            if (
+              cantidad >= 25
+            ) {
 
-            return;
+              return;
 
-          }
-
-
-          const div =
-            document.createElement(
-              "div"
-            );
-
-
-          div.className =
-            "evidence-item";
+            }
 
 
-          div.innerHTML = `
+            const div =
+              document.createElement(
+                "div"
+              );
 
-            <div class="evidence-title">
 
-              ${
-                escapeHTML(
+            div.className =
+              "evidence-item";
+
+
+            div.innerHTML = `
+
+              <div class="evidence-title">
+
+                ${escapeHTML(
                   conceptosPreventa[
                     categoria
                   ].nombre
-                )
-              }
+                )}
 
-              ${
-                item.page
-                  ? " — Página " +
-                    item.page
-                  : ""
-              }
+                —
 
-              ${
-                item.ocr
-                  ? " — 🔎 OCR"
-                  : " — 📄 PDF"
-              }
+                Página ${item.page}
 
-            </div>
+                ${
+                  item.ocr
+                    ? " — 🔎 OCR"
+                    : " — 📄 PDF"
+                }
 
-            <div class="quote">
+              </div>
 
-              ${
-                escapeHTML(
+              <div class="quote">
+
+                ${escapeHTML(
                   recortar(
                     item.texto,
                     500
                   )
-                )
-              }
+                )}
 
-            </div>
+              </div>
 
-          `;
-
-
-          evidenceList.appendChild(
-            div
-          );
+            `;
 
 
-          cantidadEvidencia++;
+            evidenceList.appendChild(
+              div
+            );
 
-        }
-      );
+
+            cantidad++;
+
+          }
+        );
 
     }
   );
 
 
   if (
-    cantidadEvidencia === 0
+    cantidad === 0
   ) {
 
-    evidenceList.innerHTML =
+    evidenceList.innerHTML = `
 
-      `<div class="warning">
-        No se encontró evidencia relacionada con los conceptos solicitados.
-      </div>`;
+      <div class="warning">
+
+        No se encontró evidencia suficiente
+        para mostrar en el análisis general.
+
+      </div>
+
+    `;
 
   }
 
@@ -2464,25 +3230,22 @@ function mostrarResultados(
 
 
   if (
-    cantidadEvidencia > 0
+    resultMessage
   ) {
 
     resultMessage.textContent =
 
-      "✅ Análisis terminado. " +
-      "Se utilizó el texto del PDF y el OCR de todas las páginas para buscar la información solicitada.";
+      "✅ Documento procesado. " +
 
-  } else {
+      "La consulta se buscó sobre todo el contenido disponible, " +
 
-    resultMessage.textContent =
-
-      "⚠️ El documento fue procesado, pero no se encontró información relacionada con lo solicitado.";
+      "incluyendo el texto nativo y el OCR.";
 
   }
 
 
   /*
-   * Guardamos el análisis
+   * Guardar análisis
    */
 
   localStorage.setItem(
@@ -2503,24 +3266,34 @@ function mostrarResultados(
       resultados:
         resultados,
 
-      conceptosBuscados:
-        conceptosBuscados,
-
       usedOCR:
         usedOCR,
 
       ocrPages:
-        ocrPages
+        ocrPages,
+
+      fecha:
+        new Date().toISOString()
 
     })
 
   );
 
 
-  document.getElementById(
-    "analysisButton"
-  ).style.display =
-    "inline-block";
+  const analysisButton =
+    document.getElementById(
+      "analysisButton"
+    );
+
+
+  if (
+    analysisButton
+  ) {
+
+    analysisButton.style.display =
+      "inline-block";
+
+  }
 
 }
 
@@ -2580,7 +3353,7 @@ async function() {
   try {
 
     status.textContent =
-      "📄 Leyendo documento...";
+      "📄 Leyendo documento completo...";
 
 
     const resultado =
@@ -2602,47 +3375,67 @@ async function() {
 
 
     /*
-     * Interpretamos la búsqueda.
+     * CONSULTA LIBRE
      */
 
     status.textContent =
-      "🧠 Interpretando qué información buscar...";
+      "🧠 Interpretando tu pregunta...";
 
 
-    const conceptosBuscados =
-      interpretarBusqueda(
+    const busqueda =
+      buscarConsultaLibre(
+
+        paginasDocumento,
+
         pregunta
+
       );
 
 
     /*
-     * Buscamos los conceptos
-     * en texto PDF + OCR.
+     * ANÁLISIS GENERAL
      */
 
     status.textContent =
-      "🔎 Buscando información relacionada...";
+      "📊 Realizando análisis general de Preventa...";
 
 
-    const resultados =
-      buscarConceptos(
+    const resultadosGenerales =
+      generarAnalisisGeneral(
 
         paginasDocumento,
 
-        conceptosBuscados
+        textoDocumento
 
       );
 
 
+    /*
+     * Mostrar primero
+     * lo preguntado por el usuario.
+     */
+
+    mostrarConsulta(
+
+      busqueda,
+
+      pregunta
+
+    );
+
+
+    /*
+     * Mostrar después
+     * el análisis general.
+     */
+
     mostrarResultados(
 
-      resultados,
-
-      conceptosBuscados,
-
-      textoDocumento,
+      resultadosGenerales,
 
       paginasDocumento,
+
+      textoDocumento,
 
       resultado.usedOCR,
 
@@ -2674,10 +3467,12 @@ async function() {
 
       "No se pudo analizar el documento.\n\n" +
 
-      error.message
+      (
+        error.message ||
+        "Error desconocido."
+      )
 
     );
-
 
   } finally {
 
@@ -2687,41 +3482,6 @@ async function() {
   }
 
 };
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHTML(
-  texto
-) {
-
-  return String(
-    texto || ""
-  )
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
 
 
 /* =========================================================
@@ -2747,6 +3507,7 @@ document
 
     }
   );
+
 
 </script>
 
