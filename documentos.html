@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 
@@ -720,8 +721,8 @@ textarea:focus {
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script type="module">
 
+<script type="module">
 
 /* =====================================================
    PDF.JS
@@ -841,14 +842,19 @@ async function leerTXT(file) {
 
 async function leerPDF(file) {
 
-  const buffer = await file.arrayBuffer();
+  const buffer =
+    await file.arrayBuffer();
 
-  const pdf = await getDocument({
-    data: buffer
-  }).promise;
+
+  const pdf =
+    await getDocument({
+      data: buffer
+    }).promise;
+
 
   const paginas = [];
   let textoCompleto = "";
+
 
   for (
     let numeroPagina = 1;
@@ -856,17 +862,21 @@ async function leerPDF(file) {
     numeroPagina++
   ) {
 
-    const page = await pdf.getPage(
-      numeroPagina
-    );
+    const page =
+      await pdf.getPage(
+        numeroPagina
+      );
+
 
     const content =
       await page.getTextContent();
 
+
     const textoPagina =
       content.items
         .map(
-          item => item.str
+          item =>
+            item.str
         )
         .join(" ")
         .replace(
@@ -875,26 +885,43 @@ async function leerPDF(file) {
         )
         .trim();
 
+
     paginas.push({
-      page: numeroPagina,
-      text: textoPagina
+
+      page:
+        numeroPagina,
+
+      text:
+        textoPagina
+
     });
+
 
     textoCompleto +=
       "\n" +
       textoPagina;
+
   }
 
+
   return {
-    text: textoCompleto,
-    pages: paginas,
-    numPages: pdf.numPages,
+
+    text:
+      textoCompleto,
+
+    pages:
+      paginas,
+
+    numPages:
+      pdf.numPages,
+
     pdf
+
   };
+
 }
-/* =====================================================
-   EXTRAER TEXTO
-===================================================== */
+
+
 /* =====================================================
    OCR
 ===================================================== */
@@ -910,82 +937,112 @@ async function ocrPaginaPDF(
       numeroPagina
     );
 
+
   const viewport =
     page.getViewport({
       scale: 2
     });
+
 
   const canvas =
     document.createElement(
       "canvas"
     );
 
+
   const context =
     canvas.getContext(
       "2d"
     );
 
+
   canvas.width =
     viewport.width;
+
 
   canvas.height =
     viewport.height;
 
+
   await page.render({
-    canvasContext: context,
-    viewport: viewport
+
+    canvasContext:
+      context,
+
+    viewport:
+      viewport
+
   }).promise;
+
 
   if (
     status
   ) {
+
     status.textContent =
       "🔎 OCR: leyendo página " +
       numeroPagina +
       "...";
+
   }
+
 
   const resultado =
     await Tesseract.recognize(
       canvas,
       "spa+eng",
       {
-        logger: mensaje => {
 
-          if (
-            mensaje.status ===
-            "recognizing text"
-          ) {
+        logger:
+          mensaje => {
 
-            const porcentaje =
-              Math.round(
-                (mensaje.progress || 0) *
-                100
-              );
+            if (
+              mensaje.status ===
+              "recognizing text"
+            ) {
 
-            if (status) {
+              const porcentaje =
+                Math.round(
+                  (mensaje.progress || 0) *
+                  100
+                );
 
-              status.textContent =
-                "🔎 OCR: página " +
-                numeroPagina +
-                " — " +
-                porcentaje +
-                "%";
+
+              if (
+                status
+              ) {
+
+                status.textContent =
+                  "🔎 OCR: página " +
+                  numeroPagina +
+                  " — " +
+                  porcentaje +
+                  "%";
+
+              }
+
             }
+
           }
-        }
+
       }
     );
 
+
   return (
+
     resultado.data.text ||
     ""
+
   )
+
     .replace(
       /\s+/g,
       " "
     )
+
     .trim();
+
 }
 
 
@@ -1003,6 +1060,7 @@ async function ejecutarOCR(
 
   let textoCompleto = "";
 
+
   for (
     let numeroPagina = 1;
     numeroPagina <= pdf.numPages;
@@ -1016,10 +1074,12 @@ async function ejecutarOCR(
         status
       );
 
+
     const textoOriginal =
       paginasOriginales[
         numeroPagina - 1
       ]?.text || "";
+
 
     const textoFinal =
       textoOriginal.length >
@@ -1027,24 +1087,51 @@ async function ejecutarOCR(
         ? textoOriginal
         : textoOCR;
 
+
     paginas.push({
-      page: numeroPagina,
-      text: textoFinal,
-      ocr: textoOCR.length > 0
+
+      page:
+        numeroPagina,
+
+      text:
+        textoFinal,
+
+      ocr:
+        textoOCR.length > 0
+
     });
+
 
     textoCompleto +=
       "\n" +
       textoFinal;
+
   }
 
+
   return {
-    text: textoCompleto,
-    pages: paginas,
-    numPages: pdf.numPages,
-    usedOCR: true
+
+    text:
+      textoCompleto,
+
+    pages:
+      paginas,
+
+    numPages:
+      pdf.numPages,
+
+    usedOCR:
+      true
+
   };
+
 }
+
+
+/* =====================================================
+   EXTRAER TEXTO
+===================================================== */
+
 async function extraerTexto(
   file,
   status
@@ -1068,6 +1155,7 @@ async function extraerTexto(
     return await leerTXT(
       file
     );
+
   }
 
 
@@ -1083,6 +1171,7 @@ async function extraerTexto(
       await leerPDF(
         file
       );
+
 
     const texto =
       resultado.text
@@ -1106,17 +1195,22 @@ async function extraerTexto(
       necesitaOCR
     ) {
 
-      if (status) {
+      if (
+        status
+      ) {
 
         status.textContent =
           "📷 PDF escaneado detectado. Activando OCR...";
+
       }
+
 
       return await ejecutarOCR(
         resultado.pdf,
         resultado.pages,
         status
       );
+
     }
 
 
@@ -1125,6 +1219,7 @@ async function extraerTexto(
     */
 
     return {
+
       text:
         resultado.text,
 
@@ -1136,14 +1231,18 @@ async function extraerTexto(
 
       usedOCR:
         false
+
     };
+
   }
 
 
   throw new Error(
     "Por ahora el modo gratuito soporta PDF y TXT."
   );
+
 }
+
 
 /* =====================================================
    NORMALIZAR
@@ -1156,17 +1255,22 @@ function normalizar(
   return String(
     texto
   )
-  .toLowerCase()
-  .normalize("NFD")
-  .replace(
-    /[\u0300-\u036f]/g,
-    ""
-  )
-  .replace(
-    /\s+/g,
-    " "
-  )
-  .trim();
+
+    .toLowerCase()
+
+    .normalize("NFD")
+
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+
+    .replace(
+      /\s+/g,
+      " "
+    )
+
+    .trim();
 
 }
 
@@ -1182,11 +1286,13 @@ function limpiar(
   return String(
     texto
   )
-  .replace(
-    /\s+/g,
-    " "
-  )
-  .trim();
+
+    .replace(
+      /\s+/g,
+      " "
+    )
+
+    .trim();
 
 }
 
@@ -1195,27 +1301,48 @@ function limpiar(
    ORACIONES
 ===================================================== */
 
+/*
+  IMPORTANTE:
+  También se separa por saltos de línea.
+
+  Esto permite reconocer fichas como:
+
+  Usuarios 293
+  Documentos recibos de sueldo
+  Gb 152
+  Cloud SaaS en AWS
+  Firma electrónica
+  Volumen de documentos 200 por mes
+*/
+
 function obtenerOraciones(
   texto
 ) {
 
-  return limpiar(
+  return String(
     texto
   )
 
-  .split(
-    /(?<=[.!?;])\s+/
-  )
+    .replace(
+      /\r/g,
+      ""
+    )
 
-  .map(
-    frase =>
-      limpiar(frase)
-  )
+    .split(
+      /\n+|(?<=[.!?;])\s+/
+    )
 
-  .filter(
-    frase =>
-      frase.length >= 10
-  );
+    .map(
+      frase =>
+        limpiar(
+          frase
+        )
+    )
+
+    .filter(
+      frase =>
+        frase.length >= 5
+    );
 
 }
 
@@ -1230,7 +1357,9 @@ function recortar(
 ) {
 
   const limpio =
-    limpiar(texto);
+    limpiar(
+      texto
+    );
 
 
   if (
@@ -1293,6 +1422,7 @@ function extraerNumeros(
 
   const encontrados = [];
 
+
   const patrones = [
 
     /\b\d{1,3}(?:[.,]\d{3})+(?:[.,]\d+)?\s*(?:usuarios?|users?|cuentas?)\b/gi,
@@ -1318,9 +1448,14 @@ function extraerNumeros(
     function(regex) {
 
       const matches =
-        texto.match(regex);
+        texto.match(
+          regex
+        );
 
-      if (matches) {
+
+      if (
+        matches
+      ) {
 
         encontrados.push(
           ...matches
@@ -1347,7 +1482,6 @@ function extraerNumeros(
    CATEGORIAS
 ===================================================== */
 
-
 const categorias = {
 
   users: {
@@ -1356,19 +1490,31 @@ const categorias = {
       "Usuarios",
 
     patrones: [
+
       "usuarios concurrentes",
+
       "usuarios totales",
+
       "cantidad de usuarios",
+
       "número de usuarios",
+
       "numero de usuarios",
+
       "usuarios previstos",
+
       "usuarios estimados",
+
       "usuarios esperados",
+
       "cantidad de cuentas",
+
       "cuentas de usuario"
+
     ],
 
-    requiereNumero: true
+    requiereNumero:
+      true
 
   },
 
@@ -1379,21 +1525,35 @@ const categorias = {
       "Documentos",
 
     patrones: [
+
       "tipos documentales",
+
       "clases documentales",
+
       "documentación a gestionar",
+
       "documentacion a gestionar",
+
       "tipos de documentos",
+
       "clases de documentos",
+
       "legajos",
+
       "expedientes",
+
       "contratos",
+
       "comprobantes",
+
       "recibos",
+
       "formularios"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1404,16 +1564,25 @@ const categorias = {
       "Volumen documental",
 
     patrones: [
+
       "volumen documental",
+
       "cantidad de documentos",
+
       "volumen de documentos",
+
       "documentos anuales",
+
       "documentos mensuales",
+
       "crecimiento documental",
+
       "crecimiento de documentos"
+
     ],
 
-    requiereNumero: true
+    requiereNumero:
+      true
 
   },
 
@@ -1424,20 +1593,33 @@ const categorias = {
       "Storage",
 
     patrones: [
+
       "almacenamiento requerido",
+
       "capacidad de almacenamiento",
+
       "espacio de almacenamiento",
+
       "storage requerido",
+
       "storage necesario",
+
       "storage estimado",
+
       "capacidad requerida",
+
       "gb",
+
       "tb",
+
       "gigabytes",
+
       "terabytes"
+
     ],
 
-    requiereNumero: true
+    requiereNumero:
+      true
 
   },
 
@@ -1448,23 +1630,39 @@ const categorias = {
       "OCR / Digitalización",
 
     patrones: [
+
       "se requiere ocr",
+
       "se requiere reconocimiento óptico",
+
       "se requiere reconocimiento optico",
+
       "debe contar con ocr",
+
       "deberá contar con ocr",
+
       "debera contar con ocr",
+
       "debe permitir ocr",
+
       "deberá permitir ocr",
+
       "debera permitir ocr",
+
       "ocr requerido",
+
       "ocr obligatorio",
+
       "digitalización requerida",
+
       "digitalizacion requerida",
+
       "captura de documentos requerida"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1475,21 +1673,35 @@ const categorias = {
       "Full Text",
 
     patrones: [
+
       "búsqueda full text",
+
       "busqueda full text",
+
       "full text requerido",
+
       "fulltext requerido",
+
       "búsqueda de texto completo",
+
       "busqueda de texto completo",
+
       "texto completo requerido",
+
       "indexación requerida",
+
       "indexacion requerida",
+
       "debe permitir búsqueda",
+
       "deberá permitir búsqueda",
+
       "debera permitir busqueda"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1500,24 +1712,41 @@ const categorias = {
       "Workflows",
 
     patrones: [
+
       "workflow requerido",
+
       "workflows requeridos",
+
       "flujo de trabajo requerido",
+
       "flujos de trabajo requeridos",
+
       "circuito requerido",
+
       "circuitos requeridos",
+
       "workflow de aprobación",
+
       "workflow de aprobacion",
+
       "flujo de aprobación",
+
       "flujo de aprobacion",
+
       "circuito de aprobación",
+
       "circuito de aprobacion",
+
       "debe permitir aprobación",
+
       "deberá permitir aprobación",
+
       "debera permitir aprobacion"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1528,20 +1757,33 @@ const categorias = {
       "Firmas",
 
     patrones: [
+
       "firma digital requerida",
+
       "firma electrónica requerida",
+
       "firma electronica requerida",
+
       "firmas requeridas",
+
       "firma digital obligatoria",
+
       "firma electrónica obligatoria",
+
       "firma electronica obligatoria",
+
       "debe permitir firma",
+
       "deberá permitir firma",
+
       "debera permitir firma",
+
       "se requiere firma"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1552,21 +1794,35 @@ const categorias = {
       "Integraciones",
 
     patrones: [
+
       "integración requerida",
+
       "integracion requerida",
+
       "integraciones requeridas",
+
       "debe integrarse",
+
       "deberá integrarse",
+
       "debera integrarse",
+
       "integración con",
+
       "integracion con",
+
       "api requerida",
+
       "web service requerido",
+
       "integración vía api",
+
       "integracion via api"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1577,23 +1833,39 @@ const categorias = {
       "Infraestructura",
 
     patrones: [
+
       "infraestructura requerida",
+
       "infraestructura propuesta",
+
       "infraestructura necesaria",
+
       "cloud requerido",
+
       "cloud requerida",
+
       "on premise requerido",
+
       "on-premise requerido",
+
       "on premise",
+
       "on-premise",
+
       "ambiente cloud",
+
       "ambiente on premise",
+
       "ambiente on-premise",
+
       "servidor requerido",
+
       "servidores requeridos"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1604,20 +1876,33 @@ const categorias = {
       "Seguridad",
 
     patrones: [
+
       "seguridad requerida",
+
       "requisitos de seguridad",
+
       "requerimientos de seguridad",
+
       "autenticación requerida",
+
       "autenticacion requerida",
+
       "autorización requerida",
+
       "autorizacion requerida",
+
       "permisos requeridos",
+
       "auditoría requerida",
+
       "auditoria requerida",
+
       "trazabilidad requerida"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1628,20 +1913,33 @@ const categorias = {
       "Migración",
 
     patrones: [
+
       "migración requerida",
+
       "migracion requerida",
+
       "migración de datos",
+
       "migracion de datos",
+
       "migración documental",
+
       "migracion documental",
+
       "migrar documentos",
+
       "migrar información",
+
       "migrar informacion",
+
       "sistema actual",
+
       "openkm"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1652,16 +1950,23 @@ const categorias = {
       "Soporte",
 
     patrones: [
+
       "soporte requerido",
+
       "soporte incluido",
+
       "nivel de soporte",
+
       "sla requerido",
-      "sla requerido",
+
       "mantenimiento requerido",
+
       "mesa de ayuda requerida"
+
     ],
 
-    requiereNumero: false
+    requiereNumero:
+      false
 
   },
 
@@ -1672,24 +1977,39 @@ const categorias = {
       "Plazos",
 
     patrones: [
+
       "plazo de implementación",
+
       "plazo de implementacion",
+
       "fecha límite",
+
       "fecha limite",
+
       "fecha de entrega",
+
       "cronograma de implementación",
+
       "cronograma de implementacion",
+
       "tiempo de implementación",
+
       "tiempo de implementacion",
+
       "duración del proyecto",
+
       "duracion del proyecto"
+
     ],
 
-    requiereNumero: true
+    requiereNumero:
+      true
 
   }
 
 };
+
+
 /* =====================================================
    EXTRAER DATOS DE CATEGORIA
 ===================================================== */
@@ -1734,7 +2054,9 @@ function extraerCategoria(
             );
 
 
-          if (!coincide) {
+          if (
+            !coincide
+          ) {
 
             return;
 
@@ -1763,10 +2085,6 @@ function extraerCategoria(
           }
 
 
-          /*
-            Evitar frases demasiado genéricas.
-          */
-
           const textoLimpio =
             limpiar(
               oracion
@@ -1774,7 +2092,7 @@ function extraerCategoria(
 
 
           if (
-            textoLimpio.length < 15
+            textoLimpio.length < 5
           ) {
 
             return;
@@ -1856,6 +2174,7 @@ function extraerCategoria(
           ? a.numeros.length
           : 0;
 
+
       const datosB =
         b.numeros
           ? b.numeros.length
@@ -1869,7 +2188,7 @@ function extraerCategoria(
 
 
   /*
-    MÁXIMO 5 RESULTADOS POR CATEGORÍA
+    MAXIMO 5 RESULTADOS POR CATEGORIA
   */
 
   return unicos.slice(
@@ -1878,6 +2197,7 @@ function extraerCategoria(
   );
 
 }
+
 
 /* =====================================================
    OBJETIVO
@@ -1890,16 +2210,27 @@ function detectarObjetivo(
   const patrones = [
 
     "objetivo",
+
     "objetivos",
+
     "objeto",
+
     "finalidad",
+
     "proposito",
+
     "propósito",
+
     "alcance",
+
     "se requiere",
+
     "se solicita",
+
     "la solución busca",
+
     "la solucion busca",
+
     "el proyecto busca"
 
   ];
@@ -1977,12 +2308,19 @@ function detectarCliente(
   const patrones = [
 
     "cliente:",
+
     "cliente",
+
     "organismo:",
+
     "organización:",
+
     "organizacion:",
+
     "empresa:",
+
     "razón social:",
+
     "razon social:"
 
   ];
@@ -2311,7 +2649,9 @@ function crearDatosCotizacion(
   }
 
 
-  if (!partes.length) {
+  if (
+    !partes.length
+  ) {
 
     return (
       "⚠️ No encontré datos suficientes para cotizar."
@@ -2382,7 +2722,9 @@ function crearRiesgos(
   }
 
 
-  if (!riesgos.length) {
+  if (
+    !riesgos.length
+  ) {
 
     return (
       "✅ No se detectaron faltantes críticos mediante reglas básicas."
@@ -2464,7 +2806,9 @@ function crearFaltantes(
   }
 
 
-  if (!faltantes.length) {
+  if (
+    !faltantes.length
+  ) {
 
     return (
       "✅ No detecté faltantes básicos."
@@ -2680,18 +3024,31 @@ function mostrarResultados(
   const campos = [
 
     "users",
+
     "documents",
+
     "volume",
+
     "storage",
+
     "ocr",
+
     "fulltext",
+
     "workflows",
+
     "signatures",
+
     "integrations",
+
     "infrastructure",
+
     "security",
+
     "migration",
+
     "support",
+
     "deadlines"
 
   ];
@@ -2832,7 +3189,8 @@ function crearStats(
     );
 
 
-  stats.innerHTML = "";
+  stats.innerHTML =
+    "";
 
 
   const valores = [
@@ -2892,7 +3250,8 @@ function crearEvidencia(
     );
 
 
-  contenedor.innerHTML = "";
+  contenedor.innerHTML =
+    "";
 
 
   if (
@@ -3044,10 +3403,10 @@ async function() {
   try {
 
     const resultado =
-  await extraerTexto(
-    file,
-    status
-  );
+      await extraerTexto(
+        file,
+        status
+      );
 
 
     textoDocumento =
@@ -3128,30 +3487,30 @@ function escapeHTML(
     texto
   )
 
-  .replace(
-    /&/g,
-    "&amp;"
-  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
-  .replace(
-    /</g,
-    "&lt;"
-  )
+    .replace(
+      /</g,
+      "&lt;"
+    )
 
-  .replace(
-    />/g,
-    "&gt;"
-  )
+    .replace(
+      />/g,
+      "&gt;"
+    )
 
-  .replace(
-    /"/g,
-    "&quot;"
-  )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
 
-  .replace(
-    /'/g,
-    "&#039;"
-  );
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
