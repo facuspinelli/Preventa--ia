@@ -11,7 +11,7 @@
 <style>
 
 /* =========================================================
-   DISEÑO ORIGINAL / AMIGABLE
+   ESTILO PREVENTA IA
 ========================================================= */
 
 * {
@@ -24,6 +24,11 @@ body {
   background: #f5f7fb;
   color: #1f2937;
 }
+
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 header {
   background: linear-gradient(135deg, #111827, #1e3a8a);
@@ -50,87 +55,236 @@ header a:hover {
   opacity: .8;
 }
 
+
+/* =========================================================
+   CONTENEDOR
+========================================================= */
+
 .container {
   max-width: 1400px;
   margin: 30px auto;
   padding: 0 20px;
 }
 
+
+/* =========================================================
+   TARJETAS
+========================================================= */
+
 .card {
   background: white;
-  border-radius: 14px;
-  padding: 22px;
+  border-radius: 16px;
+  padding: 25px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.06);
+  box-shadow: 0 5px 20px rgba(0,0,0,.06);
 }
 
-h2 {
+.card h2 {
   margin-top: 0;
+}
+
+
+/* =========================================================
+   ZONA DE CARGA
+========================================================= */
+
+.upload-zone {
+  border: 2px dashed #93c5fd;
+  background: linear-gradient(
+    135deg,
+    #eff6ff,
+    #f8fbff
+  );
+  border-radius: 16px;
+  padding: 35px 25px;
+  text-align: center;
+  transition: .2s;
+}
+
+.upload-zone:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.upload-icon {
+  font-size: 45px;
+  margin-bottom: 10px;
+}
+
+.upload-zone h3 {
+  margin: 5px 0 8px;
+  font-size: 20px;
+  color: #1e3a8a;
+}
+
+.upload-zone p {
+  color: #6b7280;
+  margin: 8px 0 18px;
+}
+
+.file-button {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .2s;
+}
+
+.file-button:hover {
+  background: #1d4ed8;
+}
+
+#archivo {
+  display: none;
+}
+
+.file-name {
+  margin-top: 15px;
+  padding: 10px 14px;
+  background: white;
+  border-radius: 8px;
+  color: #374151;
+  font-size: 14px;
+  display: none;
+  border: 1px solid #dbeafe;
+}
+
+
+/* =========================================================
+   CONSULTA
+========================================================= */
+
+.query-card {
+  margin-top: 18px;
+}
+
+.query-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.query-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.query-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.query-header span {
+  color: #6b7280;
+  font-size: 13px;
 }
 
 textarea {
   width: 100%;
-  min-height: 100px;
+  min-height: 110px;
   resize: vertical;
   border: 1px solid #d1d5db;
-  border-radius: 10px;
-  padding: 12px;
+  border-radius: 12px;
+  padding: 14px;
   font-size: 15px;
   font-family: Arial, sans-serif;
+  background: #fafafa;
 }
 
 textarea:focus {
   outline: none;
   border-color: #2563eb;
+  background: white;
   box-shadow: 0 0 0 3px rgba(37,99,235,.10);
 }
 
-input[type="file"] {
+.query-examples {
   margin-top: 10px;
-  padding: 8px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   BOTÓN
+========================================================= */
+
+.analyze-container {
+  text-align: center;
+  margin-top: 20px;
 }
 
 button {
-  background: #2563eb;
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
   border: none;
   color: white;
-  padding: 12px 18px;
-  border-radius: 9px;
+  padding: 13px 25px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 14px;
-  margin-top: 12px;
+  font-size: 15px;
   font-weight: 600;
+  box-shadow: 0 4px 10px rgba(37,99,235,.20);
+  transition: .2s;
 }
 
 button:hover {
-  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(37,99,235,.25);
 }
 
 button:disabled {
   opacity: .6;
   cursor: wait;
+  transform: none;
 }
 
+
+/* =========================================================
+   STATUS
+========================================================= */
+
 .status {
-  margin-top: 15px;
-  padding: 12px;
-  border-radius: 8px;
+  margin-top: 18px;
+  padding: 12px 15px;
+  border-radius: 9px;
   background: #eff6ff;
   color: #1e40af;
   display: none;
+  text-align: center;
+  font-size: 14px;
 }
+
+
+/* =========================================================
+   RESULTADOS
+========================================================= */
 
 .result-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns:
+    repeat(auto-fit, minmax(280px, 1fr));
   gap: 15px;
 }
 
 .result-box {
   background: #f9fafb;
   border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 12px;
+  padding: 16px;
   display: none;
 }
 
@@ -145,20 +299,30 @@ button:disabled {
 
 .result-box p {
   white-space: pre-wrap;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
+
+/* =========================================================
+   EVIDENCIA
+========================================================= */
+
 .evidence {
-  margin-top: 20px;
+  margin-top: 25px;
+}
+
+.evidence-title {
+  margin-top: 25px;
+  margin-bottom: 12px;
 }
 
 .evidence-item {
   background: #f9fafb;
   border-left: 4px solid #2563eb;
-  padding: 12px;
+  padding: 13px;
   margin-bottom: 10px;
-  border-radius: 6px;
-  line-height: 1.45;
+  border-radius: 7px;
+  line-height: 1.5;
 }
 
 .evidence-item strong {
@@ -166,24 +330,50 @@ button:disabled {
   margin-bottom: 5px;
 }
 
+.query-result {
+  background: #eff6ff;
+  border-left-color: #2563eb;
+}
+
+.general-result {
+  background: #f9fafb;
+  border-left-color: #9ca3af;
+}
+
 .small {
   font-size: 12px;
   color: #6b7280;
 }
 
-.hidden {
-  display: none !important;
-}
 
-.file-name {
-  margin-top: 8px;
-  font-size: 13px;
-  color: #6b7280;
-}
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-.section-title {
-  margin-top: 25px;
-  margin-bottom: 12px;
+@media (
+  max-width: 700px
+) {
+
+  header {
+    padding: 16px;
+  }
+
+  header h1 {
+    font-size: 18px;
+  }
+
+  header a {
+    margin-left: 10px;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
 }
 
 </style>
@@ -210,7 +400,7 @@ button:disabled {
 
 
   <!-- =====================================================
-       CARGA DEL DOCUMENTO
+       DOCUMENTO
   ====================================================== -->
 
   <div class="card">
@@ -218,33 +408,113 @@ button:disabled {
     <h2>📄 Análisis de Documentos</h2>
 
     <p>
-      Cargá un documento y realizá una consulta específica.
-      PREVENTA IA buscará la información dentro de todo el documento
-      y además realizará un análisis preventivo general.
+      Cargá un documento para analizarlo completamente
+      y obtener información útil para Preventa.
     </p>
 
-    <input
-      type="file"
-      id="archivo"
-      accept=".pdf,.txt"
-    >
 
     <div
-      id="fileName"
-      class="file-name"
-    ></div>
-
-    <textarea
-      id="consulta"
-      placeholder="Ejemplo: buscame usuarios, storage, versión cloud, firmas, migración, nombres, fechas, etc."
-    ></textarea>
-
-    <button
-      id="btnAnalizar"
-      onclick="analyzeDocument()"
+      class="upload-zone"
+      id="uploadZone"
     >
-      🔎 Analizar documento
-    </button>
+
+      <div class="upload-icon">
+        📁
+      </div>
+
+      <h3>
+        Cargá tu documento
+      </h3>
+
+      <p>
+        PDF o TXT · Podés cargar documentos extensos,
+        licitaciones y propuestas técnicas
+      </p>
+
+      <label
+        for="archivo"
+        class="file-button"
+      >
+        📎 Seleccionar documento
+      </label>
+
+      <input
+        type="file"
+        id="archivo"
+        accept=".pdf,.txt"
+      >
+
+      <div
+        id="fileName"
+        class="file-name"
+      ></div>
+
+    </div>
+
+
+    <!-- ===================================================
+         CONSULTA
+    ==================================================== -->
+
+    <div class="query-card">
+
+      <div class="query-header">
+
+        <div class="query-icon">
+          🔎
+        </div>
+
+        <div>
+
+          <h3>
+            ¿Qué querés buscar?
+          </h3>
+
+          <span>
+            Esta consulta tendrá prioridad sobre el análisis general.
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <textarea
+        id="consulta"
+        placeholder="Ejemplo: buscame usuarios, storage, versión cloud, firmas, migración, nombres, fechas, valores, etc."
+      ></textarea>
+
+
+      <div class="query-examples">
+
+        💡 Podés preguntar libremente:
+        <strong>
+          "¿Cuántos usuarios tiene?",
+          "¿Qué storage necesitan?",
+          "¿Hay integración con SAP?",
+          "¿Desde qué sistema migran?"
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         BOTÓN
+    ==================================================== -->
+
+    <div class="analyze-container">
+
+      <button
+        id="btnAnalizar"
+        onclick="analyzeDocument()"
+      >
+        🔎 Analizar documento
+      </button>
+
+    </div>
+
 
     <div
       id="status"
@@ -260,7 +530,9 @@ button:disabled {
 
   <div class="card">
 
-    <h2>📊 Resultado del análisis</h2>
+    <h2>
+      📊 Resultado del análisis
+    </h2>
 
     <div class="result-grid">
 
@@ -481,12 +753,15 @@ let paginasDocumento = [];
 
 
 /* =========================================================
-   MOSTRAR ARCHIVO
+   ARCHIVO
 ========================================================= */
 
 document
   .getElementById("archivo")
-  .addEventListener("change", showFile);
+  .addEventListener(
+    "change",
+    showFile
+  );
 
 
 function showFile(event) {
@@ -494,28 +769,43 @@ function showFile(event) {
   const file =
     event.target.files[0];
 
-  if (!file) {
-    return;
-  }
-
-  documentoActual = file;
 
   const fileName =
-    document.getElementById("fileName");
+    document.getElementById(
+      "fileName"
+    );
 
-  if (fileName) {
+
+  if (!file) {
+
+    fileName.style.display =
+      "none";
 
     fileName.textContent =
-      "📎 Archivo seleccionado: " +
-      file.name;
+      "";
+
+    return;
 
   }
+
+
+  documentoActual =
+    file;
+
+
+  fileName.style.display =
+    "block";
+
+
+  fileName.textContent =
+    "📎 " +
+    file.name;
 
 }
 
 
 /* =========================================================
-   LEER TXT
+   TXT
 ========================================================= */
 
 async function leerTXT(file) {
@@ -523,25 +813,43 @@ async function leerTXT(file) {
   const texto =
     await file.text();
 
+
   return {
 
-    text: texto,
+    text:
+      texto,
 
     pages: [
+
       {
-        page: 1,
-        text: texto,
-        nativeText: texto,
-        ocrText: "",
-        ocr: false
+
+        page:
+          1,
+
+        text:
+          texto,
+
+        nativeText:
+          texto,
+
+        ocrText:
+          "",
+
+        ocr:
+          false
+
       }
+
     ],
 
-    numPages: 1,
+    numPages:
+      1,
 
-    usedOCR: false,
+    usedOCR:
+      false,
 
-    ocrPages: 0
+    ocrPages:
+      0
 
   };
 
@@ -549,91 +857,141 @@ async function leerTXT(file) {
 
 
 /* =========================================================
-   RECONSTRUIR TEXTO PDF
+   RECONSTRUIR PDF
 ========================================================= */
 
 function reconstruirTextoPDF(items) {
 
-  if (!items || items.length === 0) {
+  if (
+    !items ||
+    items.length === 0
+  ) {
+
     return "";
+
   }
 
 
   const elementos =
     items
-      .filter(item =>
-        item &&
-        typeof item.str === "string"
+
+      .filter(
+        item =>
+          item &&
+          typeof item.str ===
+          "string"
       )
-      .map(item => {
 
-        const transform =
-          item.transform || [];
+      .map(
+        item => {
 
-        return {
+          const transform =
+            item.transform ||
+            [];
 
-          texto: item.str,
 
-          x:
-            Number(transform[4] || 0),
+          return {
 
-          y:
-            Number(transform[5] || 0),
+            texto:
+              item.str,
 
-          ancho:
-            Number(item.width || 0)
+            x:
+              Number(
+                transform[4] ||
+                0
+              ),
 
-        };
+            y:
+              Number(
+                transform[5] ||
+                0
+              ),
 
-      })
-      .filter(item =>
-        item.texto.trim() !== ""
+            ancho:
+              Number(
+                item.width ||
+                0
+              )
+
+          };
+
+        }
+      )
+
+      .filter(
+        item =>
+          item.texto.trim() !== ""
       );
 
 
-  if (elementos.length === 0) {
+  if (
+    elementos.length === 0
+  ) {
+
     return "";
+
   }
 
 
   const lineas = [];
 
 
-  elementos.forEach(item => {
+  elementos.forEach(
+    item => {
 
-    let lineaEncontrada = null;
+      let lineaEncontrada =
+        null;
 
 
-    for (const linea of lineas) {
-
-      if (
-        Math.abs(linea.y - item.y) < 4
+      for (
+        const linea of lineas
       ) {
 
-        lineaEncontrada = linea;
+        if (
+          Math.abs(
+            linea.y -
+            item.y
+          ) < 4
+        ) {
 
-        break;
+          lineaEncontrada =
+            linea;
+
+          break;
+
+        }
 
       }
 
+
+      if (
+        !lineaEncontrada
+      ) {
+
+        lineaEncontrada = {
+
+          y:
+            item.y,
+
+          items:
+            []
+
+        };
+
+
+        lineas.push(
+          lineaEncontrada
+        );
+
+      }
+
+
+      lineaEncontrada.items.push(
+        item
+      );
+
     }
-
-
-    if (!lineaEncontrada) {
-
-      lineaEncontrada = {
-        y: item.y,
-        items: []
-      };
-
-      lineas.push(lineaEncontrada);
-
-    }
-
-
-    lineaEncontrada.items.push(item);
-
-  });
+  );
 
 
   lineas.sort(
@@ -645,93 +1003,109 @@ function reconstruirTextoPDF(items) {
   const resultado = [];
 
 
-  lineas.forEach(linea => {
+  lineas.forEach(
+    linea => {
 
-    linea.items.sort(
-      (a, b) =>
-        a.x - b.x
-    );
-
-
-    let textoLinea = "";
-
-
-    linea.items.forEach(
-      (item, index) => {
-
-        if (index === 0) {
-
-          textoLinea =
-            item.texto;
-
-          return;
-
-        }
-
-
-        const anterior =
-          linea.items[index - 1];
-
-
-        const finalAnterior =
-          anterior.x +
-          anterior.ancho;
-
-
-        const espacio =
-          item.x -
-          finalAnterior;
-
-
-        /*
-         * Agregamos espacio únicamente
-         * cuando existe separación física
-         * entre dos fragmentos.
-         */
-
-        if (espacio > 2) {
-
-          textoLinea += " ";
-
-        }
-
-
-        textoLinea += item.texto;
-
-      }
-    );
-
-
-    textoLinea =
-      textoLinea
-        .replace(/\s+/g, " ")
-        .trim();
-
-
-    if (textoLinea) {
-
-      resultado.push(
-        textoLinea
+      linea.items.sort(
+        (a, b) =>
+          a.x - b.x
       );
 
+
+      let textoLinea =
+        "";
+
+
+      linea.items.forEach(
+        (item, index) => {
+
+          if (
+            index === 0
+          ) {
+
+            textoLinea =
+              item.texto;
+
+            return;
+
+          }
+
+
+          const anterior =
+            linea.items[
+              index - 1
+            ];
+
+
+          const finalAnterior =
+            anterior.x +
+            anterior.ancho;
+
+
+          const espacio =
+            item.x -
+            finalAnterior;
+
+
+          if (
+            espacio > 2
+          ) {
+
+            textoLinea +=
+              " ";
+
+          }
+
+
+          textoLinea +=
+            item.texto;
+
+        }
+      );
+
+
+      textoLinea =
+        textoLinea
+          .replace(
+            /\s+/g,
+            " "
+          )
+          .trim();
+
+
+      if (
+        textoLinea
+      ) {
+
+        resultado.push(
+          textoLinea
+        );
+
+      }
+
     }
+  );
 
-  });
 
-
-  return resultado.join("\n");
+  return resultado.join(
+    "\n"
+  );
 
 }
 
 
 /* =========================================================
-   DETECTAR TEXTO NATIVO ROTO
+   DETECTAR TEXTO ROTO
 ========================================================= */
 
-function textoPDFPareceRoto(texto) {
+function textoPDFPareceRoto(
+  texto
+) {
 
   const limpio =
-    String(texto || "").trim();
+    String(
+      texto || ""
+    ).trim();
 
 
   if (!limpio) {
@@ -739,76 +1113,80 @@ function textoPDFPareceRoto(texto) {
   }
 
 
-  /*
-   * Caso típico:
-   *
-   * C
-   * antidad
-   *
-   * de
-   *
-   * U
-   * suarios
-   *
-   * Si sucede demasiado,
-   * preferimos OCR.
-   */
-
   const lineas =
-    limpio.split("\n");
+    limpio.split(
+      "\n"
+    );
 
 
-  let raras = 0;
-  let totales = 0;
+  let lineasRaras =
+    0;
 
 
-  lineas.forEach(linea => {
-
-    const valor =
-      linea.trim();
+  let lineasTotales =
+    0;
 
 
-    if (!valor) {
-      return;
-    }
+  lineas.forEach(
+    linea => {
+
+      const valor =
+        linea.trim();
 
 
-    totales++;
+      if (!valor) {
+        return;
+      }
 
 
-    const partes =
-      valor.split(/\s+/);
+      lineasTotales++;
 
 
-    if (partes.length >= 3) {
-
-      const cortas =
-        partes.filter(
-          parte =>
-            parte.length <= 2
-        ).length;
+      const partes =
+        valor.split(
+          /\s+/
+        );
 
 
       if (
-        cortas / partes.length >= .6
+        partes.length >= 3
       ) {
 
-        raras++;
+        const partesCortas =
+          partes.filter(
+            parte =>
+              parte.length <= 2
+          ).length;
+
+
+        if (
+          partesCortas /
+          partes.length >=
+          .6
+        ) {
+
+          lineasRaras++;
+
+        }
 
       }
 
     }
+  );
 
-  });
 
+  if (
+    lineasTotales === 0
+  ) {
 
-  if (totales === 0) {
     return true;
+
   }
 
 
   return (
-    raras / totales
+    lineasRaras /
+    lineasTotales
   ) > .25;
 
 }
@@ -826,18 +1204,22 @@ async function leerPDF(file) {
 
   const pdf =
     await getDocument({
-      data: arrayBuffer
+      data:
+        arrayBuffer
     }).promise;
 
 
   const paginas = [];
 
-  let textoCompleto = "";
+
+  let textoCompleto =
+    "";
 
 
   for (
     let numeroPagina = 1;
-    numeroPagina <= pdf.numPages;
+    numeroPagina <=
+    pdf.numPages;
     numeroPagina++
   ) {
 
@@ -886,7 +1268,9 @@ async function leerPDF(file) {
 
   return {
 
-    pdf,
+    pdf:
+
+      pdf,
 
     text:
       textoCompleto,
@@ -909,7 +1293,7 @@ async function leerPDF(file) {
 
 
 /* =========================================================
-   OCR DE UNA PÁGINA
+   OCR
 ========================================================= */
 
 async function ocrPaginaPDF(
@@ -926,7 +1310,8 @@ async function ocrPaginaPDF(
 
   const viewport =
     pagina.getViewport({
-      scale: 2
+      scale:
+        2
     });
 
 
@@ -946,6 +1331,7 @@ async function ocrPaginaPDF(
     Math.ceil(
       viewport.width
     );
+
 
   canvas.height =
     Math.ceil(
@@ -988,8 +1374,12 @@ async function ocrPaginaPDF(
         logger:
           info => {
 
-            if (!status) {
+            if (
+              !status
+            ) {
+
               return;
+
             }
 
 
@@ -1003,7 +1393,8 @@ async function ocrPaginaPDF(
                   (
                     info.progress ||
                     0
-                  ) * 100
+                  ) *
+                  100
                 );
 
 
@@ -1037,19 +1428,32 @@ async function ocrPaginaPDF(
    NORMALIZAR OCR
 ========================================================= */
 
-function normalizarOCR(texto) {
+function normalizarOCR(
+  texto
+) {
 
-  return String(texto || "")
-    .replace(/\r/g, "")
-    .replace(/[ \t]+/g, " ")
-    .replace(/\n{3,}/g, "\n\n")
+  return String(
+    texto || ""
+  )
+    .replace(
+      /\r/g,
+      ""
+    )
+    .replace(
+      /[ \t]+/g,
+      " "
+    )
+    .replace(
+      /\n{3,}/g,
+      "\n\n"
+    )
     .trim();
 
 }
 
 
 /* =========================================================
-   QUITAR DUPLICADOS DE TEXTO
+   QUITAR DUPLICADOS
 ========================================================= */
 
 function textoSinDuplicados(
@@ -1057,10 +1461,13 @@ function textoSinDuplicados(
 ) {
 
   const lineas =
-    String(texto || "")
+    String(
+      texto || ""
+    )
       .split("\n")
-      .map(linea =>
-        linea.trim()
+      .map(
+        linea =>
+          linea.trim()
       )
       .filter(Boolean);
 
@@ -1072,36 +1479,53 @@ function textoSinDuplicados(
   const salida = [];
 
 
-  lineas.forEach(linea => {
+  lineas.forEach(
+    linea => {
 
-    const clave =
-      normalizar(linea);
+      const clave =
+        normalizar(
+          linea
+        );
 
 
-    if (!clave) {
-      return;
+      if (!clave) {
+        return;
+      }
+
+
+      if (
+        vistos.has(
+          clave
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      vistos.add(
+        clave
+      );
+
+
+      salida.push(
+        linea
+      );
+
     }
+  );
 
 
-    if (vistos.has(clave)) {
-      return;
-    }
-
-
-    vistos.add(clave);
-
-    salida.push(linea);
-
-  });
-
-
-  return salida.join("\n");
+  return salida.join(
+    "\n"
+  );
 
 }
 
 
 /* =========================================================
-   OCR COMPLETO
+   EJECUTAR OCR
 ========================================================= */
 
 async function ejecutarOCR(
@@ -1112,11 +1536,14 @@ async function ejecutarOCR(
   const paginas =
     datosPDF.pages;
 
+
   const pdf =
     datosPDF.pdf;
 
+
   let textoCompleto =
     "";
+
 
   let paginasOCR =
     0;
@@ -1124,7 +1551,8 @@ async function ejecutarOCR(
 
   for (
     let numeroPagina = 1;
-    numeroPagina <= pdf.numPages;
+    numeroPagina <=
+    pdf.numPages;
     numeroPagina++
   ) {
 
@@ -1141,14 +1569,6 @@ async function ejecutarOCR(
       );
 
 
-    /*
-     * OCR SIEMPRE.
-     *
-     * Esto permite detectar información
-     * incluso cuando el PDF tiene una capa
-     * de texto defectuosa.
-     */
-
     const textoOCR =
       normalizarOCR(
         await ocrPaginaPDF(
@@ -1159,8 +1579,12 @@ async function ejecutarOCR(
       );
 
 
-    if (textoOCR) {
+    if (
+      textoOCR
+    ) {
+
       paginasOCR++;
+
     }
 
 
@@ -1170,21 +1594,12 @@ async function ejecutarOCR(
       );
 
 
-    /*
-     * Si el texto nativo está roto,
-     * OCR es la fuente principal.
-     *
-     * Si el nativo está bien,
-     * usamos el nativo para mostrar
-     * y conservamos OCR para búsqueda.
-     *
-     * NUNCA mostramos ambos juntos.
-     */
-
     let textoPrincipal;
 
 
-    if (nativoRoto) {
+    if (
+      nativoRoto
+    ) {
 
       textoPrincipal =
         textoOCR ||
@@ -1203,24 +1618,20 @@ async function ejecutarOCR(
     pagina.text =
       textoPrincipal;
 
+
     pagina.nativeText =
       textoNativo;
 
+
     pagina.ocrText =
       textoOCR;
+
 
     pagina.ocr =
       Boolean(
         textoOCR
       );
 
-
-    /*
-     * Para el texto general usamos
-     * la fuente principal solamente.
-     *
-     * Así evitamos duplicados.
-     */
 
     textoCompleto +=
       "\n" +
@@ -1265,7 +1676,8 @@ async function extraerTexto(
 
 
   if (
-    extension === "txt"
+    extension ===
+    "txt"
   ) {
 
     return await leerTXT(
@@ -1276,7 +1688,8 @@ async function extraerTexto(
 
 
   if (
-    extension === "pdf"
+    extension ===
+    "pdf"
   ) {
 
     const datos =
@@ -1304,9 +1717,13 @@ async function extraerTexto(
    NORMALIZAR
 ========================================================= */
 
-function normalizar(texto) {
+function normalizar(
+  texto
+) {
 
-  return String(texto || "")
+  return String(
+    texto || ""
+  )
     .toLowerCase()
     .normalize("NFD")
     .replace(
@@ -1323,23 +1740,7 @@ function normalizar(texto) {
 
 
 /* =========================================================
-   LIMPIAR
-========================================================= */
-
-function limpiar(texto) {
-
-  return String(texto || "")
-    .replace(
-      /\s+/g,
-      " "
-    )
-    .trim();
-
-}
-
-
-/* =========================================================
-   CONCEPTOS PREVENTA
+   CONCEPTOS
 ========================================================= */
 
 const conceptosPreventa = {
@@ -1573,7 +1974,9 @@ function interpretarBusqueda(
         );
 
 
-      if (encontrado) {
+      if (
+        encontrado
+      ) {
 
         categorias.push(
           categoria
@@ -1602,7 +2005,7 @@ function interpretarBusqueda(
 
 
 /* =========================================================
-   EXTRAER CONTEXTO
+   CONTEXTO
 ========================================================= */
 
 function extraerContexto(
@@ -1613,7 +2016,9 @@ function extraerContexto(
 ) {
 
   const original =
-    String(texto || "");
+    String(
+      texto || ""
+    );
 
 
   const normal =
@@ -1634,8 +2039,12 @@ function extraerContexto(
     );
 
 
-  if (posicion === -1) {
+  if (
+    posicion === -1
+  ) {
+
     return null;
+
   }
 
 
@@ -1654,11 +2063,6 @@ function extraerContexto(
       270
     );
 
-
-  /*
-   * Usamos el texto original para
-   * conservar acentos y formato.
-   */
 
   return {
 
@@ -1683,7 +2087,7 @@ function extraerContexto(
 
 
 /* =========================================================
-   OBTENER FUENTES DE UNA PÁGINA
+   FUENTES
 ========================================================= */
 
 function obtenerFuentesPagina(
@@ -1733,11 +2137,6 @@ function obtenerFuentesPagina(
   }
 
 
-  /*
-   * Si por algún motivo no existen
-   * las fuentes anteriores usamos text.
-   */
-
   if (
     fuentes.length === 0 &&
     pagina.text
@@ -1779,7 +2178,9 @@ function buscarConceptos(
   categorias.forEach(
     categoria => {
 
-      resultados[categoria] = [];
+      resultados[
+        categoria
+      ] = [];
 
 
       const terminos =
@@ -1842,37 +2243,43 @@ function buscarConceptos(
         new Set();
 
 
-      resultados[categoria] =
-        resultados[categoria]
-          .filter(item => {
+      resultados[
+        categoria
+      ] =
+        resultados[
+          categoria
+        ]
+          .filter(
+            item => {
 
-            const clave =
-              item.page +
-              "|" +
-              normalizar(
-                item.text
+              const clave =
+                item.page +
+                "|" +
+                normalizar(
+                  item.text
+                );
+
+
+              if (
+                vistos.has(
+                  clave
+                )
+              ) {
+
+                return false;
+
+              }
+
+
+              vistos.add(
+                clave
               );
 
 
-            if (
-              vistos.has(
-                clave
-              )
-            ) {
-
-              return false;
+              return true;
 
             }
-
-
-            vistos.add(
-              clave
-            );
-
-
-            return true;
-
-          })
+          )
           .slice(
             0,
             8
@@ -1888,7 +2295,7 @@ function buscarConceptos(
 
 
 /* =========================================================
-   EXTRACCIÓN DIRECTA DE VALORES
+   EXTRAER DIRECTOS
 ========================================================= */
 
 function extraerDirecto(
@@ -2085,7 +2492,7 @@ function extraerDirecto(
 
 
 /* =========================================================
-   FORMATEAR CATEGORÍA
+   FORMATEAR
 ========================================================= */
 
 function formatearCategoria(
@@ -2151,42 +2558,7 @@ function formatearCategoria(
 
 
 /* =========================================================
-   RECORTAR
-========================================================= */
-
-function recortar(
-  texto,
-  max = 900
-) {
-
-  const valor =
-    String(
-      texto || ""
-    );
-
-
-  if (
-    valor.length <= max
-  ) {
-
-    return valor;
-
-  }
-
-
-  return (
-    valor.substring(
-      0,
-      max
-    ) +
-    "..."
-  );
-
-}
-
-
-/* =========================================================
-   ESCAPAR HTML
+   ESCAPE
 ========================================================= */
 
 function escapeHTML(
@@ -2221,6 +2593,42 @@ function escapeHTML(
 
 
 /* =========================================================
+   RECORTAR
+========================================================= */
+
+function recortar(
+  texto,
+  max = 900
+) {
+
+  const valor =
+    String(
+      texto || ""
+    );
+
+
+  if (
+    valor.length <=
+    max
+  ) {
+
+    return valor;
+
+  }
+
+
+  return (
+    valor.substring(
+      0,
+      max
+    ) +
+    "..."
+  );
+
+}
+
+
+/* =========================================================
    MOSTRAR RESULTADOS
 ========================================================= */
 
@@ -2228,6 +2636,16 @@ function mostrarResultados(
   resultados,
   directos
 ) {
+
+  /*
+   * IMPORTANTE:
+   *
+   * Acá NO usamos las categorías
+   * de la consulta.
+   *
+   * Mostramos TODAS las categorías
+   * encontradas en el documento.
+   */
 
   const categorias =
     Object.keys(
@@ -2329,11 +2747,21 @@ function mostrarResultados(
 
 
   if (
-    texto.includes("pendiente") ||
-    texto.includes("no definido") ||
-    texto.includes("a confirmar") ||
-    texto.includes("por definir") ||
-    texto.includes("debe confirmar")
+    texto.includes(
+      "pendiente"
+    ) ||
+    texto.includes(
+      "no definido"
+    ) ||
+    texto.includes(
+      "a confirmar"
+    ) ||
+    texto.includes(
+      "por definir"
+    ) ||
+    texto.includes(
+      "debe confirmar"
+    )
   ) {
 
     riesgos.push(
@@ -2344,8 +2772,12 @@ function mostrarResultados(
 
 
   if (
-    texto.includes("migracion") ||
-    texto.includes("migrar")
+    texto.includes(
+      "migracion"
+    ) ||
+    texto.includes(
+      "migrar"
+    )
   ) {
 
     riesgos.push(
@@ -2356,7 +2788,9 @@ function mostrarResultados(
 
 
   if (
-    texto.includes("integracion")
+    texto.includes(
+      "integracion"
+    )
   ) {
 
     riesgos.push(
@@ -2367,8 +2801,12 @@ function mostrarResultados(
 
 
   if (
-    texto.includes("on premise") ||
-    texto.includes("on-premise")
+    texto.includes(
+      "on premise"
+    ) ||
+    texto.includes(
+      "on-premise"
+    )
   ) {
 
     riesgos.push(
@@ -2379,7 +2817,9 @@ function mostrarResultados(
 
 
   if (
-    texto.includes("cloud")
+    texto.includes(
+      "cloud"
+    )
   ) {
 
     riesgos.push(
@@ -2441,7 +2881,7 @@ function mostrarResultados(
 
 
   /* =======================================================
-     INFORMACIÓN FALTANTE
+     FALTANTES
   ====================================================== */
 
   const faltantes = [];
@@ -2535,44 +2975,45 @@ function mostrarResultados(
    PALABRAS VACÍAS
 ========================================================= */
 
-const palabrasVacias = new Set([
+const palabrasVacias =
+  new Set([
 
-  "buscame",
-  "buscar",
-  "busca",
-  "dame",
-  "decime",
-  "decir",
-  "quiero",
-  "necesito",
-  "necesitamos",
-  "informacion",
-  "información",
-  "sobre",
-  "del",
-  "de",
-  "la",
-  "el",
-  "los",
-  "las",
-  "un",
-  "una",
-  "que",
-  "qué",
-  "hay",
-  "me",
-  "por",
-  "para",
-  "en",
-  "con",
-  "y",
-  "o"
+    "buscame",
+    "buscar",
+    "busca",
+    "dame",
+    "decime",
+    "decir",
+    "quiero",
+    "necesito",
+    "necesitamos",
+    "informacion",
+    "información",
+    "sobre",
+    "del",
+    "de",
+    "la",
+    "el",
+    "los",
+    "las",
+    "un",
+    "una",
+    "que",
+    "qué",
+    "hay",
+    "me",
+    "por",
+    "para",
+    "en",
+    "con",
+    "y",
+    "o"
 
-]);
+  ]);
 
 
 /* =========================================================
-   BUSCAR TEXTO LIBRE
+   BÚSQUEDA LIBRE
 ========================================================= */
 
 function buscarTextoLibre(
@@ -2599,10 +3040,13 @@ function buscarTextoLibre(
 
   const palabras =
     consultaNormal
-      .split(/\s+/)
+      .split(
+        /\s+/
+      )
       .filter(
         palabra =>
-          palabra.length >= 3
+          palabra.length >=
+          3
       )
       .filter(
         palabra =>
@@ -2639,9 +3083,7 @@ function buscarTextoLibre(
 
 
           /*
-           * =================================================
-           * 1. CONSULTA COMPLETA
-           * =================================================
+           * FRASE COMPLETA
            */
 
           if (
@@ -2659,7 +3101,9 @@ function buscarTextoLibre(
               );
 
 
-            if (contexto) {
+            if (
+              contexto
+            ) {
 
               resultados.push({
 
@@ -2683,9 +3127,7 @@ function buscarTextoLibre(
 
 
           /*
-           * =================================================
-           * 2. PALABRAS IMPORTANTES
-           * =================================================
+           * PALABRAS IMPORTANTES
            */
 
           palabras.forEach(
@@ -2706,7 +3148,9 @@ function buscarTextoLibre(
                   );
 
 
-                if (contexto) {
+                if (
+                  contexto
+                ) {
 
                   resultados.push({
 
@@ -2738,22 +3182,18 @@ function buscarTextoLibre(
   );
 
 
-  /*
-   * =======================================================
-   * DEDUPLICAR
-   * =======================================================
-   */
-
   const vistos =
     new Set();
 
 
   return resultados
+
     .sort(
       (a, b) =>
         b.score -
         a.score
     )
+
     .filter(
       item => {
 
@@ -2785,6 +3225,7 @@ function buscarTextoLibre(
 
       }
     )
+
     .slice(
       0,
       15
@@ -2794,7 +3235,7 @@ function buscarTextoLibre(
 
 
 /* =========================================================
-   MOSTRAR CONSULTA ESPECÍFICA
+   MOSTRAR CONSULTA
 ========================================================= */
 
 function mostrarConsultaEspecifica(
@@ -2813,12 +3254,13 @@ function mostrarConsultaEspecifica(
   }
 
 
-  let html = "";
+  let html =
+    "";
 
 
   /*
    * =======================================================
-   * CONSULTA DEL USUARIO
+   * PRIORIDAD: CONSULTA DEL USUARIO
    * =======================================================
    */
 
@@ -2828,15 +3270,21 @@ function mostrarConsultaEspecifica(
   ) {
 
     html +=
-      "<h3>🔎 Consulta específica</h3>";
+      "<h3 class='evidence-title'>" +
+      "🔎 Resultado de tu consulta" +
+      "</h3>";
 
 
     html +=
-      "<p><strong>Consulta:</strong> " +
+      "<div class='evidence-item query-result'>" +
+
+      "<strong>Buscaste:</strong>" +
+
       escapeHTML(
         pregunta
       ) +
-      "</p>";
+
+      "</div>";
 
 
     if (
@@ -2844,7 +3292,7 @@ function mostrarConsultaEspecifica(
     ) {
 
       html +=
-        "<div class='evidence-item'>" +
+        "<div class='evidence-item query-result'>" +
         "No encontré coincidencias claras en el documento." +
         "</div>";
 
@@ -2855,9 +3303,9 @@ function mostrarConsultaEspecifica(
         item => {
 
           html +=
-            "<div class='evidence-item'>" +
+            "<div class='evidence-item query-result'>" +
 
-            "<strong>Página " +
+            "<strong>📄 Página " +
             item.page +
             " — " +
             escapeHTML(
@@ -2868,7 +3316,7 @@ function mostrarConsultaEspecifica(
             escapeHTML(
               recortar(
                 item.text,
-                700
+                750
               )
             ) +
 
@@ -2884,17 +3332,33 @@ function mostrarConsultaEspecifica(
 
   /*
    * =======================================================
-   * ANÁLISIS GENERAL
+   * DESPUÉS: ANÁLISIS GENERAL
    * =======================================================
    */
 
   html +=
-    "<h3 class='section-title'>📋 Análisis preventivo general</h3>";
+    "<h3 class='evidence-title'>" +
+    "📋 Análisis general de Preventa" +
+    "</h3>";
 
 
   html +=
-    "<div class='evidence-item'>" +
-    "Además de la consulta específica, se analizaron automáticamente los principales aspectos técnicos y comerciales del documento." +
+    "<div class='evidence-item general-result'>" +
+
+    "El documento fue analizado de forma completa. " +
+
+    "Además de responder tu consulta prioritaria, " +
+
+    "se revisaron los principales aspectos relevantes " +
+
+    "para Preventa: usuarios, documentos, volumen, " +
+
+    "storage, OCR, búsquedas, workflows, firmas, " +
+
+    "integraciones, infraestructura, seguridad, " +
+
+    "migración, soporte, plazos y costos." +
+
     "</div>";
 
 
@@ -2949,10 +3413,6 @@ async function analyzeDocument() {
   }
 
 
-  /*
-   * Evitamos dos análisis simultáneos.
-   */
-
   if (boton) {
 
     boton.disabled =
@@ -2973,7 +3433,7 @@ async function analyzeDocument() {
 
     /*
      * =====================================================
-     * 1. EXTRAER TEXTO
+     * 1. EXTRAER DOCUMENTO COMPLETO
      * =====================================================
      */
 
@@ -3006,9 +3466,7 @@ async function analyzeDocument() {
 
     /*
      * =====================================================
-     * 2. CONSULTA ESPECÍFICA
-     *
-     * SIEMPRE SE EJECUTA.
+     * 2. CONSULTA PRIORITARIA
      * =====================================================
      */
 
@@ -3021,20 +3479,25 @@ async function analyzeDocument() {
 
     /*
      * =====================================================
-     * 3. ANÁLISIS GENERAL PREVENTA
+     * 3. CAMBIO IMPORTANTE:
+     *
+     * EL ANÁLISIS GENERAL SIEMPRE REVISA
+     * TODAS LAS CATEGORÍAS.
+     *
+     * La pregunta NO limita el análisis.
      * =====================================================
      */
 
-    const categorias =
-      interpretarBusqueda(
-        pregunta
+    const todasLasCategorias =
+      Object.keys(
+        conceptosPreventa
       );
 
 
     const resultados =
       buscarConceptos(
         paginasDocumento,
-        categorias
+        todasLasCategorias
       );
 
 
@@ -3047,9 +3510,7 @@ async function analyzeDocument() {
     const directos = {};
 
 
-    Object.keys(
-      conceptosPreventa
-    ).forEach(
+    todasLasCategorias.forEach(
       categoria => {
 
         directos[
@@ -3066,7 +3527,7 @@ async function analyzeDocument() {
 
     /*
      * =====================================================
-     * 5. MOSTRAR TODO
+     * 5. MOSTRAR ANÁLISIS GENERAL
      * =====================================================
      */
 
@@ -3076,22 +3537,24 @@ async function analyzeDocument() {
     );
 
 
+    /*
+     * =====================================================
+     * 6. MOSTRAR CONSULTA ARRIBA
+     * Y ANÁLISIS GENERAL ABAJO
+     * =====================================================
+     */
+
     mostrarConsultaEspecifica(
       resultadosConsulta,
       pregunta
     );
 
 
-    /*
-     * =====================================================
-     * 6. FINAL
-     * =====================================================
-     */
-
     status.textContent =
       "✅ Análisis terminado. " +
       datos.numPages +
       " página(s) procesada(s)" +
+
       (
         datos.ocrPages > 0
           ? " — OCR procesado en " +
@@ -3143,14 +3606,17 @@ async function analyzeDocument() {
 ========================================================= */
 
 document
-  .getElementById("consulta")
+  .getElementById(
+    "consulta"
+  )
   .addEventListener(
     "keydown",
     event => {
 
       if (
         event.ctrlKey &&
-        event.key === "Enter"
+        event.key ===
+        "Enter"
       ) {
 
         event.preventDefault();
@@ -3164,7 +3630,7 @@ document
 
 
 /* =========================================================
-   HACER LA FUNCIÓN ACCESIBLE AL BOTÓN HTML
+   BOTÓN HTML
 ========================================================= */
 
 window.analyzeDocument =
@@ -3172,7 +3638,6 @@ window.analyzeDocument =
 
 
 </script>
-
 
 </body>
 
