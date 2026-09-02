@@ -302,230 +302,239 @@ textarea:focus {
 
   <div class="welcome">
 
-<h2>📄 Análisis inteligente de documentos</h2>
+    <h2>📄 Análisis inteligente de documentos</h2>
 
-<p>
-  Subí un documento y PREVENTA IA buscará información
-  relevante para Preventa.
-</p>
+    <p>
+      Subí un documento y PREVENTA IA buscará información
+      relevante para Preventa.
+    </p>
 
   </div>
+
 
   <div class="card">
 
-<h3>1. 📁 Documento</h3>
+    <h3>1. 📁 Documento</h3>
 
-<div class="upload-area">
+    <div class="upload-area">
 
-  <div class="upload-icon">
-    📄
+      <div class="upload-icon">
+        📄
+      </div>
+
+      <strong>
+        Seleccioná un PDF o archivo TXT
+      </strong>
+
+      <br>
+
+      <input
+        type="file"
+        id="documentFile"
+        accept=".pdf,.txt"
+        onchange="showFile()"
+      >
+
+      <div
+        id="fileName"
+        class="file-name"
+      ></div>
+
+      <div
+        id="fileInfo"
+        class="file-info"
+      ></div>
+
+    </div>
+
   </div>
 
-  <strong>
-    Seleccioná un PDF o archivo TXT
-  </strong>
-
-  <br>
-
-  <input
-    type="file"
-    id="documentFile"
-    accept=".pdf,.txt"
-    onchange="showFile()"
-  >
-
-  <div
-    id="fileName"
-    class="file-name"
-  ></div>
-
-  <div
-    id="fileInfo"
-    class="file-info"
-  ></div>
-
-</div>
-
-  </div>
 
   <div class="card">
 
-<h3>2. 🔎 ¿Qué querés analizar?</h3>
+    <h3>2. 🔎 ¿Qué querés analizar?</h3>
 
-<p>
-  Escribí qué información querés buscar.
-  PREVENTA IA buscará también términos relacionados y similares.
-</p>
+    <p>
+      Escribí qué información querés buscar.
+      PREVENTA IA buscará también términos relacionados y similares.
+    </p>
 
-<textarea
-  id="analysisQuestion"
-  placeholder="Ejemplo: Buscame usuarios, storage, cantidad de documentos, firmas e infraestructura."
-></textarea>
+    <textarea
+      id="analysisQuestion"
+      placeholder="Ejemplo: Buscame usuarios, storage, cantidad de documentos, firmas e infraestructura."
+    ></textarea>
 
-<button
-  class="button"
-  id="analyzeButton"
-  onclick="analyzeDocument()"
->
-  🔍 Analizar documento
-</button>
+    <button
+      class="button"
+      id="analyzeButton"
+      onclick="analyzeDocument()"
+    >
+      🔍 Analizar documento
+    </button>
 
-<div
-  id="status"
-  class="status"
-></div>
+    <div
+      id="status"
+      class="status"
+    ></div>
 
   </div>
+
 
   <div
     id="result"
     class="card result"
   >
 
-<h3>📊 Resultado del análisis</h3>
+    <h3>📊 Resultado del análisis</h3>
 
-<div
-  id="summary"
-  class="summary"
-></div>
+    <div
+      id="summary"
+      class="summary"
+    ></div>
 
-<div
-  id="stats"
-  class="stats"
-></div>
+    <div
+      id="stats"
+      class="stats"
+    ></div>
 
-<div class="grid">
 
-  <div class="analysis-item" id="box-objective">
-    <div class="analysis-title">🎯 Objetivo</div>
-    <div id="objective" class="analysis-value"></div>
-  </div>
+    <div class="grid">
 
-  <div class="analysis-item" id="box-client">
-    <div class="analysis-title">🏢 Cliente / Organización</div>
-    <div id="client" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-objective">
+        <div class="analysis-title">🎯 Objetivo</div>
+        <div id="objective" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-users">
-    <div class="analysis-title">👥 Usuarios</div>
-    <div id="users" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-client">
+        <div class="analysis-title">🏢 Cliente / Organización</div>
+        <div id="client" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-documents">
-    <div class="analysis-title">📑 Documentos</div>
-    <div id="documents" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-users">
+        <div class="analysis-title">👥 Usuarios</div>
+        <div id="users" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-volume">
-    <div class="analysis-title">📦 Volumen documental</div>
-    <div id="volume" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-documents">
+        <div class="analysis-title">📑 Documentos</div>
+        <div id="documents" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-storage">
-    <div class="analysis-title">💾 Storage</div>
-    <div id="storage" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-volume">
+        <div class="analysis-title">📦 Volumen documental</div>
+        <div id="volume" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-ocr">
-    <div class="analysis-title">🔎 OCR / Digitalización</div>
-    <div id="ocr" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-storage">
+        <div class="analysis-title">💾 Storage</div>
+        <div id="storage" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-fulltext">
-    <div class="analysis-title">🔤 Full Text / Búsqueda</div>
-    <div id="fulltext" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-ocr">
+        <div class="analysis-title">🔎 OCR / Digitalización</div>
+        <div id="ocr" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-workflows">
-    <div class="analysis-title">🔄 Workflows</div>
-    <div id="workflows" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-fulltext">
+        <div class="analysis-title">🔤 Full Text / Búsqueda</div>
+        <div id="fulltext" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-signatures">
-    <div class="analysis-title">✍️ Firmas</div>
-    <div id="signatures" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-workflows">
+        <div class="analysis-title">🔄 Workflows</div>
+        <div id="workflows" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-integrations">
-    <div class="analysis-title">🔌 Integraciones</div>
-    <div id="integrations" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-signatures">
+        <div class="analysis-title">✍️ Firmas</div>
+        <div id="signatures" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-infrastructure">
-    <div class="analysis-title">🏗️ Infraestructura</div>
-    <div id="infrastructure" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-integrations">
+        <div class="analysis-title">🔌 Integraciones</div>
+        <div id="integrations" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-security">
-    <div class="analysis-title">🔐 Seguridad</div>
-    <div id="security" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-infrastructure">
+        <div class="analysis-title">🏗️ Infraestructura</div>
+        <div id="infrastructure" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-migration">
-    <div class="analysis-title">🔄 Migración</div>
-    <div id="migration" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-security">
+        <div class="analysis-title">🔐 Seguridad</div>
+        <div id="security" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-support">
-    <div class="analysis-title">🛠️ Soporte</div>
-    <div id="support" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-migration">
+        <div class="analysis-title">🔄 Migración</div>
+        <div id="migration" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-deadlines">
-    <div class="analysis-title">📅 Plazos</div>
-    <div id="deadlines" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-support">
+        <div class="analysis-title">🛠️ Soporte</div>
+        <div id="support" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-pricing">
-    <div class="analysis-title">💰 Datos para cotizar</div>
-    <div id="pricing" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-deadlines">
+        <div class="analysis-title">📅 Plazos</div>
+        <div id="deadlines" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-risks">
-    <div class="analysis-title">⚠️ Riesgos</div>
-    <div id="risks" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-pricing">
+        <div class="analysis-title">💰 Datos para cotizar</div>
+        <div id="pricing" class="analysis-value"></div>
+      </div>
 
-  <div class="analysis-item" id="box-missing">
-    <div class="analysis-title">❓ Información faltante</div>
-    <div id="missing" class="analysis-value"></div>
-  </div>
+      <div class="analysis-item" id="box-risks">
+        <div class="analysis-title">⚠️ Riesgos</div>
+        <div id="risks" class="analysis-value"></div>
+      </div>
 
-</div>
+      <div class="analysis-item" id="box-missing">
+        <div class="analysis-title">❓ Información faltante</div>
+        <div id="missing" class="analysis-value"></div>
+      </div>
 
-<div class="evidence">
+    </div>
 
-  <h3>📌 Evidencia encontrada</h3>
 
-  <div id="evidenceList"></div>
+    <div class="evidence">
 
-</div>
+      <h3>📌 Evidencia encontrada</h3>
 
-<div
-  id="resultMessage"
-  class="success"
-></div>
+      <div id="evidenceList"></div>
 
-<div class="result-actions">
+    </div>
 
-  <a
-    href="analisis.html"
-    id="analysisButton"
-    class="button primary"
-    style="display:none;"
-  >
-    🎯 Ver análisis de oportunidad
-  </a>
 
-</div>
+    <div
+      id="resultMessage"
+      class="success"
+    ></div>
+
+
+    <div class="result-actions">
+
+      <a
+        href="analisis.html"
+        id="analysisButton"
+        class="button primary"
+        style="display:none;"
+      >
+        🎯 Ver análisis de oportunidad
+      </a>
+
+    </div>
 
   </div>
 
 </main>
 
+
 <!-- OCR GRATUITO EN EL NAVEGADOR -->
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
 
 <script type="module">
 
@@ -533,6 +542,7 @@ import {
   getDocument,
   GlobalWorkerOptions
 } from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+
 
 GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
@@ -561,22 +571,32 @@ window.showFile = function() {
   const fileInfo =
     document.getElementById("fileInfo");
 
+
   if (!file) {
 
     fileName.textContent = "";
     fileInfo.textContent = "";
 
     return;
+
   }
 
-  documentoActual = file;
+
+  documentoActual =
+    file;
+
 
   fileName.textContent =
     "📄 " + file.name;
 
+
   fileInfo.textContent =
     "Tamaño: " +
-    (file.size / 1024 / 1024).toFixed(2) +
+    (
+      file.size /
+      1024 /
+      1024
+    ).toFixed(2) +
     " MB";
 
 };
@@ -591,20 +611,25 @@ async function leerTXT(file) {
   const texto =
     await file.text();
 
+
   return {
 
     text: texto,
 
     pages: [
+
       {
         page: 1,
         text: texto,
         ocr: false
       }
+
     ],
 
     numPages: 1,
+
     usedOCR: false,
+
     ocrPages: 0
 
   };
@@ -613,7 +638,7 @@ async function leerTXT(file) {
 
 
 /* =========================================================
-   PDF - EXTRACCIÓN NATIVA
+   PDF - TEXTO NATIVO
 ========================================================= */
 
 async function leerPDF(file) {
@@ -621,14 +646,17 @@ async function leerPDF(file) {
   const arrayBuffer =
     await file.arrayBuffer();
 
+
   const pdf =
     await getDocument({
       data: arrayBuffer
     }).promise;
 
+
   const paginas = [];
 
   let textoCompleto = "";
+
 
   for (
     let numeroPagina = 1;
@@ -637,25 +665,36 @@ async function leerPDF(file) {
   ) {
 
     const pagina =
-      await pdf.getPage(numeroPagina);
+      await pdf.getPage(
+        numeroPagina
+      );
+
 
     const contenido =
       await pagina.getTextContent();
 
+
     const texto =
       contenido.items
-        .map(item => item.str)
+        .map(
+          item => item.str
+        )
         .join("\n");
+
 
     paginas.push({
 
-      page: numeroPagina,
+      page:
+        numeroPagina,
 
-      text: texto,
+      text:
+        texto,
 
-      ocr: false
+      ocr:
+        false
 
     });
+
 
     textoCompleto +=
       "\n" +
@@ -663,19 +702,26 @@ async function leerPDF(file) {
 
   }
 
+
   return {
 
-    pdf: pdf,
+    pdf:
+      pdf,
 
-    text: textoCompleto,
+    text:
+      textoCompleto,
 
-    pages: paginas,
+    pages:
+      paginas,
 
-    numPages: pdf.numPages,
+    numPages:
+      pdf.numPages,
 
-    usedOCR: false,
+    usedOCR:
+      false,
 
-    ocrPages: 0
+    ocrPages:
+      0
 
   };
 
@@ -693,24 +739,36 @@ async function ocrPaginaPDF(
 ) {
 
   const pagina =
-    await pdf.getPage(numeroPagina);
+    await pdf.getPage(
+      numeroPagina
+    );
+
 
   const viewport =
     pagina.getViewport({
       scale: 2
     });
 
+
   const canvas =
-    document.createElement("canvas");
+    document.createElement(
+      "canvas"
+    );
+
 
   const contexto =
-    canvas.getContext("2d");
+    canvas.getContext(
+      "2d"
+    );
+
 
   canvas.width =
     viewport.width;
 
+
   canvas.height =
     viewport.height;
+
 
   if (status) {
 
@@ -723,11 +781,14 @@ async function ocrPaginaPDF(
 
   }
 
+
   await pagina.render({
 
-    canvasContext: contexto,
+    canvasContext:
+      contexto,
 
-    viewport: viewport
+    viewport:
+      viewport
 
   }).promise;
 
@@ -741,34 +802,40 @@ async function ocrPaginaPDF(
 
       {
 
-        logger: info => {
+        logger:
+          info => {
 
-          if (!status) {
-            return;
+            if (!status) {
+              return;
+            }
+
+
+            if (
+              info.status ===
+              "recognizing text"
+            ) {
+
+              const porcentaje =
+                Math.round(
+                  (
+                    info.progress ||
+                    0
+                  ) * 100
+                );
+
+
+              status.textContent =
+                "🔎 OCR: página " +
+                numeroPagina +
+                " de " +
+                pdf.numPages +
+                " — " +
+                porcentaje +
+                "%";
+
+            }
+
           }
-
-          if (
-            info.status ===
-            "recognizing text"
-          ) {
-
-            const porcentaje =
-              Math.round(
-                (info.progress || 0) * 100
-              );
-
-            status.textContent =
-              "🔎 OCR: página " +
-              numeroPagina +
-              " de " +
-              pdf.numPages +
-              " — " +
-              porcentaje +
-              "%";
-
-          }
-
-        }
 
       }
 
@@ -776,15 +843,16 @@ async function ocrPaginaPDF(
 
 
   return (
-    resultado.data.text || ""
+    resultado.data.text ||
+    ""
   ).trim();
 
 }
 
 
 /* =========================================================
-   OCR + TEXTO NATIVO
-   AHORA OCR SE EJECUTA EN TODAS LAS PÁGINAS
+   OCR + PDF.JS
+   OCR EN TODAS LAS PÁGINAS
 ========================================================= */
 
 async function ejecutarOCR(
@@ -830,12 +898,12 @@ async function ejecutarOCR(
 
       paginasOCR++;
 
+
       /*
-       * IMPORTANTE:
-       * NO reemplazamos el texto original.
+       * Conservamos ambos:
        *
-       * Guardamos:
-       * PDF.js + OCR
+       * 1. Texto nativo del PDF
+       * 2. Texto obtenido por OCR
        */
 
       textoFinal =
@@ -850,9 +918,11 @@ async function ejecutarOCR(
 
     paginas.push({
 
-      page: numeroPagina,
+      page:
+        numeroPagina,
 
-      text: textoFinal,
+      text:
+        textoFinal,
 
       ocr:
         textoOCR.length > 0
@@ -869,11 +939,14 @@ async function ejecutarOCR(
 
   return {
 
-    text: textoCompleto,
+    text:
+      textoCompleto,
 
-    pages: paginas,
+    pages:
+      paginas,
 
-    numPages: pdf.numPages,
+    numPages:
+      pdf.numPages,
 
     usedOCR:
       paginasOCR > 0,
@@ -887,7 +960,7 @@ async function ejecutarOCR(
 
 
 /* =========================================================
-   EXTRACCIÓN GENERAL
+   EXTRAER TEXTO
 ========================================================= */
 
 async function extraerTexto(
@@ -906,7 +979,9 @@ async function extraerTexto(
     extension === "txt"
   ) {
 
-    return await leerTXT(file);
+    return await leerTXT(
+      file
+    );
 
   }
 
@@ -915,14 +990,10 @@ async function extraerTexto(
     extension === "pdf"
   ) {
 
-    /*
-     * PDF:
-     * usamos extracción nativa + OCR
-     * en TODAS las páginas.
-     */
-
     const resultado =
-      await leerPDF(file);
+      await leerPDF(
+        file
+      );
 
 
     if (status) {
@@ -932,6 +1003,11 @@ async function extraerTexto(
 
     }
 
+
+    /*
+     * Siempre hacemos OCR,
+     * aunque el PDF tenga texto.
+     */
 
     return await ejecutarOCR(
 
@@ -954,12 +1030,16 @@ async function extraerTexto(
 
 
 /* =========================================================
-   NORMALIZACIÓN
+   NORMALIZAR
 ========================================================= */
 
-function normalizar(texto) {
+function normalizar(
+  texto
+) {
 
-  return String(texto || "")
+  return String(
+    texto || ""
+  )
     .toLowerCase()
     .normalize("NFD")
     .replace(
@@ -980,12 +1060,16 @@ function normalizar(texto) {
 
 
 /* =========================================================
-   LIMPIAR TEXTO
+   LIMPIAR
 ========================================================= */
 
-function limpiar(texto) {
+function limpiar(
+  texto
+) {
 
-  return String(texto || "")
+  return String(
+    texto || ""
+  )
     .replace(
       /\r/g,
       ""
@@ -1004,69 +1088,18 @@ function limpiar(texto) {
 
 
 /* =========================================================
-   ORACIONES
-========================================================= */
-
-function obtenerOraciones(texto) {
-
-  return limpiar(texto)
-    .split(
-      /(?<=[.!?])\s+|\n+/
-    )
-    .map(x => x.trim())
-    .filter(x => x.length > 0);
-
-}
-
-
-/* =========================================================
-   RECORTAR
-========================================================= */
-
-function recortar(texto, max = 500) {
-
-  texto =
-    String(texto || "").trim();
-
-  if (
-    texto.length <= max
-  ) {
-    return texto;
-  }
-
-  return (
-    texto.substring(0, max) +
-    "..."
-  );
-
-}
-
-
-/* =========================================================
-   NÚMEROS
-========================================================= */
-
-function extraerNumeros(texto) {
-
-  return String(texto || "")
-    .match(
-      /\b\d[\d.,]*\b/g
-    ) || [];
-
-}
-
-
-/* =========================================================
-   DICCIONARIO DE CONCEPTOS
+   DICCIONARIO PREVENTA
 ========================================================= */
 
 const conceptosPreventa = {
 
   usuarios: {
 
-    nombre: "Usuarios",
+    nombre:
+      "Usuarios",
 
     terminos: [
+
       "usuarios",
       "usuario",
       "users",
@@ -1075,12 +1108,14 @@ const conceptosPreventa = {
       "usuarios concurrentes",
       "usuarios previstos",
       "usuarios estimados",
+      "usuarios esperados",
       "cantidad de usuarios",
       "cantidad de cuentas",
       "cuentas",
       "licencias",
       "personas",
       "empleados"
+
     ]
 
   },
@@ -1088,9 +1123,11 @@ const conceptosPreventa = {
 
   storage: {
 
-    nombre: "Storage",
+    nombre:
+      "Storage",
 
     terminos: [
+
       "storage",
       "almacenamiento",
       "capacidad",
@@ -1101,6 +1138,7 @@ const conceptosPreventa = {
       "gigabytes",
       "terabytes",
       "megabytes"
+
     ]
 
   },
@@ -1108,9 +1146,11 @@ const conceptosPreventa = {
 
   documentos: {
 
-    nombre: "Documentos",
+    nombre:
+      "Documentos",
 
     terminos: [
+
       "documentos",
       "documento",
       "tipo de documento",
@@ -1125,6 +1165,7 @@ const conceptosPreventa = {
       "contrato",
       "comprobantes",
       "formularios"
+
     ]
 
   },
@@ -1132,9 +1173,11 @@ const conceptosPreventa = {
 
   volumen: {
 
-    nombre: "Volumen documental",
+    nombre:
+      "Volumen documental",
 
     terminos: [
+
       "volumen documental",
       "volumen de documentos",
       "cantidad de documentos",
@@ -1144,6 +1187,7 @@ const conceptosPreventa = {
       "documentos anuales",
       "volumen mensual",
       "volumen anual"
+
     ]
 
   },
@@ -1151,9 +1195,11 @@ const conceptosPreventa = {
 
   ocr: {
 
-    nombre: "OCR / Digitalización",
+    nombre:
+      "OCR / Digitalización",
 
     terminos: [
+
       "ocr",
       "reconocimiento optico",
       "reconocimiento óptico",
@@ -1162,6 +1208,7 @@ const conceptosPreventa = {
       "escaneo",
       "escaneado",
       "documentos escaneados"
+
     ]
 
   },
@@ -1169,9 +1216,11 @@ const conceptosPreventa = {
 
   fulltext: {
 
-    nombre: "Full Text / Búsqueda",
+    nombre:
+      "Full Text / Búsqueda",
 
     terminos: [
+
       "full text",
       "fulltext",
       "texto completo",
@@ -1182,6 +1231,7 @@ const conceptosPreventa = {
       "motor de búsqueda",
       "indexacion",
       "indexación"
+
     ]
 
   },
@@ -1189,9 +1239,11 @@ const conceptosPreventa = {
 
   workflows: {
 
-    nombre: "Workflows",
+    nombre:
+      "Workflows",
 
     terminos: [
+
       "workflow",
       "workflows",
       "flujo",
@@ -1201,6 +1253,7 @@ const conceptosPreventa = {
       "aprobación",
       "circuito",
       "circuitos"
+
     ]
 
   },
@@ -1208,9 +1261,11 @@ const conceptosPreventa = {
 
   firmas: {
 
-    nombre: "Firmas",
+    nombre:
+      "Firmas",
 
     terminos: [
+
       "firma",
       "firmas",
       "firma electronica",
@@ -1220,6 +1275,7 @@ const conceptosPreventa = {
       "firmado",
       "certificado digital",
       "certificados"
+
     ]
 
   },
@@ -1227,9 +1283,11 @@ const conceptosPreventa = {
 
   integraciones: {
 
-    nombre: "Integraciones",
+    nombre:
+      "Integraciones",
 
     terminos: [
+
       "integracion",
       "integración",
       "integraciones",
@@ -1242,6 +1300,7 @@ const conceptosPreventa = {
       "erp",
       "sap",
       "complif"
+
     ]
 
   },
@@ -1249,9 +1308,11 @@ const conceptosPreventa = {
 
   infraestructura: {
 
-    nombre: "Infraestructura",
+    nombre:
+      "Infraestructura",
 
     terminos: [
+
       "infraestructura",
       "cloud",
       "cloud computing",
@@ -1268,6 +1329,7 @@ const conceptosPreventa = {
       "servidores",
       "datacenter",
       "data center"
+
     ]
 
   },
@@ -1275,9 +1337,11 @@ const conceptosPreventa = {
 
   seguridad: {
 
-    nombre: "Seguridad",
+    nombre:
+      "Seguridad",
 
     terminos: [
+
       "seguridad",
       "autenticacion",
       "autenticación",
@@ -1292,6 +1356,7 @@ const conceptosPreventa = {
       "auditoría",
       "encriptacion",
       "encriptación"
+
     ]
 
   },
@@ -1299,9 +1364,11 @@ const conceptosPreventa = {
 
   migracion: {
 
-    nombre: "Migración",
+    nombre:
+      "Migración",
 
     terminos: [
+
       "migracion",
       "migración",
       "migrar",
@@ -1311,6 +1378,7 @@ const conceptosPreventa = {
       "importación",
       "documenta",
       "openkm"
+
     ]
 
   },
@@ -1318,9 +1386,11 @@ const conceptosPreventa = {
 
   soporte: {
 
-    nombre: "Soporte",
+    nombre:
+      "Soporte",
 
     terminos: [
+
       "soporte",
       "mantenimiento",
       "mesa de ayuda",
@@ -1328,6 +1398,7 @@ const conceptosPreventa = {
       "nivel de servicio",
       "sla",
       "horario de soporte"
+
     ]
 
   },
@@ -1335,9 +1406,11 @@ const conceptosPreventa = {
 
   plazos: {
 
-    nombre: "Plazos",
+    nombre:
+      "Plazos",
 
     terminos: [
+
       "plazo",
       "plazos",
       "fecha",
@@ -1349,6 +1422,7 @@ const conceptosPreventa = {
       "tiempo",
       "duracion",
       "duración"
+
     ]
 
   },
@@ -1356,9 +1430,11 @@ const conceptosPreventa = {
 
   pricing: {
 
-    nombre: "Datos para cotizar",
+    nombre:
+      "Datos para cotizar",
 
     terminos: [
+
       "precio",
       "costo",
       "costos",
@@ -1370,6 +1446,7 @@ const conceptosPreventa = {
       "storage",
       "almacenamiento",
       "volumen"
+
     ]
 
   }
@@ -1378,13 +1455,17 @@ const conceptosPreventa = {
 
 
 /* =========================================================
-   INTERPRETAR LO QUE ESCRIBIÓ EL USUARIO
+   INTERPRETAR BÚSQUEDA DEL USUARIO
 ========================================================= */
 
-function interpretarBusqueda(pregunta) {
+function interpretarBusqueda(
+  pregunta
+) {
 
   const texto =
-    normalizar(pregunta);
+    normalizar(
+      pregunta
+    );
 
 
   const encontrados = [];
@@ -1395,21 +1476,27 @@ function interpretarBusqueda(pregunta) {
   ) {
 
     const concepto =
-      conceptosPreventa[clave];
+      conceptosPreventa[
+        clave
+      ];
 
 
     const coincide =
       concepto.terminos.some(
         termino =>
           texto.includes(
-            normalizar(termino)
+            normalizar(
+              termino
+            )
           )
       );
 
 
     if (coincide) {
 
-      encontrados.push(clave);
+      encontrados.push(
+        clave
+      );
 
     }
 
@@ -1417,7 +1504,8 @@ function interpretarBusqueda(pregunta) {
 
 
   /*
-   * Si el usuario no especificó nada,
+   * Si el usuario no especifica
+   * conceptos reconocidos,
    * hacemos análisis completo.
    */
 
@@ -1438,7 +1526,7 @@ function interpretarBusqueda(pregunta) {
 
 
 /* =========================================================
-   EXTRAER CONTEXTO ALREDEDOR DE UN TÉRMINO
+   EXTRAER CONTEXTO
 ========================================================= */
 
 function extraerContexto(
@@ -1448,13 +1536,21 @@ function extraerContexto(
 ) {
 
   const original =
-    String(texto || "");
+    String(
+      texto || ""
+    );
+
 
   const normalizado =
-    normalizar(original);
+    normalizar(
+      original
+    );
+
 
   const buscado =
-    normalizar(termino);
+    normalizar(
+      termino
+    );
 
 
   const posicion =
@@ -1472,17 +1568,12 @@ function extraerContexto(
   }
 
 
-  /*
-   * Para mantener el texto original,
-   * buscamos aproximadamente la posición
-   * equivalente.
-   */
-
   const inicio =
     Math.max(
       0,
       posicion - 180
     );
+
 
   const fin =
     Math.min(
@@ -1502,11 +1593,10 @@ function extraerContexto(
 
 
 /* =========================================================
-   BUSCAR CONCEPTOS USANDO TEXTO NATIVO + OCR
+   BUSCAR CONCEPTOS
 ========================================================= */
 
 function buscarConceptos(
-  texto,
   paginas,
   conceptosBuscados
 ) {
@@ -1515,12 +1605,17 @@ function buscarConceptos(
 
 
   conceptosBuscados.forEach(
-    clave => {
+    categoria => {
 
-      resultados[clave] = [];
+      resultados[
+        categoria
+      ] = [];
+
 
       const concepto =
-        conceptosPreventa[clave];
+        conceptosPreventa[
+          categoria
+        ];
 
 
       paginas.forEach(
@@ -1528,6 +1623,7 @@ function buscarConceptos(
 
           const textoPagina =
             pagina.text || "";
+
 
           const textoNormalizado =
             normalizar(
@@ -1562,7 +1658,7 @@ function buscarConceptos(
                 ) {
 
                   resultados[
-                    clave
+                    categoria
                   ].push({
 
                     page:
@@ -1591,7 +1687,7 @@ function buscarConceptos(
 
 
       /*
-       * Eliminamos duplicados.
+       * Duplicados
        */
 
       const unicos = [];
@@ -1600,8 +1696,10 @@ function buscarConceptos(
         new Set();
 
 
-      resultados[clave]
-        .forEach(item => {
+      resultados[
+        categoria
+      ].forEach(
+        item => {
 
           const claveUnica =
             normalizar(
@@ -1619,17 +1717,24 @@ function buscarConceptos(
               claveUnica
             );
 
+
             unicos.push(
               item
             );
 
           }
 
-        });
+        }
+      );
 
 
-      resultados[clave] =
-        unicos.slice(0, 8);
+      resultados[
+        categoria
+      ] =
+        unicos.slice(
+          0,
+          8
+        );
 
     }
   );
@@ -1641,7 +1746,7 @@ function buscarConceptos(
 
 
 /* =========================================================
-   EXTRACCIÓN DIRECTA DE VALORES
+   EXTRAER VALORES DIRECTOS
 ========================================================= */
 
 function extraerDirecto(
@@ -1653,7 +1758,8 @@ function extraerDirecto(
 
 
   if (
-    categoria === "usuarios"
+    categoria ===
+    "usuarios"
   ) {
 
     const patrones = [
@@ -1678,9 +1784,14 @@ function extraerDirecto(
 
         let match;
 
+
         while (
-          (match =
-            patron.exec(texto))
+          (
+            match =
+            patron.exec(
+              texto
+            )
+          )
         ) {
 
           resultados.push(
@@ -1696,7 +1807,8 @@ function extraerDirecto(
 
 
   if (
-    categoria === "storage"
+    categoria ===
+    "storage"
   ) {
 
     const patrones = [
@@ -1719,9 +1831,14 @@ function extraerDirecto(
 
         let match;
 
+
         while (
-          (match =
-            patron.exec(texto))
+          (
+            match =
+            patron.exec(
+              texto
+            )
+          )
         ) {
 
           resultados.push(
@@ -1737,7 +1854,8 @@ function extraerDirecto(
 
 
   if (
-    categoria === "volumen"
+    categoria ===
+    "volumen"
   ) {
 
     const patrones = [
@@ -1758,9 +1876,14 @@ function extraerDirecto(
 
         let match;
 
+
         while (
-          (match =
-            patron.exec(texto))
+          (
+            match =
+            patron.exec(
+              texto
+            )
+          )
         ) {
 
           resultados.push(
@@ -1785,7 +1908,7 @@ function extraerDirecto(
 
 
 /* =========================================================
-   FORMATEAR RESULTADO
+   FORMATEAR CATEGORÍA
 ========================================================= */
 
 function formatearCategoria(
@@ -1808,9 +1931,12 @@ function formatearCategoria(
     return valores
       .map(
         valor =>
-          "• " + valor
+          "• " +
+          valor
       )
-      .join("\n");
+      .join(
+        "\n"
+      );
 
   }
 
@@ -1828,19 +1954,59 @@ function formatearCategoria(
   return resultados
     .map(
       item =>
+
         "• " +
         recortar(
           item.texto,
           300
         ) +
+
         (
           item.page
             ? "\n  📄 Página " +
               item.page
             : ""
         )
+
     )
-    .join("\n\n");
+    .join(
+      "\n\n"
+    );
+
+}
+
+
+/* =========================================================
+   RECORTAR
+========================================================= */
+
+function recortar(
+  texto,
+  max = 500
+) {
+
+  texto =
+    String(
+      texto || ""
+    ).trim();
+
+
+  if (
+    texto.length <= max
+  ) {
+
+    return texto;
+
+  }
+
+
+  return (
+    texto.substring(
+      0,
+      max
+    ) +
+    "..."
+  );
 
 }
 
@@ -1864,68 +2030,113 @@ function mostrarResultados(
       "result"
     );
 
+
   result.style.display =
     "block";
 
 
-  /*
-   * Ocultamos primero todas
-   * las cajas.
-   */
-
-  document
-    .querySelectorAll(
-      ".analysis-item"
-    )
-    .forEach(
-      caja => {
-
-        caja.classList.remove(
-          "found",
-          "not-found"
-        );
-
-      }
-    );
-
-
   const nombresCampos = {
 
-    usuarios: "users",
+    usuarios:
+      "users",
 
-    documentos: "documents",
+    documentos:
+      "documents",
 
-    volumen: "volume",
+    volumen:
+      "volume",
 
-    storage: "storage",
+    storage:
+      "storage",
 
-    ocr: "ocr",
+    ocr:
+      "ocr",
 
-    fulltext: "fulltext",
+    fulltext:
+      "fulltext",
 
-    workflows: "workflows",
+    workflows:
+      "workflows",
 
-    firmas: "signatures",
+    firmas:
+      "signatures",
 
-    integraciones: "integrations",
+    integraciones:
+      "integrations",
 
     infraestructura:
       "infrastructure",
 
-    seguridad: "security",
+    seguridad:
+      "security",
 
-    migracion: "migration",
+    migracion:
+      "migration",
 
-    soporte: "support",
+    soporte:
+      "support",
 
-    plazos: "deadlines",
+    plazos:
+      "deadlines",
 
-    pricing: "pricing"
+    pricing:
+      "pricing"
 
   };
 
 
-  const conceptosMostrados = [];
+  const nombresCajas = {
+
+    usuarios:
+      "box-users",
+
+    documentos:
+      "box-documents",
+
+    volumen:
+      "box-volume",
+
+    storage:
+      "box-storage",
+
+    ocr:
+      "box-ocr",
+
+    fulltext:
+      "box-fulltext",
+
+    workflows:
+      "box-workflows",
+
+    firmas:
+      "box-signatures",
+
+    integraciones:
+      "box-integrations",
+
+    infraestructura:
+      "box-infrastructure",
+
+    seguridad:
+      "box-security",
+
+    migracion:
+      "box-migration",
+
+    soporte:
+      "box-support",
+
+    plazos:
+      "box-deadlines",
+
+    pricing:
+      "box-pricing"
+
+  };
+
+
+  const conceptosMostrados =
+    [];
 
 
   conceptosBuscados.forEach(
@@ -1937,20 +2148,11 @@ function mostrarResultados(
         ];
 
 
-      if (!campo) {
-        return;
-      }
-
-
       const caja =
         document.getElementById(
-          "box-" +
-          (
-            categoria ===
-            "integraciones"
-              ? "integrations"
-              : categoria
-          )
+          nombresCajas[
+            categoria
+          ]
         );
 
 
@@ -1960,10 +2162,27 @@ function mostrarResultados(
         );
 
 
+      if (
+        !elemento ||
+        !caja
+      ) {
+
+        return;
+
+      }
+
+
       const datos =
         resultados[
           categoria
         ] || [];
+
+
+      const valoresDirectos =
+        extraerDirecto(
+          categoria,
+          texto
+        );
 
 
       const valor =
@@ -1978,19 +2197,22 @@ function mostrarResultados(
         valor;
 
 
-      caja.classList.add(
+      if (
+        datos.length > 0 ||
+        valoresDirectos.length > 0
+      ) {
 
-        (
-          datos.length > 0 ||
-          extraerDirecto(
-            categoria,
-            texto
-          ).length > 0
-        )
-          ? "found"
-          : "not-found"
+        caja.classList.add(
+          "found"
+        );
 
-      );
+      } else {
+
+        caja.classList.add(
+          "not-found"
+        );
+
+      }
 
 
       conceptosMostrados.push(
@@ -2007,8 +2229,7 @@ function mostrarResultados(
 
 
   /*
-   * Los campos que no fueron pedidos
-   * quedan vacíos.
+   * Limpiamos campos que no fueron solicitados.
    */
 
   Object.entries(
@@ -2017,38 +2238,44 @@ function mostrarResultados(
     ([categoria, campo]) => {
 
       if (
-        !conceptosBuscados.includes(
+        conceptosBuscados.includes(
           categoria
         )
       ) {
 
-        const elemento =
-          document.getElementById(
-            campo
-          );
+        return;
 
-        const caja =
-          document.getElementById(
-            "box-" +
-            (
-              categoria ===
-              "integraciones"
-                ? "integrations"
-                : categoria
-            )
-          );
+      }
 
-        if (elemento) {
-          elemento.textContent =
-            "No solicitado en esta búsqueda.";
-        }
 
-        if (caja) {
-          caja.classList.remove(
-            "found",
-            "not-found"
-          );
-        }
+      const elemento =
+        document.getElementById(
+          campo
+        );
+
+
+      const caja =
+        document.getElementById(
+          nombresCajas[
+            categoria
+          ]
+        );
+
+
+      if (elemento) {
+
+        elemento.textContent =
+          "No solicitado en esta búsqueda.";
+
+      }
+
+
+      if (caja) {
+
+        caja.classList.remove(
+          "found",
+          "not-found"
+        );
 
       }
 
@@ -2060,17 +2287,21 @@ function mostrarResultados(
    * Resumen
    */
 
-  const summary =
-    document.getElementById(
-      "summary"
-    );
+  document.getElementById(
+    "summary"
+  ).textContent =
 
-
-  summary.textContent =
     "🔎 Búsqueda solicitada:\n" +
-    pregunta +
+
+    (
+      pregunta ||
+      "Análisis general de Preventa"
+    ) +
+
     "\n\n" +
-    "PREVENTA IA buscó los siguientes conceptos y términos relacionados:\n\n" +
+
+    "PREVENTA IA buscará los conceptos indicados y sus términos relacionados:\n\n" +
+
     conceptosMostrados.join(
       "\n"
     );
@@ -2136,7 +2367,9 @@ function mostrarResultados(
           if (
             cantidadEvidencia >= 20
           ) {
+
             return;
+
           }
 
 
@@ -2144,6 +2377,7 @@ function mostrarResultados(
             document.createElement(
               "div"
             );
+
 
           div.className =
             "evidence-item";
@@ -2178,12 +2412,14 @@ function mostrarResultados(
 
             <div class="quote">
 
-              ${escapeHTML(
-                recortar(
-                  item.texto,
-                  500
+              ${
+                escapeHTML(
+                  recortar(
+                    item.texto,
+                    500
+                  )
                 )
-              )}
+              }
 
             </div>
 
@@ -2209,6 +2445,7 @@ function mostrarResultados(
   ) {
 
     evidenceList.innerHTML =
+
       `<div class="warning">
         No se encontró evidencia relacionada con los conceptos solicitados.
       </div>`;
@@ -2217,7 +2454,7 @@ function mostrarResultados(
 
 
   /*
-   * Mensaje
+   * Mensaje final
    */
 
   const resultMessage =
@@ -2231,24 +2468,27 @@ function mostrarResultados(
   ) {
 
     resultMessage.textContent =
+
       "✅ Análisis terminado. " +
-      "La búsqueda utilizó el texto extraído del PDF y el OCR de todas las páginas.";
+      "Se utilizó el texto del PDF y el OCR de todas las páginas para buscar la información solicitada.";
 
   } else {
 
     resultMessage.textContent =
+
       "⚠️ El documento fue procesado, pero no se encontró información relacionada con lo solicitado.";
 
   }
 
 
   /*
-   * Guardamos información para
-   * analisis.html
+   * Guardamos el análisis
    */
 
   localStorage.setItem(
+
     "preventa_analisis",
+
     JSON.stringify({
 
       pregunta:
@@ -2273,6 +2513,7 @@ function mostrarResultados(
         ocrPages
 
     })
+
   );
 
 
@@ -2295,6 +2536,7 @@ async function() {
     document.getElementById(
       "documentFile"
     );
+
 
   const pregunta =
     document.getElementById(
@@ -2343,8 +2585,11 @@ async function() {
 
     const resultado =
       await extraerTexto(
+
         input.files[0],
+
         status
+
       );
 
 
@@ -2357,8 +2602,7 @@ async function() {
 
 
     /*
-     * Interpretamos lo que pidió
-     * el usuario.
+     * Interpretamos la búsqueda.
      */
 
     status.textContent =
@@ -2372,8 +2616,8 @@ async function() {
 
 
     /*
-     * Ahora buscamos esos conceptos
-     * en el texto obtenido por PDF.js + OCR.
+     * Buscamos los conceptos
+     * en texto PDF + OCR.
      */
 
     status.textContent =
@@ -2382,8 +2626,6 @@ async function() {
 
     const resultados =
       buscarConceptos(
-
-        textoDocumento,
 
         paginasDocumento,
 
@@ -2406,8 +2648,7 @@ async function() {
 
       resultado.ocrPages,
 
-      pregunta ||
-        "Análisis general de Preventa"
+      pregunta
 
     );
 
@@ -2430,8 +2671,11 @@ async function() {
 
 
     alert(
+
       "No se pudo analizar el documento.\n\n" +
+
       error.message
+
     );
 
 
