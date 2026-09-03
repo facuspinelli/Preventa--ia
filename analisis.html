@@ -462,14 +462,7 @@ h2 {
     </div>
 
 
-    <!-- ================================
-         ESTADO VACIO
-    ================================= -->
-
-    <div
-        id="emptyState"
-        class="card empty"
-    >
+    <div id="emptyState" class="card empty">
 
         <div class="empty-icon">
             📄
@@ -492,10 +485,6 @@ h2 {
 
     </div>
 
-
-    <!-- ================================
-         ANALISIS
-    ================================= -->
 
     <div
         id="analysisContent"
@@ -520,8 +509,6 @@ h2 {
         </div>
 
 
-        <!-- RESUMEN FINAL -->
-
         <div class="card">
 
             <h3>
@@ -540,8 +527,6 @@ h2 {
 
         </div>
 
-
-        <!-- CONSULTA PRIORITARIA -->
 
         <div
             id="priorityBox"
@@ -564,8 +549,6 @@ h2 {
 
         </div>
 
-
-        <!-- ANALISIS GENERAL -->
 
         <div class="card">
 
@@ -680,8 +663,6 @@ h2 {
         </div>
 
 
-        <!-- EVIDENCIA -->
-
         <div class="card">
 
             <h3>
@@ -696,8 +677,6 @@ h2 {
 
         </div>
 
-
-        <!-- ACCIONES -->
 
         <div class="card">
 
@@ -734,10 +713,6 @@ h2 {
 
 </main>
 
-
-<!-- =====================================================
-     MODAL CREAR OPORTUNIDAD
-===================================================== -->
 
 <div
     id="opportunityModal"
@@ -1077,7 +1052,7 @@ let analysisData = null;
 
 
 /* =====================================================
-   LIMPIAR COMILLAS EXTERIORES
+   LIMPIAR COMILLAS
 ===================================================== */
 
 function limpiarComillas(texto) {
@@ -1109,15 +1084,10 @@ function limpiarComillas(texto) {
 function escapeHTML(texto) {
 
     return String(texto || "")
-
         .replace(/&/g, "&amp;")
-
         .replace(/</g, "&lt;")
-
         .replace(/>/g, "&gt;")
-
         .replace(/"/g, "&quot;")
-
         .replace(/'/g, "&#039;");
 
 }
@@ -1134,11 +1104,9 @@ function getAnalysis() {
             "preventa_document_analysis"
         );
 
-
     if (!guardado) {
         return null;
     }
-
 
     try {
 
@@ -1161,6 +1129,262 @@ function getAnalysis() {
 
 
 /* =====================================================
+   NORMALIZAR ITEM
+   Permite leer:
+   - strings
+   - objetos
+   - arrays
+   - formatos anteriores
+===================================================== */
+
+function normalizarItem(item) {
+
+    if (
+        item === null ||
+        item === undefined
+    ) {
+        return null;
+    }
+
+    if (
+        typeof item === "string" ||
+        typeof item === "number"
+    ) {
+
+        const texto =
+            limpiarComillas(
+                String(item)
+            );
+
+        let page = "";
+
+        const matchPage =
+            texto.match(
+                /Página\s*(\d+)/i
+            );
+
+        if (matchPage) {
+            page = matchPage[1];
+        }
+
+        return {
+            texto: texto,
+            text: texto,
+            value: texto,
+            page: page,
+            source: ""
+        };
+
+    }
+
+    if (
+        typeof item === "object"
+    ) {
+
+        const texto =
+            limpiarComillas(
+                item.texto ||
+                item.text ||
+                item.value ||
+                item.valor ||
+                ""
+            );
+
+        return {
+            ...item,
+            texto: texto,
+            text: item.text || texto,
+            value: item.value || item.valor || texto,
+            page:
+                item.page ||
+                item.pagina ||
+                "",
+            source:
+                item.source ||
+                item.fuente ||
+                ""
+        };
+
+    }
+
+    return null;
+
+}
+
+
+/* =====================================================
+   OBTENER ITEMS DE CATEGORIA
+===================================================== */
+
+function obtenerItems(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined ||
+        valor === ""
+    ) {
+        return [];
+    }
+
+    if (
+        Array.isArray(valor)
+    ) {
+
+        return valor
+            .map(
+                item =>
+                    normalizarItem(item)
+            )
+            .filter(Boolean)
+            .filter(
+                item =>
+                    item.texto ||
+                    item.value
+            );
+
+    }
+
+    if (
+        typeof valor === "string" ||
+        typeof valor === "number"
+    ) {
+
+        const item =
+            normalizarItem(
+                valor
+            );
+
+        return item
+            ? [item]
+            : [];
+
+    }
+
+    if (
+        typeof valor === "object"
+    ) {
+
+        const item =
+            normalizarItem(
+                valor
+            );
+
+        return item
+            ? [item]
+            : [];
+
+    }
+
+    return [];
+
+}
+
+
+/* =====================================================
+   ITEMS DE CATEGORIA
+===================================================== */
+
+function itemsCategoria(
+    data,
+    key
+) {
+
+    if (
+        !data ||
+        !data.categories
+    ) {
+        return [];
+    }
+
+    return obtenerItems(
+        data.categories[key]
+    );
+
+}
+
+
+/* =====================================================
+   VALOR DE CLIENTE
+===================================================== */
+
+function obtenerCliente(data) {
+
+    if (
+        !data ||
+        !data.client
+    ) {
+        return "";
+    }
+
+    if (
+        typeof data.client === "string"
+    ) {
+        return limpiarComillas(
+            data.client
+        );
+    }
+
+    if (
+        typeof data.client === "object"
+    ) {
+
+        return limpiarComillas(
+            data.client.texto ||
+            data.client.text ||
+            data.client.value ||
+            data.client.valor ||
+            ""
+        );
+
+    }
+
+    return "";
+
+}
+
+
+/* =====================================================
+   PÁGINA CLIENTE
+===================================================== */
+
+function obtenerPaginaCliente(data) {
+
+    if (
+        !data ||
+        !data.client ||
+        typeof data.client !== "object"
+    ) {
+        return "";
+    }
+
+    return (
+        data.client.page ||
+        data.client.pagina ||
+        data.clientPage ||
+        ""
+    );
+
+}
+
+
+/* =====================================================
+   OBJETIVO
+===================================================== */
+
+function obtenerObjetivos(data) {
+
+    if (!data) {
+        return [];
+    }
+
+    return obtenerItems(
+        data.objective
+    );
+
+}
+
+
+/* =====================================================
    VALOR
 ===================================================== */
 
@@ -1173,7 +1397,6 @@ function valueOf(valor) {
         return "";
     }
 
-
     if (
         typeof valor === "string"
     ) {
@@ -1181,7 +1404,6 @@ function valueOf(valor) {
             valor
         );
     }
-
 
     if (
         Array.isArray(valor)
@@ -1197,6 +1419,19 @@ function valueOf(valor) {
 
     }
 
+    if (
+        typeof valor === "object"
+    ) {
+
+        return limpiarComillas(
+            valor.texto ||
+            valor.text ||
+            valor.value ||
+            valor.valor ||
+            ""
+        );
+
+    }
 
     return String(valor);
 
@@ -1212,18 +1447,21 @@ function formatearCategoria(
     fallback
 ) {
 
+    const normalizados =
+        obtenerItems(
+            items
+        );
+
     if (
-        !Array.isArray(items) ||
-        !items.length
+        !normalizados.length
     ) {
 
         return fallback;
 
     }
 
-
-    return items
-        .slice(0, 8)
+    return normalizados
+        .slice(0, 12)
         .map(
             item => {
 
@@ -1231,12 +1469,13 @@ function formatearCategoria(
                     limpiarComillas(
                         item.texto ||
                         item.text ||
+                        item.value ||
                         ""
                     );
 
-
                 if (
                     item.numeros &&
+                    Array.isArray(item.numeros) &&
                     item.numeros.length
                 ) {
 
@@ -1245,7 +1484,6 @@ function formatearCategoria(
                         item.numeros.join(", ");
 
                 }
-
 
                 if (
                     item.page
@@ -1257,7 +1495,6 @@ function formatearCategoria(
 
                 }
 
-
                 if (
                     item.source
                 ) {
@@ -1268,12 +1505,117 @@ function formatearCategoria(
 
                 }
 
-
                 return texto;
 
             }
         )
         .join("\n\n");
+
+}
+
+
+/* =====================================================
+   EXTRAER VALOR CONCRETO PARA FORMULARIO
+   Ej:
+   "10 usuarios — Página 2"
+   -> "10"
+===================================================== */
+
+function valorConcreto(
+    items,
+    tipo
+) {
+
+    const normalizados =
+        obtenerItems(
+            items
+        );
+
+    if (
+        !normalizados.length
+    ) {
+        return "";
+    }
+
+    for (
+        const item of normalizados
+    ) {
+
+        const texto =
+            limpiarComillas(
+                item.value ||
+                item.texto ||
+                item.text ||
+                ""
+            );
+
+        if (!texto) {
+            continue;
+        }
+
+
+        if (
+            tipo === "users"
+        ) {
+
+            const match =
+                texto.match(
+                    /(\d[\d.,]*)\s*(?:usuarios?|users?)/i
+                );
+
+            if (match) {
+                return match[1];
+            }
+
+        }
+
+
+        if (
+            tipo === "documents"
+        ) {
+
+            const match =
+                texto.match(
+                    /(\d[\d.,]*)\s*(?:documentos?|docs?)/i
+                );
+
+            if (match) {
+                return match[1];
+            }
+
+        }
+
+
+        if (
+            tipo === "storage"
+        ) {
+
+            const match =
+                texto.match(
+                    /(\d[\d.,]*)\s*(KB|MB|GB|TB|PB)/i
+                );
+
+            if (match) {
+                return match[1] + " " + match[2];
+            }
+
+        }
+
+
+        return texto
+            .replace(
+                /\s*[—-]\s*Página\s*\d+/i,
+                ""
+            )
+            .replace(
+                /\s*Página\s*\d+/i,
+                ""
+            )
+            .trim();
+
+    }
+
+    return "";
 
 }
 
@@ -1286,12 +1628,10 @@ function crearResumen(data) {
 
     const partes = [];
 
-
     const paginas =
         Number(
             data.pages || 0
         );
-
 
     if (paginas) {
 
@@ -1304,30 +1644,34 @@ function crearResumen(data) {
     }
 
 
-    if (
-        data.client &&
-        data.client.texto
-    ) {
+    const cliente =
+        obtenerCliente(
+            data
+        );
+
+    if (cliente) {
 
         partes.push(
             "🏢 Cliente identificado: " +
-            limpiarComillas(
-                data.client.texto
-            )
+            cliente
         );
 
     }
 
 
+    const objetivos =
+        obtenerObjetivos(
+            data
+        );
+
     if (
-        Array.isArray(data.objective) &&
-        data.objective.length
+        objetivos.length
     ) {
 
         partes.push(
             "🎯 Objetivo detectado: " +
             limpiarComillas(
-                data.objective[0].texto
+                objetivos[0].texto
             )
         );
 
@@ -1335,12 +1679,6 @@ function crearResumen(data) {
 
 
     const categoriasDetectadas = [];
-
-
-    const categories =
-        data.categories ||
-        {};
-
 
     const nombres = {
 
@@ -1382,10 +1720,10 @@ function crearResumen(data) {
             key => {
 
                 if (
-                    Array.isArray(
-                        categories[key]
-                    ) &&
-                    categories[key].length
+                    itemsCategoria(
+                        data,
+                        key
+                    ).length
                 ) {
 
                     categoriasDetectadas.push(
@@ -1411,14 +1749,19 @@ function crearResumen(data) {
     }
 
 
+    const pregunta =
+        data.question ||
+        data.consultaPrioritaria ||
+        "";
+
     if (
-        data.question
+        pregunta
     ) {
 
         partes.push(
             "🔎 Además, se priorizó la búsqueda solicitada: " +
             limpiarComillas(
-                data.question
+                pregunta
             )
         );
 
@@ -1447,17 +1790,14 @@ function crearResumen(data) {
 
 function crearRiesgos(data) {
 
-    const categories =
-        data.categories ||
-        {};
-
-
     const riesgos = [];
 
 
     if (
-        !Array.isArray(categories.users) ||
-        !categories.users.length
+        !itemsCategoria(
+            data,
+            "users"
+        ).length
     ) {
 
         riesgos.push(
@@ -1468,8 +1808,10 @@ function crearRiesgos(data) {
 
 
     if (
-        !Array.isArray(categories.storage) ||
-        !categories.storage.length
+        !itemsCategoria(
+            data,
+            "storage"
+        ).length
     ) {
 
         riesgos.push(
@@ -1480,8 +1822,10 @@ function crearRiesgos(data) {
 
 
     if (
-        !Array.isArray(categories.integrations) ||
-        !categories.integrations.length
+        !itemsCategoria(
+            data,
+            "integrations"
+        ).length
     ) {
 
         riesgos.push(
@@ -1492,8 +1836,10 @@ function crearRiesgos(data) {
 
 
     if (
-        !Array.isArray(categories.deadlines) ||
-        !categories.deadlines.length
+        !itemsCategoria(
+            data,
+            "deadlines"
+        ).length
     ) {
 
         riesgos.push(
@@ -1516,17 +1862,11 @@ function crearRiesgos(data) {
 
 function crearFaltantes(data) {
 
-    const categories =
-        data.categories ||
-        {};
-
-
     const faltantes = [];
 
 
     if (
-        !Array.isArray(data.objective) ||
-        !data.objective.length
+        !obtenerObjetivos(data).length
     ) {
 
         faltantes.push(
@@ -1537,8 +1877,10 @@ function crearFaltantes(data) {
 
 
     if (
-        !Array.isArray(categories.users) ||
-        !categories.users.length
+        !itemsCategoria(
+            data,
+            "users"
+        ).length
     ) {
 
         faltantes.push(
@@ -1549,8 +1891,10 @@ function crearFaltantes(data) {
 
 
     if (
-        !Array.isArray(categories.documents) ||
-        !categories.documents.length
+        !itemsCategoria(
+            data,
+            "documents"
+        ).length
     ) {
 
         faltantes.push(
@@ -1561,8 +1905,10 @@ function crearFaltantes(data) {
 
 
     if (
-        !Array.isArray(categories.storage) ||
-        !categories.storage.length
+        !itemsCategoria(
+            data,
+            "storage"
+        ).length
     ) {
 
         faltantes.push(
@@ -1573,8 +1919,10 @@ function crearFaltantes(data) {
 
 
     if (
-        !Array.isArray(categories.deadlines) ||
-        !categories.deadlines.length
+        !itemsCategoria(
+            data,
+            "deadlines"
+        ).length
     ) {
 
         faltantes.push(
@@ -1597,14 +1945,11 @@ function crearFaltantes(data) {
 
 function recomendarSolucion(data) {
 
-    const categories =
-        data.categories ||
-        {};
-
-
     if (
-        Array.isArray(categories.workflows) &&
-        categories.workflows.length
+        itemsCategoria(
+            data,
+            "workflows"
+        ).length
     ) {
 
         return "Thuban";
@@ -1613,8 +1958,10 @@ function recomendarSolucion(data) {
 
 
     if (
-        Array.isArray(categories.ocr) &&
-        categories.ocr.length
+        itemsCategoria(
+            data,
+            "ocr"
+        ).length
     ) {
 
         return "Captika";
@@ -1623,8 +1970,10 @@ function recomendarSolucion(data) {
 
 
     if (
-        Array.isArray(categories.signatures) &&
-        categories.signatures.length
+        itemsCategoria(
+            data,
+            "signatures"
+        ).length
     ) {
 
         return "Firmas Addoc";
@@ -1643,16 +1992,16 @@ function recomendarSolucion(data) {
 
 function generarNombreProyecto(data) {
 
-    if (
-        data.client &&
-        data.client.texto
-    ) {
+    const cliente =
+        obtenerCliente(
+            data
+        );
+
+    if (cliente) {
 
         return (
             "Proyecto " +
-            limpiarComillas(
-                data.client.texto
-            )
+            cliente
         );
 
     }
@@ -1686,11 +2035,6 @@ function generarNombreProyecto(data) {
 function crearRequerimientos(data) {
 
     const partes = [];
-
-    const categories =
-        data.categories ||
-        {};
-
 
     const mapa = {
 
@@ -1729,11 +2073,15 @@ function crearRequerimientos(data) {
         .forEach(
             key => {
 
+                const items =
+                    itemsCategoria(
+                        data,
+                        key
+                    );
+
+
                 if (
-                    Array.isArray(
-                        categories[key]
-                    ) &&
-                    categories[key].length
+                    items.length
                 ) {
 
                     partes.push(
@@ -1741,7 +2089,7 @@ function crearRequerimientos(data) {
                         mapa[key] +
                         ": " +
                         formatearCategoria(
-                            categories[key],
+                            items,
                             ""
                         )
                     );
@@ -1816,13 +2164,6 @@ function renderAnalysis() {
         analysisData;
 
 
-    const categories =
-        data.categories ||
-        {};
-
-
-    /* ARCHIVO */
-
     document.getElementById(
         "sourceName"
     ).textContent =
@@ -1835,11 +2176,13 @@ function renderAnalysis() {
 
     const paginas =
         data.pages ||
+        data.extraction?.pagesProcessed ||
         0;
 
 
     const ocrPages =
         data.ocrPages ||
+        data.extraction?.ocrPages ||
         0;
 
 
@@ -1856,8 +2199,6 @@ function renderAnalysis() {
         );
 
 
-    /* RESUMEN */
-
     document.getElementById(
         "summary"
     ).textContent =
@@ -1865,8 +2206,6 @@ function renderAnalysis() {
             data
         );
 
-
-    /* METRICAS */
 
     const metrics =
         document.getElementById(
@@ -1878,18 +2217,37 @@ function renderAnalysis() {
         "";
 
 
+    const categoryKeys = [
+
+        "users",
+        "documents",
+        "volume",
+        "storage",
+        "ocr",
+        "fulltext",
+        "workflows",
+        "signatures",
+        "integrations",
+        "infrastructure",
+        "security",
+        "migration",
+        "support",
+        "deadlines",
+        "pricing"
+
+    ];
+
+
     const cantidadCategorias =
-        Object.keys(
-            categories
-        )
-        .filter(
-            key =>
-                Array.isArray(
-                    categories[key]
-                ) &&
-                categories[key].length
-        )
-        .length;
+        categoryKeys
+            .filter(
+                key =>
+                    itemsCategoria(
+                        data,
+                        key
+                    ).length
+            )
+            .length;
 
 
     const usuarios =
@@ -1979,16 +2337,20 @@ function renderAnalysis() {
     );
 
 
-    /* PRIORIDAD */
-
     const priorityBox =
         document.getElementById(
             "priorityBox"
         );
 
 
+    const pregunta =
+        data.question ||
+        data.consultaPrioritaria ||
+        "";
+
+
     if (
-        data.question
+        pregunta
     ) {
 
         priorityBox.style.display =
@@ -2001,7 +2363,7 @@ function renderAnalysis() {
             "<strong>Buscaste:</strong> " +
             escapeHTML(
                 limpiarComillas(
-                    data.question
+                    pregunta
                 )
             );
 
@@ -2020,22 +2382,50 @@ function renderAnalysis() {
 
     /* OBJETIVO */
 
+    const objetivos =
+        obtenerObjetivos(
+            data
+        );
+
+
     setField(
 
         "objective",
 
-        Array.isArray(
-            data.objective
-        ) && data.objective.length
+        objetivos.length
 
-            ? data.objective
+            ? objetivos
                 .map(
-                    item =>
-                        limpiarComillas(
-                            item.texto
-                        ) +
-                        "\n📄 Página " +
-                        item.page
+                    item => {
+
+                        let texto =
+                            limpiarComillas(
+                                item.texto
+                            );
+
+                        if (
+                            item.page
+                        ) {
+
+                            texto +=
+                                "\n📄 Página " +
+                                item.page;
+
+                        }
+
+                        if (
+                            item.source
+                        ) {
+
+                            texto +=
+                                " · " +
+                                item.source;
+
+                        }
+
+                        return texto;
+
+                    }
                 )
                 .join("\n\n")
 
@@ -2043,34 +2433,52 @@ function renderAnalysis() {
 
         "box-objective",
 
-        Boolean(
-            data.objective &&
-            data.objective.length
-        )
+        objetivos.length > 0
 
     );
 
 
     /* CLIENTE */
 
+    const cliente =
+        obtenerCliente(
+            data
+        );
+
+
+    let textoCliente =
+        cliente;
+
+
+    const paginaCliente =
+        obtenerPaginaCliente(
+            data
+        );
+
+
+    if (
+        paginaCliente
+    ) {
+
+        textoCliente +=
+            "\n📄 Página " +
+            paginaCliente;
+
+    }
+
+
     setField(
 
         "client",
 
-        data.client
-
-            ? limpiarComillas(
-                data.client.texto
-              ) +
-              "\n📄 Página " +
-              data.client.page
-
+        cliente
+            ? textoCliente
             : "No identificado claramente.",
 
         "box-client",
 
         Boolean(
-            data.client
+            cliente
         )
 
     );
@@ -2102,11 +2510,10 @@ function renderAnalysis() {
         key => {
 
             const items =
-                Array.isArray(
-                    categories[key]
-                )
-                ? categories[key]
-                : [];
+                itemsCategoria(
+                    data,
+                    key
+                );
 
 
             const encontrado =
@@ -2132,8 +2539,6 @@ function renderAnalysis() {
     );
 
 
-    /* DATOS PARA COTIZAR */
-
     setField(
 
         "pricing",
@@ -2148,8 +2553,6 @@ function renderAnalysis() {
 
     );
 
-
-    /* RIESGOS */
 
     setField(
 
@@ -2166,8 +2569,6 @@ function renderAnalysis() {
     );
 
 
-    /* FALTANTES */
-
     setField(
 
         "missing",
@@ -2182,8 +2583,6 @@ function renderAnalysis() {
 
     );
 
-
-    /* EVIDENCIA */
 
     renderEvidence(
         data
@@ -2252,17 +2651,10 @@ function setField(
 function extraerUsuarios(data) {
 
     const items =
-        data.categories &&
-        data.categories.users;
-
-
-    if (
-        !Array.isArray(items)
-    ) {
-
-        return "";
-
-    }
+        itemsCategoria(
+            data,
+            "users"
+        );
 
 
     for (
@@ -2270,8 +2662,12 @@ function extraerUsuarios(data) {
     ) {
 
         const texto =
-            item.texto ||
-            "";
+            String(
+                item.texto ||
+                item.text ||
+                item.value ||
+                ""
+            );
 
 
         const match =
@@ -2285,6 +2681,22 @@ function extraerUsuarios(data) {
         ) {
 
             return match[1];
+
+        }
+
+
+        if (
+            item.value &&
+            /^\d[\d.,]*$/.test(
+                String(
+                    item.value
+                ).trim()
+            )
+        ) {
+
+            return String(
+                item.value
+            ).trim();
 
         }
 
@@ -2320,11 +2732,6 @@ function renderPriority(data) {
         : [];
 
 
-    /*
-      Si documentos.html guardó resultados
-      prioritarios, los mostramos.
-    */
-
     if (
         resultados.length
     ) {
@@ -2348,11 +2755,6 @@ function renderPriority(data) {
 
     }
 
-
-    /*
-      Compatibilidad con versiones
-      anteriores del análisis.
-    */
 
     const pregunta =
         data.question ||
@@ -2388,20 +2790,17 @@ function renderPriority(data) {
     .forEach(
         items => {
 
-            if (
-                !Array.isArray(items)
-            ) {
-                return;
-            }
-
-
-            items.forEach(
+            obtenerItems(
+                items
+            )
+            .forEach(
                 item => {
 
                     const texto =
                         String(
                             item.texto ||
                             item.text ||
+                            item.value ||
                             ""
                         );
 
@@ -2446,7 +2845,8 @@ function renderPriority(data) {
                         item.page,
                         item.source,
                         item.texto ||
-                        item.text
+                        item.text ||
+                        item.value
                     );
 
                 }
@@ -2526,11 +2926,6 @@ function agregarPrioridad(
 
 function crearDatosCotizacion(data) {
 
-    const categories =
-        data.categories ||
-        {};
-
-
     const partes = [];
 
 
@@ -2540,18 +2935,22 @@ function crearDatosCotizacion(data) {
             key
         ) => {
 
+            const items =
+                itemsCategoria(
+                    data,
+                    key
+                );
+
+
             if (
-                Array.isArray(
-                    categories[key]
-                ) &&
-                categories[key].length
+                items.length
             ) {
 
                 partes.push(
                     titulo +
                     ":\n" +
                     formatearCategoria(
-                        categories[key],
+                        items,
                         ""
                     )
                 );
@@ -2674,6 +3073,7 @@ function renderEvidence(data) {
                     limpiarComillas(
                         item.texto ||
                         item.text ||
+                        item.value ||
                         ""
                     );
 
@@ -2777,24 +3177,17 @@ function openOpportunityModal() {
         analysisData;
 
 
-    const categories =
-        data.categories ||
-        {};
-
+    /* CLIENTE */
 
     document.getElementById(
         "opClient"
     ).value =
+        obtenerCliente(
+            data
+        );
 
-        data.client &&
-        data.client.texto
 
-            ? limpiarComillas(
-                data.client.texto
-              )
-
-            : "";
-
+    /* PROYECTO */
 
     document.getElementById(
         "opProject"
@@ -2804,6 +3197,8 @@ function openOpportunityModal() {
         );
 
 
+    /* SOLUCION */
+
     document.getElementById(
         "opSolution"
     ).value =
@@ -2812,81 +3207,103 @@ function openOpportunityModal() {
         );
 
 
+    /* ESTADO */
+
     document.getElementById(
         "opStatus"
     ).value =
         "Nueva";
 
 
+    /*
+       IMPORTANTE:
+       Acá no usamos formatearCategoria(),
+       porque no queremos que el formulario
+       quede lleno de "Página 2 · OCR".
+
+       Queremos el dato editable.
+       Ej:
+       10 usuarios -> 10
+       200 GB -> 200 GB
+    */
+
     document.getElementById(
         "opUsers"
     ).value =
-        formatearCategoria(
-            categories.users,
-            ""
+        valorConcreto(
+            data.categories?.users,
+            "users"
         );
 
 
     document.getElementById(
         "opStorage"
     ).value =
-        formatearCategoria(
-            categories.storage,
-            ""
+        valorConcreto(
+            data.categories?.storage,
+            "storage"
         );
 
 
     document.getElementById(
         "opDocuments"
     ).value =
-        formatearCategoria(
-            categories.documents,
-            ""
+        valorConcreto(
+            data.categories?.documents,
+            "documents"
         );
 
 
     document.getElementById(
         "opWorkflows"
     ).value =
-        formatearCategoria(
-            categories.workflows,
-            ""
+        valorConcreto(
+            data.categories?.workflows,
+            "workflows"
         );
 
 
     document.getElementById(
         "opOcr"
     ).value =
-        formatearCategoria(
-            categories.ocr,
-            ""
+        valorConcreto(
+            data.categories?.ocr,
+            "ocr"
         );
 
 
     document.getElementById(
         "opSignatures"
     ).value =
-        formatearCategoria(
-            categories.signatures,
-            ""
+        valorConcreto(
+            data.categories?.signatures,
+            "signatures"
         );
 
 
     document.getElementById(
         "opInfrastructure"
     ).value =
-        formatearCategoria(
-            categories.infrastructure,
-            ""
+        valorConcreto(
+            data.categories?.infrastructure,
+            "infrastructure"
         );
 
 
     document.getElementById(
         "opDeadline"
     ).value =
-        formatearCategoria(
-            categories.deadlines,
-            ""
+        valorConcreto(
+            data.categories?.deadlines,
+            "deadlines"
+        );
+
+
+    /* OBJETIVO */
+
+    const objetivos =
+        obtenerObjetivos(
+            data
         );
 
 
@@ -2894,12 +3311,9 @@ function openOpportunityModal() {
         "opObjective"
     ).value =
 
-        Array.isArray(
-            data.objective
-        ) &&
-        data.objective.length
+        objetivos.length
 
-            ? data.objective
+            ? objetivos
                 .map(
                     item =>
                         limpiarComillas(
@@ -2913,6 +3327,8 @@ function openOpportunityModal() {
             : "";
 
 
+    /* REQUERIMIENTOS */
+
     document.getElementById(
         "opRequirements"
     ).value =
@@ -2920,6 +3336,8 @@ function openOpportunityModal() {
             data
         );
 
+
+    /* RIESGOS */
 
     document.getElementById(
         "opRisks"
@@ -2929,17 +3347,23 @@ function openOpportunityModal() {
         );
 
 
+    /* NOTAS */
+
     document.getElementById(
         "opNotes"
     ).value =
 
         (
-            data.question
+            data.question ||
+            data.consultaPrioritaria
+
                 ? "Consulta prioritaria: " +
                   limpiarComillas(
-                      data.question
+                      data.question ||
+                      data.consultaPrioritaria
                   ) +
                   "\n\n"
+
                 : ""
         ) +
 
@@ -2964,7 +3388,7 @@ window.openOpportunityModal =
 
 
 /* =====================================================
-   CERRAR FORMULARIO
+   CERRAR MODAL
 ===================================================== */
 
 function closeOpportunityModal() {
@@ -2986,6 +3410,20 @@ window.closeOpportunityModal =
 ===================================================== */
 
 function saveOpportunity() {
+
+    /*
+       IMPORTANTE:
+       Se toman los valores DIRECTAMENTE
+       del formulario.
+
+       Si Documentos detectó:
+       Usuarios = 10
+
+       y vos lo cambiás a:
+       Usuarios = 5
+
+       acá se guarda 5.
+    */
 
     const opportunity = {
 
