@@ -491,6 +491,7 @@ function limpiarComillas(texto) {
     );
 
     return resultado.trim();
+
 }
 
 
@@ -565,6 +566,7 @@ document.getElementById("archivo").addEventListener(
         }
 
         archivoActual = file;
+        ultimoAnalisis = null;
 
         const preview = document.getElementById("preview");
         const pdfPreview = document.getElementById("pdfPreview");
@@ -604,7 +606,109 @@ document.getElementById("archivo").addEventListener(
 
 
 /* =========================================================
-   EXTRACCIÓN PDF
+   EXTRAER TEXTO NATIVO DE UNA PÁGINA
+========================================================= */
+
+async function extraerTextoNativo(pagina) {
+
+    const contenido = await pagina.getTextContent();
+
+    return limpiarTexto(
+        contenido.items
+            .map(item => item.str || "")
+            .join(" ")
+    );
+
+}
+
+
+/* =========================================================
+   OCR DE UNA PÁGINA
+========================================================= */
+
+async function ejecutarOCR(pagina, numeroPagina) {
+
+    if (typeof Tesseract === "undefined") {
+
+        console.warn(
+            "Tesseract no está disponible."
+        );
+
+        return "";
+
+    }
+
+    try {
+
+        const viewport = pagina.getViewport({
+            scale: 1.5
+        });
+
+        const canvas = document.createElement("canvas");
+
+        const contexto = canvas.getContext("2d", {
+            willReadFrequently: true
+        });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await pagina.render({
+            canvasContext: contexto,
+            viewport: viewport
+        }).promise;
+
+        mostrarStatus(
+            `🔍 OCR: procesando página ${numeroPagina}...`
+        );
+
+        const resultado = await Tesseract.recognize(
+            canvas,
+            "spa",
+            {
+                logger: function(info) {
+
+                    if (
+                        info.status === "recognizing text" &&
+                        typeof info.progress === "number"
+                    ) {
+
+                        const porcentaje =
+                            Math.round(
+                                info.progress * 100
+                            );
+
+                        mostrarStatus(
+                            `🔍 OCR: página ${numeroPagina} — ${porcentaje}%`
+                        );
+
+                    }
+
+                }
+            }
+        );
+
+        return limpiarTexto(
+            resultado.data.text || ""
+        );
+
+    } catch (error) {
+
+        console.error(
+            `Error OCR página ${numeroPagina}:`,
+            error
+        );
+
+        return "";
+
+    }
+
+}
+
+
+/* =========================================================
+   EXTRAER PDF
+   TODOS LOS PDF PASAN POR OCR
 ========================================================= */
 
 async function extraerPDF(file) {
@@ -617,30 +721,92 @@ async function extraerPDF(file) {
 
     paginasDocumento = pdf.numPages;
 
-    let paginas = [];
+    const paginas = [];
 
-    for (let numero = 1; numero <= pdf.numPages; numero++) {
+    for (
+        let numero = 1;
+        numero <= pdf.numPages;
+        numero++
+    ) {
 
-        const pagina = await pdf.getPage(numero);
+        mostrarStatus(
+            `📄 Procesando página ${numero} de ${pdf.numPages}...`
+        );
 
-        const contenido = await pagina.getTextContent();
+        const pagina =
+            await pdf.getPage(numero);
 
-        let texto = contenido.items
-            .map(item => item.str || "")
-            .join(" ");
+        /* -----------------------------------------
+           1. TEXTO NATIVO
+        ----------------------------------------- */
 
-        texto = limpiarTexto(texto);
+        const textoNativo =
+            await extraerTextoNativo(
+                pagina
+            );
+
+
+        /* -----------------------------------------
+           2. OCR
+           SE EJECUTA SIEMPRE
+        ----------------------------------------- */
+
+        const textoOCR =
+            await ejecutarOCR(
+                pagina,
+                numero
+            );
+
+
+        /* -----------------------------------------
+           3. COMBINAR RESULTADOS
+        ----------------------------------------- */
+
+        let textoFinal = "";
+
+        if (textoNativo) {
+
+            textoFinal +=
+                textoNativo;
+
+        }
+
+        if (textoOCR) {
+
+            if (textoFinal) {
+                textoFinal += " ";
+            }
+
+            textoFinal +=
+                textoOCR;
+
+        }
+
+
+        textoFinal =
+            limpiarTexto(textoFinal);
+
 
         paginas.push({
+
             page: numero,
-            text: texto
+
+            text: textoFinal,
+
+            nativeText: textoNativo,
+
+            ocrText: textoOCR
+
         });
 
     }
 
-    textoDocumento = paginas
-        .map(p => p.text)
-        .join("\n\n");
+
+    textoDocumento =
+        paginas
+            .map(p => p.text)
+            .join("\n\n");
+
 
     return paginas;
 
@@ -648,53 +814,59 @@ async function extraerPDF(file) {
 
 
 /* =========================================================
-   BUSCAR EVIDENCIA
+   EXTRAER FRAGMENTO CON CONTEXTO
 ========================================================= */
 
-function buscarEvidencia(paginas, palabras) {
+function extraerFragmento(texto, patron) {
 
-    const resultados = [];
+    const match =
+        texto.match(patron);
 
-    for (const pagina of paginas) {
-
-        const textoNormalizado = normalizar(pagina.text);
-
-        const coincide = palabras.some(
-            palabra =>
-                textoNormalizado.includes(
-                    normalizar(palabra)
-                )
-        );
-
-        if (coincide) {
-
-            resultados.push({
-                page: pagina.page,
-                text: limpiarComillas(
-                    pagina.text.substring(0, 700)
-                )
-            });
-
-        }
-
+    if (!match) {
+        return "";
     }
 
-    return resultados;
+    const inicio =
+        Math.max(
+            0,
+            match.index - 100
+        );
+
+    const fin =
+        Math.min(
+            texto.length,
+            match.index +
+            match[0].length +
+            180
+        );
+
+    return limpiarComillas(
+        limpiarTexto(
+            texto.substring(
+                inicio,
+                fin
+            )
+        )
+    );
 
 }
 
 
 /* =========================================================
-   DETECCIÓN DE DATOS
+   DETECTAR DATO CONCRETO
 ========================================================= */
 
 function detectarDato(texto, patrones) {
 
     for (const patron of patrones) {
 
-        const match = texto.match(patron);
+        const match =
+            texto.match(patron);
 
-        if (match && match[1]) {
+        if (
+            match &&
+            match[1]
+        ) {
 
             return limpiarComillas(
                 match[1].trim()
@@ -709,32 +881,394 @@ function detectarDato(texto, patrones) {
 }
 
 
-function extraerUsuarios(texto) {
+/* =========================================================
+   USUARIOS
+========================================================= */
 
-    return detectarDato(texto, [
+function detectarUsuariosEnPagina(texto) {
 
-        /(\d[\d\.\,]*)\s*(usuarios|user|users)/i,
+    const patrones = [
 
-        /usuarios\s*[:\-]?\s*(\d[\d\.\,]*)/i,
+        /(\d[\d.,]*)\s*(usuarios?\s*(?:concurrentes?)?|users?)/i,
 
-        /cantidad de usuarios\s*[:\-]?\s*(\d[\d\.\,]*)/i
+        /(?:cantidad|n[uú]mero|total)\s*(?:de\s*)?usuarios?\s*[:\-]?\s*(\d[\d.,]*)/i,
 
-    ]);
+        /usuarios?\s*[:\-]\s*(\d[\d.,]*)/i,
+
+        /hasta\s*(\d[\d.,]*)\s*usuarios?/i,
+
+        /(\d[\d.,]*)\s*usuarios?\s*concurrentes?/i
+
+    ];
+
+    for (const patron of patrones) {
+
+        const match =
+            texto.match(patron);
+
+        if (!match) {
+            continue;
+        }
+
+        let valor = "";
+
+        if (
+            patron.source.startsWith("(?:")
+        ) {
+
+            valor =
+                match[1];
+
+        } else {
+
+            valor =
+                match[1];
+
+        }
+
+        if (valor) {
+
+            return {
+                value: limpiarComillas(valor),
+                context: extraerFragmento(
+                    texto,
+                    patron
+                )
+            };
+
+        }
+
+    }
+
+    return null;
 
 }
 
 
-function detectarCategorias(texto) {
+/* =========================================================
+   CATEGORÍAS
+========================================================= */
 
-    const t = normalizar(texto);
+function detectarCategoriasPorPagina(pagina) {
+
+    const texto =
+        pagina.text || "";
+
+    const t =
+        normalizar(texto);
+
+    const resultado = {};
+
+    /* -----------------------------------------
+       USUARIOS
+    ----------------------------------------- */
+
+    const usuarios =
+        detectarUsuariosEnPagina(
+            texto
+        );
+
+    if (usuarios) {
+
+        resultado.users =
+            `${usuarios.value} usuarios — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       DOCUMENTOS / VOLUMEN
+    ----------------------------------------- */
+
+    const volumen =
+        detectarDato(
+            texto,
+            [
+
+                /(\d[\d.,]*)\s*(documentos|expedientes|legajos)/i,
+
+                /(?:cantidad|total|volumen)\s*(?:de\s*)?(?:documentos|expedientes|legajos)\s*[:\-]?\s*(\d[\d.,]*)/i
+
+            ]
+        );
+
+    if (volumen) {
+
+        resultado.volume =
+            `${volumen} documentos — Página ${pagina.page}`;
+
+        resultado.documents =
+            `${volumen} documentos — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       STORAGE
+    ----------------------------------------- */
+
+    const almacenamiento =
+        detectarDato(
+            texto,
+            [
+
+                /(\d[\d.,]*)\s*(gb|tb|mb)\b/i,
+
+                /(?:almacenamiento|storage|capacidad)\s*[:\-]?\s*(\d[\d.,]*\s*(?:gb|tb|mb))/i,
+
+                /(?:almacenamiento|storage|capacidad)[^.;]{0,80}(\d[\d.,]*\s*(?:gb|tb|mb))/i
+
+            ]
+        );
+
+    if (almacenamiento) {
+
+        resultado.storage =
+            `${almacenamiento} — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       OCR
+    ----------------------------------------- */
+
+    const tieneOCR =
+        /\bocr\b/i.test(texto) ||
+        /reconocimiento[ óo]+ptico de caracteres/i.test(texto) ||
+        /reconocimiento de caracteres/i.test(texto);
+
+    if (tieneOCR) {
+
+        const contexto =
+            extraerFragmento(
+                texto,
+                /\bocr\b|reconocimiento[ óo]+ptico de caracteres|reconocimiento de caracteres/i
+            );
+
+        resultado.ocr =
+            `Sí — Página ${pagina.page}${contexto ? ` — ${contexto}` : ""}`;
+
+    }
+
+
+    /* -----------------------------------------
+       TEXTO COMPLETO
+    ----------------------------------------- */
+
+    const tieneFullText =
+        /texto completo/i.test(texto) ||
+        /full[\s-]*text/i.test(texto) ||
+        /búsqueda por texto/i.test(texto) ||
+        /busqueda por texto/i.test(texto) ||
+        /búsqueda de texto/i.test(texto) ||
+        /busqueda de texto/i.test(texto);
+
+    if (tieneFullText) {
+
+        resultado.fulltext =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       WORKFLOWS
+    ----------------------------------------- */
+
+    const tieneWorkflow =
+        /\bworkflow(s)?\b/i.test(texto) ||
+        /flujo[s]? de trabajo/i.test(texto) ||
+        /circuito[s]? de aprobaci[oó]n/i.test(texto) ||
+        /proceso[s]? de aprobaci[oó]n/i.test(texto);
+
+    if (tieneWorkflow) {
+
+        resultado.workflows =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       FIRMAS
+    ----------------------------------------- */
+
+    const tieneFirma =
+        /firma digital/i.test(texto) ||
+        /firma electrónica/i.test(texto) ||
+        /firmas digitales/i.test(texto) ||
+        /firmas electrónicas/i.test(texto);
+
+    if (tieneFirma) {
+
+        resultado.signatures =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       INTEGRACIONES
+    ----------------------------------------- */
+
+    const tieneIntegracion =
+        /\bapi\b/i.test(texto) ||
+        /integraci[oó]n/i.test(texto) ||
+        /web service/i.test(texto) ||
+        /servicio web/i.test(texto);
+
+    if (tieneIntegracion) {
+
+        resultado.integrations =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       INFRAESTRUCTURA
+    ----------------------------------------- */
+
+    if (
+        /\bon[\s-]*premise\b/i.test(texto) ||
+        /\bon[\s-]*premises\b/i.test(texto) ||
+        /on premise/i.test(texto)
+    ) {
+
+        resultado.infrastructure =
+            `On-Premise — Página ${pagina.page}`;
+
+    } else if (
+        /\bcloud\b/i.test(texto) ||
+        /\bnube\b/i.test(texto)
+    ) {
+
+        resultado.infrastructure =
+            `Cloud — Página ${pagina.page}`;
+
+    } else if (
+        /\bservidor(es)?\b/i.test(texto) ||
+        /infraestructura/i.test(texto)
+    ) {
+
+        resultado.infrastructure =
+            `Se requieren referencias de infraestructura — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       SEGURIDAD
+    ----------------------------------------- */
+
+    if (
+        /seguridad/i.test(texto) ||
+        /autenticación/i.test(texto) ||
+        /autorización/i.test(texto) ||
+        /\bsso\b/i.test(texto)
+    ) {
+
+        resultado.security =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       MIGRACIÓN
+    ----------------------------------------- */
+
+    if (
+        /migración/i.test(texto) ||
+        /migracion/i.test(texto) ||
+        /\bmigrar\b/i.test(texto) ||
+        /migraci[oó]n de datos/i.test(texto)
+    ) {
+
+        resultado.migration =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       SOPORTE
+    ----------------------------------------- */
+
+    if (
+        /soporte/i.test(texto) ||
+        /mesa de ayuda/i.test(texto) ||
+        /help desk/i.test(texto)
+    ) {
+
+        resultado.support =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       PLAZOS
+    ----------------------------------------- */
+
+    const plazo =
+        detectarDato(
+            texto,
+            [
+
+                /(\d+)\s*(días|dias|semanas|meses)\b/i,
+
+                /plazo\s*[:\-]?\s*([^.;]+)/i,
+
+                /fecha límite\s*[:\-]?\s*([^.;]+)/i,
+
+                /fecha limite\s*[:\-]?\s*([^.;]+)/i
+
+            ]
+        );
+
+    if (plazo) {
+
+        resultado.deadlines =
+            `${plazo} — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       INFORMACIÓN ECONÓMICA
+    ----------------------------------------- */
+
+    if (
+        /precio/i.test(texto) ||
+        /presupuesto/i.test(texto) ||
+        /cotización/i.test(texto) ||
+        /cotizacion/i.test(texto) ||
+        /costo/i.test(texto) ||
+        /importe/i.test(texto)
+    ) {
+
+        resultado.pricing =
+            `Se detecta información económica — Página ${pagina.page}`;
+
+    }
+
+
+    return resultado;
+
+}
+
+
+/* =========================================================
+   DETECCIÓN GENERAL SOBRE TODAS LAS PÁGINAS
+========================================================= */
+
+function detectarCategorias(paginas) {
 
     const categorias = {
 
-        users: detectarDato(texto, [
-            /(\d[\d\.\,]*)\s*(usuarios|user|users)/i,
-            /usuarios\s*[:\-]?\s*(\d[\d\.\,]*)/i
-        ]),
-
+        users: "",
         documents: "",
         volume: "",
         storage: "",
@@ -753,199 +1287,187 @@ function detectarCategorias(texto) {
     };
 
 
-    if (
-        t.includes("documentos") ||
-        t.includes("expedientes") ||
-        t.includes("legajos")
-    ) {
+    for (const pagina of paginas) {
 
-        categorias.documents =
-            "Se detectan referencias a documentos, expedientes o legajos.";
+        const datos =
+            detectarCategoriasPorPagina(
+                pagina
+            );
 
-    }
+        Object.entries(datos)
+            .forEach(
+                ([clave, valor]) => {
 
+                    if (
+                        valor &&
+                        !categorias[clave]
+                    ) {
 
-    const volumen = detectarDato(texto, [
-        /(\d[\d\.\,]*)\s*(documentos|expedientes|legajos)/i
-    ]);
+                        categorias[clave] =
+                            valor;
 
-    if (volumen) {
-        categorias.volume = volumen;
-    }
+                    }
 
-
-    const almacenamiento = detectarDato(texto, [
-        /(\d[\d\.\,]*)\s*(gb|tb|mb)/i,
-        /almacenamiento\s*[:\-]?\s*([^.;]+)/i
-    ]);
-
-    if (almacenamiento) {
-        categorias.storage = almacenamiento;
-    }
-
-
-    if (
-        t.includes("ocr") ||
-        t.includes("reconocimiento óptico") ||
-        t.includes("reconocimiento de caracteres")
-    ) {
-
-        categorias.ocr =
-            "El documento contiene referencias a OCR o reconocimiento de caracteres.";
+                }
+            );
 
     }
 
+    return categorias;
 
-    if (
-        t.includes("texto completo") ||
-        t.includes("full text") ||
-        t.includes("búsqueda de texto") ||
-        t.includes("busqueda de texto")
-    ) {
-
-        categorias.fulltext =
-            "Se detecta necesidad de búsqueda o consulta por texto completo.";
-
-    }
+}
 
 
-    if (
-        t.includes("workflow") ||
-        t.includes("workflows") ||
-        t.includes("flujo de trabajo") ||
-        t.includes("circuito de aprobación")
-    ) {
+/* =========================================================
+   DETECTAR CLIENTE
+========================================================= */
 
-        categorias.workflows =
-            "Se detectan referencias a workflows, circuitos o procesos.";
+function detectarCliente(paginas) {
 
-    }
+    const patrones = [
 
+        /(?:cliente|empresa|comitente|raz[oó]n social)\s*[:\-]\s*([^.;\n]+)/i,
 
-    if (
-        t.includes("firma digital") ||
-        t.includes("firma electrónica") ||
-        t.includes("firmas digitales")
-    ) {
+        /(?:cliente|empresa)\s+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑ0-9 .,&_-]{2,80})/i
 
-        categorias.signatures =
-            "Se detectan requerimientos relacionados con firma digital o electrónica.";
+    ];
 
-    }
+    for (const pagina of paginas) {
 
+        for (const patron of patrones) {
 
-    if (
-        t.includes("api") ||
-        t.includes("integración") ||
-        t.includes("integraciones") ||
-        t.includes("web service")
-    ) {
+            const match =
+                pagina.text.match(
+                    patron
+                );
 
-        categorias.integrations =
-            "Se detectan referencias a integraciones, APIs o servicios externos.";
+            if (
+                match &&
+                match[1]
+            ) {
 
-    }
+                return {
+                    value: limpiarComillas(
+                        limpiarTexto(
+                            match[1]
+                        )
+                    ),
+                    page: pagina.page
+                };
 
-
-    if (
-        t.includes("cloud") ||
-        t.includes("nube") ||
-        t.includes("on-premise") ||
-        t.includes("on premise") ||
-        t.includes("servidor")
-    ) {
-
-        if (
-            t.includes("on-premise") ||
-            t.includes("on premise")
-        ) {
-
-            categorias.infrastructure =
-                "Se detecta infraestructura On-Premise.";
-
-        } else if (
-            t.includes("cloud") ||
-            t.includes("nube")
-        ) {
-
-            categorias.infrastructure =
-                "Se detecta infraestructura Cloud.";
-
-        } else {
-
-            categorias.infrastructure =
-                "Se detectan referencias a infraestructura o servidores.";
+            }
 
         }
 
     }
 
+    return null;
 
-    if (
-        t.includes("seguridad") ||
-        t.includes("autenticación") ||
-        t.includes("autorización") ||
-        t.includes("sso")
-    ) {
-
-        categorias.security =
-            "Se detectan requerimientos de seguridad, autenticación o autorización.";
-
-    }
+}
 
 
-    if (
-        t.includes("migración") ||
-        t.includes("migracion") ||
-        t.includes("migrar")
-    ) {
+/* =========================================================
+   DETECTAR OBJETIVO
+========================================================= */
 
-        categorias.migration =
-            "Se detectan referencias a migración de información o sistemas.";
+function detectarObjetivo(paginas) {
 
-    }
+    const patrones = [
 
+        /objetivo\s*[:\-]\s*([^.;]{20,500})/i,
 
-    if (
-        t.includes("soporte") ||
-        t.includes("mesa de ayuda") ||
-        t.includes("help desk")
-    ) {
+        /finalidad\s*[:\-]\s*([^.;]{20,500})/i,
 
-        categorias.support =
-            "Se detectan requerimientos relacionados con soporte.";
+        /propósito\s*[:\-]\s*([^.;]{20,500})/i,
 
-    }
+        /proposito\s*[:\-]\s*([^.;]{20,500})/i,
 
+        /se requiere\s+([^.;]{20,500})/i,
 
-    if (
-        t.includes("fecha límite") ||
-        t.includes("fecha limite") ||
-        t.includes("plazo") ||
-        t.includes("deadline")
-    ) {
+        /la solución deberá\s+([^.;]{20,500})/i,
 
-        categorias.deadlines =
-            "Se detectan referencias a plazos o fechas límite.";
+        /la solucion debera\s+([^.;]{20,500})/i
 
-    }
+    ];
 
+    for (const pagina of paginas) {
 
-    if (
-        t.includes("precio") ||
-        t.includes("presupuesto") ||
-        t.includes("cotización") ||
-        t.includes("cotizacion") ||
-        t.includes("costo")
-    ) {
+        for (const patron of patrones) {
 
-        categorias.pricing =
-            "El documento contiene referencias económicas, de presupuesto o cotización.";
+            const match =
+                pagina.text.match(
+                    patron
+                );
+
+            if (
+                match &&
+                match[1]
+            ) {
+
+                return {
+                    value: limpiarComillas(
+                        limpiarTexto(
+                            match[1]
+                        )
+                    ),
+                    page: pagina.page
+                };
+
+            }
+
+        }
 
     }
 
+    return null;
 
-    return categorias;
+}
+
+
+/* =========================================================
+   BUSCAR EVIDENCIA
+========================================================= */
+
+function buscarEvidencia(paginas, palabras) {
+
+    const resultados = [];
+
+    for (const pagina of paginas) {
+
+        const textoNormalizado =
+            normalizar(
+                pagina.text
+            );
+
+        const coincide =
+            palabras.some(
+                palabra =>
+                    textoNormalizado.includes(
+                        normalizar(palabra)
+                    )
+            );
+
+        if (coincide) {
+
+            resultados.push({
+
+                page: pagina.page,
+
+                text:
+                    limpiarComillas(
+                        pagina.text.substring(
+                            0,
+                            900
+                        )
+                    )
+
+            });
+
+        }
+
+    }
+
+    return resultados;
 
 }
 
@@ -954,43 +1476,74 @@ function detectarCategorias(texto) {
    CONSULTA PRIORITARIA
 ========================================================= */
 
-function buscarConsulta(consulta, paginas) {
+function buscarConsulta(
+    consulta,
+    paginas
+) {
 
-    const palabras = normalizar(consulta)
-        .split(/\s+/)
-        .filter(p => p.length > 3)
-        .slice(0, 10);
+    const palabras =
+        normalizar(consulta)
+            .split(/\s+/)
+            .filter(
+                p =>
+                    p.length > 3 &&
+                    ![
+                        "cuántos",
+                        "cuantos",
+                        "necesita",
+                        "necesitan",
+                        "qué",
+                        "que",
+                        "solicita",
+                        "solicitan",
+                        "necesita"
+                    ].includes(p)
+            )
+            .slice(0, 10);
+
 
     if (!palabras.length) {
 
         return {
+
             encontrado: false,
-            texto: "No se ingresó una consulta prioritaria."
+
+            texto:
+                "No se ingresó una consulta prioritaria."
+
         };
 
     }
 
 
-    const resultados = buscarEvidencia(
-        paginas,
-        palabras
-    );
+    const resultados =
+        buscarEvidencia(
+            paginas,
+            palabras
+        );
 
 
     if (!resultados.length) {
 
         return {
+
             encontrado: false,
+
             texto:
                 "No encontré una coincidencia directa con la búsqueda indicada. Revisá también el análisis general."
+
         };
 
     }
 
 
     return {
+
         encontrado: true,
-        resultados: resultados
+
+        resultados:
+            resultados
+
     };
 
 }
@@ -1020,9 +1573,13 @@ function construirAnalisis(
 
             page: pagina.page,
 
-            text: limpiarComillas(
-                pagina.text.substring(0, 700)
-            )
+            text:
+                limpiarComillas(
+                    pagina.text.substring(
+                        0,
+                        900
+                    )
+                )
 
         });
 
@@ -1031,15 +1588,67 @@ function construirAnalisis(
 
     const temas = [];
 
-    Object.entries(categorias).forEach(
-        ([clave, valor]) => {
+    Object.entries(categorias)
+        .forEach(
+            ([clave, valor]) => {
 
-            if (valor) {
-                temas.push(clave);
+                if (valor) {
+                    temas.push(clave);
+                }
+
             }
+        );
 
-        }
-    );
+
+    const cliente =
+        detectarCliente(
+            paginas
+        );
+
+    const objetivo =
+        detectarObjetivo(
+            paginas
+        );
+
+
+    /*
+     * Datos enriquecidos.
+     * Los dejamos además de "categories"
+     * para que analisis.html pueda utilizarlos
+     * sin romper la estructura existente.
+     */
+
+    const categoryDetails = {};
+
+
+    Object.entries(categorias)
+        .forEach(
+            ([clave, valor]) => {
+
+                if (!valor) {
+                    return;
+                }
+
+                const paginaMatch =
+                    valor.match(
+                        /Página\s+(\d+)/i
+                    );
+
+                categoryDetails[clave] = {
+
+                    value: valor,
+
+                    page:
+                        paginaMatch
+                            ? Number(
+                                paginaMatch[1]
+                            )
+                            : null
+
+                };
+
+            }
+        );
 
 
     return {
@@ -1048,21 +1657,67 @@ function construirAnalisis(
 
         pages: paginas.length,
 
-        consultaPrioritaria: consulta,
+        consultaPrioritaria:
+            consulta,
 
-        prioridad: prioridad,
+        prioridad:
+            prioridad,
 
         objective:
-            consulta ||
-            "Analizar los requerimientos de Preventa del documento.",
+            objetivo
+                ? objetivo.value
+                : (
+                    consulta ||
+                    "Analizar los requerimientos de Preventa del documento."
+                ),
 
-        client: "",
+        objectivePage:
+            objetivo
+                ? objetivo.page
+                : null,
+
+        client:
+            cliente
+                ? cliente.value
+                : "",
+
+        clientPage:
+            cliente
+                ? cliente.page
+                : null,
 
         temas: temas,
 
-        categories: categorias,
+        categories:
+            categorias,
 
-        evidence: evidencia
+        categoryDetails:
+            categoryDetails,
+
+        evidence:
+            evidencia,
+
+        /*
+         * Información adicional para la V2.
+         */
+
+        extraction: {
+
+            nativeTextAvailable:
+                paginas.some(
+                    p => !!p.nativeText
+                ),
+
+            ocrExecuted:
+                true,
+
+            pagesProcessed:
+                paginas.length
+
+        },
+
+        generatedAt:
+            new Date().toISOString()
 
     };
 
@@ -1073,10 +1728,14 @@ function construirAnalisis(
    MOSTRAR CATEGORÍAS
 ========================================================= */
 
-function mostrarCategorias(categorias) {
+function mostrarCategorias(
+    categorias
+) {
 
     const grid =
-        document.getElementById("categoryGrid");
+        document.getElementById(
+            "categoryGrid"
+        );
 
     grid.innerHTML = "";
 
@@ -1116,39 +1775,59 @@ function mostrarCategorias(categorias) {
     };
 
 
-    Object.entries(categorias).forEach(
-        ([clave, valor]) => {
+    Object.entries(categorias)
+        .forEach(
+            ([clave, valor]) => {
 
-            if (!valor) {
-                return;
+                if (!valor) {
+                    return;
+                }
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "category-card";
+
+                card.innerHTML = `
+                    <h4>
+                        ${escaparHTML(
+                            nombres[clave] ||
+                            clave
+                        )}
+                    </h4>
+
+                    <p class="result-content">
+                        ${escaparHTML(
+                            limpiarComillas(
+                                valor
+                            )
+                        )}
+                    </p>
+                `;
+
+                grid.appendChild(card);
+
             }
-
-            const card =
-                document.createElement("div");
-
-            card.className = "category-card";
-
-            card.innerHTML = `
-                <h4>${escaparHTML(nombres[clave] || clave)}</h4>
-                <p class="result-content">
-                    ${escaparHTML(limpiarComillas(valor))}
-                </p>
-            `;
-
-            grid.appendChild(card);
-
-        }
-    );
+        );
 
 
     if (!grid.children.length) {
 
         grid.innerHTML = `
             <div class="category-card">
-                <h4>ℹ️ Sin datos concretos</h4>
+
+                <h4>
+                    ℹ️ Sin datos concretos
+                </h4>
+
                 <p>
-                    No se detectaron datos específicos en las categorías analizadas.
+                    No se detectaron datos específicos
+                    en las categorías analizadas.
                 </p>
+
             </div>
         `;
 
@@ -1161,35 +1840,54 @@ function mostrarCategorias(categorias) {
    MOSTRAR EVIDENCIA
 ========================================================= */
 
-function mostrarEvidencia(evidencia) {
+function mostrarEvidencia(
+    evidencia
+) {
 
     const contenedor =
-        document.getElementById("evidenceList");
+        document.getElementById(
+            "evidenceList"
+        );
 
     contenedor.innerHTML = "";
 
 
     evidencia
         .slice(0, 20)
-        .forEach(item => {
+        .forEach(
+            item => {
 
-            const div =
-                document.createElement("div");
+                const div =
+                    document.createElement(
+                        "div"
+                    );
 
-            div.className = "evidence-item";
+                div.className =
+                    "evidence-item";
 
-            div.innerHTML = `
-                <strong>Página ${item.page}</strong>
-                <div class="result-content">
-                    ${escaparHTML(
-                        limpiarComillas(item.text)
-                    )}
-                </div>
-            `;
+                div.innerHTML = `
 
-            contenedor.appendChild(div);
+                    <strong>
+                        Página ${item.page}
+                    </strong>
 
-        });
+                    <div class="result-content">
+
+                        ${escaparHTML(
+                            limpiarComillas(
+                                item.text
+                            )
+                        )}
+
+                    </div>
+                `;
+
+                contenedor.appendChild(
+                    div
+                );
+
+            }
+        );
 
 
     if (!contenedor.children.length) {
@@ -1220,27 +1918,40 @@ async function analyzeDocument() {
 
 
     const consulta =
-        document.getElementById("consulta")
-            .value
-            .trim();
+        document.getElementById(
+            "consulta"
+        ).value.trim();
 
 
     const loading =
-        document.getElementById("loading");
+        document.getElementById(
+            "loading"
+        );
 
     const resultados =
-        document.getElementById("resultados");
+        document.getElementById(
+            "resultados"
+        );
 
     const priorityResult =
-        document.getElementById("priorityResult");
+        document.getElementById(
+            "priorityResult"
+        );
 
     const priorityContent =
-        document.getElementById("priorityContent");
+        document.getElementById(
+            "priorityContent"
+        );
 
 
-    loading.classList.remove("hidden");
+    loading.classList.remove(
+        "hidden"
+    );
 
-    resultados.classList.add("hidden");
+    resultados.classList.add(
+        "hidden"
+    );
+
 
     document.getElementById(
         "loadingText"
@@ -1254,8 +1965,11 @@ async function analyzeDocument() {
 
 
         if (
-            archivoActual.type === "application/pdf" ||
-            archivoActual.name.toLowerCase().endsWith(".pdf")
+            archivoActual.type ===
+                "application/pdf" ||
+            archivoActual.name
+                .toLowerCase()
+                .endsWith(".pdf")
         ) {
 
             paginas =
@@ -1266,10 +1980,20 @@ async function analyzeDocument() {
         } else {
 
             paginas = [
+
                 {
                     page: 1,
-                    text: textoDocumento
+
+                    text:
+                        textoDocumento,
+
+                    nativeText:
+                        textoDocumento,
+
+                    ocrText: ""
+
                 }
+
             ];
 
         }
@@ -1281,9 +2005,15 @@ async function analyzeDocument() {
             "🧠 Analizando requerimientos de Preventa...";
 
 
+        /*
+         * Ahora analizamos por página.
+         * Esto permite conservar el origen
+         * de cada dato.
+         */
+
         const categorias =
             detectarCategorias(
-                textoDocumento
+                paginas
             );
 
 
@@ -1298,16 +2028,28 @@ async function analyzeDocument() {
 
             priorityContent.innerHTML =
                 prioridad.resultados
-                    .map(item => `
-                        <div class="evidence-item">
-                            <strong>Página ${item.page}</strong>
-                            <div class="result-content">
-                                ${escaparHTML(
-                                    limpiarComillas(item.text)
-                                )}
+                    .map(
+                        item => `
+
+                            <div class="evidence-item">
+
+                                <strong>
+                                    Página ${item.page}
+                                </strong>
+
+                                <div class="result-content">
+
+                                    ${escaparHTML(
+                                        limpiarComillas(
+                                            item.text
+                                        )
+                                    )}
+
+                                </div>
+
                             </div>
-                        </div>
-                    `)
+                        `
+                    )
                     .join("");
 
         } else {
@@ -1324,7 +2066,9 @@ async function analyzeDocument() {
             "block";
 
 
-        mostrarCategorias(categorias);
+        mostrarCategorias(
+            categorias
+        );
 
 
         const analisis =
@@ -1342,22 +2086,33 @@ async function analyzeDocument() {
         );
 
 
-        ultimoAnalisis = analisis;
+        ultimoAnalisis =
+            analisis;
 
+
+        /*
+         * Guardamos el análisis completo.
+         */
 
         localStorage.setItem(
             "preventa_document_analysis",
-            JSON.stringify(analisis)
+            JSON.stringify(
+                analisis
+            )
         );
 
 
-        loading.classList.add("hidden");
+        loading.classList.add(
+            "hidden"
+        );
 
-        resultados.classList.remove("hidden");
+        resultados.classList.remove(
+            "hidden"
+        );
 
 
         mostrarStatus(
-            "✅ Análisis terminado correctamente."
+            "✅ Análisis terminado correctamente. OCR + extracción procesados."
         );
 
 
@@ -1369,13 +2124,21 @@ async function analyzeDocument() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error completo:",
+            error
+        );
 
-        loading.classList.add("hidden");
+
+        loading.classList.add(
+            "hidden"
+        );
+
 
         mostrarStatus(
             "❌ Ocurrió un error al analizar el documento."
         );
+
 
         alert(
             "No se pudo analizar el documento. Revisá la consola si querés ver el detalle."
@@ -1385,7 +2148,8 @@ async function analyzeDocument() {
 
 }
 
-window.analyzeDocument = analyzeDocument;
+window.analyzeDocument =
+    analyzeDocument;
 
 
 /* =========================================================
@@ -1396,7 +2160,8 @@ function pasarAAnalisis() {
 
     try {
 
-        let datos = ultimoAnalisis;
+        let datos =
+            ultimoAnalisis;
 
 
         if (!datos) {
@@ -1410,7 +2175,9 @@ function pasarAAnalisis() {
             if (guardado) {
 
                 datos =
-                    JSON.parse(guardado);
+                    JSON.parse(
+                        guardado
+                    );
 
             }
 
@@ -1428,12 +2195,17 @@ function pasarAAnalisis() {
         }
 
 
-        /* Guardamos nuevamente para asegurarnos
-           de que analisis.html reciba el resultado */
+        /*
+         * Guardamos nuevamente para asegurar
+         * que analisis.html reciba exactamente
+         * el último análisis realizado.
+         */
 
         localStorage.setItem(
             "preventa_document_analysis",
-            JSON.stringify(datos)
+            JSON.stringify(
+                datos
+            )
         );
 
 
@@ -1442,12 +2214,6 @@ function pasarAAnalisis() {
         );
 
 
-        /*
-         * URL relativa robusta:
-         * funciona aunque el proyecto esté
-         * publicado dentro de una carpeta.
-         */
-
         const destino =
             new URL(
                 "analisis.html",
@@ -1455,7 +2221,9 @@ function pasarAAnalisis() {
             ).href;
 
 
-        window.location.assign(destino);
+        window.location.assign(
+            destino
+        );
 
 
     } catch (error) {
@@ -1464,6 +2232,7 @@ function pasarAAnalisis() {
             "Error al pasar a análisis:",
             error
         );
+
 
         alert(
             "No se pudo abrir la pantalla de Análisis."
@@ -1474,15 +2243,10 @@ function pasarAAnalisis() {
 }
 
 
-/*
- * Además del onclick, dejamos el evento
- * conectado directamente al botón.
- * Esto evita que falle si el navegador
- * tiene algún problema con el onclick.
- */
-
 document
-    .getElementById("btnPasarAnalisis")
+    .getElementById(
+        "btnPasarAnalisis"
+    )
     .addEventListener(
         "click",
         pasarAAnalisis
@@ -1496,7 +2260,9 @@ window.pasarAAnalisis =
 
 
 <!-- Tesseract OCR -->
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+</script>
 
 </body>
 </html>
