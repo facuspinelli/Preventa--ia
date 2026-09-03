@@ -1,1505 +1,938 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Repositorio | PREVENTA IA</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+<script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
 
 <style>
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  color: #1f2937;
-}
-
-header {
-  background: #111827;
-  color: white;
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.back {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-.welcome {
-  margin-bottom: 30px;
-}
-
-.welcome h2 {
-  margin-bottom: 8px;
-}
-
-.summary {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
+*{
+  box-sizing:border-box;
 }
 
-.summary-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f6f8;
+  color:#1f2937;
 }
 
-.summary-title {
-  font-size: 12px;
-  color: #6b7280;
-  margin-bottom: 8px;
+header{
+  background:#111827;
+  color:white;
+  padding:20px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.summary-value {
-  font-size: 25px;
-  font-weight: bold;
+header h1{
+  margin:0;
+  font-size:24px;
 }
 
-.search-box {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+header span{
+  color:#9ca3af;
+  font-size:14px;
 }
 
-.search-box input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 15px;
+.container{
+  max-width:1400px;
+  margin:0 auto;
+  padding:25px;
 }
 
-.opportunities {
-  display: grid;
-  gap: 18px;
+.summary{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:15px;
+  margin-bottom:25px;
 }
 
-.opportunity {
-  background: white;
-  border-radius: 14px;
-  padding: 24px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+.summary-card{
+  background:white;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.06);
 }
 
-.opportunity-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
+.summary-card small{
+  display:block;
+  color:#6b7280;
+  margin-bottom:8px;
 }
 
-.opportunity-title h3 {
-  margin: 0 0 7px 0;
-  font-size: 20px;
+.summary-card strong{
+  font-size:28px;
 }
 
-.opportunity-title p {
-  margin: 4px 0;
-  color: #6b7280;
-  font-size: 14px;
+.search-box{
+  background:white;
+  padding:18px;
+  border-radius:14px;
+  margin-bottom:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.05);
 }
 
-.status {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  margin-top: 8px;
+.search-box input{
+  width:100%;
+  padding:13px 15px;
+  border:1px solid #d1d5db;
+  border-radius:9px;
+  font-size:15px;
 }
 
-.analysis {
-  background: #fef3c7;
-  color: #92400e;
+.opportunity{
+  background:white;
+  border-radius:16px;
+  padding:22px;
+  margin-bottom:20px;
+  box-shadow:0 3px 14px rgba(0,0,0,.07);
 }
 
-.quote {
-  background: #dbeafe;
-  color: #1e40af;
+.op-header{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+  margin-bottom:15px;
 }
 
-.proposal {
-  background: #e0e7ff;
-  color: #3730a3;
+.op-header h2{
+  margin:0 0 6px;
+  font-size:20px;
 }
 
-.won {
-  background: #dcfce7;
-  color: #166534;
+.client{
+  color:#6b7280;
+  font-size:14px;
 }
 
-.lost {
-  background: #fee2e2;
-  color: #991b1b;
+.status{
+  padding:7px 12px;
+  border-radius:20px;
+  font-weight:bold;
+  font-size:13px;
+  white-space:nowrap;
 }
 
-.data-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-top: 20px;
+.status-analysis{
+  background:#e0f2fe;
+  color:#0369a1;
 }
 
-.data-card {
-  background: #f9fafb;
-  padding: 14px;
-  border-radius: 8px;
+.status-proposal{
+  background:#ede9fe;
+  color:#6d28d9;
 }
 
-.data-label {
-  font-size: 11px;
-  color: #6b7280;
-  margin-bottom: 5px;
+.status-won{
+  background:#dcfce7;
+  color:#166534;
 }
 
-.data-value {
-  font-weight: bold;
-  font-size: 14px;
+.status-lost{
+  background:#fee2e2;
+  color:#991b1b;
 }
 
-.quote-section {
-  margin-top: 22px;
-  padding: 18px;
-  border-radius: 10px;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+.data-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px;
+  margin:18px 0;
 }
 
-.quote-title {
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #166534;
+.data-item{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:10px;
 }
 
-.quote-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+.data-item small{
+  display:block;
+  color:#6b7280;
+  font-size:11px;
+  margin-bottom:4px;
 }
 
-.quote-card {
-  padding: 16px;
-  border-radius: 8px;
-  background: white;
-  border: 1px solid #dcfce7;
+.data-item strong{
+  font-size:14px;
 }
 
-.quote-label {
-  font-size: 11px;
-  color: #6b7280;
+.quote-box{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:15px;
+  margin-top:15px;
 }
 
-.quote-value {
-  font-weight: bold;
-  font-size: 19px;
-  margin-top: 5px;
-  color: #166534;
+.quote-box h3{
+  margin:0 0 12px;
+  font-size:15px;
 }
 
-.no-quote {
-  margin-top: 22px;
-  padding: 14px;
-  border-radius: 8px;
-  background: #fff7ed;
-  color: #9a3412;
-  font-size: 13px;
+.quote-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
 }
 
-.proposal-section {
-  margin-top: 22px;
-  padding: 18px;
-  border-radius: 10px;
-  background: #f5f3ff;
-  border: 1px solid #ddd6fe;
+.quote-value{
+  background:white;
+  border-radius:9px;
+  padding:10px;
+  border:1px solid #e5e7eb;
 }
 
-.proposal-title {
-  font-weight: bold;
-  color: #5b21b6;
-  margin-bottom: 10px;
+.quote-value small{
+  display:block;
+  color:#6b7280;
+  font-size:11px;
 }
 
-.proposal-file {
-  font-size: 13px;
-  color: #6b7280;
-  line-height: 1.5;
+.quote-value strong{
+  font-size:14px;
 }
 
-.actions {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.proposal-box{
+  margin-top:15px;
+  border:1px solid #ddd6fe;
+  background:#faf5ff;
+  padding:15px;
+  border-radius:12px;
 }
 
-button {
-  border: none;
-  border-radius: 8px;
-  padding: 10px 15px;
-  cursor: pointer;
-  font-size: 13px;
-  background: #111827;
-  color: white;
+.proposal-box h3{
+  margin:0 0 8px;
+  color:#6d28d9;
 }
 
-button:hover {
-  background: #374151;
+.proposal-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
 }
 
-.secondary {
-  background: #e5e7eb;
-  color: #1f2937;
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:18px;
 }
 
-.secondary:hover {
-  background: #d1d5db;
+button{
+  border:0;
+  border-radius:9px;
+  padding:10px 13px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:13px;
 }
 
-.green {
-  background: #166534;
+.btn-primary{
+  background:#2563eb;
+  color:white;
 }
 
-.green:hover {
-  background: #15803d;
+.btn-secondary{
+  background:#e5e7eb;
+  color:#111827;
 }
 
-.purple {
-  background: #7c3aed;
+.btn-green{
+  background:#16a34a;
+  color:white;
 }
 
-.purple:hover {
-  background: #6d28d9;
+.btn-purple{
+  background:#7c3aed;
+  color:white;
 }
 
-.red {
-  background: #dc2626;
+.btn-red{
+  background:#dc2626;
+  color:white;
 }
 
-.red:hover {
-  background: #b91c1c;
+.btn-danger{
+  background:#991b1b;
+  color:white;
 }
 
-.orange {
-  background: #d97706;
+.empty{
+  background:white;
+  padding:45px;
+  text-align:center;
+  border-radius:15px;
+  color:#6b7280;
 }
 
-.orange:hover {
-  background: #b45309;
+/* CIERRE */
+.closure-box{
+  margin-top:15px;
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+  background:#fafafa;
 }
 
-.detail {
-  display: none;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+.closure-box.won{
+  border-color:#bbf7d0;
+  background:#f0fdf4;
 }
 
-.detail-section {
-  margin-bottom: 20px;
+.closure-box.lost{
+  border-color:#fecaca;
+  background:#fef2f2;
 }
 
-.detail-section h4 {
-  margin-bottom: 8px;
+.closure-title{
+  font-weight:bold;
+  margin-bottom:8px;
 }
 
-.detail-text {
-  background: #f9fafb;
-  padding: 14px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  line-height: 1.5;
-  font-size: 14px;
+.closure-row{
+  margin-top:6px;
+  font-size:14px;
 }
 
-.empty {
-  background: white;
-  border-radius: 12px;
-  padding: 50px;
-  text-align: center;
-  color: #6b7280;
+.closure-row strong{
+  margin-right:5px;
 }
 
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+.closure-date{
+  color:#6b7280;
+  font-size:12px;
+  margin-top:8px;
 }
 
-.modal-content {
-  width: 100%;
-  max-width: 1000px;
-  max-height: 92vh;
-  background: white;
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+/* MODALES */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
 
-.modal-form {
-  max-width: 800px;
-  max-height: 92vh;
-  overflow-y: auto;
-  padding: 30px;
+.modal-content{
+  width:100%;
+  max-width:650px;
+  max-height:90vh;
+  overflow:auto;
+  background:white;
+  border-radius:16px;
+  padding:25px;
+  box-shadow:0 15px 50px rgba(0,0,0,.25);
 }
 
-.modal-header {
-  padding: 18px 22px;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
+.modal-content h2{
+  margin-top:0;
 }
 
-.modal-header h3 {
-  margin: 0;
-  font-size: 17px;
+.form-group{
+  margin-bottom:15px;
 }
 
-.preview {
-  flex: 1;
-  overflow-y: auto;
-  padding: 35px;
-  background: #e5e7eb;
+.form-group label{
+  display:block;
+  font-weight:bold;
+  font-size:13px;
+  margin-bottom:6px;
 }
 
-.document-page {
-  max-width: 800px;
-  margin: auto;
-  min-height: 100%;
-  background: white;
-  padding: 50px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-  line-height: 1.6;
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  font-size:14px;
+  font-family:inherit;
 }
 
-.document-page h1,
-.document-page h2,
-.document-page h3 {
-  margin-top: 20px;
+.form-group textarea{
+  min-height:100px;
+  resize:vertical;
 }
 
-.document-page table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:20px;
 }
 
-.document-page td,
-.document-page th {
-  border: 1px solid #999;
-  padding: 8px;
+.close-x{
+  float:right;
+  font-size:24px;
+  cursor:pointer;
+  color:#6b7280;
 }
-
-.close-button {
-  background: #e5e7eb;
-  color: #1f2937;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-
-.form-group.full {
-  grid-column: 1 / -1;
-}
-
-label {
-  display: block;
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid #d1d5db;
-  border-radius: 7px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-}
-
-textarea {
-  min-height: 90px;
-  resize: vertical;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: #2563eb;
-}
-
-.modal-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 25px;
-}
-
-@media (max-width: 1000px) {
 
-  .summary {
-    grid-template-columns: repeat(3, 1fr);
+@media(max-width:900px){
+  .summary{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .data-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .quote-grid{
+    grid-template-columns:1fr;
   }
-
 }
 
-@media (max-width: 800px) {
-
-  header {
-    flex-direction: column;
-    gap: 15px;
+@media(max-width:600px){
+  .container{
+    padding:15px;
   }
 
-  .opportunity-header {
-    flex-direction: column;
+  .summary{
+    grid-template-columns:1fr;
   }
 
-  .quote-grid {
-    grid-template-columns: 1fr;
+  .op-header{
+    flex-direction:column;
   }
-
 }
-
-@media (max-width: 700px) {
-
-  .summary {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .form-group.full {
-    grid-column: auto;
-  }
-
-}
-
-@media (max-width: 550px) {
-
-  .summary,
-  .data-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .document-page {
-    padding: 25px;
-  }
-
-  .preview {
-    padding: 15px;
-  }
-
-}
-
 </style>
-
 </head>
 
 <body>
 
 <header>
-
-  <h1>🗂️ PREVENTA IA</h1>
-
-  <a
-    href="index.html"
-    class="back"
-  >
-    ← Volver al inicio
-  </a>
-
+  <div>
+    <h1>📚 Repositorio</h1>
+    <span>PREVENTA IA · Oportunidades, cotizaciones y propuestas</span>
+  </div>
 </header>
 
-<main class="container">
-
-  <div class="welcome">
-
-    <h2>🗂️ Repositorio de Preventa</h2>
-
-    <p>
-      Historial centralizado de oportunidades,
-      cotizaciones y propuestas finales.
-    </p>
-
-  </div>
+<div class="container">
 
   <div class="summary">
-
     <div class="summary-card">
-
-      <div class="summary-title">
-        OPORTUNIDADES
-      </div>
-
-      <div
-        id="totalOpportunities"
-        class="summary-value"
-      >
-        0
-      </div>
-
+      <small>Oportunidades</small>
+      <strong id="totalOpps">0</strong>
     </div>
 
     <div class="summary-card">
-
-      <div class="summary-title">
-        EN ANÁLISIS
-      </div>
-
-      <div
-        id="analysisCount"
-        class="summary-value"
-      >
-        0
-      </div>
-
+      <small>En análisis</small>
+      <strong id="analysisCount">0</strong>
     </div>
 
     <div class="summary-card">
-
-      <div class="summary-title">
-        COTIZADAS
-      </div>
-
-      <div
-        id="quoteCount"
-        class="summary-value"
-      >
-        0
-      </div>
-
+      <small>Con cotización</small>
+      <strong id="quoteCount">0</strong>
     </div>
 
     <div class="summary-card">
-
-      <div class="summary-title">
-        GANADAS
-      </div>
-
-      <div
-        id="wonCount"
-        class="summary-value"
-      >
-        0
-      </div>
-
+      <small>Ganadas</small>
+      <strong id="wonCount">0</strong>
     </div>
 
     <div class="summary-card">
-
-      <div class="summary-title">
-        PERDIDAS
-      </div>
-
-      <div
-        id="lostCount"
-        class="summary-value"
-      >
-        0
-      </div>
-
+      <small>Perdidas</small>
+      <strong id="lostCount">0</strong>
     </div>
-
   </div>
 
   <div class="search-box">
-
     <input
-      id="search"
       type="text"
-      placeholder="🔎 Buscar por cliente, oportunidad o solución..."
+      id="searchInput"
+      placeholder="🔎 Buscar por cliente, proyecto, solución o producto..."
+      oninput="renderOpportunities()"
     >
-
   </div>
 
-  <div
-    id="opportunities"
-    class="opportunities"
-  ></div>
+  <div id="opportunitiesContainer"></div>
 
-</main>
+</div>
 
-<div
-  id="previewModal"
-  class="modal"
->
+
+<!-- MODAL EDITAR -->
+<div class="modal" id="editModal">
 
   <div class="modal-content">
 
-    <div class="modal-header">
+    <span class="close-x" onclick="closeEditModal()">×</span>
 
-      <h3 id="previewTitle">
-        📄 Propuesta final
-      </h3>
+    <h2>✏️ Editar oportunidad</h2>
 
-      <button
-        class="close-button"
-        onclick="closePreview()"
-      >
-        ✕ Cerrar
-      </button>
+    <input type="hidden" id="editId">
 
+    <div class="form-group">
+      <label>Cliente</label>
+      <input id="editClient">
     </div>
 
-    <div
-      id="preview"
-      class="preview"
-    >
+    <div class="form-group">
+      <label>Proyecto</label>
+      <input id="editProject">
+    </div>
 
-      <div class="document-page">
-        Cargando propuesta...
-      </div>
+    <div class="form-group">
+      <label>Solución</label>
+      <input id="editSolution">
+    </div>
 
+    <div class="form-group">
+      <label>Usuarios</label>
+      <input id="editUsers">
+    </div>
+
+    <div class="form-group">
+      <label>Almacenamiento</label>
+      <input id="editStorage">
+    </div>
+
+    <div class="form-group">
+      <label>Documentos</label>
+      <input id="editDocuments">
+    </div>
+
+    <div class="form-group">
+      <label>Workflows</label>
+      <input id="editWorkflows">
+    </div>
+
+    <div class="form-group">
+      <label>OCR</label>
+      <input id="editOCR">
+    </div>
+
+    <div class="form-group">
+      <label>Firmas</label>
+      <input id="editSignatures">
+    </div>
+
+    <div class="form-group">
+      <label>Infraestructura</label>
+      <input id="editInfrastructure">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha límite</label>
+      <input id="editDeadline">
+    </div>
+
+    <div class="form-group">
+      <label>Estado</label>
+      <select id="editStatus">
+        <option value="analysis">Análisis</option>
+        <option value="proposal">Propuesta</option>
+        <option value="won">Ganada</option>
+        <option value="lost">Perdida</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeEditModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveEditedOpportunity()">Guardar cambios</button>
     </div>
 
   </div>
-
 </div>
 
-<div
-  id="editModal"
-  class="modal"
->
 
-  <div class="modal-content modal-form">
+<!-- MODAL CIERRE -->
+<div class="modal" id="statusModal">
 
-    <h3>
-      ✏️ Editar oportunidad
-    </h3>
+  <div class="modal-content">
 
-    <p style="color:#6b7280;font-size:13px;margin-bottom:25px;">
-      Podés corregir los datos sin modificar la cotización
-      ni la propuesta final asociada.
-    </p>
+    <span class="close-x" onclick="closeStatusModal()">×</span>
 
-    <div class="form-grid">
+    <h2 id="statusModalTitle">Cerrar oportunidad</h2>
 
-      <div class="form-group">
+    <p id="statusModalDescription" style="color:#6b7280;"></p>
 
-        <label>
-          Cliente
-        </label>
+    <input type="hidden" id="statusOpportunityId">
+    <input type="hidden" id="statusOpportunityValue">
 
-        <input
-          id="editClient"
-          type="text"
-        >
+    <div class="form-group" id="lostReasonGroup">
 
-      </div>
+      <label>Motivo de pérdida</label>
 
-      <div class="form-group">
-
-        <label>
-          Oportunidad / Proyecto
-        </label>
-
-        <input
-          id="editProject"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Solución
-        </label>
-
-        <input
-          id="editSolution"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Estado
-        </label>
-
-        <select id="editStatus">
-
-          <option value="analysis">
-            🟡 En análisis
-          </option>
-
-          <option value="quote">
-            🔵 Cotizando
-          </option>
-
-          <option value="proposal">
-            🟣 Propuesta
-          </option>
-
-          <option value="won">
-            🟢 Ganada
-          </option>
-
-          <option value="lost">
-            🔴 Perdida
-          </option>
-
-        </select>
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Usuarios
-        </label>
-
-        <input
-          id="editUsers"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Storage
-        </label>
-
-        <input
-          id="editStorage"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Documentos
-        </label>
-
-        <input
-          id="editDocuments"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Workflows
-        </label>
-
-        <input
-          id="editWorkflows"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          OCR
-        </label>
-
-        <input
-          id="editOcr"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Firmas
-        </label>
-
-        <input
-          id="editSignatures"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Infraestructura
-        </label>
-
-        <input
-          id="editInfrastructure"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Plazo
-        </label>
-
-        <input
-          id="editDeadline"
-          type="text"
-        >
-
-      </div>
-
-      <div class="form-group full">
-
-        <label>
-          Objetivo
-        </label>
-
-        <textarea
-          id="editObjective"
-        ></textarea>
-
-      </div>
-
-      <div class="form-group full">
-
-        <label>
-          Requerimientos
-        </label>
-
-        <textarea
-          id="editRequirements"
-        ></textarea>
-
-      </div>
-
-      <div class="form-group full">
-
-        <label>
-          Riesgos
-        </label>
-
-        <textarea
-          id="editRisks"
-        ></textarea>
-
-      </div>
-
-      <div class="form-group full">
-
-        <label>
-          Notas internas
-        </label>
-
-        <textarea
-          id="editNotes"
-        ></textarea>
-
-      </div>
+      <select id="statusReason">
+        <option value="">Seleccionar motivo...</option>
+        <option value="Precio / demasiado caro">Precio / demasiado caro</option>
+        <option value="Competencia">Competencia</option>
+        <option value="Proyecto cancelado">Proyecto cancelado</option>
+        <option value="Cliente no avanzó">Cliente no avanzó</option>
+        <option value="Requerimientos no cubiertos">Requerimientos no cubiertos</option>
+        <option value="Sin presupuesto">Sin presupuesto</option>
+        <option value="Tiempos / plazos">Tiempos / plazos</option>
+        <option value="Otro">Otro</option>
+      </select>
 
     </div>
 
-    <div class="modal-buttons">
+    <div class="form-group">
 
-      <button
-        class="button green"
-        onclick="saveEditedOpportunity()"
-      >
-        💾 Guardar cambios
-      </button>
+      <label id="statusCommentLabel">Comentario / detalle</label>
 
-      <button
-        class="button secondary"
-        onclick="closeEditModal()"
-      >
+      <textarea
+        id="statusComment"
+        placeholder="Escribí cualquier detalle que quieras guardar sobre el cierre..."
+      ></textarea>
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button class="btn-secondary" onclick="closeStatusModal()">
         Cancelar
       </button>
 
+      <button
+        id="saveStatusButton"
+        class="btn-primary"
+        onclick="saveStatusChange()"
+      >
+        Guardar
+      </button>
+
     </div>
 
   </div>
-
 </div>
+
 
 <script>
 
-const DB_NAME =
-  "preventa_ia_biblioteca";
+/* =========================================================
+   DATOS
+========================================================= */
 
-const DB_VERSION =
-  2;
+let opportunities = [];
 
-const FINAL_STORE =
-  "finalProposals";
-
-let db =
-  null;
+const STORAGE_KEY = "preventa_opportunities";
 
 
-/* ==========================================
-   OPORTUNIDADES
-========================================== */
+/* =========================================================
+   INDEXED DB - PROPUESTAS FINALES
+========================================================= */
 
-function getOpportunities() {
+const DB_NAME = "preventa_ia_biblioteca";
+const DB_VERSION = 2;
+const FINAL_STORE = "finalProposals";
 
-  try {
+let db = null;
 
-    const data =
-      localStorage.getItem(
-        "preventa_opportunities"
-      );
+function openDB(){
 
-    if (!data) {
+  return new Promise((resolve,reject)=>{
 
-      return [];
+    const request = indexedDB.open(DB_NAME,DB_VERSION);
 
+    request.onerror = () => reject(request.error);
+
+    request.onsuccess = () => {
+
+      db = request.result;
+
+      resolve(db);
+
+    };
+
+    request.onupgradeneeded = event => {
+
+      const database = event.target.result;
+
+      if(!database.objectStoreNames.contains(FINAL_STORE)){
+
+        database.createObjectStore(FINAL_STORE,{
+          keyPath:"id"
+        });
+
+      }
+
+    };
+
+  });
+
+}
+
+
+async function getFinalProposal(opportunityId){
+
+  try{
+
+    if(!db){
+      await openDB();
     }
 
-    const parsed =
-      JSON.parse(
-        data
+    return new Promise((resolve,reject)=>{
+
+      const transaction = db.transaction(
+        FINAL_STORE,
+        "readonly"
       );
 
-    return Array.isArray(
-      parsed
-    )
-      ? parsed
-      : [];
+      const store = transaction.objectStore(FINAL_STORE);
 
-  }
+      const request = store.get(opportunityId);
 
-  catch(error) {
+      request.onsuccess = () => resolve(request.result || null);
 
-    console.error(
-      "Error leyendo oportunidades:",
-      error
-    );
+      request.onerror = () => reject(request.error);
 
-    return [];
+    });
+
+  }catch(error){
+
+    console.error("Error leyendo propuesta final:",error);
+
+    return null;
 
   }
 
 }
 
 
-function saveOpportunities(
-  opportunities
-) {
+/* =========================================================
+   CARGA
+========================================================= */
+
+function loadOpportunities(){
+
+  try{
+
+    opportunities =
+      JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+      ) || [];
+
+  }catch(error){
+
+    console.error(error);
+
+    opportunities = [];
+
+  }
+
+}
+
+
+/* =========================================================
+   GUARDAR
+========================================================= */
+
+function saveOpportunities(){
 
   localStorage.setItem(
-    "preventa_opportunities",
-    JSON.stringify(
-      opportunities
-    )
+    STORAGE_KEY,
+    JSON.stringify(opportunities)
   );
 
 }
 
 
-/* ==========================================
-   BASE DE DATOS
-========================================== */
+/* =========================================================
+   ESTADOS
+========================================================= */
 
-function openDatabase() {
+function statusLabel(status){
 
-  return new Promise(
-    function(resolve, reject) {
+  switch(status){
 
-      const request =
-        indexedDB.open(
-          DB_NAME,
-          DB_VERSION
-        );
+    case "won":
+      return "🟢 Ganada";
 
-      request.onupgradeneeded =
-        function(event) {
+    case "lost":
+      return "🔴 Perdida";
 
-          const database =
-            event.target.result;
+    case "proposal":
+      return "🟣 Propuesta";
 
-          if (
-            !database.objectStoreNames.contains(
-              FINAL_STORE
-            )
-          ) {
+    case "analysis":
+    default:
+      return "🔵 Análisis";
 
-            const store =
-              database.createObjectStore(
-                FINAL_STORE,
-                {
-                  keyPath:
-                    "id"
-                }
-              );
+  }
 
-            store.createIndex(
-              "opportunityId",
-              "opportunityId",
-              {
-                unique:
-                  false
-              }
-            );
+}
 
-            store.createIndex(
-              "createdAt",
-              "createdAt",
-              {
-                unique:
-                  false
-              }
-            );
 
-          }
+function statusClass(status){
 
-        };
+  switch(status){
 
-      request.onsuccess =
-        function(event) {
+    case "won":
+      return "status-won";
 
-          db =
-            event.target.result;
+    case "lost":
+      return "status-lost";
 
-          resolve(
-            db
-          );
+    case "proposal":
+      return "status-proposal";
 
-        };
+    default:
+      return "status-analysis";
 
-      request.onerror =
-        function() {
+  }
 
-          reject(
-            request.error
-          );
+}
 
-        };
 
+/* =========================================================
+   FORMATEO
+========================================================= */
+
+function safe(value){
+
+  if(value === null || value === undefined || value === ""){
+    return "—";
+  }
+
+  return String(value);
+
+}
+
+
+function escapeHTML(value){
+
+  if(value === null || value === undefined){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDate(date){
+
+  if(!date){
+    return "";
+  }
+
+  try{
+
+    return new Date(date).toLocaleDateString(
+      "es-AR",
+      {
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric"
+      }
+    );
+
+  }catch(e){
+
+    return "";
+
+  }
+
+}
+
+
+function formatMoney(value){
+
+  if(value === null || value === undefined || value === ""){
+    return "—";
+  }
+
+  const number = Number(value);
+
+  if(Number.isNaN(number)){
+    return safe(value);
+  }
+
+  return number.toLocaleString(
+    "es-AR",
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
     }
   );
 
 }
 
 
-/* ==========================================
-   OBTENER PROPUESTA FINAL
-========================================== */
-
-function getFinalProposal(
-  opportunityId
-) {
-
-  return new Promise(
-    function(resolve, reject) {
-
-      if (!db) {
-
-        resolve(null);
-
-        return;
-
-      }
-
-      if (
-        !db.objectStoreNames.contains(
-          FINAL_STORE
-        )
-      ) {
-
-        resolve(null);
-
-        return;
-
-      }
-
-      const transaction =
-        db.transaction(
-          FINAL_STORE,
-          "readonly"
-        );
-
-      const store =
-        transaction.objectStore(
-          FINAL_STORE
-        );
-
-      const index =
-        store.index(
-          "opportunityId"
-        );
-
-      const request =
-        index.getAll(
-          String(
-            opportunityId
-          )
-        );
-
-      request.onsuccess =
-        function() {
-
-          const results =
-            request.result ||
-            [];
-
-          results.sort(
-            function(a, b) {
-
-              return (
-                new Date(
-                  b.createdAt ||
-                  0
-                ) -
-                new Date(
-                  a.createdAt ||
-                  0
-                )
-              );
-
-            }
-          );
-
-          resolve(
-            results[0] ||
-            null
-          );
-
-        };
-
-      request.onerror =
-        function() {
-
-          reject(
-            request.error
-          );
-
-        };
-
-    }
-  );
-
-}
-
-
-/* ==========================================
-   ELIMINAR PROPUESTA FINAL
-========================================== */
-
-function deleteFinalProposals(
-  opportunityId
-) {
-
-  return new Promise(
-    function(resolve, reject) {
-
-      if (!db) {
-
-        resolve();
-
-        return;
-
-      }
-
-      if (
-        !db.objectStoreNames.contains(
-          FINAL_STORE
-        )
-      ) {
-
-        resolve();
-
-        return;
-
-      }
-
-      const transaction =
-        db.transaction(
-          FINAL_STORE,
-          "readwrite"
-        );
-
-      const store =
-        transaction.objectStore(
-          FINAL_STORE
-        );
-
-      const index =
-        store.index(
-          "opportunityId"
-        );
-
-      const request =
-        index.getAll(
-          String(
-            opportunityId
-          )
-        );
-
-      request.onsuccess =
-        function() {
-
-          const results =
-            request.result ||
-            [];
-
-          results.forEach(
-            function(item) {
-
-              store.delete(
-                item.id
-              );
-
-            }
-          );
-
-          resolve();
-
-        };
-
-      request.onerror =
-        function() {
-
-          reject(
-            request.error
-          );
-
-        };
-
-    }
-  );
-
-}
-
-
-/* ==========================================
-   ESTADO
-========================================== */
-
-function getStatusName(
-  status
-) {
-
-  const names = {
-
-    analysis:
-      "🟡 En análisis",
-
-    quote:
-      "🔵 Cotizando",
-
-    proposal:
-      "🟣 Propuesta",
-
-    won:
-      "🟢 Ganada",
-
-    lost:
-      "🔴 Perdida"
-
-  };
-
-  return (
-    names[status] ||
-    status ||
-    "Sin estado"
-  );
-
-}
-
-
-/* ==========================================
-   RESUMEN
-========================================== */
-
-function updateSummary(
-  opportunities
-) {
-
-  document.getElementById(
-    "totalOpportunities"
-  ).textContent =
-    opportunities.length;
-
-  document.getElementById(
-    "analysisCount"
-  ).textContent =
-    opportunities.filter(
-      function(item) {
-
-        return item.status ===
-          "analysis";
-
-      }
-    ).length;
-
-  document.getElementById(
-    "quoteCount"
-  ).textContent =
-    opportunities.filter(
-      function(item) {
-
-        return !!item.quote;
-
-      }
-    ).length;
-
-  document.getElementById(
-    "wonCount"
-  ).textContent =
-    opportunities.filter(
-      function(item) {
-
-        return item.status ===
-          "won";
-
-      }
-    ).length;
-
-  document.getElementById(
-    "lostCount"
-  ).textContent =
-    opportunities.filter(
-      function(item) {
-
-        return item.status ===
-          "lost";
-
-      }
-    ).length;
-
-}
-
-
-/* ==========================================
+/* =========================================================
    RENDER
-========================================== */
+========================================================= */
 
-async function renderRepository() {
-
-  const opportunities =
-    getOpportunities();
-
-  updateSummary(
-    opportunities
-  );
-
-  const search =
-    document.getElementById(
-      "search"
-    ).value
-      .toLowerCase()
-      .trim();
+async function renderOpportunities(){
 
   const container =
     document.getElementById(
-      "opportunities"
+      "opportunitiesContainer"
     );
 
-  container.innerHTML =
-    "";
+  const search =
+    document.getElementById(
+      "searchInput"
+    ).value
+    .toLowerCase()
+    .trim();
 
-  const filtered =
+  let filtered = opportunities.filter(opportunity => {
+
+    const text = [
+
+      opportunity.client,
+      opportunity.project,
+      opportunity.solution,
+      opportunity.product
+
+    ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+    return text.includes(search);
+
+  });
+
+
+  /* RESUMEN */
+
+  document.getElementById("totalOpps").textContent =
+    opportunities.length;
+
+  document.getElementById("analysisCount").textContent =
     opportunities.filter(
-      function(opportunity) {
+      o => o.status === "analysis"
+    ).length;
 
-        const texto =
-          (
-            String(
-              opportunity.client ||
-              ""
-            ) +
-            " " +
-            String(
-              opportunity.project ||
-              ""
-            ) +
-            " " +
-            String(
-              opportunity.solution ||
-              ""
-            ) +
-            " " +
-            String(
-              opportunity.product ||
-              ""
-            )
-          ).toLowerCase();
+  document.getElementById("quoteCount").textContent =
+    opportunities.filter(
+      o => o.quote
+    ).length;
 
-        return texto.includes(
-          search
-        );
+  document.getElementById("wonCount").textContent =
+    opportunities.filter(
+      o => o.status === "won"
+    ).length;
 
-      }
-    );
+  document.getElementById("lostCount").textContent =
+    opportunities.filter(
+      o => o.status === "lost"
+    ).length;
 
-  if (
-    filtered.length === 0
-  ) {
+
+  if(!filtered.length){
 
     container.innerHTML = `
       <div class="empty">
-
-        <div style="font-size:45px;">
-          🗂️
-        </div>
-
-        <h3>
-          No hay oportunidades
-        </h3>
-
-        <p>
-          Las oportunidades que crees aparecerán automáticamente acá.
-        </p>
-
+        <h3>📭 No hay oportunidades</h3>
+        <p>No encontramos oportunidades con ese criterio.</p>
       </div>
     `;
 
@@ -1507,765 +940,561 @@ async function renderRepository() {
 
   }
 
-  for (
-    const opportunity of filtered
-  ) {
 
-    const card =
-      document.createElement(
-        "div"
-      );
+  let html = "";
 
-    card.className =
-      "opportunity";
+  for(const opportunity of filtered){
 
-    const quote =
-      opportunity.quote;
+    html += await renderOpportunity(
+      opportunity
+    );
 
-    let finalProposal =
-      null;
+  }
 
-    try {
+  container.innerHTML = html;
 
-      finalProposal =
-        await getFinalProposal(
-          opportunity.id
-        );
+}
 
-    }
 
-    catch(error) {
+async function renderOpportunity(opportunity){
 
-      console.error(
-        "Error leyendo propuesta final:",
-        error
-      );
+  const quote =
+    opportunity.quote || null;
 
-    }
+  const proposal =
+    await getFinalProposal(
+      opportunity.id
+    );
 
-    const quoteSection =
-      quote
 
-        ? `
-          <div class="quote-section">
+  let closureHTML = "";
 
-            <div class="quote-title">
-              💰 Cotización asociada
-            </div>
+  if(
+    opportunity.status === "won" ||
+    opportunity.status === "lost"
+  ){
 
-            <div class="quote-grid">
+    const isWon =
+      opportunity.status === "won";
 
-              ${quoteCard(
-                "SETUP",
-                quote.totalSetup
-              )}
+    const reason =
+      opportunity.closeReason ||
+      "";
 
-              ${quoteCard(
-                "MENSUAL",
-                quote.totalMonthly
-              )}
+    const comment =
+      opportunity.closeComment ||
+      "";
 
-              ${quoteCard(
-                "PRIMER AÑO",
-                quote.totalYear
-              )}
+    const date =
+      opportunity.closedAt ||
+      opportunity.updatedAt ||
+      "";
 
-            </div>
+    closureHTML = `
 
+      <div class="closure-box ${isWon ? "won" : "lost"}">
+
+        <div class="closure-title">
+          ${isWon ? "🟢 Información del cierre" : "🔴 Motivo de pérdida"}
+        </div>
+
+        ${
+          reason
+          ?
+          `
+          <div class="closure-row">
+            <strong>${isWon ? "Motivo:" : "Motivo:"}</strong>
+            ${escapeHTML(reason)}
           </div>
-        `
-
-        : `
-          <div class="no-quote">
-            ⚠️ Esta oportunidad todavía no tiene una cotización guardada.
+          `
+          :
+          `
+          <div class="closure-row">
+            <strong>Motivo:</strong>
+            Sin especificar
           </div>
-        `;
+          `
+        }
 
-    const proposalSection =
-      finalProposal
-
-        ? `
-          <div class="proposal-section">
-
-            <div class="proposal-title">
-              📄 Propuesta final
-            </div>
-
-            <div class="proposal-file">
-
-              <strong>
-                ${escapeHTML(
-                  finalProposal.fileName ||
-                  "Propuesta final"
-                )}
-              </strong>
-
-              <br>
-
-              Producto:
-              ${escapeHTML(
-                finalProposal.product ||
-                opportunity.product ||
-                opportunity.solution ||
-                "Sin especificar"
-              )}
-
-              <br>
-
-              Generada:
-              ${formatDate(
-                finalProposal.createdAt
-              )}
-
-            </div>
-
-            <div class="actions">
-
-              <button
-                class="purple"
-                onclick="previewProposal('${escapeAttribute(
-                  opportunity.id
-                )}')"
-              >
-                👁️ Previsualizar
-              </button>
-
-              <button
-                class="green"
-                onclick="downloadProposal('${escapeAttribute(
-                  opportunity.id
-                )}')"
-              >
-                ⬇️ Descargar Word
-              </button>
-
-            </div>
-
+        ${
+          comment
+          ?
+          `
+          <div class="closure-row">
+            <strong>Detalle:</strong>
+            ${escapeHTML(comment)}
           </div>
-        `
+          `
+          :
+          ""
+        }
 
-        : `
-          <div class="no-quote">
-            📄 Todavía no hay una propuesta final generada para esta oportunidad.
+        ${
+          date
+          ?
+          `
+          <div class="closure-date">
+            Cerrada el ${formatDate(date)}
           </div>
-        `;
+          `
+          :
+          ""
+        }
 
-    card.innerHTML = `
+      </div>
 
-      <div class="opportunity-header">
+    `;
 
-        <div class="opportunity-title">
+  }
 
-          <h3>
-            ${escapeHTML(
-              opportunity.project ||
-              "Sin nombre"
-            )}
-          </h3>
 
-          <p>
-            👤 Cliente:
-            ${escapeHTML(
-              opportunity.client ||
-              "Sin cliente"
-            )}
-          </p>
+  let quoteHTML = "";
 
-          <p>
-            🧩 Solución:
-            ${escapeHTML(
-              opportunity.solution ||
-              opportunity.product ||
-              "Por definir"
-            )}
-          </p>
+  if(quote){
 
-          <span
-            class="status ${
-              opportunity.status ||
-              "analysis"
-            }"
-          >
-            ${getStatusName(
-              opportunity.status
-            )}
-          </span>
+    const setup =
+      quote.setup ??
+      quote.setupTotal ??
+      quote.oneShot ??
+      "";
+
+    const monthly =
+      quote.monthly ??
+      quote.monthlyTotal ??
+      "";
+
+    const firstYear =
+      quote.firstYear ??
+      quote.firstYearTotal ??
+      quote.year1 ??
+      "";
+
+
+    quoteHTML = `
+
+      <div class="quote-box">
+
+        <h3>💰 Cotización asociada</h3>
+
+        <div class="quote-grid">
+
+          <div class="quote-value">
+            <small>SETUP</small>
+            <strong>${formatMoney(setup)}</strong>
+          </div>
+
+          <div class="quote-value">
+            <small>MENSUAL</small>
+            <strong>${formatMoney(monthly)}</strong>
+          </div>
+
+          <div class="quote-value">
+            <small>PRIMER AÑO</small>
+            <strong>${formatMoney(firstYear)}</strong>
+          </div>
 
         </div>
 
       </div>
 
-      <div class="data-grid">
+    `;
 
-        ${dataCard(
-          "👥 Usuarios",
-          opportunity.users
-        )}
+  }
 
-        ${dataCard(
-          "💾 Storage",
-          opportunity.storage
-        )}
 
-        ${dataCard(
-          "📑 Documentos",
-          opportunity.documents
-        )}
+  let proposalHTML = "";
 
-        ${dataCard(
-          "🔄 Workflows",
-          opportunity.workflows
-        )}
+  if(proposal){
 
-        ${dataCard(
-          "🔎 OCR",
-          opportunity.ocr
-        )}
+    proposalHTML = `
 
-        ${dataCard(
-          "✍️ Firmas",
-          opportunity.signatures
-        )}
+      <div class="proposal-box">
 
-        ${dataCard(
-          "🏗️ Infraestructura",
-          opportunity.infrastructure
-        )}
+        <h3>📄 Propuesta final</h3>
 
-        ${dataCard(
-          "📅 Plazo",
-          opportunity.deadline
-        )}
+        <div>
+          ${
+            escapeHTML(
+              proposal.name ||
+              proposal.fileName ||
+              "Propuesta generada"
+            )
+          }
+        </div>
+
+        <div class="proposal-actions">
+
+          <button
+            class="btn-purple"
+            onclick="previewProposal('${escapeHTML(opportunity.id)}')"
+          >
+            👁️ Ver propuesta
+          </button>
+
+          <button
+            class="btn-secondary"
+            onclick="downloadProposal('${escapeHTML(opportunity.id)}')"
+          >
+            ⬇️ Descargar Word
+          </button>
+
+        </div>
 
       </div>
 
-      ${quoteSection}
+    `;
 
-      ${proposalSection}
+  }
+
+
+  return `
+
+    <div class="opportunity">
+
+      <div class="op-header">
+
+        <div>
+
+          <h2>
+            ${escapeHTML(
+              safe(opportunity.project)
+            )}
+          </h2>
+
+          <div class="client">
+            Cliente:
+            ${escapeHTML(
+              safe(opportunity.client)
+            )}
+          </div>
+
+          <div class="client">
+            Solución:
+            ${escapeHTML(
+              safe(opportunity.solution)
+            )}
+          </div>
+
+        </div>
+
+        <div class="status ${statusClass(opportunity.status)}">
+          ${statusLabel(opportunity.status)}
+        </div>
+
+      </div>
+
+
+      <div class="data-grid">
+
+        <div class="data-item">
+          <small>Usuarios</small>
+          <strong>${escapeHTML(safe(opportunity.users))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Almacenamiento</small>
+          <strong>${escapeHTML(safe(opportunity.storage))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Documentos</small>
+          <strong>${escapeHTML(safe(opportunity.documents))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Workflows</small>
+          <strong>${escapeHTML(safe(opportunity.workflows))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>OCR</small>
+          <strong>${escapeHTML(safe(opportunity.ocr))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Firmas</small>
+          <strong>${escapeHTML(safe(opportunity.signatures))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Infraestructura</small>
+          <strong>${escapeHTML(safe(opportunity.infrastructure))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Fecha límite</small>
+          <strong>${escapeHTML(safe(opportunity.deadline))}</strong>
+        </div>
+
+      </div>
+
+
+      ${closureHTML}
+
+      ${quoteHTML}
+
+      ${proposalHTML}
+
 
       <div class="actions">
 
         <button
-          onclick="toggleDetail(this)"
+          class="btn-secondary"
+          onclick="viewSummary('${escapeHTML(opportunity.id)}')"
         >
-          👁️ Ver resumen
+          📋 Ver resumen
         </button>
 
         <button
-          class="secondary"
-          onclick="openQuote('${escapeAttribute(
-            opportunity.id
-          )}')"
+          class="btn-primary"
+          onclick="goToQuote('${escapeHTML(opportunity.id)}')"
         >
-          💰 ${
-            quote
-              ? "Editar cotización"
-              : "Ir al cotizador"
-          }
+          💰 Cotizar / Editar cotización
         </button>
 
         <button
-          class="green"
-          onclick="setOpportunityStatus('${escapeAttribute(
-            opportunity.id
-          )}','won')"
+          class="btn-green"
+          onclick="setOpportunityStatus('${escapeHTML(opportunity.id)}','won')"
         >
           🟢 Ganada
         </button>
 
         <button
-          class="orange"
-          onclick="setOpportunityStatus('${escapeAttribute(
-            opportunity.id
-          )}','proposal')"
+          class="btn-purple"
+          onclick="setOpportunityStatus('${escapeHTML(opportunity.id)}','proposal')"
         >
           🟣 Propuesta
         </button>
 
         <button
-          class="orange"
-          onclick="setOpportunityStatus('${escapeAttribute(
-            opportunity.id
-          )}','lost')"
+          class="btn-red"
+          onclick="setOpportunityStatus('${escapeHTML(opportunity.id)}','lost')"
         >
           🔴 Perdida
         </button>
 
         <button
-          class="secondary"
-          onclick="editOpportunity('${escapeAttribute(
-            opportunity.id
-          )}')"
+          class="btn-secondary"
+          onclick="editOpportunity('${escapeHTML(opportunity.id)}')"
         >
           ✏️ Editar
         </button>
 
         <button
-          class="red"
-          onclick="deleteOpportunity('${escapeAttribute(
-            opportunity.id
-          )}')"
+          class="btn-danger"
+          onclick="deleteOpportunity('${escapeHTML(opportunity.id)}')"
         >
           🗑️ Eliminar
         </button>
 
       </div>
 
-      <div class="detail">
-
-        <div class="detail-section">
-
-          <h4>
-            🎯 Objetivo
-          </h4>
-
-          <div class="detail-text">
-            ${escapeHTML(
-              opportunity.objective ||
-              "No hay objetivo cargado."
-            )}
-          </div>
-
-        </div>
-
-        <div class="detail-section">
-
-          <h4>
-            🧩 Requerimientos
-          </h4>
-
-          <div class="detail-text">
-            ${escapeHTML(
-              opportunity.requirements ||
-              "No hay requerimientos cargados."
-            )}
-          </div>
-
-        </div>
-
-        <div class="detail-section">
-
-          <h4>
-            ⚠️ Riesgos
-          </h4>
-
-          <div class="detail-text">
-            ${escapeHTML(
-              opportunity.risks ||
-              "No hay riesgos cargados."
-            )}
-          </div>
-
-        </div>
-
-        <div class="detail-section">
-
-          <h4>
-            📝 Notas
-          </h4>
-
-          <div class="detail-text">
-            ${escapeHTML(
-              opportunity.notes ||
-              "Sin notas."
-            )}
-          </div>
-
-        </div>
-
-      </div>
-    `;
-
-    container.appendChild(
-      card
-    );
-
-  }
-
-}
-
-
-/* ==========================================
-   DATA CARD
-========================================== */
-
-function dataCard(
-  label,
-  value
-) {
-
-  return `
-    <div class="data-card">
-
-      <div class="data-label">
-        ${escapeHTML(label)}
-      </div>
-
-      <div class="data-value">
-        ${escapeHTML(
-          String(
-            value ||
-            "No definido"
-          )
-        )}
-      </div>
-
     </div>
+
   `;
 
 }
 
 
-/* ==========================================
-   QUOTE CARD
-========================================== */
+/* =========================================================
+   CAMBIO DE ESTADO
+========================================================= */
 
-function quoteCard(
-  label,
-  value
-) {
-
-  return `
-    <div class="quote-card">
-
-      <div class="quote-label">
-        ${escapeHTML(label)}
-      </div>
-
-      <div class="quote-value">
-        ${escapeHTML(
-          formatMoney(
-            value
-          )
-        )}
-      </div>
-
-    </div>
-  `;
-
-}
-
-
-/* ==========================================
-   VER RESUMEN
-========================================== */
-
-function toggleDetail(
-  button
-) {
-
-  const card =
-    button.closest(
-      ".opportunity"
-    );
-
-  const detail =
-    card.querySelector(
-      ".detail"
-    );
-
-  if (
-    detail.style.display ===
-    "block"
-  ) {
-
-    detail.style.display =
-      "none";
-
-    button.textContent =
-      "👁️ Ver resumen";
-
-  }
-
-  else {
-
-    detail.style.display =
-      "block";
-
-    button.textContent =
-      "🔼 Ocultar resumen";
-
-  }
-
-}
-
-
-/* ==========================================
-   COTIZADOR
-========================================== */
-
-function openQuote(
-  id
-) {
-
-  const opportunities =
-    getOpportunities();
+function setOpportunityStatus(id,status){
 
   const opportunity =
     opportunities.find(
-      function(item) {
-
-        return String(
-          item.id
-        ) ===
-        String(
-          id
-        );
-
-      }
+      o => String(o.id) === String(id)
     );
 
-  if (!opportunity) {
+  if(!opportunity){
+    return;
+  }
 
-    alert(
-      "No se encontró la oportunidad."
+
+  /*
+   * GANADA / PERDIDA
+   * Ahora abre el formulario de cierre.
+   */
+
+  if(
+    status === "won" ||
+    status === "lost"
+  ){
+
+    openStatusModal(
+      opportunity,
+      status
     );
 
     return;
 
   }
 
-  localStorage.setItem(
-    "preventa_current_opportunity",
-    JSON.stringify(
-      opportunity
-    )
-  );
 
-  window.location.href =
-    "cotizador.html";
+  /*
+   * PROPUESTA
+   * Mantiene el comportamiento anterior.
+   */
 
-}
+  const label =
+    statusLabel(status);
 
-
-/* ==========================================
-   CAMBIAR ESTADO
-========================================== */
-
-function setOpportunityStatus(
-  id,
-  status
-) {
-
-  const opportunities =
-    getOpportunities();
-
-  const index =
-    opportunities.findIndex(
-      function(item) {
-
-        return String(
-          item.id
-        ) ===
-        String(
-          id
-        );
-
-      }
-    );
-
-  if (
-    index === -1
-  ) {
-
-    alert(
-      "No se encontró la oportunidad."
-    );
-
-    return;
-
-  }
-
-  const labels = {
-
-    proposal:
-      "PROPUESTA",
-
-    won:
-      "GANADA",
-
-    lost:
-      "PERDIDA"
-
-  };
-
-  const nombre =
-    labels[status] ||
-    status;
-
-  if (
+  if(
     !confirm(
-      "¿Querés marcar esta oportunidad como " +
-      nombre +
-      "?"
+      `¿Querés cambiar el estado de esta oportunidad a ${label}?`
     )
-  ) {
+  ){
 
     return;
 
   }
 
-  opportunities[index].status =
-    status;
 
-  opportunities[index].updatedAt =
+  opportunity.status = status;
+
+  /*
+   * Si vuelve a un estado activo,
+   * eliminamos los datos de cierre para
+   * que no aparezcan como si siguiera cerrada.
+   */
+
+  opportunity.closeReason = "";
+  opportunity.closeComment = "";
+  opportunity.closedAt = "";
+
+  opportunity.updatedAt =
     new Date().toISOString();
 
-  saveOpportunities(
-    opportunities
-  );
+  saveOpportunities();
 
   localStorage.setItem(
     "preventa_current_opportunity",
-    JSON.stringify(
-      opportunities[index]
-    )
+    JSON.stringify(opportunity)
   );
 
-  renderRepository();
+  renderOpportunities();
 
 }
 
 
-/* ==========================================
-   EDITAR OPORTUNIDAD
-========================================== */
+/* =========================================================
+   MODAL DE CIERRE
+========================================================= */
 
-function editOpportunity(
-  id
-) {
-
-  const opportunities =
-    getOpportunities();
-
-  const opportunity =
-    opportunities.find(
-      function(item) {
-
-        return String(
-          item.id
-        ) ===
-        String(
-          id
-        );
-
-      }
-    );
-
-  if (!opportunity) {
-
-    alert(
-      "No se encontró la oportunidad."
-    );
-
-    return;
-
-  }
+function openStatusModal(opportunity,status){
 
   const modal =
     document.getElementById(
-      "editModal"
+      "statusModal"
     );
 
-  modal.dataset.id =
-    opportunity.id;
+  const title =
+    document.getElementById(
+      "statusModalTitle"
+    );
+
+  const description =
+    document.getElementById(
+      "statusModalDescription"
+    );
+
+  const reasonGroup =
+    document.getElementById(
+      "lostReasonGroup"
+    );
+
+  const reason =
+    document.getElementById(
+      "statusReason"
+    );
+
+  const comment =
+    document.getElementById(
+      "statusComment"
+    );
+
+  const commentLabel =
+    document.getElementById(
+      "statusCommentLabel"
+    );
+
+  const saveButton =
+    document.getElementById(
+      "saveStatusButton"
+    );
+
 
   document.getElementById(
-    "editClient"
-  ).value =
-    opportunity.client ||
+    "statusOpportunityId"
+  ).value = opportunity.id;
+
+  document.getElementById(
+    "statusOpportunityValue"
+  ).value = status;
+
+
+  reason.value =
+    opportunity.closeReason ||
     "";
 
-  document.getElementById(
-    "editProject"
-  ).value =
-    opportunity.project ||
+  comment.value =
+    opportunity.closeComment ||
     "";
 
-  document.getElementById(
-    "editSolution"
-  ).value =
-    opportunity.solution ||
-    opportunity.product ||
-    "";
 
-  document.getElementById(
-    "editStatus"
-  ).value =
-    opportunity.status ||
-    "analysis";
+  if(status === "lost"){
 
-  document.getElementById(
-    "editUsers"
-  ).value =
-    opportunity.users ||
-    "";
+    title.textContent =
+      "🔴 Marcar oportunidad como perdida";
 
-  document.getElementById(
-    "editStorage"
-  ).value =
-    opportunity.storage ||
-    "";
+    description.textContent =
+      "Podés seleccionar un motivo y agregar cualquier detalle que quieras conservar para futuras oportunidades.";
 
-  document.getElementById(
-    "editDocuments"
-  ).value =
-    opportunity.documents ||
-    "";
+    reasonGroup.style.display =
+      "block";
 
-  document.getElementById(
-    "editWorkflows"
-  ).value =
-    opportunity.workflows ||
-    "";
+    commentLabel.textContent =
+      "Comentario / detalle";
 
-  document.getElementById(
-    "editOcr"
-  ).value =
-    opportunity.ocr ||
-    "";
+    comment.placeholder =
+      "Ejemplo: El cliente recibió una propuesta más económica y decidió avanzar con la competencia.";
 
-  document.getElementById(
-    "editSignatures"
-  ).value =
-    opportunity.signatures ||
-    "";
+    saveButton.textContent =
+      "Guardar pérdida";
 
-  document.getElementById(
-    "editInfrastructure"
-  ).value =
-    opportunity.infrastructure ||
-    "";
+    saveButton.className =
+      "btn-red";
 
-  document.getElementById(
-    "editDeadline"
-  ).value =
-    opportunity.deadline ||
-    "";
+  }else{
 
-  document.getElementById(
-    "editObjective"
-  ).value =
-    opportunity.objective ||
-    "";
+    title.textContent =
+      "🟢 Marcar oportunidad como ganada";
 
-  document.getElementById(
-    "editRequirements"
-  ).value =
-    opportunity.requirements ||
-    "";
+    description.textContent =
+      "Guardá un comentario sobre por qué se ganó la oportunidad o cualquier información útil para futuras propuestas.";
 
-  document.getElementById(
-    "editRisks"
-  ).value =
-    opportunity.risks ||
-    "";
+    reasonGroup.style.display =
+      "none";
 
-  document.getElementById(
-    "editNotes"
-  ).value =
-    opportunity.notes ||
-    "";
+    reason.value =
+      opportunity.closeReason ||
+      "";
+
+    commentLabel.textContent =
+      "Motivo / comentario";
+
+    comment.placeholder =
+      "Ejemplo: El cliente eligió nuestra propuesta por alcance, solución y condiciones comerciales.";
+
+    saveButton.textContent =
+      "Guardar ganada";
+
+    saveButton.className =
+      "btn-green";
+
+  }
+
 
   modal.style.display =
     "flex";
@@ -2273,40 +1502,214 @@ function editOpportunity(
 }
 
 
-/* ==========================================
-   GUARDAR EDICION
-========================================== */
+function closeStatusModal(){
 
-function saveEditedOpportunity() {
+  document.getElementById(
+    "statusModal"
+  ).style.display =
+    "none";
 
-  const modal =
-    document.getElementById(
-      "editModal"
-    );
+}
+
+
+function saveStatusChange(){
 
   const id =
-    modal.dataset.id;
+    document.getElementById(
+      "statusOpportunityId"
+    ).value;
 
-  const opportunities =
-    getOpportunities();
+  const status =
+    document.getElementById(
+      "statusOpportunityValue"
+    ).value;
 
-  const index =
-    opportunities.findIndex(
-      function(item) {
-
-        return String(
-          item.id
-        ) ===
-        String(
-          id
-        );
-
-      }
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
     );
 
-  if (
-    index === -1
-  ) {
+  if(!opportunity){
+
+    alert(
+      "No se encontró la oportunidad."
+    );
+
+    closeStatusModal();
+
+    return;
+
+  }
+
+
+  const reason =
+    document.getElementById(
+      "statusReason"
+    ).value.trim();
+
+  const comment =
+    document.getElementById(
+      "statusComment"
+    ).value.trim();
+
+
+  /*
+   * PERDIDA
+   */
+
+  if(status === "lost"){
+
+    if(!reason && !comment){
+
+      if(
+        !confirm(
+          "No ingresaste un motivo ni comentario. ¿Querés marcarla igualmente como perdida?"
+        )
+      ){
+
+        return;
+
+      }
+
+    }
+
+    opportunity.closeReason =
+      reason || "Sin especificar";
+
+    opportunity.closeComment =
+      comment || "";
+
+  }
+
+
+  /*
+   * GANADA
+   */
+
+  if(status === "won"){
+
+    opportunity.closeReason =
+      reason || "Ganada";
+
+    opportunity.closeComment =
+      comment || "";
+
+  }
+
+
+  opportunity.status =
+    status;
+
+  opportunity.closedAt =
+    new Date().toISOString();
+
+  opportunity.updatedAt =
+    new Date().toISOString();
+
+
+  saveOpportunities();
+
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(opportunity)
+  );
+
+
+  closeStatusModal();
+
+  renderOpportunities();
+
+}
+
+
+/* =========================================================
+   EDITAR OPORTUNIDAD
+========================================================= */
+
+function editOpportunity(id){
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+    return;
+  }
+
+
+  document.getElementById("editId").value =
+    opportunity.id;
+
+  document.getElementById("editClient").value =
+    opportunity.client || "";
+
+  document.getElementById("editProject").value =
+    opportunity.project || "";
+
+  document.getElementById("editSolution").value =
+    opportunity.solution || "";
+
+  document.getElementById("editUsers").value =
+    opportunity.users || "";
+
+  document.getElementById("editStorage").value =
+    opportunity.storage || "";
+
+  document.getElementById("editDocuments").value =
+    opportunity.documents || "";
+
+  document.getElementById("editWorkflows").value =
+    opportunity.workflows || "";
+
+  document.getElementById("editOCR").value =
+    opportunity.ocr || "";
+
+  document.getElementById("editSignatures").value =
+    opportunity.signatures || "";
+
+  document.getElementById("editInfrastructure").value =
+    opportunity.infrastructure || "";
+
+  document.getElementById("editDeadline").value =
+    opportunity.deadline || "";
+
+  document.getElementById("editStatus").value =
+    opportunity.status || "analysis";
+
+
+  document.getElementById(
+    "editModal"
+  ).style.display =
+    "flex";
+
+}
+
+
+function closeEditModal(){
+
+  document.getElementById(
+    "editModal"
+  ).style.display =
+    "none";
+
+}
+
+
+function saveEditedOpportunity(){
+
+  const id =
+    document.getElementById(
+      "editId"
+    ).value;
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
 
     alert(
       "No se encontró la oportunidad."
@@ -2316,47 +1719,30 @@ function saveEditedOpportunity() {
 
   }
 
-  const client =
+
+  const oldStatus =
+    opportunity.status;
+
+  const newStatus =
+    document.getElementById(
+      "editStatus"
+    ).value;
+
+
+  opportunity.client =
     document.getElementById(
       "editClient"
     ).value.trim();
 
-  const project =
+  opportunity.project =
     document.getElementById(
       "editProject"
     ).value.trim();
-
-  if (
-    !client ||
-    !project
-  ) {
-
-    alert(
-      "Completá Cliente y Oportunidad / Proyecto."
-    );
-
-    return;
-
-  }
-
-  const opportunity =
-    opportunities[index];
-
-  opportunity.client =
-    client;
-
-  opportunity.project =
-    project;
 
   opportunity.solution =
     document.getElementById(
       "editSolution"
     ).value.trim();
-
-  opportunity.status =
-    document.getElementById(
-      "editStatus"
-    ).value;
 
   opportunity.users =
     document.getElementById(
@@ -2380,7 +1766,7 @@ function saveEditedOpportunity() {
 
   opportunity.ocr =
     document.getElementById(
-      "editOcr"
+      "editOCR"
     ).value.trim();
 
   opportunity.signatures =
@@ -2398,139 +1784,277 @@ function saveEditedOpportunity() {
       "editDeadline"
     ).value.trim();
 
-  opportunity.objective =
-    document.getElementById(
-      "editObjective"
-    ).value.trim();
+  opportunity.status =
+    newStatus;
 
-  opportunity.requirements =
-    document.getElementById(
-      "editRequirements"
-    ).value.trim();
 
-  opportunity.risks =
-    document.getElementById(
-      "editRisks"
-    ).value.trim();
+  /*
+   * Si desde editar se cambia una oportunidad
+   * ganada/perdida a un estado activo,
+   * limpiamos la información de cierre.
+   */
 
-  opportunity.notes =
-    document.getElementById(
-      "editNotes"
-    ).value.trim();
+  if(
+    newStatus !== "won" &&
+    newStatus !== "lost"
+  ){
+
+    opportunity.closeReason = "";
+    opportunity.closeComment = "";
+    opportunity.closedAt = "";
+
+  }
+
+
+  /*
+   * Si se cambia manualmente a ganada/perdida
+   * desde el editor y antes no estaba cerrada,
+   * dejamos la información preparada para que
+   * pueda completarse luego desde los botones.
+   */
+
+  if(
+    newStatus !== oldStatus &&
+    (
+      newStatus === "won" ||
+      newStatus === "lost"
+    ) &&
+    !opportunity.closedAt
+  ){
+
+    opportunity.closeReason = "";
+    opportunity.closeComment = "";
+    opportunity.closedAt =
+      new Date().toISOString();
+
+  }
+
 
   opportunity.updatedAt =
     new Date().toISOString();
 
-  saveOpportunities(
-    opportunities
-  );
+
+  saveOpportunities();
 
   localStorage.setItem(
     "preventa_current_opportunity",
-    JSON.stringify(
-      opportunity
-    )
+    JSON.stringify(opportunity)
   );
+
 
   closeEditModal();
 
-  renderRepository();
+  renderOpportunities();
 
 }
 
 
-/* ==========================================
-   CERRAR EDICION
-========================================== */
+/* =========================================================
+   IR AL COTIZADOR
+========================================================= */
 
-function closeEditModal() {
-
-  document.getElementById(
-    "editModal"
-  ).style.display =
-    "none";
-
-}
-
-
-/* ==========================================
-   ELIMINAR OPORTUNIDAD
-========================================== */
-
-async function deleteOpportunity(
-  id
-) {
-
-  const opportunities =
-    getOpportunities();
+function goToQuote(id){
 
   const opportunity =
     opportunities.find(
-      function(item) {
+      o => String(o.id) === String(id)
+    );
 
-        return String(
-          item.id
-        ) ===
-        String(
-          id
+  if(!opportunity){
+    return;
+  }
+
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(opportunity)
+  );
+
+
+  window.location.href =
+    "cotizador.html";
+
+}
+
+
+/* =========================================================
+   VER RESUMEN
+========================================================= */
+
+function viewSummary(id){
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+    return;
+  }
+
+
+  let message = "";
+
+  message +=
+    "CLIENTE: " +
+    safe(opportunity.client) +
+    "\n\n";
+
+  message +=
+    "PROYECTO: " +
+    safe(opportunity.project) +
+    "\n\n";
+
+  message +=
+    "SOLUCIÓN: " +
+    safe(opportunity.solution) +
+    "\n\n";
+
+  message +=
+    "ESTADO: " +
+    statusLabel(opportunity.status) +
+    "\n\n";
+
+  message +=
+    "USUARIOS: " +
+    safe(opportunity.users) +
+    "\n";
+
+  message +=
+    "ALMACENAMIENTO: " +
+    safe(opportunity.storage) +
+    "\n";
+
+  message +=
+    "DOCUMENTOS: " +
+    safe(opportunity.documents) +
+    "\n";
+
+  message +=
+    "WORKFLOWS: " +
+    safe(opportunity.workflows) +
+    "\n";
+
+  message +=
+    "OCR: " +
+    safe(opportunity.ocr) +
+    "\n";
+
+  message +=
+    "FIRMAS: " +
+    safe(opportunity.signatures) +
+    "\n";
+
+  message +=
+    "INFRAESTRUCTURA: " +
+    safe(opportunity.infrastructure) +
+    "\n";
+
+  message +=
+    "FECHA LÍMITE: " +
+    safe(opportunity.deadline) +
+    "\n";
+
+
+  if(
+    opportunity.status === "won" ||
+    opportunity.status === "lost"
+  ){
+
+    message +=
+      "\n--------------------------------\n";
+
+    message +=
+      "CIERRE\n\n";
+
+    message +=
+      "Motivo: " +
+      safe(opportunity.closeReason) +
+      "\n";
+
+    message +=
+      "Detalle: " +
+      safe(opportunity.closeComment) +
+      "\n";
+
+    message +=
+      "Fecha: " +
+      safe(
+        formatDate(
+          opportunity.closedAt
+        )
+      );
+
+  }
+
+
+  alert(message);
+
+}
+
+
+/* =========================================================
+   ELIMINAR
+========================================================= */
+
+async function deleteOpportunity(id){
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+    return;
+  }
+
+
+  if(
+    !confirm(
+      `¿Querés eliminar la oportunidad "${opportunity.project || opportunity.client || ""}"?`
+    )
+  ){
+
+    return;
+
+  }
+
+
+  /*
+   * Eliminar propuesta final asociada
+   */
+
+  try{
+
+    if(!db){
+      await openDB();
+    }
+
+    await new Promise((resolve,reject)=>{
+
+      const transaction =
+        db.transaction(
+          FINAL_STORE,
+          "readwrite"
         );
 
-      }
-    );
+      const store =
+        transaction.objectStore(
+          FINAL_STORE
+        );
 
-  if (!opportunity) {
+      const request =
+        store.delete(opportunity.id);
 
-    alert(
-      "No se encontró la oportunidad."
-    );
+      request.onsuccess =
+        () => resolve();
 
-    return;
+      request.onerror =
+        () => reject(request.error);
 
-  }
+    });
 
-  let mensaje =
-    "¿Querés eliminar definitivamente esta oportunidad?\n\n" +
-    (
-      opportunity.project ||
-      "Sin nombre"
-    ) +
-    "\n" +
-    (
-      opportunity.client ||
-      "Sin cliente"
-    );
-
-  if (
-    opportunity.quote
-  ) {
-
-    mensaje +=
-      "\n\nTambién se eliminará la cotización asociada.";
-
-  }
-
-  mensaje +=
-    "\n\nLa propuesta final asociada también será eliminada.";
-
-  if (
-    !confirm(
-      mensaje
-    )
-  ) {
-
-    return;
-
-  }
-
-  try {
-
-    await deleteFinalProposals(
-      opportunity.id
-    );
-
-  }
-
-  catch(error) {
+  }catch(error){
 
     console.warn(
       "No se pudo eliminar la propuesta final:",
@@ -2539,80 +2063,30 @@ async function deleteOpportunity(
 
   }
 
-  const remaining =
+
+  opportunities =
     opportunities.filter(
-      function(item) {
-
-        return String(
-          item.id
-        ) !==
-        String(
-          id
-        );
-
-      }
+      o => String(o.id) !== String(id)
     );
 
-  saveOpportunities(
-    remaining
-  );
 
-  const current =
-    localStorage.getItem(
-      "preventa_current_opportunity"
-    );
+  saveOpportunities();
 
-  if (current) {
-
-    try {
-
-      const currentOpportunity =
-        JSON.parse(
-          current
-        );
-
-      if (
-        String(
-          currentOpportunity.id
-        ) ===
-        String(
-          id
-        )
-      ) {
-
-        localStorage.removeItem(
-          "preventa_current_opportunity"
-        );
-
-      }
-
-    }
-
-    catch(error) {
-
-    }
-
-  }
-
-  renderRepository();
+  renderOpportunities();
 
 }
 
 
-/* ==========================================
-   PREVISUALIZAR
-========================================== */
+/* =========================================================
+   PROPUESTA FINAL
+========================================================= */
 
-async function previewProposal(
-  opportunityId
-) {
+async function previewProposal(id){
 
   const proposal =
-    await getFinalProposal(
-      opportunityId
-    );
+    await getFinalProposal(id);
 
-  if (!proposal) {
+  if(!proposal){
 
     alert(
       "No se encontró la propuesta final."
@@ -2622,118 +2096,158 @@ async function previewProposal(
 
   }
 
-  if (
-    typeof mammoth ===
-    "undefined"
-  ) {
 
-    alert(
-      "No se pudo cargar el visor de Word."
-    );
+  /*
+   * Si tenemos blob, abrimos directamente.
+   */
+
+  if(proposal.blob){
+
+    try{
+
+      const url =
+        URL.createObjectURL(
+          proposal.blob
+        );
+
+      window.open(
+        url,
+        "_blank"
+      );
+
+      return;
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  }
+
+
+  /*
+   * Si tenemos texto HTML,
+   * lo mostramos en una nueva ventana.
+   */
+
+  if(proposal.html){
+
+    const preview =
+      window.open(
+        "",
+        "_blank"
+      );
+
+    if(preview){
+
+      preview.document.write(`
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>Vista previa de propuesta</title>
+          <style>
+            body{
+              font-family:Arial,sans-serif;
+              max-width:900px;
+              margin:40px auto;
+              padding:20px;
+              line-height:1.6;
+            }
+          </style>
+        </head>
+        <body>
+          ${proposal.html}
+        </body>
+        </html>
+      `);
+
+      preview.document.close();
+
+    }
 
     return;
 
   }
 
-  const modal =
-    document.getElementById(
-      "previewModal"
-    );
 
-  const title =
-    document.getElementById(
-      "previewTitle"
-    );
+  /*
+   * Si tenemos arrayBuffer del Word,
+   * intentamos convertirlo con Mammoth.
+   */
 
-  const preview =
-    document.getElementById(
-      "preview"
-    );
+  if(proposal.arrayBuffer){
 
-  title.textContent =
-    "📄 " +
-    (
-      proposal.fileName ||
-      "Propuesta final"
-    );
+    try{
 
-  preview.innerHTML = `
-    <div class="document-page">
-      ⏳ Cargando propuesta...
-    </div>
-  `;
-
-  modal.style.display =
-    "flex";
-
-  try {
-
-    const arrayBuffer =
-      await proposal.blob.arrayBuffer();
-
-    const result =
-      await mammoth.convertToHtml(
-        {
+      const result =
+        await mammoth.convertToHtml({
           arrayBuffer:
-            arrayBuffer
-        }
+            proposal.arrayBuffer
+        });
+
+      const preview =
+        window.open(
+          "",
+          "_blank"
+        );
+
+      if(preview){
+
+        preview.document.write(`
+          <!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8">
+            <title>Vista previa de propuesta</title>
+            <style>
+              body{
+                font-family:Arial,sans-serif;
+                max-width:900px;
+                margin:40px auto;
+                padding:20px;
+                line-height:1.6;
+              }
+            </style>
+          </head>
+          <body>
+            ${result.value}
+          </body>
+          </html>
+        `);
+
+        preview.document.close();
+
+      }
+
+      return;
+
+    }catch(error){
+
+      console.error(
+        "Error convirtiendo Word:",
+        error
       );
 
-    preview.innerHTML =
-      "<div class='document-page'>" +
-      (
-        result.value ||
-        "<p>No se pudo mostrar el contenido.</p>"
-      ) +
-      "</div>";
+    }
 
   }
 
-  catch(error) {
 
-    console.error(
-      "Error previsualizando:",
-      error
-    );
-
-    preview.innerHTML = `
-      <div class="document-page">
-
-        <h3>
-          ⚠️ No se pudo previsualizar
-        </h3>
-
-        <p>
-          El archivo está guardado correctamente,
-          pero el navegador no pudo mostrarlo.
-        </p>
-
-        <p>
-          Podés descargar el Word desde la oportunidad.
-        </p>
-
-      </div>
-    `;
-
-  }
+  alert(
+    "La propuesta existe, pero no se pudo generar una vista previa."
+  );
 
 }
 
 
-/* ==========================================
-   DESCARGAR
-========================================== */
-
-async function downloadProposal(
-  opportunityId
-) {
+async function downloadProposal(id){
 
   const proposal =
-    await getFinalProposal(
-      opportunityId
-    );
+    await getFinalProposal(id);
 
-  if (!proposal) {
+  if(!proposal){
 
     alert(
       "No se encontró la propuesta final."
@@ -2743,238 +2257,174 @@ async function downloadProposal(
 
   }
 
-  if (!proposal.blob) {
 
-    alert(
-      "La propuesta final no contiene un archivo descargable."
+  /*
+   * Caso normal: Blob
+   */
+
+  if(proposal.blob){
+
+    const url =
+      URL.createObjectURL(
+        proposal.blob
+      );
+
+    const a =
+      document.createElement("a");
+
+    a.href =
+      url;
+
+    a.download =
+      proposal.fileName ||
+      proposal.name ||
+      "Propuesta.docx";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    setTimeout(
+      () => URL.revokeObjectURL(url),
+      1000
     );
 
     return;
 
   }
 
-  const url =
-    URL.createObjectURL(
-      proposal.blob
-    );
 
-  const link =
-    document.createElement(
-      "a"
-    );
+  /*
+   * Caso ArrayBuffer
+   */
 
-  link.href =
-    url;
+  if(proposal.arrayBuffer){
 
-  link.download =
-    proposal.fileName ||
-    "Propuesta_Preventa_IA.docx";
+    try{
 
-  document.body.appendChild(
-    link
-  );
+      const blob =
+        new Blob(
+          [proposal.arrayBuffer],
+          {
+            type:
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          }
+        );
 
-  link.click();
+      const url =
+        URL.createObjectURL(blob);
 
-  document.body.removeChild(
-    link
-  );
+      const a =
+        document.createElement("a");
 
-  setTimeout(
-    function() {
+      a.href =
+        url;
 
-      URL.revokeObjectURL(
-        url
+      a.download =
+        proposal.fileName ||
+        proposal.name ||
+        "Propuesta.docx";
+
+      document.body.appendChild(a);
+
+      a.click();
+
+      a.remove();
+
+      setTimeout(
+        () => URL.revokeObjectURL(url),
+        1000
       );
 
-    },
-    1000
-  );
+      return;
 
-}
+    }catch(error){
 
-
-/* ==========================================
-   CERRAR PREVIEW
-========================================== */
-
-function closePreview() {
-
-  document.getElementById(
-    "previewModal"
-  ).style.display =
-    "none";
-
-}
-
-
-/* ==========================================
-   FECHA
-========================================== */
-
-function formatDate(
-  value
-) {
-
-  if (!value) {
-
-    return "Sin fecha";
-
-  }
-
-  try {
-
-    return new Date(
-      value
-    ).toLocaleString(
-      "es-AR"
-    );
-
-  }
-
-  catch(error) {
-
-    return "Sin fecha";
-
-  }
-
-}
-
-
-/* ==========================================
-   DINERO
-========================================== */
-
-function formatMoney(
-  value
-) {
-
-  if (
-    typeof value ===
-    "string"
-  ) {
-
-    return value;
-
-  }
-
-  return (
-    "USD " +
-    Number(
-      value || 0
-    ).toLocaleString(
-      "es-AR",
-      {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }
-    )
-  );
-
-}
-
-
-/* ==========================================
-   SEGURIDAD
-========================================== */
-
-function escapeHTML(
-  value
-) {
-
-  return String(
-    value ||
-    ""
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
-
-}
-
-
-function escapeAttribute(
-  value
-) {
-
-  return String(
-    value ||
-    ""
-  )
-  .replace(
-    /\\/g,
-    "\\\\"
-  )
-  .replace(
-    /'/g,
-    "\\'"
-  );
-
-}
-
-
-/* ==========================================
-   BUSQUEDA
-========================================== */
-
-document
-  .getElementById(
-    "search"
-  )
-  .addEventListener(
-    "input",
-    function() {
-
-      renderRepository();
+      console.error(error);
 
     }
-  );
-
-
-/* ==========================================
-   INICIO
-========================================== */
-
-(async function() {
-
-  try {
-
-    await openDatabase();
 
   }
 
-  catch(error) {
 
-    console.error(
-      "No se pudo abrir la Biblioteca:",
+  alert(
+    "No se pudo descargar la propuesta."
+  );
+
+}
+
+
+/* =========================================================
+   CERRAR MODALES AL HACER CLICK AFUERA
+========================================================= */
+
+window.addEventListener(
+  "click",
+  function(event){
+
+    const editModal =
+      document.getElementById(
+        "editModal"
+      );
+
+    const statusModal =
+      document.getElementById(
+        "statusModal"
+      );
+
+
+    if(
+      event.target === editModal
+    ){
+
+      closeEditModal();
+
+    }
+
+
+    if(
+      event.target === statusModal
+    ){
+
+      closeStatusModal();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+async function init(){
+
+  loadOpportunities();
+
+  try{
+
+    await openDB();
+
+  }catch(error){
+
+    console.warn(
+      "IndexedDB no disponible:",
       error
     );
 
   }
 
-  await renderRepository();
+  renderOpportunities();
 
-})();
+}
+
+
+init();
 
 </script>
 
 </body>
-
 </html>
