@@ -3,16 +3,31 @@ const XLSX = require("xlsx");
 // ============================================================
 // PREVENTA IA
 // MOTOR DE MERCADO 360
-// VERSION 3.4
+// VERSION 3.5
 //
 // Lee los archivos oficiales OEDE y consolida:
-// - Empresas por actividad
-// - Empleo por actividad
-// - Todas las provincias / regiones
 //
-// IMPORTANTE:
-// Esta versión NO modifica todavía TAM / SAM / SOM.
-// Primero hacemos funcionar correctamente los datos reales.
+// - Empresas por actividad detallada
+// - Empleo por actividad detallada
+// - Todas las regiones
+// - Categorías agrupadoras separadas
+// - Ranking inicial de industrias
+//
+// CORRECCIÓN v3.5:
+//
+// OEDE contiene dos niveles:
+//   A / B / C / G / etc. = categorías agrupadoras
+//   1 / 2 / 45 / 51 / 52 / etc. = actividades detalladas
+//
+// Para evitar doble conteo:
+// - Los códigos de letras NO se suman al total.
+// - Los códigos numéricos SÍ se utilizan para el consolidado.
+//
+// También se excluye "Hoja1" del archivo de empresas,
+// ya que el conjunto regional utilizado corresponde a
+// las 25 regiones analizadas.
+//
+// TAM / SAM / SOM todavía no se modifica en esta versión.
 // ============================================================
 
 
@@ -48,15 +63,9 @@ function normalizarTexto(valor) {
 }
 
 
-// ------------------------------------------------------------
-// Convertir valores del Excel a número
-//
-// Ejemplos:
-// "4,479" -> 4479
-// "45.123" -> 45123
-// "1.234,56" -> 1234.56
-// "s.d." -> null
-// ------------------------------------------------------------
+// ============================================================
+// CONVERTIR VALORES DEL EXCEL A NÚMERO
+// ============================================================
 
 function convertirNumero(valor) {
 
@@ -69,8 +78,7 @@ function convertirNumero(valor) {
     }
 
     const texto =
-        String(valor)
-            .trim();
+        String(valor).trim();
 
     const normalizado =
         normalizarTexto(texto);
@@ -86,8 +94,8 @@ function convertirNumero(valor) {
         return null;
     }
 
-    // El Excel de OEDE suele usar coma como separador
-    // de miles: 4,479
+
+    // 4,479
     if (
         /^\d{1,3}(,\d{3})+$/.test(texto)
     ) {
@@ -98,7 +106,8 @@ function convertirNumero(valor) {
 
     }
 
-    // Formato argentino: 1.234
+
+    // 45.123
     if (
         /^\d{1,3}(\.\d{3})+$/.test(texto)
     ) {
@@ -109,7 +118,8 @@ function convertirNumero(valor) {
 
     }
 
-    // Formato 1.234,56
+
+    // 1.234,56
     if (
         /^\d{1,3}(\.\d{3})+,\d+$/.test(texto)
     ) {
@@ -122,11 +132,10 @@ function convertirNumero(valor) {
 
     }
 
-    // Número decimal simple
+
     const numero =
         Number(
-            texto
-                .replace(",", ".")
+            texto.replace(",", ".")
         );
 
     if (
@@ -194,7 +203,7 @@ function leerMatriz(hoja) {
 
 
 // ============================================================
-// DETECTAR AÑO EN TEXTO
+// DETECTAR AÑO
 // ============================================================
 
 function detectarAnio(texto) {
@@ -220,12 +229,6 @@ function detectarAnio(texto) {
 
 // ============================================================
 // DETECTAR PERIODO
-//
-// Reconoce:
-// 4º Trim 2025
-// 4° Trim 2025
-// 2025
-// Año 2025
 // ============================================================
 
 function detectarPeriodo(texto) {
@@ -248,20 +251,31 @@ function detectarPeriodo(texto) {
     if (trimestre) {
 
         return {
+
             anio,
+
             trimestre:
                 Number(
                     trimestre[1]
                 ),
-            texto: valor
+
+            texto:
+                valor
+
         };
 
     }
 
     return {
+
         anio,
-        trimestre: null,
-        texto: valor
+
+        trimestre:
+            null,
+
+        texto:
+            valor
+
     };
 }
 
@@ -294,7 +308,7 @@ function detectarFilaEncabezado(
 
         let puntaje = 0;
 
-        let columnasPeriodo = [];
+        const columnasPeriodo = [];
 
         let columnaActividad = null;
 
@@ -313,6 +327,7 @@ function detectarFilaEncabezado(
                 continue;
             }
 
+
             const periodo =
                 detectarPeriodo(
                     valores[columna]
@@ -321,11 +336,15 @@ function detectarFilaEncabezado(
             if (periodo) {
 
                 columnasPeriodo.push({
+
                     columna,
+
                     ...periodo
+
                 });
 
             }
+
 
             if (
                 texto.includes("rama de actividad") ||
@@ -342,6 +361,7 @@ function detectarFilaEncabezado(
 
             }
 
+
             if (
                 texto.includes("empresa") ||
                 texto.includes("empresas")
@@ -350,6 +370,7 @@ function detectarFilaEncabezado(
                 puntaje += 5;
 
             }
+
 
             if (
                 texto.includes("empleo") ||
@@ -363,6 +384,7 @@ function detectarFilaEncabezado(
 
         }
 
+
         if (
             columnasPeriodo.length >= 2
         ) {
@@ -374,6 +396,7 @@ function detectarFilaEncabezado(
                 );
 
         }
+
 
         if (
             puntaje > 0
@@ -390,6 +413,7 @@ function detectarFilaEncabezado(
                 columnasPeriodo
 
             };
+
 
             if (
                 !mejor ||
@@ -411,7 +435,7 @@ function detectarFilaEncabezado(
 
 
 // ============================================================
-// DETECTAR COLUMNAS DE PERÍODO
+// DETECTAR COLUMNAS DE PERIODO
 // ============================================================
 
 function detectarColumnasPeriodo(
@@ -439,6 +463,7 @@ function detectarColumnasPeriodo(
             0
         );
 
+
     for (
         let columna = 0;
         columna < maxColumnas;
@@ -446,6 +471,7 @@ function detectarColumnasPeriodo(
     ) {
 
         let mejorPeriodo = null;
+
 
         for (
             let fila = filaInicio;
@@ -461,6 +487,7 @@ function detectarColumnasPeriodo(
                 detectarPeriodo(
                     valor
                 );
+
 
             if (periodo) {
 
@@ -483,8 +510,11 @@ function detectarColumnasPeriodo(
                 ) {
 
                     mejorPeriodo = {
+
                         columna,
+
                         ...periodo
+
                     };
 
                 }
@@ -492,6 +522,7 @@ function detectarColumnasPeriodo(
             }
 
         }
+
 
         if (mejorPeriodo) {
 
@@ -508,7 +539,7 @@ function detectarColumnasPeriodo(
 
 
 // ============================================================
-// OBTENER ÚLTIMO PERÍODO
+// OBTENER ÚLTIMO PERIODO
 // ============================================================
 
 function obtenerUltimoPeriodo(
@@ -522,6 +553,7 @@ function obtenerUltimoPeriodo(
         return null;
     }
 
+
     return columnas.reduce(
         (ultimo, actual) => {
 
@@ -529,12 +561,14 @@ function obtenerUltimoPeriodo(
                 return actual;
             }
 
+
             if (
                 actual.anio >
                 ultimo.anio
             ) {
                 return actual;
             }
+
 
             if (
                 actual.anio ===
@@ -557,6 +591,7 @@ function obtenerUltimoPeriodo(
                 }
 
             }
+
 
             return ultimo;
 
@@ -581,6 +616,7 @@ function pareceFilaActividad(
         return false;
     }
 
+
     const codigo =
         fila[0] !== null &&
         fila[0] !== undefined
@@ -588,6 +624,7 @@ function pareceFilaActividad(
                 fila[0]
             ).trim()
             : "";
+
 
     const nombre =
         fila[1] !== null &&
@@ -597,19 +634,11 @@ function pareceFilaActividad(
             ).trim()
             : "";
 
+
     if (!nombre) {
         return false;
     }
 
-    // Código tipo:
-    // A
-    // B
-    // C
-    // 1
-    // 2
-    // 10
-    // 45
-    // etc.
 
     if (
         /^[A-Z]$/i.test(codigo) ||
@@ -618,7 +647,47 @@ function pareceFilaActividad(
         return true;
     }
 
+
     return false;
+}
+
+
+// ============================================================
+// DETERMINAR NIVEL DE ACTIVIDAD
+//
+// "A", "B", "C" ... = agrupador
+// "1", "2", "45", "51"... = detallada
+// ============================================================
+
+function obtenerTipoActividad(
+    codigo
+) {
+
+    const valor =
+        String(
+            codigo || ""
+        ).trim();
+
+
+    if (
+        /^[A-Z]$/i.test(valor)
+    ) {
+
+        return "agrupador";
+
+    }
+
+
+    if (
+        /^\d+$/.test(valor)
+    ) {
+
+        return "detallada";
+
+    }
+
+
+    return "desconocida";
 }
 
 
@@ -637,18 +706,32 @@ function extraerDatosHoja(
             hoja
         );
 
+
     if (
         matriz.length === 0
     ) {
 
         return {
-            hoja: nombreHoja,
-            registros: [],
-            periodo: null,
-            filas: 0
+
+            hoja:
+                nombreHoja,
+
+            registros:
+                [],
+
+            agrupadores:
+                [],
+
+            periodo:
+                null,
+
+            filas:
+                0
+
         };
 
     }
+
 
     const encabezado =
         detectarFilaEncabezado(
@@ -656,17 +739,30 @@ function extraerDatosHoja(
             tipo
         );
 
+
     if (!encabezado) {
 
         return {
-            hoja: nombreHoja,
-            registros: [],
-            periodo: null,
+
+            hoja:
+                nombreHoja,
+
+            registros:
+                [],
+
+            agrupadores:
+                [],
+
+            periodo:
+                null,
+
             filas:
                 matriz.length
+
         };
 
     }
+
 
     const columnasPeriodo =
         detectarColumnasPeriodo(
@@ -674,34 +770,54 @@ function extraerDatosHoja(
             encabezado.fila
         );
 
+
     const ultimoPeriodo =
         obtenerUltimoPeriodo(
             columnasPeriodo
         );
 
+
     if (!ultimoPeriodo) {
 
         return {
-            hoja: nombreHoja,
-            registros: [],
-            periodo: null,
+
+            hoja:
+                nombreHoja,
+
+            registros:
+                [],
+
+            agrupadores:
+                [],
+
+            periodo:
+                null,
+
             filas:
                 matriz.length
+
         };
 
     }
 
+
     const registros = [];
+
+    const agrupadores = [];
+
 
     for (
         let fila =
             encabezado.fila + 1;
+
         fila < matriz.length;
+
         fila++
     ) {
 
         const valores =
             matriz[fila] || [];
+
 
         if (
             !pareceFilaActividad(
@@ -711,15 +827,18 @@ function extraerDatosHoja(
             continue;
         }
 
+
         const codigo =
             String(
                 valores[0] ?? ""
             ).trim();
 
+
         const actividad =
             String(
                 valores[1] ?? ""
             ).trim();
+
 
         const valor =
             convertirNumero(
@@ -728,19 +847,29 @@ function extraerDatosHoja(
                 ]
             );
 
+
         if (
             valor === null
         ) {
             continue;
         }
 
-        registros.push({
+
+        const nivel =
+            obtenerTipoActividad(
+                codigo
+            );
+
+
+        const registro = {
 
             codigo,
 
             actividad,
 
             valor,
+
+            nivel,
 
             hoja:
                 nombreHoja,
@@ -754,9 +883,32 @@ function extraerDatosHoja(
             periodo:
                 ultimoPeriodo.texto
 
-        });
+        };
+
+
+        if (
+            nivel === "detallada"
+        ) {
+
+            registros.push(
+                registro
+            );
+
+        }
+
+
+        if (
+            nivel === "agrupador"
+        ) {
+
+            agrupadores.push(
+                registro
+            );
+
+        }
 
     }
+
 
     return {
 
@@ -764,6 +916,8 @@ function extraerDatosHoja(
             nombreHoja,
 
         registros,
+
+        agrupadores,
 
         periodo:
             ultimoPeriodo,
@@ -799,10 +953,13 @@ function consolidarLibro(
             }
         );
 
+
     const hojas =
         libro.SheetNames || [];
 
+
     const resultados = [];
+
 
     for (
         const nombreHoja of hojas
@@ -813,7 +970,11 @@ function consolidarLibro(
                 nombreHoja
             );
 
-        // Ignoramos documentación
+
+        // ----------------------------------------------------
+        // DOCUMENTACIÓN
+        // ----------------------------------------------------
+
         if (
             nombreNormalizado.includes(
                 "caratula"
@@ -831,13 +992,38 @@ function consolidarLibro(
                 "descriptores"
             )
         ) {
+
             continue;
+
         }
+
+
+        // ----------------------------------------------------
+        // HOJA AUXILIAR DEL ARCHIVO DE EMPRESAS
+        //
+        // El conjunto regional utilizado contiene 25 regiones.
+        // Hoja1 aparece únicamente como hoja adicional.
+        // ----------------------------------------------------
+
+        if (
+            tipo === "empresas" &&
+            nombreNormalizado === "hoja1"
+        ) {
+
+            console.log(
+                "OEDE empresas: ignorando hoja auxiliar Hoja1"
+            );
+
+            continue;
+
+        }
+
 
         const hoja =
             libro.Sheets[
                 nombreHoja
             ];
+
 
         const resultado =
             extraerDatosHoja(
@@ -846,24 +1032,41 @@ function consolidarLibro(
                 tipo
             );
 
+
         resultados.push(
             resultado
         );
 
     }
 
-    // --------------------------------------------------------
-    // Consolidación
-    // --------------------------------------------------------
+
+    // ========================================================
+    // CONSOLIDACIÓN DE ACTIVIDADES DETALLADAS
+    // ========================================================
 
     const mapa =
         new Map();
 
+
+    // ========================================================
+    // CONSOLIDACIÓN DE AGRUPADORES
+    //
+    // Los conservamos para referencia, pero NO entran
+    // en el total.
+    // ========================================================
+
+    const mapaAgrupadores =
+        new Map();
+
+
     let registrosTotales = 0;
+
+    let agrupadoresTotales = 0;
 
     let hojasConDatos = 0;
 
     let ultimoPeriodoGlobal = null;
+
 
     for (
         const resultado of resultados
@@ -877,8 +1080,18 @@ function consolidarLibro(
 
         }
 
+
         registrosTotales +=
             resultado.registros.length;
+
+
+        agrupadoresTotales +=
+            resultado.agrupadores.length;
+
+
+        // ----------------------------------------------------
+        // ÚLTIMO PERIODO
+        // ----------------------------------------------------
 
         if (
             resultado.periodo
@@ -909,6 +1122,11 @@ function consolidarLibro(
 
         }
 
+
+        // ----------------------------------------------------
+        // ACTIVIDADES DETALLADAS
+        // ----------------------------------------------------
+
         for (
             const registro of resultado.registros
         ) {
@@ -920,6 +1138,7 @@ function consolidarLibro(
                     registro.actividad
                 );
 
+
             if (
                 !mapa.has(clave)
             ) {
@@ -927,18 +1146,24 @@ function consolidarLibro(
                 mapa.set(
                     clave,
                     {
+
                         codigo:
                             registro.codigo,
 
                         actividad:
                             registro.actividad,
 
+                        nivel:
+                            "detallada",
+
                         valor:
                             0,
 
-                        regiones: 0,
+                        regiones:
+                            0,
 
-                        fuentes: [],
+                        fuentes:
+                            [],
 
                         anio:
                             registro.anio,
@@ -948,21 +1173,106 @@ function consolidarLibro(
 
                         periodo:
                             registro.periodo
+
                     }
                 );
 
             }
+
 
             const acumulado =
                 mapa.get(
                     clave
                 );
 
+
             acumulado.valor +=
                 registro.valor;
 
+
             acumulado.regiones +=
                 1;
+
+
+            acumulado.fuentes.push(
+                registro.hoja
+            );
+
+        }
+
+
+        // ----------------------------------------------------
+        // AGRUPADORES
+        // ----------------------------------------------------
+
+        for (
+            const registro of resultado.agrupadores
+        ) {
+
+            const clave =
+                registro.codigo +
+                "|" +
+                normalizarTexto(
+                    registro.actividad
+                );
+
+
+            if (
+                !mapaAgrupadores.has(
+                    clave
+                )
+            ) {
+
+                mapaAgrupadores.set(
+                    clave,
+                    {
+
+                        codigo:
+                            registro.codigo,
+
+                        actividad:
+                            registro.actividad,
+
+                        nivel:
+                            "agrupador",
+
+                        valor:
+                            0,
+
+                        regiones:
+                            0,
+
+                        fuentes:
+                            [],
+
+                        anio:
+                            registro.anio,
+
+                        trimestre:
+                            registro.trimestre,
+
+                        periodo:
+                            registro.periodo
+
+                    }
+                );
+
+            }
+
+
+            const acumulado =
+                mapaAgrupadores.get(
+                    clave
+                );
+
+
+            acumulado.valor +=
+                registro.valor;
+
+
+            acumulado.regiones +=
+                1;
+
 
             acumulado.fuentes.push(
                 registro.hoja
@@ -971,6 +1281,7 @@ function consolidarLibro(
         }
 
     }
+
 
     const actividades =
         Array.from(
@@ -982,12 +1293,31 @@ function consolidarLibro(
                 a.valor
         );
 
+
+    const agrupadores =
+        Array.from(
+            mapaAgrupadores.values()
+        )
+        .sort(
+            (a, b) =>
+                b.valor -
+                a.valor
+        );
+
+
+    // ========================================================
+    // TOTAL CORRECTO
+    //
+    // SOLO actividades detalladas.
+    // ========================================================
+
     const total =
         actividades.reduce(
             (suma, item) =>
                 suma + item.valor,
             0
         );
+
 
     return {
 
@@ -1003,7 +1333,11 @@ function consolidarLibro(
 
         registrosTotales,
 
+        agrupadoresTotales,
+
         actividades,
+
+        agrupadores,
 
         total,
 
@@ -1027,100 +1361,231 @@ function mapearIndustria(
             actividad
         );
 
+
+    // --------------------------------------------------------
+    // AGRICULTURA
+    // --------------------------------------------------------
+
     if (
         texto.includes("agricultura") ||
         texto.includes("ganaderia") ||
         texto.includes("silvicultura") ||
         texto.includes("pesca")
     ) {
+
         return "Agricultura";
+
     }
+
+
+    // --------------------------------------------------------
+    // MINERÍA
+    // --------------------------------------------------------
 
     if (
         texto.includes("mineria") ||
         texto.includes("extraccion de petroleo") ||
-        texto.includes("extraccion de gas")
+        texto.includes("extraccion de gas") ||
+        texto.includes("minas y canteras")
     ) {
+
         return "Minería";
+
     }
+
+
+    // --------------------------------------------------------
+    // INDUSTRIA
+    // --------------------------------------------------------
 
     if (
         texto.includes("industria") ||
-        texto.includes("manufactur")
+        texto.includes("manufactur") ||
+        texto.includes("alimentos") ||
+        texto.includes("productos quimicos") ||
+        texto.includes("productos textiles") ||
+        texto.includes("confecciones") ||
+        texto.includes("madera") ||
+        texto.includes("muebles") ||
+        texto.includes("maquinaria")
     ) {
+
         return "Industria";
+
     }
+
+
+    // --------------------------------------------------------
+    // CONSTRUCCIÓN
+    // --------------------------------------------------------
 
     if (
         texto.includes("construccion")
     ) {
+
         return "Construcción";
+
     }
 
+
+    // --------------------------------------------------------
+    // RETAIL / COMERCIO
+    // --------------------------------------------------------
+
     if (
-        texto.includes("comercio")
+        texto.includes("comercio") ||
+        texto.includes("venta") ||
+        texto.includes("vta y reparacion") ||
+        texto.includes("comercio al por menor") ||
+        texto.includes("comercio al por mayor")
     ) {
+
         return "Retail";
+
     }
+
+
+    // --------------------------------------------------------
+    // LOGÍSTICA / TRANSPORTE
+    // --------------------------------------------------------
 
     if (
         texto.includes("transporte") ||
-        texto.includes("almacenamiento")
+        texto.includes("almacenamiento") ||
+        texto.includes("deposito") ||
+        texto.includes("manipulacion de carga")
     ) {
+
         return "Logística/Transporte";
+
     }
 
+
+    // --------------------------------------------------------
+    // TELECOM
+    // --------------------------------------------------------
+
     if (
-        texto.includes("informacion") ||
-        texto.includes("comunicacion") ||
-        texto.includes("telecom")
+        texto.includes("telecomunicaciones") ||
+        texto.includes("comunicaciones") ||
+        texto.includes("correos") ||
+        texto.includes("actividades de informatica")
     ) {
+
         return "Telecom";
+
     }
 
+
+    // --------------------------------------------------------
+    // SEGUROS
+    //
+    // IMPORTANTE:
+    // Se evalúa ANTES de bancos/finanzas.
+    // --------------------------------------------------------
+
     if (
-        texto.includes("financiero") ||
-        texto.includes("bancos") ||
-        texto.includes("seguros")
+        texto.includes("seguros") ||
+        texto.includes("servicios de seguros")
     ) {
-        return "Bancos/Finanzas";
+
+        return "Seguros";
+
     }
+
+
+    // --------------------------------------------------------
+    // BANCOS / FINANZAS
+    // --------------------------------------------------------
+
+    if (
+        texto.includes("intermediacion financiera") ||
+        texto.includes("actividad financiera") ||
+        texto.includes("servicios financieros") ||
+        texto.includes("bancos")
+    ) {
+
+        return "Bancos/Finanzas";
+
+    }
+
+
+    // --------------------------------------------------------
+    // SALUD
+    // --------------------------------------------------------
 
     if (
         texto.includes("salud") ||
-        texto.includes("sanidad")
+        texto.includes("sanidad") ||
+        texto.includes("servicios sociales")
     ) {
+
         return "Salud";
+
     }
 
+
+    // --------------------------------------------------------
+    // EDUCACIÓN
+    // --------------------------------------------------------
+
     if (
-        texto.includes("educacion")
+        texto.includes("educacion") ||
+        texto.includes("ensenanza")
     ) {
+
         return "Educación";
+
     }
+
+
+    // --------------------------------------------------------
+    // GOBIERNO
+    // --------------------------------------------------------
 
     if (
         texto.includes("administracion publica") ||
-        texto.includes("administracion del estado")
+        texto.includes("administracion del estado") ||
+        texto.includes("servicios generales de la administracion")
     ) {
+
         return "Gobierno";
+
     }
 
+
+    // --------------------------------------------------------
+    // SERVICIOS PROFESIONALES
+    // --------------------------------------------------------
+
     if (
-        texto.includes("profesionales") ||
-        texto.includes("servicios empresariales")
+        texto.includes("servicios juridicos") ||
+        texto.includes("servicios contables") ||
+        texto.includes("servicios profesionales") ||
+        texto.includes("servicios empresariales") ||
+        texto.includes("organizaciones empresariales")
     ) {
+
         return "Servicios profesionales";
+
     }
+
+
+    // --------------------------------------------------------
+    // ENERGÍA
+    // --------------------------------------------------------
 
     if (
         texto.includes("electricidad") ||
+        texto.includes("energia") ||
         texto.includes("gas") ||
-        texto.includes("agua") ||
-        texto.includes("energia")
+        texto.includes("agua")
     ) {
+
         return "Energía";
+
     }
+
 
     return "Otros";
 }
@@ -1138,6 +1603,11 @@ function generarRanking(
     const mapa =
         new Map();
 
+
+    // ========================================================
+    // EMPRESAS
+    // ========================================================
+
     for (
         const item of empresas.actividades
     ) {
@@ -1146,6 +1616,7 @@ function generarRanking(
             mapearIndustria(
                 item.actividad
             );
+
 
         if (
             !mapa.has(
@@ -1156,13 +1627,20 @@ function generarRanking(
             mapa.set(
                 industria,
                 {
+
                     industria,
-                    empresas: 0,
-                    empleo: 0
+
+                    empresas:
+                        0,
+
+                    empleo:
+                        0
+
                 }
             );
 
         }
+
 
         mapa.get(
             industria
@@ -1171,6 +1649,10 @@ function generarRanking(
 
     }
 
+
+    // ========================================================
+    // EMPLEO
+    // ========================================================
 
     for (
         const item of empleo.actividades
@@ -1181,6 +1663,7 @@ function generarRanking(
                 item.actividad
             );
 
+
         if (
             !mapa.has(
                 industria
@@ -1190,13 +1673,20 @@ function generarRanking(
             mapa.set(
                 industria,
                 {
+
                     industria,
-                    empresas: 0,
-                    empleo: 0
+
+                    empresas:
+                        0,
+
+                    empleo:
+                        0
+
                 }
             );
 
         }
+
 
         mapa.get(
             industria
@@ -1205,6 +1695,16 @@ function generarRanking(
 
     }
 
+
+    // ========================================================
+    // SCORE
+    //
+    // 40% empresas
+    // 60% empleo
+    //
+    // Usamos logaritmo para evitar que una industria
+    // enorme destruya el resto del ranking.
+    // ========================================================
 
     const ranking =
         Array.from(
@@ -1227,9 +1727,13 @@ function generarRanking(
                         )
                     );
 
+
                 return {
+
                     ...item,
+
                     score
+
                 };
 
             }
@@ -1240,8 +1744,8 @@ function generarRanking(
                 a.score
         );
 
-    return ranking;
 
+    return ranking;
 }
 
 
@@ -1266,7 +1770,7 @@ module.exports =
             );
 
             console.log(
-                "VERSION 3.4"
+                "VERSION 3.5"
             );
 
             console.log(
@@ -1294,10 +1798,12 @@ module.exports =
                     "Descargando empresas OEDE..."
                 );
 
+
                 empresasBuffer =
                     await descargarArchivo(
                         OEDE_EMPRESAS_URL
                     );
+
 
                 console.log(
                     "Empresas:",
@@ -1310,10 +1816,12 @@ module.exports =
                     "Descargando empleo OEDE..."
                 );
 
+
                 empleoBuffer =
                     await descargarArchivo(
                         OEDE_EMPLEO_URL
                     );
+
 
                 console.log(
                     "Empleo:",
@@ -1325,6 +1833,7 @@ module.exports =
                 estadoOEDE =
                     "descargado";
 
+
             } catch (error) {
 
                 console.error(
@@ -1332,9 +1841,11 @@ module.exports =
                     error
                 );
 
+
                 errorOEDE =
                     error.message ||
                     String(error);
+
 
                 estadoOEDE =
                     "error";
@@ -1350,15 +1861,44 @@ module.exports =
 
                 actividades: [],
 
-                total: 0
+                agrupadores: [],
+
+                total: 0,
+
+                ultimoPeriodo: null,
+
+                hojasAnalizadas: 0,
+
+                hojasConDatos: 0,
+
+                registrosTotales: 0,
+
+                agrupadoresTotales: 0,
+
+                cantidadHojas: 0
 
             };
+
 
             let empleo = {
 
                 actividades: [],
 
-                total: 0
+                agrupadores: [],
+
+                total: 0,
+
+                ultimoPeriodo: null,
+
+                hojasAnalizadas: 0,
+
+                hojasConDatos: 0,
+
+                registrosTotales: 0,
+
+                agrupadoresTotales: 0,
+
+                cantidadHojas: 0
 
             };
 
@@ -1372,6 +1912,7 @@ module.exports =
                     "Procesando empresas..."
                 );
 
+
                 empresas =
                     consolidarLibro(
                         empresasBuffer,
@@ -1380,14 +1921,27 @@ module.exports =
 
 
                 console.log(
-                    "Empresas procesadas:",
+                    "Empresas detalladas:",
                     empresas.actividades.length
+                );
+
+
+                console.log(
+                    "Empresas agrupadoras:",
+                    empresas.agrupadores.length
+                );
+
+
+                console.log(
+                    "Total empresas detalladas:",
+                    empresas.total
                 );
 
 
                 console.log(
                     "Procesando empleo..."
                 );
+
 
                 empleo =
                     consolidarLibro(
@@ -1397,8 +1951,20 @@ module.exports =
 
 
                 console.log(
-                    "Empleo procesado:",
+                    "Empleo detallado:",
                     empleo.actividades.length
+                );
+
+
+                console.log(
+                    "Empleo agrupador:",
+                    empleo.agrupadores.length
+                );
+
+
+                console.log(
+                    "Total empleo detallado:",
+                    empleo.total
                 );
 
             }
@@ -1424,7 +1990,7 @@ module.exports =
                 ok: true,
 
                 version:
-                    "3.4",
+                    "3.5",
 
                 motor:
                     "Mercado 360",
@@ -1457,7 +2023,10 @@ module.exports =
                                 : 2,
 
                         oede:
-                            estadoOEDE
+                            estadoOEDE,
+
+                        metodologia:
+                            "Se utilizan actividades OEDE detalladas con códigos numéricos para evitar doble conteo de categorías agrupadoras."
 
                     }
 
@@ -1485,6 +2054,7 @@ module.exports =
                             estadoOEDE
 
                     },
+
 
                     empleo: {
 
@@ -1517,15 +2087,22 @@ module.exports =
                     empleoOEDE:
                         empleo.total,
 
+
                     ultimoDatoEmpresas:
                         empresas.ultimoPeriodo,
+
 
                     ultimoDatoEmpleo:
                         empleo.ultimoPeriodo,
 
+
                     empresas: {
+
                         cantidadActividades:
                             empresas.actividades.length,
+
+                        cantidadAgrupadores:
+                            empresas.agrupadores.length,
 
                         hojasAnalizadas:
                             empresas.hojasAnalizadas,
@@ -1534,12 +2111,21 @@ module.exports =
                             empresas.hojasConDatos,
 
                         registros:
-                            empresas.registrosTotales
+                            empresas.registrosTotales,
+
+                        registrosAgrupadores:
+                            empresas.agrupadoresTotales
+
                     },
 
+
                     empleo: {
+
                         cantidadActividades:
                             empleo.actividades.length,
+
+                        cantidadAgrupadores:
+                            empleo.agrupadores.length,
 
                         hojasAnalizadas:
                             empleo.hojasAnalizadas,
@@ -1548,11 +2134,16 @@ module.exports =
                             empleo.hojasConDatos,
 
                         registros:
-                            empleo.registrosTotales
+                            empleo.registrosTotales,
+
+                        registrosAgrupadores:
+                            empleo.agrupadoresTotales
+
                     },
 
+
                     estado:
-                        "datos OEDE procesados"
+                        "datos OEDE detallados procesados sin sumar categorías agrupadoras"
 
                 },
 
@@ -1568,6 +2159,24 @@ module.exports =
 
                     empleo:
                         empleo.actividades
+
+                },
+
+
+                // ------------------------------------------------
+                // AGRUPADORES OEDE
+                //
+                // Se entregan para análisis y referencia,
+                // pero no participan de los totales.
+                // ------------------------------------------------
+
+                agrupadores: {
+
+                    empresas:
+                        empresas.agrupadores,
+
+                    empleo:
+                        empleo.agrupadores
 
                 },
 
@@ -1632,6 +2241,7 @@ module.exports =
                     oedeError:
                         errorOEDE,
 
+
                     empresas: {
 
                         hojas:
@@ -1644,9 +2254,16 @@ module.exports =
                             empresas.hojasConDatos,
 
                         registros:
-                            empresas.registrosTotales
+                            empresas.registrosTotales,
+
+                        agrupadores:
+                            empresas.agrupadoresTotales,
+
+                        actividadesDetalladas:
+                            empresas.actividades.length
 
                     },
+
 
                     empleo: {
 
@@ -1660,15 +2277,42 @@ module.exports =
                             empleo.hojasConDatos,
 
                         registros:
-                            empleo.registrosTotales
+                            empleo.registrosTotales,
+
+                        agrupadores:
+                            empleo.agrupadoresTotales,
+
+                        actividadesDetalladas:
+                            empleo.actividades.length
+
+                    },
+
+
+                    metodologia: {
+
+                        dobleConteo:
+                            false,
+
+                        categoriasAgrupadorasExcluidas:
+                            true,
+
+                        codigosNumericosUtilizados:
+                            true,
+
+                        hojaAuxiliarEmpresasExcluida:
+                            "Hoja1"
 
                     }
 
                 },
 
 
+                // ------------------------------------------------
+                // SIGUIENTE PASO
+                // ------------------------------------------------
+
                 siguientePaso:
-                    "Validar datos consolidados OEDE y luego conectar industrias, productos y TAM/SAM/SOM."
+                    "Conectar industrias, productos, variables documentales y posteriormente calcular TAM/SAM/SOM."
 
             };
 
@@ -1686,6 +2330,7 @@ module.exports =
                 "ERROR GENERAL MOTOR 360:",
                 error
             );
+
 
             return res
                 .status(500)
