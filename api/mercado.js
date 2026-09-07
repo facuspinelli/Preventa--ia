@@ -1,14 +1,6 @@
 // api/mercado.js
 // Motor de Inteligencia de Mercado - PREVENTA IA
-// v3.0
-//
-// OEDE:
-// - Empresas por rama de actividad
-// - Empleo por rama de actividad
-//
-// IMPORTANTE:
-// Los datos provenientes de OEDE se clasifican como "source".
-// No se mezclan con supuestos ni con el modelo histórico 2022.
+// v3.1 - Diagnóstico OEDE
 
 import XLSX from "xlsx";
 
@@ -33,7 +25,8 @@ async function descargarArchivo(url) {
         );
     }
 
-    const buffer = await respuesta.arrayBuffer();
+    const buffer =
+        await respuesta.arrayBuffer();
 
     if (!buffer || buffer.byteLength === 0) {
         throw new Error(
@@ -51,12 +44,14 @@ async function descargarArchivo(url) {
 
 function leerExcel(buffer) {
 
-    const workbook = XLSX.read(buffer, {
-        type: "buffer",
-        cellDates: true
-    });
+    const workbook =
+        XLSX.read(buffer, {
+            type: "buffer",
+            cellDates: true
+        });
 
-    const hojas = workbook.SheetNames;
+    const hojas =
+        workbook.SheetNames;
 
     if (!hojas.length) {
         throw new Error(
@@ -91,7 +86,10 @@ function leerExcel(buffer) {
 
 function normalizarTexto(valor) {
 
-    if (valor === null || valor === undefined) {
+    if (
+        valor === null ||
+        valor === undefined
+    ) {
         return "";
     }
 
@@ -107,7 +105,10 @@ function normalizarTexto(valor) {
    BUSCAR COLUMNAS
    ========================================================= */
 
-function buscarColumna(columnas, posiblesNombres) {
+function buscarColumna(
+    columnas,
+    posiblesNombres
+) {
 
     const normalizadas =
         columnas.map(col => ({
@@ -116,7 +117,9 @@ function buscarColumna(columnas, posiblesNombres) {
                 normalizarTexto(col)
         }));
 
-    for (const nombre of posiblesNombres) {
+    for (
+        const nombre of posiblesNombres
+    ) {
 
         const buscada =
             normalizarTexto(nombre);
@@ -124,7 +127,8 @@ function buscarColumna(columnas, posiblesNombres) {
         const encontrada =
             normalizadas.find(
                 col =>
-                    col.normalizado === buscada
+                    col.normalizado ===
+                    buscada
             );
 
         if (encontrada) {
@@ -133,78 +137,6 @@ function buscarColumna(columnas, posiblesNombres) {
     }
 
     return null;
-}
-
-
-/* =========================================================
-   DETECTAR FILA MÁS RECIENTE
-   ========================================================= */
-
-function obtenerUltimaFila(rows) {
-
-    if (!rows || !rows.length) {
-        return null;
-    }
-
-    /*
-     * Buscamos columnas que puedan representar
-     * fecha / año / período.
-     */
-
-    const columnas =
-        Object.keys(rows[0] || {});
-
-    const columnaFecha =
-        buscarColumna(
-            columnas,
-            [
-                "fecha",
-                "periodo",
-                "período",
-                "year",
-                "anio",
-                "año",
-                "trimestre"
-            ]
-        );
-
-    if (!columnaFecha) {
-
-        return rows[
-            rows.length - 1
-        ];
-    }
-
-    const ordenadas =
-        [...rows].sort(
-            (a, b) => {
-
-                const da =
-                    new Date(a[columnaFecha]);
-
-                const db =
-                    new Date(b[columnaFecha]);
-
-                if (
-                    !isNaN(da.getTime()) &&
-                    !isNaN(db.getTime())
-                ) {
-                    return da - db;
-                }
-
-                return String(
-                    a[columnaFecha] || ""
-                ).localeCompare(
-                    String(
-                        b[columnaFecha] || ""
-                    )
-                );
-            }
-        );
-
-    return ordenadas[
-        ordenadas.length - 1
-    ];
 }
 
 
@@ -222,7 +154,9 @@ function convertirNumero(valor) {
         return null;
     }
 
-    if (typeof valor === "number") {
+    if (
+        typeof valor === "number"
+    ) {
         return valor;
     }
 
@@ -230,15 +164,6 @@ function convertirNumero(valor) {
         String(valor)
             .trim()
             .replace(/\s/g, "");
-
-    /*
-     * Manejo de formatos:
-     *
-     * 51.234
-     * 51,234
-     * 51.234,56
-     * 51,234.56
-     */
 
     if (
         texto.includes(".") &&
@@ -249,11 +174,14 @@ function convertirNumero(valor) {
             texto.lastIndexOf(",") >
             texto.lastIndexOf(".")
         ) {
+
             texto =
                 texto
                     .replace(/\./g, "")
                     .replace(",", ".");
+
         } else {
+
             texto =
                 texto.replace(/,/g, "");
         }
@@ -267,11 +195,6 @@ function convertirNumero(valor) {
 
     } else {
 
-        /*
-         * Si tiene puntos y parece
-         * separador de miles.
-         */
-
         const partes =
             texto.split(".");
 
@@ -281,6 +204,7 @@ function convertirNumero(valor) {
                 partes.length - 1
             ].length === 3
         ) {
+
             texto =
                 partes.join("");
         }
@@ -306,12 +230,15 @@ function clasificarIndustria(texto) {
 
     if (
         valor.includes("financ") ||
-        valor.includes("banco") ||
-        valor.includes("seguros")
+        valor.includes("banco")
     ) {
-        return valor.includes("seguro")
-            ? "seguros"
-            : "bancos_finanzas";
+        return "bancos_finanzas";
+    }
+
+    if (
+        valor.includes("seguro")
+    ) {
+        return "seguros";
     }
 
     if (
@@ -437,9 +364,7 @@ function procesarEmpresasOEDE(
         }
 
         const columnas =
-            Object.keys(
-                filas[0]
-            );
+            Object.keys(filas[0]);
 
         const columnaActividad =
             buscarColumna(
@@ -476,15 +401,11 @@ function procesarEmpresasOEDE(
         ) {
 
             const actividad =
-                fila[
-                    columnaActividad
-                ];
+                fila[columnaActividad];
 
             const valor =
                 convertirNumero(
-                    fila[
-                        columnaValor
-                    ]
+                    fila[columnaValor]
                 );
 
             if (
@@ -582,9 +503,7 @@ function procesarEmpleoOEDE(
         }
 
         const columnas =
-            Object.keys(
-                filas[0]
-            );
+            Object.keys(filas[0]);
 
         const columnaActividad =
             buscarColumna(
@@ -622,15 +541,11 @@ function procesarEmpleoOEDE(
         ) {
 
             const actividad =
-                fila[
-                    columnaActividad
-                ];
+                fila[columnaActividad];
 
             const valor =
                 convertirNumero(
-                    fila[
-                        columnaValor
-                    ]
+                    fila[columnaValor]
                 );
 
             if (
@@ -784,6 +699,8 @@ function construirFuentes(ahora) {
                 "https://www.argentina.gob.ar/superintendencia-de-seguros",
             estado:
                 "disponible",
+            actualizacion:
+                "2026",
             variables: [
                 "aseguradoras",
                 "primas",
@@ -805,6 +722,8 @@ function construirFuentes(ahora) {
                 "https://www.enacom.gob.ar/",
             estado:
                 "disponible",
+            actualizacion:
+                "2026",
             variables: [
                 "internet",
                 "telefonía",
@@ -826,6 +745,8 @@ function construirFuentes(ahora) {
                 "https://www.indec.gob.ar/",
             estado:
                 "disponible",
+            actualizacion:
+                "2026",
             variables: [
                 "actividad económica",
                 "internet",
@@ -977,6 +898,9 @@ export default async function handler(
         let estadoOEDE =
             "pendiente";
 
+        let errorOEDE =
+            null;
+
 
         try {
 
@@ -1025,8 +949,18 @@ export default async function handler(
                 empresasOEDE.length ||
                 empleoOEDE.length
             ) {
+
                 estadoOEDE =
                     "conectado";
+
+            } else {
+
+                estadoOEDE =
+                    "sin_registros";
+
+                errorOEDE =
+                    "Los archivos de OEDE se descargaron correctamente, pero el programa no encontró columnas compatibles con empresas o empleo.";
+
             }
 
         } catch (error) {
@@ -1039,11 +973,27 @@ export default async function handler(
             estadoOEDE =
                 "error";
 
+            errorOEDE = {
+
+                nombre:
+                    error?.name ||
+                    "Error",
+
+                mensaje:
+                    error?.message ||
+                    String(error),
+
+                stack:
+                    error?.stack ||
+                    null
+
+            };
+
         }
 
 
         /* ---------------------------------------------
-           DATOS FIJOS OFICIALES YA DISPONIBLES
+           DATOS BASE
            --------------------------------------------- */
 
         const datosBase = [
@@ -1127,11 +1077,11 @@ export default async function handler(
                 source:
                     "BCRA",
 
-                sourceUrl:
-                    "https://www.bcra.gob.ar/",
-
                 sourceDate:
                     "2026",
+
+                sourceUrl:
+                    "https://www.bcra.gob.ar/",
 
                 consultedAt:
                     ahora,
@@ -1233,9 +1183,8 @@ export default async function handler(
                     "pendiente",
 
                 motivo:
-                    estadoOEDE === "error"
-                        ? "No se pudo leer automáticamente el Excel de OEDE."
-                        : "OEDE todavía no devolvió registros."
+                    errorOEDE ||
+                    "OEDE todavía no devolvió registros."
 
             });
 
@@ -1259,9 +1208,8 @@ export default async function handler(
                     "pendiente",
 
                 motivo:
-                    estadoOEDE === "error"
-                        ? "No se pudo leer automáticamente el Excel de OEDE."
-                        : "OEDE todavía no devolvió registros."
+                    errorOEDE ||
+                    "OEDE todavía no devolvió registros."
 
             });
 
@@ -1399,7 +1347,7 @@ export default async function handler(
                 ahora,
 
             versionMotor:
-                "3.0",
+                "3.1",
 
             oede: {
 
@@ -1500,7 +1448,7 @@ export default async function handler(
                 "PREVENTA IA - Inteligencia de Mercado 360",
 
             version:
-                "3.0",
+                "3.1",
 
             mercado,
 
@@ -1571,10 +1519,15 @@ export default async function handler(
                 empleoOEDE:
                     empleoOEDE.length,
 
+                oedeError:
+                    errorOEDE,
+
                 mensaje:
                     estadoOEDE === "conectado"
                         ? "OEDE conectado correctamente."
-                        : "OEDE no pudo ser leído automáticamente."
+                        : estadoOEDE === "sin_registros"
+                            ? "OEDE fue descargado, pero no se encontraron registros compatibles."
+                            : "OEDE no pudo ser leído automáticamente."
 
             }
 
@@ -1596,7 +1549,10 @@ export default async function handler(
                 "No se pudo ejecutar el Motor de Mercado 360.",
 
             detalle:
-                error.message
+                error.message,
+
+            stack:
+                error.stack || null
 
         });
 
