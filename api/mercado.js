@@ -1,441 +1,1062 @@
 // api/mercado.js
 // Motor de Inteligencia de Mercado - PREVENTA IA
-// Versión 2.0
+// v3.0
 //
-// Objetivo:
-// - Centralizar fuentes oficiales.
-// - Separar DATOS ENCONTRADOS, CÁLCULOS, SUPUESTOS y FALTANTES.
-// - No inventar información.
-// - Preparar la estructura para alimentar TAM / SAM / SOM.
+// OEDE:
+// - Empresas por rama de actividad
+// - Empleo por rama de actividad
 //
 // IMPORTANTE:
-// En esta etapa el motor devuelve datos oficiales identificados
-// y deja claramente separados los datos que todavía necesitamos.
-// El cálculo económico del modelo histórico NO se modifica todavía.
+// Los datos provenientes de OEDE se clasifican como "source".
+// No se mezclan con supuestos ni con el modelo histórico 2022.
 
-export default async function handler(req, res) {
+import XLSX from "xlsx";
+
+const OEDE_EMPRESAS_URL =
+    "https://www.argentina.gob.ar/sites/default/files/provinciales_serie_empresas1_2.xlsx";
+
+const OEDE_EMPLEO_URL =
+    "https://www.argentina.gob.ar/sites/default/files/provinciales_serie_empleo_trimestral_2dig_6.xlsx";
+
+
+/* =========================================================
+   DESCARGAR ARCHIVO
+   ========================================================= */
+
+async function descargarArchivo(url) {
+
+    const respuesta = await fetch(url);
+
+    if (!respuesta.ok) {
+        throw new Error(
+            `OEDE respondió ${respuesta.status} al descargar ${url}`
+        );
+    }
+
+    const buffer = await respuesta.arrayBuffer();
+
+    if (!buffer || buffer.byteLength === 0) {
+        throw new Error(
+            "El archivo descargado desde OEDE está vacío."
+        );
+    }
+
+    return Buffer.from(buffer);
+}
+
+
+/* =========================================================
+   LEER EXCEL
+   ========================================================= */
+
+function leerExcel(buffer) {
+
+    const workbook = XLSX.read(buffer, {
+        type: "buffer",
+        cellDates: true
+    });
+
+    const hojas = workbook.SheetNames;
+
+    if (!hojas.length) {
+        throw new Error(
+            "El Excel de OEDE no contiene hojas."
+        );
+    }
+
+    const resultado = {};
+
+    for (const nombreHoja of hojas) {
+
+        const hoja =
+            workbook.Sheets[nombreHoja];
+
+        resultado[nombreHoja] =
+            XLSX.utils.sheet_to_json(
+                hoja,
+                {
+                    defval: null,
+                    raw: false
+                }
+            );
+    }
+
+    return resultado;
+}
+
+
+/* =========================================================
+   NORMALIZAR TEXTO
+   ========================================================= */
+
+function normalizarTexto(valor) {
+
+    if (valor === null || valor === undefined) {
+        return "";
+    }
+
+    return String(valor)
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
+
+/* =========================================================
+   BUSCAR COLUMNAS
+   ========================================================= */
+
+function buscarColumna(columnas, posiblesNombres) {
+
+    const normalizadas =
+        columnas.map(col => ({
+            original: col,
+            normalizado:
+                normalizarTexto(col)
+        }));
+
+    for (const nombre of posiblesNombres) {
+
+        const buscada =
+            normalizarTexto(nombre);
+
+        const encontrada =
+            normalizadas.find(
+                col =>
+                    col.normalizado === buscada
+            );
+
+        if (encontrada) {
+            return encontrada.original;
+        }
+    }
+
+    return null;
+}
+
+
+/* =========================================================
+   DETECTAR FILA MÁS RECIENTE
+   ========================================================= */
+
+function obtenerUltimaFila(rows) {
+
+    if (!rows || !rows.length) {
+        return null;
+    }
+
+    /*
+     * Buscamos columnas que puedan representar
+     * fecha / año / período.
+     */
+
+    const columnas =
+        Object.keys(rows[0] || {});
+
+    const columnaFecha =
+        buscarColumna(
+            columnas,
+            [
+                "fecha",
+                "periodo",
+                "período",
+                "year",
+                "anio",
+                "año",
+                "trimestre"
+            ]
+        );
+
+    if (!columnaFecha) {
+
+        return rows[
+            rows.length - 1
+        ];
+    }
+
+    const ordenadas =
+        [...rows].sort(
+            (a, b) => {
+
+                const da =
+                    new Date(a[columnaFecha]);
+
+                const db =
+                    new Date(b[columnaFecha]);
+
+                if (
+                    !isNaN(da.getTime()) &&
+                    !isNaN(db.getTime())
+                ) {
+                    return da - db;
+                }
+
+                return String(
+                    a[columnaFecha] || ""
+                ).localeCompare(
+                    String(
+                        b[columnaFecha] || ""
+                    )
+                );
+            }
+        );
+
+    return ordenadas[
+        ordenadas.length - 1
+    ];
+}
+
+
+/* =========================================================
+   CONVERTIR NÚMERO
+   ========================================================= */
+
+function convertirNumero(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined ||
+        valor === ""
+    ) {
+        return null;
+    }
+
+    if (typeof valor === "number") {
+        return valor;
+    }
+
+    let texto =
+        String(valor)
+            .trim()
+            .replace(/\s/g, "");
+
+    /*
+     * Manejo de formatos:
+     *
+     * 51.234
+     * 51,234
+     * 51.234,56
+     * 51,234.56
+     */
+
+    if (
+        texto.includes(".") &&
+        texto.includes(",")
+    ) {
+
+        if (
+            texto.lastIndexOf(",") >
+            texto.lastIndexOf(".")
+        ) {
+            texto =
+                texto
+                    .replace(/\./g, "")
+                    .replace(",", ".");
+        } else {
+            texto =
+                texto.replace(/,/g, "");
+        }
+
+    } else if (
+        texto.includes(",")
+    ) {
+
+        texto =
+            texto.replace(",", ".");
+
+    } else {
+
+        /*
+         * Si tiene puntos y parece
+         * separador de miles.
+         */
+
+        const partes =
+            texto.split(".");
+
+        if (
+            partes.length > 1 &&
+            partes[
+                partes.length - 1
+            ].length === 3
+        ) {
+            texto =
+                partes.join("");
+        }
+    }
+
+    const numero =
+        Number(texto);
+
+    return Number.isFinite(numero)
+        ? numero
+        : null;
+}
+
+
+/* =========================================================
+   CLASIFICAR INDUSTRIA
+   ========================================================= */
+
+function clasificarIndustria(texto) {
+
+    const valor =
+        normalizarTexto(texto);
+
+    if (
+        valor.includes("financ") ||
+        valor.includes("banco") ||
+        valor.includes("seguros")
+    ) {
+        return valor.includes("seguro")
+            ? "seguros"
+            : "bancos_finanzas";
+    }
+
+    if (
+        valor.includes("salud") ||
+        valor.includes("medic") ||
+        valor.includes("hospital")
+    ) {
+        return "salud";
+    }
+
+    if (
+        valor.includes("telecom") ||
+        valor.includes("comunic")
+    ) {
+        return "telecom";
+    }
+
+    if (
+        valor.includes("constru")
+    ) {
+        return "construccion";
+    }
+
+    if (
+        valor.includes("agric") ||
+        valor.includes("ganader") ||
+        valor.includes("silvic") ||
+        valor.includes("pesca")
+    ) {
+        return "agricultura";
+    }
+
+    if (
+        valor.includes("min")
+    ) {
+        return "mineria";
+    }
+
+    if (
+        valor.includes("transporte") ||
+        valor.includes("logistic")
+    ) {
+        return "logistica";
+    }
+
+    if (
+        valor.includes("energia") ||
+        valor.includes("electric") ||
+        valor.includes("gas")
+    ) {
+        return "energia";
+    }
+
+    if (
+        valor.includes("comerc") ||
+        valor.includes("retail")
+    ) {
+        return "retail";
+    }
+
+    if (
+        valor.includes("industria") ||
+        valor.includes("manufact")
+    ) {
+        return "industria";
+    }
+
+    if (
+        valor.includes("educ")
+    ) {
+        return "educacion";
+    }
+
+    if (
+        valor.includes("administracion publica") ||
+        valor.includes("gobierno")
+    ) {
+        return "gobierno";
+    }
+
+    if (
+        valor.includes("profesional") ||
+        valor.includes("cientifica") ||
+        valor.includes("tecnica")
+    ) {
+        return "servicios_profesionales";
+    }
+
+    if (
+        valor.includes("legal") ||
+        valor.includes("juridic")
+    ) {
+        return "legal";
+    }
+
+    return "otros";
+}
+
+
+/* =========================================================
+   EXTRAER EMPRESAS OEDE
+   ========================================================= */
+
+function procesarEmpresasOEDE(
+    hojas,
+    ahora
+) {
+
+    const datos = [];
+
+    for (
+        const nombreHoja of Object.keys(hojas)
+    ) {
+
+        const filas =
+            hojas[nombreHoja];
+
+        if (
+            !Array.isArray(filas) ||
+            !filas.length
+        ) {
+            continue;
+        }
+
+        const columnas =
+            Object.keys(
+                filas[0]
+            );
+
+        const columnaActividad =
+            buscarColumna(
+                columnas,
+                [
+                    "actividad",
+                    "rama de actividad",
+                    "rama actividad",
+                    "sector",
+                    "descripcion"
+                ]
+            );
+
+        const columnaValor =
+            buscarColumna(
+                columnas,
+                [
+                    "empresas",
+                    "cantidad de empresas",
+                    "cantidad empresas",
+                    "firmas"
+                ]
+            );
+
+        if (
+            !columnaActividad ||
+            !columnaValor
+        ) {
+            continue;
+        }
+
+        for (
+            const fila of filas
+        ) {
+
+            const actividad =
+                fila[
+                    columnaActividad
+                ];
+
+            const valor =
+                convertirNumero(
+                    fila[
+                        columnaValor
+                    ]
+                );
+
+            if (
+                !actividad ||
+                valor === null
+            ) {
+                continue;
+            }
+
+            datos.push({
+
+                id:
+                    `oede_empresas_${datos.length + 1}`,
+
+                variable:
+                    "empresas_por_actividad",
+
+                value:
+                    valor,
+
+                unit:
+                    "empresas",
+
+                industry:
+                    clasificarIndustria(
+                        actividad
+                    ),
+
+                product:
+                    "digitalizacion",
+
+                companySize:
+                    null,
+
+                year:
+                    2025,
+
+                type:
+                    "source",
+
+                source:
+                    "OEDE",
+
+                sourceUrl:
+                    OEDE_EMPRESAS_URL,
+
+                sourceDate:
+                    "Junio 2026",
+
+                consultedAt:
+                    ahora,
+
+                confidence:
+                    "alta",
+
+                actividadOriginal:
+                    String(actividad),
+
+                hoja:
+                    nombreHoja,
+
+                notes:
+                    "Cantidad de empresas por rama de actividad según OEDE."
+            });
+        }
+    }
+
+    return datos;
+}
+
+
+/* =========================================================
+   EXTRAER EMPLEO OEDE
+   ========================================================= */
+
+function procesarEmpleoOEDE(
+    hojas,
+    ahora
+) {
+
+    const datos = [];
+
+    for (
+        const nombreHoja of Object.keys(hojas)
+    ) {
+
+        const filas =
+            hojas[nombreHoja];
+
+        if (
+            !Array.isArray(filas) ||
+            !filas.length
+        ) {
+            continue;
+        }
+
+        const columnas =
+            Object.keys(
+                filas[0]
+            );
+
+        const columnaActividad =
+            buscarColumna(
+                columnas,
+                [
+                    "actividad",
+                    "rama de actividad",
+                    "rama actividad",
+                    "sector",
+                    "descripcion"
+                ]
+            );
+
+        const columnaValor =
+            buscarColumna(
+                columnas,
+                [
+                    "empleo",
+                    "puestos",
+                    "trabajadores",
+                    "asalariados",
+                    "empleo registrado"
+                ]
+            );
+
+        if (
+            !columnaActividad ||
+            !columnaValor
+        ) {
+            continue;
+        }
+
+        for (
+            const fila of filas
+        ) {
+
+            const actividad =
+                fila[
+                    columnaActividad
+                ];
+
+            const valor =
+                convertirNumero(
+                    fila[
+                        columnaValor
+                    ]
+                );
+
+            if (
+                !actividad ||
+                valor === null
+            ) {
+                continue;
+            }
+
+            datos.push({
+
+                id:
+                    `oede_empleo_${datos.length + 1}`,
+
+                variable:
+                    "empleados_por_actividad",
+
+                value:
+                    valor,
+
+                unit:
+                    "empleados",
+
+                industry:
+                    clasificarIndustria(
+                        actividad
+                    ),
+
+                product:
+                    "digitalizacion",
+
+                companySize:
+                    null,
+
+                year:
+                    2026,
+
+                type:
+                    "source",
+
+                source:
+                    "OEDE",
+
+                sourceUrl:
+                    OEDE_EMPLEO_URL,
+
+                sourceDate:
+                    "Junio 2026",
+
+                consultedAt:
+                    ahora,
+
+                confidence:
+                    "alta",
+
+                actividadOriginal:
+                    String(actividad),
+
+                hoja:
+                    nombreHoja,
+
+                notes:
+                    "Empleo registrado por rama de actividad según OEDE."
+            });
+        }
+    }
+
+    return datos;
+}
+
+
+/* =========================================================
+   FUENTES
+   ========================================================= */
+
+function construirFuentes(ahora) {
+
+    return [
+
+        {
+            id: "oede",
+            nombre:
+                "OEDE - Ministerio de Trabajo",
+            organismo:
+                "Ministerio de Trabajo, Empleo y Seguridad Social",
+            tipo:
+                "oficial",
+            url:
+                "https://www.argentina.gob.ar/trabajo/estadisticas/oede-estadisticas-provinciales",
+            estado:
+                "disponible",
+            actualizacion:
+                "Junio 2026",
+            variables: [
+                "empresas",
+                "empleo",
+                "actividad",
+                "remuneraciones"
+            ],
+            archivos: [
+                {
+                    nombre:
+                        "Empresas por rama de actividad - 2 dígitos",
+                    url:
+                        OEDE_EMPRESAS_URL
+                },
+                {
+                    nombre:
+                        "Empleo - serie trimestral - 2 dígitos",
+                    url:
+                        OEDE_EMPLEO_URL
+                }
+            ],
+            consultado:
+                ahora
+        },
+
+        {
+            id: "bcra",
+            nombre:
+                "BCRA - Entidades Financieras",
+            organismo:
+                "Banco Central de la República Argentina",
+            tipo:
+                "oficial",
+            url:
+                "https://www.bcra.gob.ar/",
+            estado:
+                "disponible",
+            actualizacion:
+                "2026",
+            variables: [
+                "entidades financieras",
+                "bancos",
+                "personal",
+                "sucursales"
+            ],
+            consultado:
+                ahora
+        },
+
+        {
+            id: "ssn",
+            nombre:
+                "SSN - Mercado de Seguros",
+            organismo:
+                "Superintendencia de Seguros de la Nación",
+            tipo:
+                "oficial",
+            url:
+                "https://www.argentina.gob.ar/superintendencia-de-seguros",
+            estado:
+                "disponible",
+            variables: [
+                "aseguradoras",
+                "primas",
+                "entidades"
+            ],
+            consultado:
+                ahora
+        },
+
+        {
+            id: "enacom",
+            nombre:
+                "ENACOM - Indicadores TIC",
+            organismo:
+                "Ente Nacional de Comunicaciones",
+            tipo:
+                "oficial",
+            url:
+                "https://www.enacom.gob.ar/",
+            estado:
+                "disponible",
+            variables: [
+                "internet",
+                "telefonía",
+                "telecomunicaciones"
+            ],
+            consultado:
+                ahora
+        },
+
+        {
+            id: "indec",
+            nombre:
+                "INDEC",
+            organismo:
+                "Instituto Nacional de Estadística y Censos",
+            tipo:
+                "oficial",
+            url:
+                "https://www.indec.gob.ar/",
+            estado:
+                "disponible",
+            variables: [
+                "actividad económica",
+                "internet",
+                "empresas"
+            ],
+            consultado:
+                ahora
+        }
+
+    ];
+}
+
+
+/* =========================================================
+   INDUSTRIAS
+   ========================================================= */
+
+const industrias = [
+
+    ["bancos_finanzas", "Bancos / Finanzas"],
+    ["salud", "Salud"],
+    ["rrhh", "RRHH"],
+    ["seguros", "Seguros"],
+    ["industria", "Industria"],
+    ["retail", "Retail"],
+    ["logistica", "Logística / Transporte"],
+    ["energia", "Energía"],
+    ["telecom", "Telecomunicaciones"],
+    ["gobierno", "Gobierno"],
+    ["educacion", "Educación"],
+    ["agricultura", "Agricultura"],
+    ["construccion", "Construcción"],
+    ["legal", "Legal"],
+    ["servicios_profesionales", "Servicios profesionales"],
+    ["mineria", "Minería"],
+    ["otros", "Otros"]
+
+].map(
+    ([id, nombre]) => ({
+        id,
+        nombre
+    })
+);
+
+
+/* =========================================================
+   PRODUCTOS
+   ========================================================= */
+
+const productos = [
+
+    {
+        id:
+            "guarda",
+        nombre:
+            "Guarda / Almacenamiento",
+        necesidades: [
+            "almacenamiento",
+            "archivo digital",
+            "consulta documental",
+            "retención"
+        ]
+    },
+
+    {
+        id:
+            "digitalizacion",
+        nombre:
+            "Digitalización",
+        necesidades: [
+            "digitalización",
+            "OCR",
+            "captura",
+            "archivo físico",
+            "indexación"
+        ]
+    },
+
+    {
+        id:
+            "recibos",
+        nombre:
+            "Firma de recibos de sueldo",
+        necesidades: [
+            "RRHH",
+            "recibos",
+            "firma",
+            "empleados",
+            "legajos"
+        ]
+    },
+
+    {
+        id:
+            "firma",
+        nombre:
+            "Firma electrónica",
+        necesidades: [
+            "firma",
+            "documentos",
+            "contratos",
+            "aprobaciones",
+            "compliance"
+        ]
+    },
+
+    {
+        id:
+            "thuban",
+        nombre:
+            "Thuban",
+        necesidades: [
+            "gestión documental",
+            "workflows",
+            "OCR",
+            "firma",
+            "integraciones",
+            "migración",
+            "archivo",
+            "búsqueda"
+        ]
+    }
+
+];
+
+
+/* =========================================================
+   HANDLER
+   ========================================================= */
+
+export default async function handler(
+    req,
+    res
+) {
 
     try {
 
-        const ahora = new Date().toISOString();
+        const ahora =
+            new Date().toISOString();
 
-        /* =====================================================
-           1. FUENTES OFICIALES
-           ===================================================== */
 
-        const fuentes = [
+        /* ---------------------------------------------
+           DESCARGAR OEDE
+           --------------------------------------------- */
 
-            {
-                id: "oede",
-                nombre: "OEDE - Ministerio de Trabajo",
-                organismo:
-                    "Ministerio de Trabajo, Empleo y Seguridad Social",
-                tipo: "oficial",
-                url:
-                    "https://www.argentina.gob.ar/trabajo/estadisticas/oede-estadisticas-provinciales",
-                estado: "disponible",
-                prioridad: "alta",
-                variables: [
-                    "empresas",
-                    "empleo",
-                    "remuneraciones",
-                    "actividad",
-                    "sector",
-                    "rama de actividad",
-                    "evolución",
-                    "aperturas",
-                    "cierres"
-                ],
-                utilidad:
-                    "Principal fuente para empresas y empleo por actividad."
-            },
+        let empresasOEDE = [];
+        let empleoOEDE = [];
 
-            {
-                id: "bcra",
-                nombre: "BCRA - Entidades Financieras",
-                organismo:
-                    "Banco Central de la República Argentina",
-                tipo: "oficial",
-                url:
-                    "https://www.bcra.gob.ar/",
-                estado: "disponible",
-                prioridad: "alta",
-                variables: [
-                    "entidades financieras",
-                    "bancos",
-                    "personal",
-                    "sucursales",
-                    "cajeros",
-                    "entidades públicas",
-                    "entidades privadas"
-                ],
-                utilidad:
-                    "Principal fuente para dimensionar el sector financiero."
-            },
+        let estadoOEDE =
+            "pendiente";
 
-            {
-                id: "ssn",
-                nombre: "SSN - Mercado de Seguros",
-                organismo:
-                    "Superintendencia de Seguros de la Nación",
-                tipo: "oficial",
-                url:
-                    "https://www.argentina.gob.ar/superintendencia-de-seguros",
-                estado: "disponible",
-                prioridad: "alta",
-                variables: [
-                    "aseguradoras",
-                    "entidades",
-                    "primas",
-                    "mercado",
-                    "reaseguradoras"
-                ],
-                utilidad:
-                    "Principal fuente para dimensionar seguros."
-            },
 
-            {
-                id: "enacom",
-                nombre: "ENACOM - Indicadores TIC",
-                organismo:
-                    "Ente Nacional de Comunicaciones",
-                tipo: "oficial",
-                url:
-                    "https://www.enacom.gob.ar/",
-                estado: "disponible",
-                prioridad: "alta",
-                variables: [
-                    "internet",
-                    "telefonía",
-                    "telecomunicaciones",
-                    "conectividad",
-                    "accesos"
-                ],
-                utilidad:
-                    "Principal fuente para indicadores de telecomunicaciones."
-            },
+        try {
 
-            {
-                id: "indec",
-                nombre: "INDEC",
-                organismo:
-                    "Instituto Nacional de Estadística y Censos",
-                tipo: "oficial",
-                url:
-                    "https://www.indec.gob.ar/",
-                estado: "disponible",
-                prioridad: "alta",
-                variables: [
-                    "empresas",
-                    "empleo",
-                    "actividad económica",
-                    "internet",
-                    "sectores"
-                ],
-                utilidad:
-                    "Fuente transversal para indicadores económicos."
-            },
+            const [
+                empresasBuffer,
+                empleoBuffer
+            ] = await Promise.all([
 
-            {
-                id: "educacion",
-                nombre:
-                    "Padrón Oficial de Establecimientos Educativos",
-                organismo:
-                    "Secretaría de Educación",
-                tipo: "oficial",
-                url:
-                    "https://www.argentina.gob.ar/educacion",
-                estado: "disponible",
-                prioridad: "media",
-                variables: [
-                    "establecimientos educativos",
-                    "educación",
-                    "instituciones"
-                ],
-                utilidad:
-                    "Permite dimensionar el universo educativo."
-            },
+                descargarArchivo(
+                    OEDE_EMPRESAS_URL
+                ),
 
-            {
-                id: "refes",
-                nombre:
-                    "REFES - Registro Federal de Establecimientos de Salud",
-                organismo:
-                    "Ministerio de Salud",
-                tipo: "oficial",
-                url:
-                    "https://www.argentina.gob.ar/salud",
-                estado: "disponible",
-                prioridad: "media",
-                variables: [
-                    "establecimientos de salud",
-                    "hospitales",
-                    "clínicas",
-                    "centros de salud"
-                ],
-                utilidad:
-                    "Fuente de referencia para establecimientos sanitarios."
-            },
+                descargarArchivo(
+                    OEDE_EMPLEO_URL
+                )
 
-            {
-                id: "firma_digital",
-                nombre:
-                    "Firma Digital - Argentina",
-                organismo:
-                    "Estado Nacional",
-                tipo: "oficial",
-                url:
-                    "https://www.argentina.gob.ar/firmadigital",
-                estado: "disponible",
-                prioridad: "media",
-                variables: [
-                    "firma digital",
-                    "certificadores",
-                    "normativa",
-                    "documentos digitales"
-                ],
-                utilidad:
-                    "Fuente normativa y de infraestructura de firma."
+            ]);
+
+
+            const empresasExcel =
+                leerExcel(
+                    empresasBuffer
+                );
+
+            const empleoExcel =
+                leerExcel(
+                    empleoBuffer
+                );
+
+
+            empresasOEDE =
+                procesarEmpresasOEDE(
+                    empresasExcel,
+                    ahora
+                );
+
+
+            empleoOEDE =
+                procesarEmpleoOEDE(
+                    empleoExcel,
+                    ahora
+                );
+
+
+            if (
+                empresasOEDE.length ||
+                empleoOEDE.length
+            ) {
+                estadoOEDE =
+                    "conectado";
             }
 
-        ];
+        } catch (error) {
+
+            console.error(
+                "OEDE:",
+                error.message
+            );
+
+            estadoOEDE =
+                "error";
+
+        }
 
 
-        /* =====================================================
-           2. INDUSTRIAS
-           ===================================================== */
+        /* ---------------------------------------------
+           DATOS FIJOS OFICIALES YA DISPONIBLES
+           --------------------------------------------- */
 
-        const industrias = [
-
-            {
-                id: "bancos_finanzas",
-                nombre: "Bancos / Finanzas"
-            },
-
-            {
-                id: "salud",
-                nombre: "Salud"
-            },
-
-            {
-                id: "rrhh",
-                nombre: "RRHH"
-            },
-
-            {
-                id: "seguros",
-                nombre: "Seguros"
-            },
-
-            {
-                id: "industria",
-                nombre: "Industria"
-            },
-
-            {
-                id: "retail",
-                nombre: "Retail"
-            },
-
-            {
-                id: "logistica",
-                nombre: "Logística / Transporte"
-            },
-
-            {
-                id: "energia",
-                nombre: "Energía"
-            },
-
-            {
-                id: "telecom",
-                nombre: "Telecomunicaciones"
-            },
-
-            {
-                id: "gobierno",
-                nombre: "Gobierno"
-            },
-
-            {
-                id: "educacion",
-                nombre: "Educación"
-            },
-
-            {
-                id: "agricultura",
-                nombre: "Agricultura"
-            },
-
-            {
-                id: "construccion",
-                nombre: "Construcción"
-            },
-
-            {
-                id: "legal",
-                nombre: "Legal"
-            },
-
-            {
-                id: "servicios_profesionales",
-                nombre: "Servicios profesionales"
-            },
-
-            {
-                id: "mineria",
-                nombre: "Minería"
-            },
-
-            {
-                id: "otros",
-                nombre: "Otros"
-            }
-
-        ];
-
-
-        /* =====================================================
-           3. TAMAÑOS
-           ===================================================== */
-
-        const tamanios = [
-
-            {
-                id: "micro",
-                nombre: "Micro"
-            },
-
-            {
-                id: "pequena",
-                nombre: "Pequeña"
-            },
-
-            {
-                id: "mediana",
-                nombre: "Mediana"
-            },
-
-            {
-                id: "grande",
-                nombre: "Grande"
-            },
-
-            {
-                id: "enterprise",
-                nombre: "Enterprise"
-            }
-
-        ];
-
-
-        /* =====================================================
-           4. PRODUCTOS
-           ===================================================== */
-
-        const productos = [
-
-            {
-                id: "guarda",
-                nombre:
-                    "Guarda / Almacenamiento",
-
-                necesidades: [
-                    "almacenamiento",
-                    "archivo digital",
-                    "consulta documental",
-                    "retención",
-                    "conservación"
-                ]
-            },
-
-            {
-                id: "digitalizacion",
-                nombre:
-                    "Digitalización",
-
-                necesidades: [
-                    "digitalización",
-                    "OCR",
-                    "captura",
-                    "archivo físico",
-                    "indexación",
-                    "documentos"
-                ]
-            },
-
-            {
-                id: "recibos",
-                nombre:
-                    "Firma de recibos de sueldo",
-
-                necesidades: [
-                    "RRHH",
-                    "recibos",
-                    "firma",
-                    "empleados",
-                    "legajos",
-                    "liquidación"
-                ]
-            },
-
-            {
-                id: "firma",
-                nombre:
-                    "Firma electrónica",
-
-                necesidades: [
-                    "firma",
-                    "documentos",
-                    "contratos",
-                    "aprobaciones",
-                    "compliance"
-                ]
-            },
-
-            {
-                id: "thuban",
-                nombre:
-                    "Thuban",
-
-                necesidades: [
-                    "gestión documental",
-                    "workflows",
-                    "OCR",
-                    "firma",
-                    "integraciones",
-                    "migración",
-                    "archivo",
-                    "búsqueda",
-                    "seguridad",
-                    "trazabilidad"
-                ]
-            }
-
-        ];
-
-
-        /* =====================================================
-           5. DATOS REALES ENCONTRADOS
-           
-           Estos datos NO son estimaciones.
-           Se identifican como "source".
-           ===================================================== */
-
-        const datos = [
-
-            /* -------------------------------------------------
-               BCRA
-               ------------------------------------------------- */
+        const datosBase = [
 
             {
                 id:
-                    "bcra_entidades_financieras_2026",
+                    "bcra_entidades_2026",
 
                 variable:
                     "entidades_financieras",
 
-                value: 73,
+                value:
+                    73,
 
                 unit:
                     "entidades",
@@ -471,7 +1092,7 @@ export default async function handler(req, res) {
                     "alta",
 
                 notes:
-                    "Cantidad de entidades financieras informada por BCRA."
+                    "Cantidad de entidades financieras."
             },
 
 
@@ -482,7 +1103,8 @@ export default async function handler(req, res) {
                 variable:
                     "bancos",
 
-                value: 60,
+                value:
+                    60,
 
                 unit:
                     "bancos",
@@ -518,17 +1140,13 @@ export default async function handler(req, res) {
                     "alta",
 
                 notes:
-                    "Cantidad de bancos informada por BCRA."
+                    "Cantidad de bancos."
             },
 
 
-            /* -------------------------------------------------
-               ENACOM / INDEC
-               ------------------------------------------------- */
-
             {
                 id:
-                    "internet_accesos_2026",
+                    "internet_2026",
 
                 variable:
                     "accesos_internet",
@@ -570,228 +1188,144 @@ export default async function handler(req, res) {
                     "alta",
 
                 notes:
-                    "Promedio nacional de accesos a internet."
+                    "Accesos nacionales a internet."
             }
 
         ];
 
 
-        /* =====================================================
-           6. DATOS QUE TODAVÍA FALTAN
-           ===================================================== */
+        /* ---------------------------------------------
+           UNIR DATOS
+           --------------------------------------------- */
 
-        const faltantes = [
+        const datos = [
 
-            {
+            ...datosBase,
+
+            ...empresasOEDE,
+
+            ...empleoOEDE
+
+        ];
+
+
+        /* ---------------------------------------------
+           FALTANTES
+           --------------------------------------------- */
+
+        const faltantes = [];
+
+
+        if (!empresasOEDE.length) {
+
+            faltantes.push({
+
                 variable:
                     "empresas_por_industria",
 
                 descripcion:
-                    "Cantidad actual de empresas por industria.",
+                    "Cantidad de empresas por rama de actividad.",
 
                 fuenteEsperada:
                     "OEDE",
 
-                prioridad:
-                    "critica",
-
                 estado:
-                    "pendiente"
-            },
+                    "pendiente",
+
+                motivo:
+                    estadoOEDE === "error"
+                        ? "No se pudo leer automáticamente el Excel de OEDE."
+                        : "OEDE todavía no devolvió registros."
+
+            });
+
+        }
 
 
-            {
+        if (!empleoOEDE.length) {
+
+            faltantes.push({
+
                 variable:
                     "empleados_por_industria",
 
                 descripcion:
-                    "Cantidad actual de empleados por industria.",
+                    "Cantidad de empleados por rama de actividad.",
 
                 fuenteEsperada:
                     "OEDE",
 
-                prioridad:
-                    "critica",
-
                 estado:
-                    "pendiente"
-            },
+                    "pendiente",
+
+                motivo:
+                    estadoOEDE === "error"
+                        ? "No se pudo leer automáticamente el Excel de OEDE."
+                        : "OEDE todavía no devolvió registros."
+
+            });
+
+        }
 
 
-            {
-                variable:
-                    "empresas_por_tamano",
+        faltantes.push({
 
-                descripcion:
-                    "Cantidad de empresas según tamaño.",
+            variable:
+                "documentos_por_empleado",
 
-                fuenteEsperada:
-                    "OEDE / INDEC",
+            descripcion:
+                "Volumen documental promedio por empleado.",
 
-                prioridad:
-                    "alta",
+            fuenteEsperada:
+                "Investigación de mercado",
 
-                estado:
-                    "pendiente"
-            },
+            estado:
+                "pendiente"
 
-
-            {
-                variable:
-                    "empleados_por_tamano",
-
-                descripcion:
-                    "Cantidad de empleados según tamaño de empresa.",
-
-                fuenteEsperada:
-                    "OEDE",
-
-                prioridad:
-                    "alta",
-
-                estado:
-                    "pendiente"
-            },
+        });
 
 
-            {
-                variable:
-                    "establecimientos_salud",
+        faltantes.push({
 
-                descripcion:
-                    "Cantidad actualizada de establecimientos de salud.",
+            variable:
+                "tasa_digitalizacion",
 
-                fuenteEsperada:
-                    "REFES",
+            descripcion:
+                "Porcentaje de documentos potencialmente digitalizables.",
 
-                prioridad:
-                    "alta",
+            fuenteEsperada:
+                "Investigación de mercado",
 
-                estado:
-                    "pendiente"
-            },
+            estado:
+                "pendiente"
 
-
-            {
-                variable:
-                    "establecimientos_educativos",
-
-                descripcion:
-                    "Cantidad actualizada de establecimientos educativos.",
-
-                fuenteEsperada:
-                    "Secretaría de Educación",
-
-                prioridad:
-                    "alta",
-
-                estado:
-                    "pendiente"
-            },
+        });
 
 
-            {
-                variable:
-                    "aseguradoras",
+        faltantes.push({
 
-                descripcion:
-                    "Cantidad actualizada de entidades aseguradoras.",
+            variable:
+                "precio_documental",
 
-                fuenteEsperada:
-                    "SSN",
+            descripcion:
+                "Precio actualizado del servicio.",
 
-                prioridad:
-                    "alta",
+            fuenteEsperada:
+                "Modelo comercial PREVENTA IA",
 
-                estado:
-                    "pendiente"
-            },
+            estado:
+                "pendiente"
 
-
-            {
-                variable:
-                    "documentos_por_empleado",
-
-                descripcion:
-                    "Volumen documental promedio por empleado.",
-
-                fuenteEsperada:
-                    "Investigación de mercado / supuesto",
-
-                prioridad:
-                    "critica",
-
-                estado:
-                    "pendiente"
-            },
+        });
 
 
-            {
-                variable:
-                    "precio_documental",
-
-                descripcion:
-                    "Precio actualizado por hoja/documento/servicio.",
-
-                fuenteEsperada:
-                    "Modelo comercial PREVENTA IA",
-
-                prioridad:
-                    "critica",
-
-                estado:
-                    "pendiente"
-            },
-
-
-            {
-                variable:
-                    "tasa_digitalizacion",
-
-                descripcion:
-                    "Porcentaje actual de documentos digitalizables.",
-
-                fuenteEsperada:
-                    "Investigación de mercado",
-
-                prioridad:
-                    "alta",
-
-                estado:
-                    "pendiente"
-            },
-
-
-            {
-                variable:
-                    "tasa_adopcion",
-
-                descripcion:
-                    "Porcentaje de empresas potencialmente compradoras.",
-
-                fuenteEsperada:
-                    "Investigación de mercado",
-
-                prioridad:
-                    "alta",
-
-                estado:
-                    "pendiente"
-            }
-
-        ];
-
-
-        /* =====================================================
-           7. SUPUESTOS
-           ===================================================== */
+        /* ---------------------------------------------
+           SUPUESTOS
+           --------------------------------------------- */
 
         const supuestos = [
 
             {
-                id:
-                    "captura",
-
                 variable:
                     "tasa_captura",
 
@@ -805,17 +1339,10 @@ export default async function handler(req, res) {
                     "assumption",
 
                 editable:
-                    true,
-
-                notes:
-                    "La tasa de captura será definida por el usuario."
+                    true
             },
 
-
             {
-                id:
-                    "digitalizacion",
-
                 variable:
                     "porcentaje_digitalizado",
 
@@ -829,17 +1356,10 @@ export default async function handler(req, res) {
                     "assumption",
 
                 editable:
-                    true,
-
-                notes:
-                    "Debe reemplazarse por un valor validado."
+                    true
             },
 
-
             {
-                id:
-                    "clientes",
-
                 variable:
                     "porcentaje_clientes",
 
@@ -853,58 +1373,20 @@ export default async function handler(req, res) {
                     "assumption",
 
                 editable:
-                    true,
-
-                notes:
-                    "Debe validarse con investigación de mercado."
-            },
-
-
-            {
-                id:
-                    "precio",
-
-                variable:
-                    "precio_promedio",
-
-                value:
-                    null,
-
-                unit:
-                    "ARS",
-
-                type:
-                    "assumption",
-
-                editable:
-                    true,
-
-                notes:
-                    "Debe configurarse según producto y segmento."
+                    true
             }
 
         ];
 
 
-        /* =====================================================
-           8. ESTADO DEL MERCADO
-           ===================================================== */
+        /* ---------------------------------------------
+           ESTADO
+           --------------------------------------------- */
 
         const datosReales =
             datos.filter(
-                d => d.type === "source"
-            );
-
-
-        const datosCalculados =
-            datos.filter(
-                d => d.type === "calculation"
-            );
-
-
-        const datosSupuestos =
-            datos.filter(
-                d => d.type === "assumption"
+                d =>
+                    d.type === "source"
             );
 
 
@@ -917,34 +1399,39 @@ export default async function handler(req, res) {
                 ahora,
 
             versionMotor:
-                "2.0",
+                "3.0",
+
+            oede: {
+
+                estado:
+                    estadoOEDE,
+
+                empresas:
+                    empresasOEDE.length,
+
+                empleo:
+                    empleoOEDE.length,
+
+                fuente:
+                    "OEDE",
+
+                actualizacion:
+                    "Junio 2026"
+
+            },
 
             estado: {
 
                 fuentesOficiales:
-                    fuentes.length,
+                    construirFuentes(
+                        ahora
+                    ).length,
 
                 datosReales:
                     datosReales.length,
 
                 calculos:
-                    datosCalculados.length,
-
-                supuestos:
-                    supuestos.length,
-
-                faltantes:
-                    faltantes.length
-
-            },
-
-            clasificacion: {
-
-                encontrados:
-                    datosReales.length,
-
-                calculados:
-                    datosCalculados.length,
+                    0,
 
                 supuestos:
                     supuestos.length,
@@ -957,24 +1444,20 @@ export default async function handler(req, res) {
         };
 
 
-        /* =====================================================
-           9. RANKING PRELIMINAR
-           
-           IMPORTANTE:
-           No asignamos score inventado.
-           ===================================================== */
+        /* ---------------------------------------------
+           RANKING
+           --------------------------------------------- */
 
         const ranking =
             industrias.map(
                 (industria, index) => {
 
-                    const datosIndustria =
+                    const disponibles =
                         datos.filter(
                             d =>
                                 d.industry ===
                                 industria.id
                         );
-
 
                     return {
 
@@ -988,20 +1471,15 @@ export default async function handler(req, res) {
                             industria.nombre,
 
                         datosDisponibles:
-                            datosIndustria.length,
+                            disponibles.length,
 
                         score:
                             null,
 
                         estado:
-                            datosIndustria.length > 0
+                            disponibles.length
                                 ? "parcial"
-                                : "sin datos suficientes",
-
-                        motivo:
-                            datosIndustria.length > 0
-                                ? "Existe información oficial parcial."
-                                : "Se necesitan datos de empresas, empleo y/o volumen documental."
+                                : "sin datos suficientes"
 
                     };
 
@@ -1009,11 +1487,11 @@ export default async function handler(req, res) {
             );
 
 
-        /* =====================================================
-           10. RESPUESTA
-           ===================================================== */
+        /* ---------------------------------------------
+           RESPUESTA
+           --------------------------------------------- */
 
-        res.status(200).json({
+        return res.status(200).json({
 
             ok:
                 true,
@@ -1022,15 +1500,55 @@ export default async function handler(req, res) {
                 "PREVENTA IA - Inteligencia de Mercado 360",
 
             version:
-                "2.0",
+                "3.0",
 
             mercado,
 
-            fuentes,
+            fuentes:
+                construirFuentes(
+                    ahora
+                ),
 
             industrias,
 
-            tamanios,
+            tamanios: [
+
+                {
+                    id:
+                        "micro",
+                    nombre:
+                        "Micro"
+                },
+
+                {
+                    id:
+                        "pequena",
+                    nombre:
+                        "Pequeña"
+                },
+
+                {
+                    id:
+                        "mediana",
+                    nombre:
+                        "Mediana"
+                },
+
+                {
+                    id:
+                        "grande",
+                    nombre:
+                        "Grande"
+                },
+
+                {
+                    id:
+                        "enterprise",
+                    nombre:
+                        "Enterprise"
+                }
+
+            ],
 
             productos,
 
@@ -1042,21 +1560,21 @@ export default async function handler(req, res) {
 
             ranking,
 
-            siguientePaso: {
+            diagnostico: {
 
-                objetivo:
-                    "Conectar datos oficiales con el modelo TAM/SAM/SOM.",
+                oede:
+                    estadoOEDE,
 
-                prioridad: [
-                    "OEDE - empresas por actividad",
-                    "OEDE - empleo por actividad",
-                    "Empresas por tamaño",
-                    "Datos sectoriales",
-                    "Volumen documental",
-                    "Precios",
-                    "Tasas de digitalización",
-                    "Tasas de adopción"
-                ]
+                empresasOEDE:
+                    empresasOEDE.length,
+
+                empleoOEDE:
+                    empleoOEDE.length,
+
+                mensaje:
+                    estadoOEDE === "conectado"
+                        ? "OEDE conectado correctamente."
+                        : "OEDE no pudo ser leído automáticamente."
 
             }
 
@@ -1065,18 +1583,17 @@ export default async function handler(req, res) {
     } catch (error) {
 
         console.error(
-            "Error en /api/mercado:",
+            "Error en Motor de Mercado 360:",
             error
         );
 
-
-        res.status(500).json({
+        return res.status(500).json({
 
             ok:
                 false,
 
             error:
-                "No se pudo cargar el motor de mercado.",
+                "No se pudo ejecutar el Motor de Mercado 360.",
 
             detalle:
                 error.message
