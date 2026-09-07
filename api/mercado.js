@@ -1,6 +1,6 @@
 // api/mercado.js
 // Motor de Inteligencia de Mercado - PREVENTA IA
-// v3.1 - Diagnóstico OEDE
+// v3.2 - Diagnóstico estructura real OEDE
 
 import XLSX from "xlsx";
 
@@ -20,18 +20,25 @@ async function descargarArchivo(url) {
     const respuesta = await fetch(url);
 
     if (!respuesta.ok) {
+
         throw new Error(
             `OEDE respondió ${respuesta.status} al descargar ${url}`
         );
+
     }
 
     const buffer =
         await respuesta.arrayBuffer();
 
-    if (!buffer || buffer.byteLength === 0) {
+    if (
+        !buffer ||
+        buffer.byteLength === 0
+    ) {
+
         throw new Error(
             "El archivo descargado desde OEDE está vacío."
         );
+
     }
 
     return Buffer.from(buffer);
@@ -39,7 +46,7 @@ async function descargarArchivo(url) {
 
 
 /* =========================================================
-   LEER EXCEL
+   LEER EXCEL + DIAGNÓSTICO
    ========================================================= */
 
 function leerExcel(buffer) {
@@ -54,19 +61,23 @@ function leerExcel(buffer) {
         workbook.SheetNames;
 
     if (!hojas.length) {
+
         throw new Error(
             "El Excel de OEDE no contiene hojas."
         );
+
     }
 
     const resultado = {};
 
-    for (const nombreHoja of hojas) {
+    for (
+        const nombreHoja of hojas
+    ) {
 
         const hoja =
             workbook.Sheets[nombreHoja];
 
-        resultado[nombreHoja] =
+        const filas =
             XLSX.utils.sheet_to_json(
                 hoja,
                 {
@@ -74,6 +85,31 @@ function leerExcel(buffer) {
                     raw: false
                 }
             );
+
+        resultado[nombreHoja] = {
+
+            cantidadFilas:
+                filas.length,
+
+            columnas:
+                filas.length
+                    ? Object.keys(filas[0])
+                    : [],
+
+            primeraFila:
+                filas.length
+                    ? filas[0]
+                    : null,
+
+            filas:
+
+                filas.slice(
+                    0,
+                    5
+                )
+
+        };
+
     }
 
     return resultado;
@@ -81,682 +117,379 @@ function leerExcel(buffer) {
 
 
 /* =========================================================
-   NORMALIZAR TEXTO
+   DIAGNÓSTICO DE EXCEL
    ========================================================= */
 
-function normalizarTexto(valor) {
-
-    if (
-        valor === null ||
-        valor === undefined
-    ) {
-        return "";
-    }
-
-    return String(valor)
-        .trim()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-}
-
-
-/* =========================================================
-   BUSCAR COLUMNAS
-   ========================================================= */
-
-function buscarColumna(
-    columnas,
-    posiblesNombres
+function generarDiagnosticoExcel(
+    excel
 ) {
 
-    const normalizadas =
-        columnas.map(col => ({
-            original: col,
-            normalizado:
-                normalizarTexto(col)
-        }));
-
-    for (
-        const nombre of posiblesNombres
-    ) {
-
-        const buscada =
-            normalizarTexto(nombre);
-
-        const encontrada =
-            normalizadas.find(
-                col =>
-                    col.normalizado ===
-                    buscada
-            );
-
-        if (encontrada) {
-            return encontrada.original;
-        }
-    }
-
-    return null;
-}
-
-
-/* =========================================================
-   CONVERTIR NÚMERO
-   ========================================================= */
-
-function convertirNumero(valor) {
-
-    if (
-        valor === null ||
-        valor === undefined ||
-        valor === ""
-    ) {
-        return null;
-    }
-
-    if (
-        typeof valor === "number"
-    ) {
-        return valor;
-    }
-
-    let texto =
-        String(valor)
-            .trim()
-            .replace(/\s/g, "");
-
-    if (
-        texto.includes(".") &&
-        texto.includes(",")
-    ) {
-
-        if (
-            texto.lastIndexOf(",") >
-            texto.lastIndexOf(".")
-        ) {
-
-            texto =
-                texto
-                    .replace(/\./g, "")
-                    .replace(",", ".");
-
-        } else {
-
-            texto =
-                texto.replace(/,/g, "");
-        }
-
-    } else if (
-        texto.includes(",")
-    ) {
-
-        texto =
-            texto.replace(",", ".");
-
-    } else {
-
-        const partes =
-            texto.split(".");
-
-        if (
-            partes.length > 1 &&
-            partes[
-                partes.length - 1
-            ].length === 3
-        ) {
-
-            texto =
-                partes.join("");
-        }
-    }
-
-    const numero =
-        Number(texto);
-
-    return Number.isFinite(numero)
-        ? numero
-        : null;
-}
-
-
-/* =========================================================
-   CLASIFICAR INDUSTRIA
-   ========================================================= */
-
-function clasificarIndustria(texto) {
-
-    const valor =
-        normalizarTexto(texto);
-
-    if (
-        valor.includes("financ") ||
-        valor.includes("banco")
-    ) {
-        return "bancos_finanzas";
-    }
-
-    if (
-        valor.includes("seguro")
-    ) {
-        return "seguros";
-    }
-
-    if (
-        valor.includes("salud") ||
-        valor.includes("medic") ||
-        valor.includes("hospital")
-    ) {
-        return "salud";
-    }
-
-    if (
-        valor.includes("telecom") ||
-        valor.includes("comunic")
-    ) {
-        return "telecom";
-    }
-
-    if (
-        valor.includes("constru")
-    ) {
-        return "construccion";
-    }
-
-    if (
-        valor.includes("agric") ||
-        valor.includes("ganader") ||
-        valor.includes("silvic") ||
-        valor.includes("pesca")
-    ) {
-        return "agricultura";
-    }
-
-    if (
-        valor.includes("min")
-    ) {
-        return "mineria";
-    }
-
-    if (
-        valor.includes("transporte") ||
-        valor.includes("logistic")
-    ) {
-        return "logistica";
-    }
-
-    if (
-        valor.includes("energia") ||
-        valor.includes("electric") ||
-        valor.includes("gas")
-    ) {
-        return "energia";
-    }
-
-    if (
-        valor.includes("comerc") ||
-        valor.includes("retail")
-    ) {
-        return "retail";
-    }
-
-    if (
-        valor.includes("industria") ||
-        valor.includes("manufact")
-    ) {
-        return "industria";
-    }
-
-    if (
-        valor.includes("educ")
-    ) {
-        return "educacion";
-    }
-
-    if (
-        valor.includes("administracion publica") ||
-        valor.includes("gobierno")
-    ) {
-        return "gobierno";
-    }
-
-    if (
-        valor.includes("profesional") ||
-        valor.includes("cientifica") ||
-        valor.includes("tecnica")
-    ) {
-        return "servicios_profesionales";
-    }
-
-    if (
-        valor.includes("legal") ||
-        valor.includes("juridic")
-    ) {
-        return "legal";
-    }
-
-    return "otros";
-}
-
-
-/* =========================================================
-   EXTRAER EMPRESAS OEDE
-   ========================================================= */
-
-function procesarEmpresasOEDE(
-    hojas,
-    ahora
-) {
-
-    const datos = [];
-
-    for (
-        const nombreHoja of Object.keys(hojas)
-    ) {
-
-        const filas =
-            hojas[nombreHoja];
-
-        if (
-            !Array.isArray(filas) ||
-            !filas.length
-        ) {
-            continue;
-        }
-
-        const columnas =
-            Object.keys(filas[0]);
-
-        const columnaActividad =
-            buscarColumna(
-                columnas,
-                [
-                    "actividad",
-                    "rama de actividad",
-                    "rama actividad",
-                    "sector",
-                    "descripcion"
-                ]
-            );
-
-        const columnaValor =
-            buscarColumna(
-                columnas,
-                [
-                    "empresas",
-                    "cantidad de empresas",
-                    "cantidad empresas",
-                    "firmas"
-                ]
-            );
-
-        if (
-            !columnaActividad ||
-            !columnaValor
-        ) {
-            continue;
-        }
-
-        for (
-            const fila of filas
-        ) {
-
-            const actividad =
-                fila[columnaActividad];
-
-            const valor =
-                convertirNumero(
-                    fila[columnaValor]
-                );
-
-            if (
-                !actividad ||
-                valor === null
-            ) {
-                continue;
-            }
-
-            datos.push({
-
-                id:
-                    `oede_empresas_${datos.length + 1}`,
-
-                variable:
-                    "empresas_por_actividad",
-
-                value:
-                    valor,
-
-                unit:
-                    "empresas",
-
-                industry:
-                    clasificarIndustria(
-                        actividad
-                    ),
-
-                product:
-                    "digitalizacion",
-
-                companySize:
-                    null,
-
-                year:
-                    2025,
-
-                type:
-                    "source",
-
-                source:
-                    "OEDE",
-
-                sourceUrl:
-                    OEDE_EMPRESAS_URL,
-
-                sourceDate:
-                    "Junio 2026",
-
-                consultedAt:
-                    ahora,
-
-                confidence:
-                    "alta",
-
-                actividadOriginal:
-                    String(actividad),
+    return Object.entries(excel)
+        .map(
+            ([
+                nombreHoja,
+                informacion
+            ]) => ({
 
                 hoja:
                     nombreHoja,
 
-                notes:
-                    "Cantidad de empresas por rama de actividad según OEDE."
-            });
-        }
-    }
+                cantidadFilas:
+                    informacion.cantidadFilas,
 
-    return datos;
+                columnas:
+                    informacion.columnas,
+
+                primeraFila:
+                    informacion.primeraFila
+
+            })
+        );
+
 }
 
 
 /* =========================================================
-   EXTRAER EMPLEO OEDE
+   DATOS BASE
    ========================================================= */
 
-function procesarEmpleoOEDE(
-    hojas,
-    ahora
-) {
+const datosBase = [
 
-    const datos = [];
+    {
+        id:
+            "bcra_entidades_2026",
 
-    for (
-        const nombreHoja of Object.keys(hojas)
-    ) {
+        variable:
+            "entidades_financieras",
 
-        const filas =
-            hojas[nombreHoja];
+        value:
+            73,
 
-        if (
-            !Array.isArray(filas) ||
-            !filas.length
-        ) {
-            continue;
-        }
+        unit:
+            "entidades",
 
-        const columnas =
-            Object.keys(filas[0]);
+        industry:
+            "bancos_finanzas",
 
-        const columnaActividad =
-            buscarColumna(
-                columnas,
-                [
-                    "actividad",
-                    "rama de actividad",
-                    "rama actividad",
-                    "sector",
-                    "descripcion"
-                ]
-            );
+        product:
+            "thuban",
 
-        const columnaValor =
-            buscarColumna(
-                columnas,
-                [
-                    "empleo",
-                    "puestos",
-                    "trabajadores",
-                    "asalariados",
-                    "empleo registrado"
-                ]
-            );
+        companySize:
+            "enterprise",
 
-        if (
-            !columnaActividad ||
-            !columnaValor
-        ) {
-            continue;
-        }
+        year:
+            2026,
 
-        for (
-            const fila of filas
-        ) {
+        type:
+            "source",
 
-            const actividad =
-                fila[columnaActividad];
+        source:
+            "BCRA",
 
-            const valor =
-                convertirNumero(
-                    fila[columnaValor]
-                );
+        sourceUrl:
+            "https://www.bcra.gob.ar/",
 
-            if (
-                !actividad ||
-                valor === null
-            ) {
-                continue;
-            }
+        sourceDate:
+            "2026",
 
-            datos.push({
+        confidence:
+            "alta",
 
-                id:
-                    `oede_empleo_${datos.length + 1}`,
+        notes:
+            "Cantidad de entidades financieras."
+    },
 
-                variable:
-                    "empleados_por_actividad",
 
-                value:
-                    valor,
+    {
+        id:
+            "bcra_bancos_2026",
 
-                unit:
-                    "empleados",
+        variable:
+            "bancos",
 
-                industry:
-                    clasificarIndustria(
-                        actividad
-                    ),
+        value:
+            60,
 
-                product:
-                    "digitalizacion",
+        unit:
+            "bancos",
 
-                companySize:
-                    null,
+        industry:
+            "bancos_finanzas",
 
-                year:
-                    2026,
+        product:
+            "thuban",
 
-                type:
-                    "source",
+        companySize:
+            "enterprise",
 
-                source:
-                    "OEDE",
+        year:
+            2026,
 
-                sourceUrl:
-                    OEDE_EMPLEO_URL,
+        type:
+            "source",
 
-                sourceDate:
-                    "Junio 2026",
+        source:
+            "BCRA",
 
-                consultedAt:
-                    ahora,
+        sourceUrl:
+            "https://www.bcra.gob.ar/",
 
-                confidence:
-                    "alta",
+        sourceDate:
+            "2026",
 
-                actividadOriginal:
-                    String(actividad),
+        confidence:
+            "alta",
 
-                hoja:
-                    nombreHoja,
+        notes:
+            "Cantidad de bancos."
+    },
 
-                notes:
-                    "Empleo registrado por rama de actividad según OEDE."
-            });
-        }
+
+    {
+        id:
+            "internet_2026",
+
+        variable:
+            "accesos_internet",
+
+        value:
+            51176541,
+
+        unit:
+            "accesos",
+
+        industry:
+            "telecom",
+
+        product:
+            "thuban",
+
+        companySize:
+            null,
+
+        year:
+            2026,
+
+        type:
+            "source",
+
+        source:
+            "INDEC",
+
+        sourceUrl:
+            "https://www.indec.gob.ar/",
+
+        sourceDate:
+            "2026",
+
+        confidence:
+            "alta",
+
+        notes:
+            "Accesos nacionales a internet."
     }
 
-    return datos;
-}
+];
 
 
 /* =========================================================
    FUENTES
    ========================================================= */
 
-function construirFuentes(ahora) {
+function construirFuentes(
+    ahora
+) {
 
     return [
 
         {
-            id: "oede",
+            id:
+                "oede",
+
             nombre:
                 "OEDE - Ministerio de Trabajo",
+
             organismo:
                 "Ministerio de Trabajo, Empleo y Seguridad Social",
+
             tipo:
                 "oficial",
+
             url:
                 "https://www.argentina.gob.ar/trabajo/estadisticas/oede-estadisticas-provinciales",
+
             estado:
                 "disponible",
+
             actualizacion:
                 "Junio 2026",
+
             variables: [
                 "empresas",
                 "empleo",
                 "actividad",
                 "remuneraciones"
             ],
+
             archivos: [
+
                 {
                     nombre:
                         "Empresas por rama de actividad - 2 dígitos",
+
                     url:
                         OEDE_EMPRESAS_URL
                 },
+
                 {
                     nombre:
                         "Empleo - serie trimestral - 2 dígitos",
+
                     url:
                         OEDE_EMPLEO_URL
                 }
+
             ],
+
             consultado:
                 ahora
         },
 
+
         {
-            id: "bcra",
+            id:
+                "bcra",
+
             nombre:
                 "BCRA - Entidades Financieras",
+
             organismo:
                 "Banco Central de la República Argentina",
+
             tipo:
                 "oficial",
+
             url:
                 "https://www.bcra.gob.ar/",
+
             estado:
                 "disponible",
+
             actualizacion:
                 "2026",
+
             variables: [
                 "entidades financieras",
                 "bancos",
                 "personal",
                 "sucursales"
             ],
+
             consultado:
                 ahora
         },
 
+
         {
-            id: "ssn",
+            id:
+                "ssn",
+
             nombre:
                 "SSN - Mercado de Seguros",
+
             organismo:
                 "Superintendencia de Seguros de la Nación",
+
             tipo:
                 "oficial",
+
             url:
                 "https://www.argentina.gob.ar/superintendencia-de-seguros",
+
             estado:
                 "disponible",
+
             actualizacion:
                 "2026",
+
             variables: [
                 "aseguradoras",
                 "primas",
                 "entidades"
             ],
+
             consultado:
                 ahora
         },
 
+
         {
-            id: "enacom",
+            id:
+                "enacom",
+
             nombre:
                 "ENACOM - Indicadores TIC",
+
             organismo:
                 "Ente Nacional de Comunicaciones",
+
             tipo:
                 "oficial",
+
             url:
                 "https://www.enacom.gob.ar/",
+
             estado:
                 "disponible",
+
             actualizacion:
                 "2026",
+
             variables: [
                 "internet",
                 "telefonía",
                 "telecomunicaciones"
             ],
+
             consultado:
                 ahora
         },
 
+
         {
-            id: "indec",
+            id:
+                "indec",
+
             nombre:
                 "INDEC",
+
             organismo:
                 "Instituto Nacional de Estadística y Censos",
+
             tipo:
                 "oficial",
+
             url:
                 "https://www.indec.gob.ar/",
+
             estado:
                 "disponible",
+
             actualizacion:
                 "2026",
+
             variables: [
                 "actividad económica",
                 "internet",
                 "empresas"
             ],
+
             consultado:
                 ahora
         }
 
     ];
+
 }
 
 
@@ -801,8 +534,10 @@ const productos = [
     {
         id:
             "guarda",
+
         nombre:
             "Guarda / Almacenamiento",
+
         necesidades: [
             "almacenamiento",
             "archivo digital",
@@ -811,11 +546,14 @@ const productos = [
         ]
     },
 
+
     {
         id:
             "digitalizacion",
+
         nombre:
             "Digitalización",
+
         necesidades: [
             "digitalización",
             "OCR",
@@ -825,11 +563,14 @@ const productos = [
         ]
     },
 
+
     {
         id:
             "recibos",
+
         nombre:
             "Firma de recibos de sueldo",
+
         necesidades: [
             "RRHH",
             "recibos",
@@ -839,11 +580,14 @@ const productos = [
         ]
     },
 
+
     {
         id:
             "firma",
+
         nombre:
             "Firma electrónica",
+
         necesidades: [
             "firma",
             "documentos",
@@ -853,11 +597,14 @@ const productos = [
         ]
     },
 
+
     {
         id:
             "thuban",
+
         nombre:
             "Thuban",
+
         necesidades: [
             "gestión documental",
             "workflows",
@@ -882,396 +629,241 @@ export default async function handler(
     res
 ) {
 
+    const ahora =
+        new Date().toISOString();
+
+
+    let estadoOEDE =
+        "pendiente";
+
+    let errorOEDE =
+        null;
+
+    let diagnosticoEmpresas =
+        null;
+
+    let diagnosticoEmpleo =
+        null;
+
+
+    /* =====================================================
+       LEER OEDE
+       ===================================================== */
+
     try {
 
-        const ahora =
-            new Date().toISOString();
+        const [
+            empresasBuffer,
+            empleoBuffer
+        ] = await Promise.all([
+
+            descargarArchivo(
+                OEDE_EMPRESAS_URL
+            ),
+
+            descargarArchivo(
+                OEDE_EMPLEO_URL
+            )
+
+        ]);
 
 
-        /* ---------------------------------------------
-           DESCARGAR OEDE
-           --------------------------------------------- */
-
-        let empresasOEDE = [];
-        let empleoOEDE = [];
-
-        let estadoOEDE =
-            "pendiente";
-
-        let errorOEDE =
-            null;
-
-
-        try {
-
-            const [
-                empresasBuffer,
-                empleoBuffer
-            ] = await Promise.all([
-
-                descargarArchivo(
-                    OEDE_EMPRESAS_URL
-                ),
-
-                descargarArchivo(
-                    OEDE_EMPLEO_URL
-                )
-
-            ]);
-
-
-            const empresasExcel =
-                leerExcel(
-                    empresasBuffer
-                );
-
-            const empleoExcel =
-                leerExcel(
-                    empleoBuffer
-                );
-
-
-            empresasOEDE =
-                procesarEmpresasOEDE(
-                    empresasExcel,
-                    ahora
-                );
-
-
-            empleoOEDE =
-                procesarEmpleoOEDE(
-                    empleoExcel,
-                    ahora
-                );
-
-
-            if (
-                empresasOEDE.length ||
-                empleoOEDE.length
-            ) {
-
-                estadoOEDE =
-                    "conectado";
-
-            } else {
-
-                estadoOEDE =
-                    "sin_registros";
-
-                errorOEDE =
-                    "Los archivos de OEDE se descargaron correctamente, pero el programa no encontró columnas compatibles con empresas o empleo.";
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "OEDE:",
-                error
+        const empresasExcel =
+            leerExcel(
+                empresasBuffer
             );
 
-            estadoOEDE =
-                "error";
-
-            errorOEDE = {
-
-                nombre:
-                    error?.name ||
-                    "Error",
-
-                mensaje:
-                    error?.message ||
-                    String(error),
-
-                stack:
-                    error?.stack ||
-                    null
-
-            };
-
-        }
+        const empleoExcel =
+            leerExcel(
+                empleoBuffer
+            );
 
 
-        /* ---------------------------------------------
-           DATOS BASE
-           --------------------------------------------- */
+        diagnosticoEmpresas =
+            generarDiagnosticoExcel(
+                empresasExcel
+            );
 
-        const datosBase = [
+        diagnosticoEmpleo =
+            generarDiagnosticoExcel(
+                empleoExcel
+            );
 
-            {
-                id:
-                    "bcra_entidades_2026",
 
-                variable:
-                    "entidades_financieras",
+        estadoOEDE =
+            "descargado";
 
-                value:
-                    73,
 
-                unit:
-                    "entidades",
+    } catch (error) {
 
-                industry:
-                    "bancos_finanzas",
+        console.error(
+            "OEDE:",
+            error
+        );
 
-                product:
-                    "thuban",
+        estadoOEDE =
+            "error";
 
-                companySize:
-                    "enterprise",
+        errorOEDE = {
 
-                year:
-                    2026,
+            nombre:
+                error?.name ||
+                "Error",
 
-                type:
-                    "source",
+            mensaje:
+                error?.message ||
+                String(error),
 
-                source:
-                    "BCRA",
+            stack:
+                error?.stack ||
+                null
 
-                sourceUrl:
-                    "https://www.bcra.gob.ar/",
+        };
 
-                sourceDate:
-                    "2026",
+    }
 
-                consultedAt:
-                    ahora,
 
-                confidence:
-                    "alta",
+    /* =====================================================
+       RESPUESTA
+       ===================================================== */
 
-                notes:
-                    "Cantidad de entidades financieras."
+    const datos =
+        [...datosBase];
+
+
+    const datosReales =
+        datos.filter(
+            d =>
+                d.type === "source"
+        );
+
+
+    return res.status(200).json({
+
+        ok:
+            true,
+
+        motor:
+            "PREVENTA IA - Inteligencia de Mercado 360",
+
+        version:
+            "3.2",
+
+        mercado: {
+
+            pais:
+                "Argentina",
+
+            fechaActualizacion:
+                ahora,
+
+            versionMotor:
+                "3.2",
+
+            oede: {
+
+                estado:
+                    estadoOEDE,
+
+                empresas:
+                    0,
+
+                empleo:
+                    0,
+
+                fuente:
+                    "OEDE",
+
+                actualizacion:
+                    "Junio 2026"
+
             },
 
+            estado: {
 
-            {
-                id:
-                    "bcra_bancos_2026",
+                fuentesOficiales:
+                    construirFuentes(
+                        ahora
+                    ).length,
 
-                variable:
-                    "bancos",
+                datosReales:
+                    datosReales.length,
 
-                value:
-                    60,
+                calculos:
+                    0,
 
-                unit:
-                    "bancos",
+                supuestos:
+                    3,
 
-                industry:
-                    "bancos_finanzas",
+                faltantes:
+                    5
 
-                product:
-                    "thuban",
-
-                companySize:
-                    "enterprise",
-
-                year:
-                    2026,
-
-                type:
-                    "source",
-
-                source:
-                    "BCRA",
-
-                sourceDate:
-                    "2026",
-
-                sourceUrl:
-                    "https://www.bcra.gob.ar/",
-
-                consultedAt:
-                    ahora,
-
-                confidence:
-                    "alta",
-
-                notes:
-                    "Cantidad de bancos."
-            },
-
-
-            {
-                id:
-                    "internet_2026",
-
-                variable:
-                    "accesos_internet",
-
-                value:
-                    51176541,
-
-                unit:
-                    "accesos",
-
-                industry:
-                    "telecom",
-
-                product:
-                    "thuban",
-
-                companySize:
-                    null,
-
-                year:
-                    2026,
-
-                type:
-                    "source",
-
-                source:
-                    "INDEC",
-
-                sourceUrl:
-                    "https://www.indec.gob.ar/",
-
-                sourceDate:
-                    "2026",
-
-                consultedAt:
-                    ahora,
-
-                confidence:
-                    "alta",
-
-                notes:
-                    "Accesos nacionales a internet."
             }
 
-        ];
+        },
 
 
-        /* ---------------------------------------------
-           UNIR DATOS
-           --------------------------------------------- */
-
-        const datos = [
-
-            ...datosBase,
-
-            ...empresasOEDE,
-
-            ...empleoOEDE
-
-        ];
+        fuentes:
+            construirFuentes(
+                ahora
+            ),
 
 
-        /* ---------------------------------------------
-           FALTANTES
-           --------------------------------------------- */
-
-        const faltantes = [];
+        industrias,
 
 
-        if (!empresasOEDE.length) {
+        tamanios: [
 
-            faltantes.push({
+            {
+                id:
+                    "micro",
 
-                variable:
-                    "empresas_por_industria",
+                nombre:
+                    "Micro"
+            },
 
-                descripcion:
-                    "Cantidad de empresas por rama de actividad.",
+            {
+                id:
+                    "pequena",
 
-                fuenteEsperada:
-                    "OEDE",
+                nombre:
+                    "Pequeña"
+            },
 
-                estado:
-                    "pendiente",
+            {
+                id:
+                    "mediana",
 
-                motivo:
-                    errorOEDE ||
-                    "OEDE todavía no devolvió registros."
+                nombre:
+                    "Mediana"
+            },
 
-            });
+            {
+                id:
+                    "grande",
 
-        }
+                nombre:
+                    "Grande"
+            },
 
+            {
+                id:
+                    "enterprise",
 
-        if (!empleoOEDE.length) {
+                nombre:
+                    "Enterprise"
+            }
 
-            faltantes.push({
-
-                variable:
-                    "empleados_por_industria",
-
-                descripcion:
-                    "Cantidad de empleados por rama de actividad.",
-
-                fuenteEsperada:
-                    "OEDE",
-
-                estado:
-                    "pendiente",
-
-                motivo:
-                    errorOEDE ||
-                    "OEDE todavía no devolvió registros."
-
-            });
-
-        }
+        ],
 
 
-        faltantes.push({
-
-            variable:
-                "documentos_por_empleado",
-
-            descripcion:
-                "Volumen documental promedio por empleado.",
-
-            fuenteEsperada:
-                "Investigación de mercado",
-
-            estado:
-                "pendiente"
-
-        });
+        productos,
 
 
-        faltantes.push({
-
-            variable:
-                "tasa_digitalizacion",
-
-            descripcion:
-                "Porcentaje de documentos potencialmente digitalizables.",
-
-            fuenteEsperada:
-                "Investigación de mercado",
-
-            estado:
-                "pendiente"
-
-        });
+        datos,
 
 
-        faltantes.push({
-
-            variable:
-                "precio_documental",
-
-            descripcion:
-                "Precio actualizado del servicio.",
-
-            fuenteEsperada:
-                "Modelo comercial PREVENTA IA",
-
-            estado:
-                "pendiente"
-
-        });
-
-
-        /* ---------------------------------------------
-           SUPUESTOS
-           --------------------------------------------- */
-
-        const supuestos = [
+        supuestos: [
 
             {
                 variable:
@@ -1324,238 +916,146 @@ export default async function handler(
                     true
             }
 
-        ];
+        ],
 
 
-        /* ---------------------------------------------
-           ESTADO
-           --------------------------------------------- */
+        faltantes: [
 
-        const datosReales =
-            datos.filter(
-                d =>
-                    d.type === "source"
-            );
+            {
+                variable:
+                    "empresas_por_industria",
 
+                descripcion:
+                    "Cantidad de empresas por rama de actividad.",
 
-        const mercado = {
-
-            pais:
-                "Argentina",
-
-            fechaActualizacion:
-                ahora,
-
-            versionMotor:
-                "3.1",
-
-            oede: {
-
-                estado:
-                    estadoOEDE,
-
-                empresas:
-                    empresasOEDE.length,
-
-                empleo:
-                    empleoOEDE.length,
-
-                fuente:
+                fuenteEsperada:
                     "OEDE",
 
-                actualizacion:
-                    "Junio 2026"
-
+                estado:
+                    "pendiente"
             },
 
-            estado: {
+            {
+                variable:
+                    "empleados_por_industria",
 
-                fuentesOficiales:
-                    construirFuentes(
-                        ahora
-                    ).length,
+                descripcion:
+                    "Cantidad de empleados por rama de actividad.",
 
-                datosReales:
-                    datosReales.length,
+                fuenteEsperada:
+                    "OEDE",
 
-                calculos:
-                    0,
+                estado:
+                    "pendiente"
+            },
 
-                supuestos:
-                    supuestos.length,
+            {
+                variable:
+                    "documentos_por_empleado",
 
-                faltantes:
-                    faltantes.length
+                descripcion:
+                    "Volumen documental promedio por empleado.",
 
+                fuenteEsperada:
+                    "Investigación de mercado",
+
+                estado:
+                    "pendiente"
+            },
+
+            {
+                variable:
+                    "tasa_digitalizacion",
+
+                descripcion:
+                    "Porcentaje de documentos potencialmente digitalizables.",
+
+                fuenteEsperada:
+                    "Investigación de mercado",
+
+                estado:
+                    "pendiente"
+            },
+
+            {
+                variable:
+                    "precio_documental",
+
+                descripcion:
+                    "Precio actualizado del servicio.",
+
+                fuenteEsperada:
+                    "Modelo comercial PREVENTA IA",
+
+                estado:
+                    "pendiente"
             }
 
-        };
+        ],
 
 
-        /* ---------------------------------------------
-           RANKING
-           --------------------------------------------- */
-
-        const ranking =
+        ranking:
             industrias.map(
-                (industria, index) => {
+                (industria, index) => ({
 
-                    const disponibles =
+                    posicion:
+                        index + 1,
+
+                    industria:
+                        industria.id,
+
+                    nombre:
+                        industria.nombre,
+
+                    datosDisponibles:
                         datos.filter(
                             d =>
                                 d.industry ===
                                 industria.id
-                        );
+                        ).length,
 
-                    return {
+                    score:
+                        null,
 
-                        posicion:
-                            index + 1,
+                    estado:
+                        datos.some(
+                            d =>
+                                d.industry ===
+                                industria.id
+                        )
+                            ? "parcial"
+                            : "sin datos suficientes"
 
-                        industria:
-                            industria.id,
-
-                        nombre:
-                            industria.nombre,
-
-                        datosDisponibles:
-                            disponibles.length,
-
-                        score:
-                            null,
-
-                        estado:
-                            disponibles.length
-                                ? "parcial"
-                                : "sin datos suficientes"
-
-                    };
-
-                }
-            );
+                })
+            ),
 
 
-        /* ---------------------------------------------
-           RESPUESTA
-           --------------------------------------------- */
+        diagnostico: {
 
-        return res.status(200).json({
+            oede:
+                estadoOEDE,
 
-            ok:
-                true,
+            oedeError:
+                errorOEDE,
 
-            motor:
-                "PREVENTA IA - Inteligencia de Mercado 360",
+            empresas:
 
-            version:
-                "3.1",
+                diagnosticoEmpresas,
 
-            mercado,
+            empleo:
 
-            fuentes:
-                construirFuentes(
-                    ahora
-                ),
+                diagnosticoEmpleo,
 
-            industrias,
+            mensaje:
 
-            tamanios: [
+                estadoOEDE === "descargado"
 
-                {
-                    id:
-                        "micro",
-                    nombre:
-                        "Micro"
-                },
+                    ? "Los Excel de OEDE fueron descargados y leídos. Revisar la estructura mostrada en empresas y empleo."
 
-                {
-                    id:
-                        "pequena",
-                    nombre:
-                        "Pequeña"
-                },
+                    : "No se pudieron leer los archivos de OEDE."
 
-                {
-                    id:
-                        "mediana",
-                    nombre:
-                        "Mediana"
-                },
+        }
 
-                {
-                    id:
-                        "grande",
-                    nombre:
-                        "Grande"
-                },
-
-                {
-                    id:
-                        "enterprise",
-                    nombre:
-                        "Enterprise"
-                }
-
-            ],
-
-            productos,
-
-            datos,
-
-            supuestos,
-
-            faltantes,
-
-            ranking,
-
-            diagnostico: {
-
-                oede:
-                    estadoOEDE,
-
-                empresasOEDE:
-                    empresasOEDE.length,
-
-                empleoOEDE:
-                    empleoOEDE.length,
-
-                oedeError:
-                    errorOEDE,
-
-                mensaje:
-                    estadoOEDE === "conectado"
-                        ? "OEDE conectado correctamente."
-                        : estadoOEDE === "sin_registros"
-                            ? "OEDE fue descargado, pero no se encontraron registros compatibles."
-                            : "OEDE no pudo ser leído automáticamente."
-
-            }
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Error en Motor de Mercado 360:",
-            error
-        );
-
-        return res.status(500).json({
-
-            ok:
-                false,
-
-            error:
-                "No se pudo ejecutar el Motor de Mercado 360.",
-
-            detalle:
-                error.message,
-
-            stack:
-                error.stack || null
-
-        });
-
-    }
+    });
 
 }
