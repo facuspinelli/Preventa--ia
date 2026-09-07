@@ -6,28 +6,20 @@ const XLSX = require("xlsx");
 // VERSION 3.5
 //
 // Lee los archivos oficiales OEDE y consolida:
+// - Empresas por actividad
+// - Empleo por actividad
+// - Todas las provincias / regiones
 //
-// - Empresas por actividad detallada
-// - Empleo por actividad detallada
-// - Todas las regiones
-// - Categorías agrupadoras separadas
-// - Ranking inicial de industrias
-//
-// CORRECCIÓN v3.5:
-//
-// OEDE contiene dos niveles:
-//   A / B / C / G / etc. = categorías agrupadoras
-//   1 / 2 / 45 / 51 / 52 / etc. = actividades detalladas
-//
-// Para evitar doble conteo:
-// - Los códigos de letras NO se suman al total.
-// - Los códigos numéricos SÍ se utilizan para el consolidado.
-//
-// También se excluye "Hoja1" del archivo de empresas,
-// ya que el conjunto regional utilizado corresponde a
-// las 25 regiones analizadas.
-//
-// TAM / SAM / SOM todavía no se modifica en esta versión.
+// VERSION 3.5
+// - Mantiene el parser OEDE de la versión 3.4
+// - Utiliza actividades detalladas con códigos numéricos
+// - Excluye categorías agrupadoras
+// - Excluye Hoja1 del libro de empresas
+// - Separa Seguros de Bancos/Finanzas
+// - Agrega matriz Productos x Industrias
+// - Agrega variables documentales por industria
+// - Prepara cálculo de empresas potenciales
+// - NO modifica todavía TAM / SAM / SOM monetario
 // ============================================================
 
 
@@ -63,9 +55,9 @@ function normalizarTexto(valor) {
 }
 
 
-// ============================================================
-// CONVERTIR VALORES DEL EXCEL A NÚMERO
-// ============================================================
+// ------------------------------------------------------------
+// Convertir valores del Excel a número
+// ------------------------------------------------------------
 
 function convertirNumero(valor) {
 
@@ -78,7 +70,8 @@ function convertirNumero(valor) {
     }
 
     const texto =
-        String(valor).trim();
+        String(valor)
+            .trim();
 
     const normalizado =
         normalizarTexto(texto);
@@ -94,8 +87,6 @@ function convertirNumero(valor) {
         return null;
     }
 
-
-    // 4,479
     if (
         /^\d{1,3}(,\d{3})+$/.test(texto)
     ) {
@@ -106,8 +97,6 @@ function convertirNumero(valor) {
 
     }
 
-
-    // 45.123
     if (
         /^\d{1,3}(\.\d{3})+$/.test(texto)
     ) {
@@ -118,8 +107,6 @@ function convertirNumero(valor) {
 
     }
 
-
-    // 1.234,56
     if (
         /^\d{1,3}(\.\d{3})+,\d+$/.test(texto)
     ) {
@@ -132,10 +119,10 @@ function convertirNumero(valor) {
 
     }
 
-
     const numero =
         Number(
-            texto.replace(",", ".")
+            texto
+                .replace(",", ".")
         );
 
     if (
@@ -251,31 +238,20 @@ function detectarPeriodo(texto) {
     if (trimestre) {
 
         return {
-
             anio,
-
             trimestre:
                 Number(
                     trimestre[1]
                 ),
-
-            texto:
-                valor
-
+            texto: valor
         };
 
     }
 
     return {
-
         anio,
-
-        trimestre:
-            null,
-
-        texto:
-            valor
-
+        trimestre: null,
+        texto: valor
     };
 }
 
@@ -308,7 +284,7 @@ function detectarFilaEncabezado(
 
         let puntaje = 0;
 
-        const columnasPeriodo = [];
+        let columnasPeriodo = [];
 
         let columnaActividad = null;
 
@@ -327,7 +303,6 @@ function detectarFilaEncabezado(
                 continue;
             }
 
-
             const periodo =
                 detectarPeriodo(
                     valores[columna]
@@ -336,15 +311,11 @@ function detectarFilaEncabezado(
             if (periodo) {
 
                 columnasPeriodo.push({
-
                     columna,
-
                     ...periodo
-
                 });
 
             }
-
 
             if (
                 texto.includes("rama de actividad") ||
@@ -361,7 +332,6 @@ function detectarFilaEncabezado(
 
             }
 
-
             if (
                 texto.includes("empresa") ||
                 texto.includes("empresas")
@@ -370,7 +340,6 @@ function detectarFilaEncabezado(
                 puntaje += 5;
 
             }
-
 
             if (
                 texto.includes("empleo") ||
@@ -384,7 +353,6 @@ function detectarFilaEncabezado(
 
         }
 
-
         if (
             columnasPeriodo.length >= 2
         ) {
@@ -396,7 +364,6 @@ function detectarFilaEncabezado(
                 );
 
         }
-
 
         if (
             puntaje > 0
@@ -413,7 +380,6 @@ function detectarFilaEncabezado(
                 columnasPeriodo
 
             };
-
 
             if (
                 !mejor ||
@@ -435,7 +401,7 @@ function detectarFilaEncabezado(
 
 
 // ============================================================
-// DETECTAR COLUMNAS DE PERIODO
+// DETECTAR COLUMNAS DE PERÍODO
 // ============================================================
 
 function detectarColumnasPeriodo(
@@ -463,7 +429,6 @@ function detectarColumnasPeriodo(
             0
         );
 
-
     for (
         let columna = 0;
         columna < maxColumnas;
@@ -471,7 +436,6 @@ function detectarColumnasPeriodo(
     ) {
 
         let mejorPeriodo = null;
-
 
         for (
             let fila = filaInicio;
@@ -487,7 +451,6 @@ function detectarColumnasPeriodo(
                 detectarPeriodo(
                     valor
                 );
-
 
             if (periodo) {
 
@@ -510,11 +473,8 @@ function detectarColumnasPeriodo(
                 ) {
 
                     mejorPeriodo = {
-
                         columna,
-
                         ...periodo
-
                     };
 
                 }
@@ -522,7 +482,6 @@ function detectarColumnasPeriodo(
             }
 
         }
-
 
         if (mejorPeriodo) {
 
@@ -539,7 +498,7 @@ function detectarColumnasPeriodo(
 
 
 // ============================================================
-// OBTENER ÚLTIMO PERIODO
+// OBTENER ÚLTIMO PERÍODO
 // ============================================================
 
 function obtenerUltimoPeriodo(
@@ -553,7 +512,6 @@ function obtenerUltimoPeriodo(
         return null;
     }
 
-
     return columnas.reduce(
         (ultimo, actual) => {
 
@@ -561,14 +519,12 @@ function obtenerUltimoPeriodo(
                 return actual;
             }
 
-
             if (
                 actual.anio >
                 ultimo.anio
             ) {
                 return actual;
             }
-
 
             if (
                 actual.anio ===
@@ -591,7 +547,6 @@ function obtenerUltimoPeriodo(
                 }
 
             }
-
 
             return ultimo;
 
@@ -616,7 +571,6 @@ function pareceFilaActividad(
         return false;
     }
 
-
     const codigo =
         fila[0] !== null &&
         fila[0] !== undefined
@@ -624,7 +578,6 @@ function pareceFilaActividad(
                 fila[0]
             ).trim()
             : "";
-
 
     const nombre =
         fila[1] !== null &&
@@ -634,11 +587,9 @@ function pareceFilaActividad(
             ).trim()
             : "";
 
-
     if (!nombre) {
         return false;
     }
-
 
     if (
         /^[A-Z]$/i.test(codigo) ||
@@ -647,47 +598,7 @@ function pareceFilaActividad(
         return true;
     }
 
-
     return false;
-}
-
-
-// ============================================================
-// DETERMINAR NIVEL DE ACTIVIDAD
-//
-// "A", "B", "C" ... = agrupador
-// "1", "2", "45", "51"... = detallada
-// ============================================================
-
-function obtenerTipoActividad(
-    codigo
-) {
-
-    const valor =
-        String(
-            codigo || ""
-        ).trim();
-
-
-    if (
-        /^[A-Z]$/i.test(valor)
-    ) {
-
-        return "agrupador";
-
-    }
-
-
-    if (
-        /^\d+$/.test(valor)
-    ) {
-
-        return "detallada";
-
-    }
-
-
-    return "desconocida";
 }
 
 
@@ -706,32 +617,18 @@ function extraerDatosHoja(
             hoja
         );
 
-
     if (
         matriz.length === 0
     ) {
 
         return {
-
-            hoja:
-                nombreHoja,
-
-            registros:
-                [],
-
-            agrupadores:
-                [],
-
-            periodo:
-                null,
-
-            filas:
-                0
-
+            hoja: nombreHoja,
+            registros: [],
+            periodo: null,
+            filas: 0
         };
 
     }
-
 
     const encabezado =
         detectarFilaEncabezado(
@@ -739,30 +636,17 @@ function extraerDatosHoja(
             tipo
         );
 
-
     if (!encabezado) {
 
         return {
-
-            hoja:
-                nombreHoja,
-
-            registros:
-                [],
-
-            agrupadores:
-                [],
-
-            periodo:
-                null,
-
+            hoja: nombreHoja,
+            registros: [],
+            periodo: null,
             filas:
                 matriz.length
-
         };
 
     }
-
 
     const columnasPeriodo =
         detectarColumnasPeriodo(
@@ -770,54 +654,34 @@ function extraerDatosHoja(
             encabezado.fila
         );
 
-
     const ultimoPeriodo =
         obtenerUltimoPeriodo(
             columnasPeriodo
         );
 
-
     if (!ultimoPeriodo) {
 
         return {
-
-            hoja:
-                nombreHoja,
-
-            registros:
-                [],
-
-            agrupadores:
-                [],
-
-            periodo:
-                null,
-
+            hoja: nombreHoja,
+            registros: [],
+            periodo: null,
             filas:
                 matriz.length
-
         };
 
     }
 
-
     const registros = [];
-
-    const agrupadores = [];
-
 
     for (
         let fila =
             encabezado.fila + 1;
-
         fila < matriz.length;
-
         fila++
     ) {
 
         const valores =
             matriz[fila] || [];
-
 
         if (
             !pareceFilaActividad(
@@ -827,18 +691,15 @@ function extraerDatosHoja(
             continue;
         }
 
-
         const codigo =
             String(
                 valores[0] ?? ""
             ).trim();
 
-
         const actividad =
             String(
                 valores[1] ?? ""
             ).trim();
-
 
         const valor =
             convertirNumero(
@@ -847,29 +708,19 @@ function extraerDatosHoja(
                 ]
             );
 
-
         if (
             valor === null
         ) {
             continue;
         }
 
-
-        const nivel =
-            obtenerTipoActividad(
-                codigo
-            );
-
-
-        const registro = {
+        registros.push({
 
             codigo,
 
             actividad,
 
             valor,
-
-            nivel,
 
             hoja:
                 nombreHoja,
@@ -883,32 +734,9 @@ function extraerDatosHoja(
             periodo:
                 ultimoPeriodo.texto
 
-        };
-
-
-        if (
-            nivel === "detallada"
-        ) {
-
-            registros.push(
-                registro
-            );
-
-        }
-
-
-        if (
-            nivel === "agrupador"
-        ) {
-
-            agrupadores.push(
-                registro
-            );
-
-        }
+        });
 
     }
-
 
     return {
 
@@ -916,8 +744,6 @@ function extraerDatosHoja(
             nombreHoja,
 
         registros,
-
-        agrupadores,
 
         periodo:
             ultimoPeriodo,
@@ -937,6 +763,18 @@ function extraerDatosHoja(
 
 // ============================================================
 // CONSOLIDAR TODAS LAS HOJAS
+//
+// IMPORTANTE:
+//
+// Los códigos de una sola letra son agrupadores OEDE.
+// Ejemplo:
+//
+// G = Comercio al por mayor y menor
+// 51 = Comercio al por mayor
+// 52 = Comercio al por menor
+//
+// Para el mercado utilizamos solamente códigos numéricos.
+// Los agrupadores se conservan separados como referencia.
 // ============================================================
 
 function consolidarLibro(
@@ -953,13 +791,10 @@ function consolidarLibro(
             }
         );
 
-
     const hojas =
         libro.SheetNames || [];
 
-
     const resultados = [];
-
 
     for (
         const nombreHoja of hojas
@@ -970,9 +805,8 @@ function consolidarLibro(
                 nombreHoja
             );
 
-
         // ----------------------------------------------------
-        // DOCUMENTACIÓN
+        // Ignorar documentación
         // ----------------------------------------------------
 
         if (
@@ -992,17 +826,11 @@ function consolidarLibro(
                 "descriptores"
             )
         ) {
-
             continue;
-
         }
 
-
         // ----------------------------------------------------
-        // HOJA AUXILIAR DEL ARCHIVO DE EMPRESAS
-        //
-        // El conjunto regional utilizado contiene 25 regiones.
-        // Hoja1 aparece únicamente como hoja adicional.
+        // Hoja auxiliar del libro de empresas
         // ----------------------------------------------------
 
         if (
@@ -1011,19 +839,18 @@ function consolidarLibro(
         ) {
 
             console.log(
-                "OEDE empresas: ignorando hoja auxiliar Hoja1"
+                "Ignorando hoja auxiliar:",
+                nombreHoja
             );
 
             continue;
 
         }
 
-
         const hoja =
             libro.Sheets[
                 nombreHoja
             ];
-
 
         const resultado =
             extraerDatosHoja(
@@ -1032,7 +859,6 @@ function consolidarLibro(
                 tipo
             );
 
-
         resultados.push(
             resultado
         );
@@ -1040,28 +866,19 @@ function consolidarLibro(
     }
 
 
-    // ========================================================
-    // CONSOLIDACIÓN DE ACTIVIDADES DETALLADAS
-    // ========================================================
+    // --------------------------------------------------------
+    // Consolidación
+    // --------------------------------------------------------
 
-    const mapa =
+    const mapaDetalle =
         new Map();
-
-
-    // ========================================================
-    // CONSOLIDACIÓN DE AGRUPADORES
-    //
-    // Los conservamos para referencia, pero NO entran
-    // en el total.
-    // ========================================================
 
     const mapaAgrupadores =
         new Map();
 
-
     let registrosTotales = 0;
 
-    let agrupadoresTotales = 0;
+    let registrosAgrupadores = 0;
 
     let hojasConDatos = 0;
 
@@ -1080,18 +897,9 @@ function consolidarLibro(
 
         }
 
-
         registrosTotales +=
             resultado.registros.length;
 
-
-        agrupadoresTotales +=
-            resultado.agrupadores.length;
-
-
-        // ----------------------------------------------------
-        // ÚLTIMO PERIODO
-        // ----------------------------------------------------
 
         if (
             resultado.periodo
@@ -1123,13 +931,20 @@ function consolidarLibro(
         }
 
 
-        // ----------------------------------------------------
-        // ACTIVIDADES DETALLADAS
-        // ----------------------------------------------------
-
         for (
             const registro of resultado.registros
         ) {
+
+            const esAgrupador =
+                /^[A-Z]$/i.test(
+                    registro.codigo
+                );
+
+            const mapa =
+                esAgrupador
+                    ? mapaAgrupadores
+                    : mapaDetalle;
+
 
             const clave =
                 registro.codigo +
@@ -1152,9 +967,6 @@ function consolidarLibro(
 
                         actividad:
                             registro.actividad,
-
-                        nivel:
-                            "detallada",
 
                         valor:
                             0,
@@ -1198,85 +1010,14 @@ function consolidarLibro(
                 registro.hoja
             );
 
-        }
-
-
-        // ----------------------------------------------------
-        // AGRUPADORES
-        // ----------------------------------------------------
-
-        for (
-            const registro of resultado.agrupadores
-        ) {
-
-            const clave =
-                registro.codigo +
-                "|" +
-                normalizarTexto(
-                    registro.actividad
-                );
-
 
             if (
-                !mapaAgrupadores.has(
-                    clave
-                )
+                esAgrupador
             ) {
 
-                mapaAgrupadores.set(
-                    clave,
-                    {
-
-                        codigo:
-                            registro.codigo,
-
-                        actividad:
-                            registro.actividad,
-
-                        nivel:
-                            "agrupador",
-
-                        valor:
-                            0,
-
-                        regiones:
-                            0,
-
-                        fuentes:
-                            [],
-
-                        anio:
-                            registro.anio,
-
-                        trimestre:
-                            registro.trimestre,
-
-                        periodo:
-                            registro.periodo
-
-                    }
-                );
+                registrosAgrupadores++;
 
             }
-
-
-            const acumulado =
-                mapaAgrupadores.get(
-                    clave
-                );
-
-
-            acumulado.valor +=
-                registro.valor;
-
-
-            acumulado.regiones +=
-                1;
-
-
-            acumulado.fuentes.push(
-                registro.hoja
-            );
 
         }
 
@@ -1285,7 +1026,7 @@ function consolidarLibro(
 
     const actividades =
         Array.from(
-            mapa.values()
+            mapaDetalle.values()
         )
         .sort(
             (a, b) =>
@@ -1305,14 +1046,16 @@ function consolidarLibro(
         );
 
 
-    // ========================================================
-    // TOTAL CORRECTO
-    //
-    // SOLO actividades detalladas.
-    // ========================================================
-
     const total =
         actividades.reduce(
+            (suma, item) =>
+                suma + item.valor,
+            0
+        );
+
+
+    const totalAgrupadores =
+        agrupadores.reduce(
             (suma, item) =>
                 suma + item.valor,
             0
@@ -1333,13 +1076,15 @@ function consolidarLibro(
 
         registrosTotales,
 
-        agrupadoresTotales,
+        registrosAgrupadores,
 
         actividades,
 
         agrupadores,
 
         total,
+
+        totalAgrupadores,
 
         ultimoPeriodo:
             ultimoPeriodoGlobal
@@ -1350,15 +1095,25 @@ function consolidarLibro(
 
 // ============================================================
 // MAPEO OEDE → INDUSTRIAS PREVENTA
+//
+// Se utiliza código OEDE cuando es posible y texto como apoyo.
 // ============================================================
 
 function mapearIndustria(
-    actividad
+    actividad,
+    codigo
 ) {
 
     const texto =
         normalizarTexto(
             actividad
+        );
+
+    const codigoNumero =
+        Number(
+            String(
+                codigo || ""
+            ).trim()
         );
 
 
@@ -1367,6 +1122,9 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
+        [1, 2, 5].includes(
+            codigoNumero
+        ) ||
         texto.includes("agricultura") ||
         texto.includes("ganaderia") ||
         texto.includes("silvicultura") ||
@@ -1383,10 +1141,13 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
+        (
+            codigoNumero >= 10 &&
+            codigoNumero <= 14
+        ) ||
         texto.includes("mineria") ||
         texto.includes("extraccion de petroleo") ||
-        texto.includes("extraccion de gas") ||
-        texto.includes("minas y canteras")
+        texto.includes("extraccion de gas")
     ) {
 
         return "Minería";
@@ -1396,21 +1157,36 @@ function mapearIndustria(
 
     // --------------------------------------------------------
     // INDUSTRIA
+    //
+    // Actividades manufactureras OEDE
     // --------------------------------------------------------
 
     if (
+        (
+            codigoNumero >= 15 &&
+            codigoNumero <= 37
+        ) ||
         texto.includes("industria") ||
-        texto.includes("manufactur") ||
-        texto.includes("alimentos") ||
-        texto.includes("productos quimicos") ||
-        texto.includes("productos textiles") ||
-        texto.includes("confecciones") ||
-        texto.includes("madera") ||
-        texto.includes("muebles") ||
-        texto.includes("maquinaria")
+        texto.includes("manufactur")
     ) {
 
         return "Industria";
+
+    }
+
+
+    // --------------------------------------------------------
+    // ENERGÍA / SERVICIOS BÁSICOS
+    // --------------------------------------------------------
+
+    if (
+        codigoNumero === 40 ||
+        codigoNumero === 41 ||
+        texto.includes("electricidad") ||
+        texto.includes("energia")
+    ) {
+
+        return "Energía";
 
     }
 
@@ -1420,6 +1196,7 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
+        codigoNumero === 45 ||
         texto.includes("construccion")
     ) {
 
@@ -1433,11 +1210,11 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
-        texto.includes("comercio") ||
-        texto.includes("venta") ||
-        texto.includes("vta y reparacion") ||
-        texto.includes("comercio al por menor") ||
-        texto.includes("comercio al por mayor")
+        (
+            codigoNumero >= 50 &&
+            codigoNumero <= 52
+        ) ||
+        texto.includes("comercio")
     ) {
 
         return "Retail";
@@ -1450,10 +1227,12 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
+        (
+            codigoNumero >= 60 &&
+            codigoNumero <= 63
+        ) ||
         texto.includes("transporte") ||
-        texto.includes("almacenamiento") ||
-        texto.includes("deposito") ||
-        texto.includes("manipulacion de carga")
+        texto.includes("almacenamiento")
     ) {
 
         return "Logística/Transporte";
@@ -1466,30 +1245,12 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
-        texto.includes("telecomunicaciones") ||
-        texto.includes("comunicaciones") ||
-        texto.includes("correos") ||
-        texto.includes("actividades de informatica")
+        codigoNumero === 64 ||
+        texto.includes("telecom") ||
+        texto.includes("comunicacion")
     ) {
 
         return "Telecom";
-
-    }
-
-
-    // --------------------------------------------------------
-    // SEGUROS
-    //
-    // IMPORTANTE:
-    // Se evalúa ANTES de bancos/finanzas.
-    // --------------------------------------------------------
-
-    if (
-        texto.includes("seguros") ||
-        texto.includes("servicios de seguros")
-    ) {
-
-        return "Seguros";
 
     }
 
@@ -1499,13 +1260,29 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
-        texto.includes("intermediacion financiera") ||
-        texto.includes("actividad financiera") ||
-        texto.includes("servicios financieros") ||
-        texto.includes("bancos")
+        codigoNumero === 65 ||
+        codigoNumero === 67 ||
+        texto.includes("financiero") ||
+        texto.includes("bancos") ||
+        texto.includes("banco")
     ) {
 
         return "Bancos/Finanzas";
+
+    }
+
+
+    // --------------------------------------------------------
+    // SEGUROS
+    // --------------------------------------------------------
+
+    if (
+        codigoNumero === 66 ||
+        texto.includes("seguro") ||
+        texto.includes("seguros")
+    ) {
+
+        return "Seguros";
 
     }
 
@@ -1515,9 +1292,9 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
+        codigoNumero === 85 ||
         texto.includes("salud") ||
-        texto.includes("sanidad") ||
-        texto.includes("servicios sociales")
+        texto.includes("sanidad")
     ) {
 
         return "Salud";
@@ -1530,8 +1307,8 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
-        texto.includes("educacion") ||
-        texto.includes("ensenanza")
+        codigoNumero === 80 ||
+        texto.includes("educacion")
     ) {
 
         return "Educación";
@@ -1544,9 +1321,9 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
+        codigoNumero === 75 ||
         texto.includes("administracion publica") ||
-        texto.includes("administracion del estado") ||
-        texto.includes("servicios generales de la administracion")
+        texto.includes("administracion del estado")
     ) {
 
         return "Gobierno";
@@ -1559,11 +1336,12 @@ function mapearIndustria(
     // --------------------------------------------------------
 
     if (
-        texto.includes("servicios juridicos") ||
-        texto.includes("servicios contables") ||
-        texto.includes("servicios profesionales") ||
+        codigoNumero === 74 ||
+        codigoNumero === 72 ||
+        texto.includes("profesionales") ||
         texto.includes("servicios empresariales") ||
-        texto.includes("organizaciones empresariales")
+        texto.includes("servicios a empresas") ||
+        texto.includes("contable")
     ) {
 
         return "Servicios profesionales";
@@ -1572,22 +1350,671 @@ function mapearIndustria(
 
 
     // --------------------------------------------------------
-    // ENERGÍA
+    // OTROS
     // --------------------------------------------------------
 
-    if (
-        texto.includes("electricidad") ||
-        texto.includes("energia") ||
-        texto.includes("gas") ||
-        texto.includes("agua")
+    return "Otros";
+
+}
+
+
+// ============================================================
+// PRODUCTOS PREVENTA
+// ============================================================
+
+const productosPREVENTA = [
+
+    {
+        id: "guarda",
+        nombre: "Guarda / Almacenamiento",
+        descripcion:
+            "Almacenamiento y gestión de documentos digitales.",
+        unidad:
+            "empresa"
+    },
+
+    {
+        id: "digitalizacion",
+        nombre: "Digitalización",
+        descripcion:
+            "Digitalización y conversión de documentación física.",
+        unidad:
+            "empresa"
+    },
+
+    {
+        id: "firma_recibos",
+        nombre: "Firma de recibos de sueldo",
+        descripcion:
+            "Firma electrónica de recibos y documentación laboral.",
+        unidad:
+            "empleado"
+    },
+
+    {
+        id: "firma_electronica",
+        nombre: "Firma electrónica",
+        descripcion:
+            "Firma electrónica de documentos y contratos.",
+        unidad:
+            "empresa"
+    },
+
+    {
+        id: "thuban",
+        nombre: "Thuban",
+        descripcion:
+            "Gestión documental, búsqueda, almacenamiento y procesos documentales.",
+        unidad:
+            "empresa"
+    }
+
+];
+
+
+// ============================================================
+// POTENCIAL PRODUCTO × INDUSTRIA
+//
+// 0.00 = sin prioridad
+// 0.25 = bajo
+// 0.50 = medio
+// 0.75 = alto
+// 1.00 = muy alto
+//
+// Estos valores son SUPUESTOS comerciales.
+// No son datos OEDE.
+// ============================================================
+
+const potencialProductosIndustria = {
+
+    "Bancos/Finanzas": {
+
+        guarda: 0.90,
+        digitalizacion: 0.85,
+        firma_recibos: 0.60,
+        firma_electronica: 1.00,
+        thuban: 1.00
+
+    },
+
+    "Seguros": {
+
+        guarda: 0.90,
+        digitalizacion: 0.85,
+        firma_recibos: 0.65,
+        firma_electronica: 1.00,
+        thuban: 1.00
+
+    },
+
+    "Salud": {
+
+        guarda: 0.95,
+        digitalizacion: 1.00,
+        firma_recibos: 0.60,
+        firma_electronica: 0.85,
+        thuban: 1.00
+
+    },
+
+    "Retail": {
+
+        guarda: 0.80,
+        digitalizacion: 0.80,
+        firma_recibos: 0.75,
+        firma_electronica: 0.85,
+        thuban: 0.85
+
+    },
+
+    "Industria": {
+
+        guarda: 0.85,
+        digitalizacion: 0.85,
+        firma_recibos: 0.80,
+        firma_electronica: 0.85,
+        thuban: 0.90
+
+    },
+
+    "Logística/Transporte": {
+
+        guarda: 0.85,
+        digitalizacion: 0.85,
+        firma_recibos: 0.85,
+        firma_electronica: 0.85,
+        thuban: 0.90
+
+    },
+
+    "Agricultura": {
+
+        guarda: 0.65,
+        digitalizacion: 0.70,
+        firma_recibos: 0.75,
+        firma_electronica: 0.70,
+        thuban: 0.70
+
+    },
+
+    "Construcción": {
+
+        guarda: 0.75,
+        digitalizacion: 0.75,
+        firma_recibos: 0.80,
+        firma_electronica: 0.80,
+        thuban: 0.80
+
+    },
+
+    "Educación": {
+
+        guarda: 0.85,
+        digitalizacion: 0.85,
+        firma_recibos: 0.70,
+        firma_electronica: 0.80,
+        thuban: 0.90
+
+    },
+
+    "Telecom": {
+
+        guarda: 0.85,
+        digitalizacion: 0.80,
+        firma_recibos: 0.70,
+        firma_electronica: 0.95,
+        thuban: 0.90
+
+    },
+
+    "Minería": {
+
+        guarda: 0.80,
+        digitalizacion: 0.75,
+        firma_recibos: 0.80,
+        firma_electronica: 0.80,
+        thuban: 0.85
+
+    },
+
+    "Energía": {
+
+        guarda: 0.85,
+        digitalizacion: 0.85,
+        firma_recibos: 0.80,
+        firma_electronica: 0.90,
+        thuban: 0.90
+
+    },
+
+    "Servicios profesionales": {
+
+        guarda: 0.75,
+        digitalizacion: 0.70,
+        firma_recibos: 0.70,
+        firma_electronica: 0.90,
+        thuban: 0.85
+
+    },
+
+    "Gobierno": {
+
+        guarda: 1.00,
+        digitalizacion: 1.00,
+        firma_recibos: 0.80,
+        firma_electronica: 0.95,
+        thuban: 1.00
+
+    },
+
+    "Otros": {
+
+        guarda: 0.50,
+        digitalizacion: 0.50,
+        firma_recibos: 0.50,
+        firma_electronica: 0.50,
+        thuban: 0.50
+
+    }
+
+};
+
+
+// ============================================================
+// VARIABLES DOCUMENTALES POR INDUSTRIA
+//
+// SUPUESTOS INICIALES.
+// Luego serán editables desde Mercado 360.
+// ============================================================
+
+const variablesDocumentales = {
+
+    "Bancos/Finanzas": {
+
+        necesidadDocumental: 0.95,
+        archivoFisico: 0.80,
+        digitalizacion: 0.90,
+        ocr: 0.90,
+        busqueda: 0.95,
+        firmas: 0.95,
+        workflows: 0.95,
+        compliance: 1.00,
+        contratos: 0.90,
+        migracion: 0.80,
+        integraciones: 0.95,
+        almacenamiento: 0.95
+
+    },
+
+    "Seguros": {
+
+        necesidadDocumental: 0.95,
+        archivoFisico: 0.80,
+        digitalizacion: 0.85,
+        ocr: 0.90,
+        busqueda: 0.95,
+        firmas: 0.95,
+        workflows: 0.90,
+        compliance: 1.00,
+        contratos: 0.95,
+        migracion: 0.80,
+        integraciones: 0.90,
+        almacenamiento: 0.95
+
+    },
+
+    "Salud": {
+
+        necesidadDocumental: 0.95,
+        archivoFisico: 0.95,
+        digitalizacion: 1.00,
+        ocr: 0.95,
+        busqueda: 0.95,
+        firmas: 0.85,
+        workflows: 0.90,
+        compliance: 0.95,
+        contratos: 0.75,
+        migracion: 0.70,
+        integraciones: 0.85,
+        almacenamiento: 1.00
+
+    },
+
+    "Retail": {
+
+        necesidadDocumental: 0.75,
+        archivoFisico: 0.70,
+        digitalizacion: 0.75,
+        ocr: 0.70,
+        busqueda: 0.75,
+        firmas: 0.80,
+        workflows: 0.75,
+        compliance: 0.70,
+        contratos: 0.80,
+        migracion: 0.60,
+        integraciones: 0.75,
+        almacenamiento: 0.80
+
+    },
+
+    "Industria": {
+
+        necesidadDocumental: 0.80,
+        archivoFisico: 0.80,
+        digitalizacion: 0.80,
+        ocr: 0.75,
+        busqueda: 0.80,
+        firmas: 0.80,
+        workflows: 0.85,
+        compliance: 0.80,
+        contratos: 0.85,
+        migracion: 0.70,
+        integraciones: 0.80,
+        almacenamiento: 0.85
+
+    },
+
+    "Logística/Transporte": {
+
+        necesidadDocumental: 0.80,
+        archivoFisico: 0.80,
+        digitalizacion: 0.80,
+        ocr: 0.75,
+        busqueda: 0.80,
+        firmas: 0.85,
+        workflows: 0.85,
+        compliance: 0.80,
+        contratos: 0.80,
+        migracion: 0.65,
+        integraciones: 0.85,
+        almacenamiento: 0.85
+
+    },
+
+    "Agricultura": {
+
+        necesidadDocumental: 0.65,
+        archivoFisico: 0.65,
+        digitalizacion: 0.65,
+        ocr: 0.60,
+        busqueda: 0.65,
+        firmas: 0.70,
+        workflows: 0.60,
+        compliance: 0.65,
+        contratos: 0.70,
+        migracion: 0.50,
+        integraciones: 0.60,
+        almacenamiento: 0.65
+
+    },
+
+    "Construcción": {
+
+        necesidadDocumental: 0.75,
+        archivoFisico: 0.80,
+        digitalizacion: 0.75,
+        ocr: 0.70,
+        busqueda: 0.75,
+        firmas: 0.80,
+        workflows: 0.75,
+        compliance: 0.75,
+        contratos: 0.90,
+        migracion: 0.60,
+        integraciones: 0.70,
+        almacenamiento: 0.80
+
+    },
+
+    "Educación": {
+
+        necesidadDocumental: 0.85,
+        archivoFisico: 0.90,
+        digitalizacion: 0.85,
+        ocr: 0.80,
+        busqueda: 0.85,
+        firmas: 0.80,
+        workflows: 0.75,
+        compliance: 0.85,
+        contratos: 0.65,
+        migracion: 0.70,
+        integraciones: 0.80,
+        almacenamiento: 0.90
+
+    },
+
+    "Telecom": {
+
+        necesidadDocumental: 0.85,
+        archivoFisico: 0.65,
+        digitalizacion: 0.75,
+        ocr: 0.70,
+        busqueda: 0.85,
+        firmas: 0.90,
+        workflows: 0.90,
+        compliance: 0.90,
+        contratos: 0.90,
+        migracion: 0.75,
+        integraciones: 0.95,
+        almacenamiento: 0.90
+
+    },
+
+    "Minería": {
+
+        necesidadDocumental: 0.80,
+        archivoFisico: 0.75,
+        digitalizacion: 0.75,
+        ocr: 0.70,
+        busqueda: 0.75,
+        firmas: 0.80,
+        workflows: 0.80,
+        compliance: 0.90,
+        contratos: 0.80,
+        migracion: 0.60,
+        integraciones: 0.75,
+        almacenamiento: 0.80
+
+    },
+
+    "Energía": {
+
+        necesidadDocumental: 0.85,
+        archivoFisico: 0.80,
+        digitalizacion: 0.85,
+        ocr: 0.75,
+        busqueda: 0.80,
+        firmas: 0.85,
+        workflows: 0.90,
+        compliance: 0.95,
+        contratos: 0.90,
+        migracion: 0.70,
+        integraciones: 0.90,
+        almacenamiento: 0.90
+
+    },
+
+    "Servicios profesionales": {
+
+        necesidadDocumental: 0.75,
+        archivoFisico: 0.65,
+        digitalizacion: 0.70,
+        ocr: 0.65,
+        busqueda: 0.80,
+        firmas: 0.90,
+        workflows: 0.75,
+        compliance: 0.75,
+        contratos: 0.90,
+        migracion: 0.60,
+        integraciones: 0.75,
+        almacenamiento: 0.75
+
+    },
+
+    "Gobierno": {
+
+        necesidadDocumental: 1.00,
+        archivoFisico: 1.00,
+        digitalizacion: 1.00,
+        ocr: 0.95,
+        busqueda: 1.00,
+        firmas: 0.95,
+        workflows: 0.95,
+        compliance: 1.00,
+        contratos: 0.90,
+        migracion: 0.90,
+        integraciones: 0.95,
+        almacenamiento: 1.00
+
+    },
+
+    "Otros": {
+
+        necesidadDocumental: 0.50,
+        archivoFisico: 0.50,
+        digitalizacion: 0.50,
+        ocr: 0.50,
+        busqueda: 0.50,
+        firmas: 0.50,
+        workflows: 0.50,
+        compliance: 0.50,
+        contratos: 0.50,
+        migracion: 0.50,
+        integraciones: 0.50,
+        almacenamiento: 0.50
+
+    }
+
+};
+
+
+// ============================================================
+// SUPUESTOS GENERALES
+// ============================================================
+
+const supuestosMercado = {
+
+    porcentajeDigitalizacion:
+        43.48,
+
+    porcentajeClientes:
+        6.76,
+
+    tasaCaptura:
+        3.5,
+
+    porcentajeEmpresasObjetivo:
+        20,
+
+    porcentajeSAM:
+        30,
+
+    porcentajeSOM:
+        3.5
+
+};
+
+
+// ============================================================
+// CALCULAR POTENCIAL EMPRESAS POR PRODUCTO
+// ============================================================
+
+function calcularPotencialProductos(
+    ranking
+) {
+
+    const resultado = [];
+
+    for (
+        const industriaData of ranking
     ) {
 
-        return "Energía";
+        const industria =
+            industriaData.industria;
+
+        const matriz =
+            potencialProductosIndustria[
+                industria
+            ] ||
+            potencialProductosIndustria[
+                "Otros"
+            ];
+
+        const variables =
+            variablesDocumentales[
+                industria
+            ] ||
+            variablesDocumentales[
+                "Otros"
+            ];
+
+
+        for (
+            const producto of productosPREVENTA
+        ) {
+
+            const afinidad =
+                matriz[
+                    producto.id
+                ] ??
+                0.5;
+
+
+            const necesidad =
+                variables
+                    .necesidadDocumental ??
+                0.5;
+
+
+            const potencial =
+                Math.min(
+                    1,
+                    (
+                        afinidad *
+                        0.60
+                    ) +
+                    (
+                        necesidad *
+                        0.40
+                    )
+                );
+
+
+            const empresasPotenciales =
+                Math.round(
+                    industriaData.empresas *
+                    (
+                        supuestosMercado
+                            .porcentajeEmpresasObjetivo /
+                        100
+                    ) *
+                    potencial
+                );
+
+
+            const empleadosPotenciales =
+                Math.round(
+                    industriaData.empleo *
+                    (
+                        supuestosMercado
+                            .porcentajeEmpresasObjetivo /
+                        100
+                    ) *
+                    potencial
+                );
+
+
+            resultado.push({
+
+                industria,
+
+                producto:
+                    producto.id,
+
+                productoNombre:
+                    producto.nombre,
+
+                empresas:
+                    industriaData.empresas,
+
+                empleo:
+                    industriaData.empleo,
+
+                afinidad:
+
+                    Number(
+                        afinidad.toFixed(3)
+                    ),
+
+                necesidadDocumental:
+
+                    Number(
+                        necesidad.toFixed(3)
+                    ),
+
+                potencial:
+
+                    Number(
+                        potencial.toFixed(3)
+                    ),
+
+                empresasPotenciales,
+
+                empleadosPotenciales
+
+            });
+
+        }
 
     }
 
 
-    return "Otros";
+    return resultado
+        .sort(
+            (a, b) =>
+                b.empresasPotenciales -
+                a.empresasPotenciales
+        );
+
 }
 
 
@@ -1604,17 +2031,14 @@ function generarRanking(
         new Map();
 
 
-    // ========================================================
-    // EMPRESAS
-    // ========================================================
-
     for (
         const item of empresas.actividades
     ) {
 
         const industria =
             mapearIndustria(
-                item.actividad
+                item.actividad,
+                item.codigo
             );
 
 
@@ -1627,15 +2051,9 @@ function generarRanking(
             mapa.set(
                 industria,
                 {
-
                     industria,
-
-                    empresas:
-                        0,
-
-                    empleo:
-                        0
-
+                    empresas: 0,
+                    empleo: 0
                 }
             );
 
@@ -1650,17 +2068,14 @@ function generarRanking(
     }
 
 
-    // ========================================================
-    // EMPLEO
-    // ========================================================
-
     for (
         const item of empleo.actividades
     ) {
 
         const industria =
             mapearIndustria(
-                item.actividad
+                item.actividad,
+                item.codigo
             );
 
 
@@ -1673,15 +2088,9 @@ function generarRanking(
             mapa.set(
                 industria,
                 {
-
                     industria,
-
-                    empresas:
-                        0,
-
-                    empleo:
-                        0
-
+                    empresas: 0,
+                    empleo: 0
                 }
             );
 
@@ -1695,16 +2104,6 @@ function generarRanking(
 
     }
 
-
-    // ========================================================
-    // SCORE
-    //
-    // 40% empresas
-    // 60% empleo
-    //
-    // Usamos logaritmo para evitar que una industria
-    // enorme destruya el resto del ranking.
-    // ========================================================
 
     const ranking =
         Array.from(
@@ -1746,6 +2145,7 @@ function generarRanking(
 
 
     return ranking;
+
 }
 
 
@@ -1797,7 +2197,6 @@ module.exports =
                 console.log(
                     "Descargando empresas OEDE..."
                 );
-
 
                 empresasBuffer =
                     await descargarArchivo(
@@ -1865,17 +2264,7 @@ module.exports =
 
                 total: 0,
 
-                ultimoPeriodo: null,
-
-                hojasAnalizadas: 0,
-
-                hojasConDatos: 0,
-
-                registrosTotales: 0,
-
-                agrupadoresTotales: 0,
-
-                cantidadHojas: 0
+                totalAgrupadores: 0
 
             };
 
@@ -1888,17 +2277,7 @@ module.exports =
 
                 total: 0,
 
-                ultimoPeriodo: null,
-
-                hojasAnalizadas: 0,
-
-                hojasConDatos: 0,
-
-                registrosTotales: 0,
-
-                agrupadoresTotales: 0,
-
-                cantidadHojas: 0
+                totalAgrupadores: 0
 
             };
 
@@ -1921,20 +2300,8 @@ module.exports =
 
 
                 console.log(
-                    "Empresas detalladas:",
+                    "Empresas procesadas:",
                     empresas.actividades.length
-                );
-
-
-                console.log(
-                    "Empresas agrupadoras:",
-                    empresas.agrupadores.length
-                );
-
-
-                console.log(
-                    "Total empresas detalladas:",
-                    empresas.total
                 );
 
 
@@ -1951,20 +2318,8 @@ module.exports =
 
 
                 console.log(
-                    "Empleo detallado:",
+                    "Empleo procesado:",
                     empleo.actividades.length
-                );
-
-
-                console.log(
-                    "Empleo agrupador:",
-                    empleo.agrupadores.length
-                );
-
-
-                console.log(
-                    "Total empleo detallado:",
-                    empleo.total
                 );
 
             }
@@ -1978,6 +2333,16 @@ module.exports =
                 generarRanking(
                     empresas,
                     empleo
+                );
+
+
+            // =================================================
+            // POTENCIAL PRODUCTOS
+            // =================================================
+
+            const potencialProductos =
+                calcularPotencialProductos(
+                    ranking
                 );
 
 
@@ -2055,7 +2420,6 @@ module.exports =
 
                     },
 
-
                     empleo: {
 
                         nombre:
@@ -2087,10 +2451,8 @@ module.exports =
                     empleoOEDE:
                         empleo.total,
 
-
                     ultimoDatoEmpresas:
                         empresas.ultimoPeriodo,
-
 
                     ultimoDatoEmpleo:
                         empleo.ultimoPeriodo,
@@ -2114,7 +2476,7 @@ module.exports =
                             empresas.registrosTotales,
 
                         registrosAgrupadores:
-                            empresas.agrupadoresTotales
+                            empresas.registrosAgrupadores
 
                     },
 
@@ -2137,7 +2499,7 @@ module.exports =
                             empleo.registrosTotales,
 
                         registrosAgrupadores:
-                            empleo.agrupadoresTotales
+                            empleo.registrosAgrupadores
 
                     },
 
@@ -2158,24 +2520,12 @@ module.exports =
                         empresas.actividades,
 
                     empleo:
-                        empleo.actividades
+                        empleo.actividades,
 
-                },
-
-
-                // ------------------------------------------------
-                // AGRUPADORES OEDE
-                //
-                // Se entregan para análisis y referencia,
-                // pero no participan de los totales.
-                // ------------------------------------------------
-
-                agrupadores: {
-
-                    empresas:
+                    agrupadoresEmpresas:
                         empresas.agrupadores,
 
-                    empleo:
+                    agrupadoresEmpleo:
                         empleo.agrupadores
 
                 },
@@ -2189,21 +2539,42 @@ module.exports =
 
 
                 // ------------------------------------------------
+                // PRODUCTOS PREVENTA
+                // ------------------------------------------------
+
+                productos:
+                    productosPREVENTA,
+
+
+                // ------------------------------------------------
+                // MATRIZ PRODUCTOS × INDUSTRIAS
+                // ------------------------------------------------
+
+                potencialProductosIndustria:
+                    potencialProductosIndustria,
+
+
+                // ------------------------------------------------
+                // VARIABLES DOCUMENTALES
+                // ------------------------------------------------
+
+                variablesDocumentales:
+                    variablesDocumentales,
+
+
+                // ------------------------------------------------
+                // POTENCIAL
+                // ------------------------------------------------
+
+                potencialProductos,
+
+
+                // ------------------------------------------------
                 // SUPUESTOS
                 // ------------------------------------------------
 
-                supuestos: {
-
-                    porcentajeDigitalizacion:
-                        43.48,
-
-                    porcentajeClientes:
-                        6.76,
-
-                    tasaCaptura:
-                        3.5
-
-                },
+                supuestos:
+                    supuestosMercado,
 
 
                 // ------------------------------------------------
@@ -2216,7 +2587,7 @@ module.exports =
 
                     "Variables específicas por producto",
 
-                    "Necesidad documental por industria",
+                    "Validación de necesidad documental por industria",
 
                     "Precio por producto",
 
@@ -2257,7 +2628,7 @@ module.exports =
                             empresas.registrosTotales,
 
                         agrupadores:
-                            empresas.agrupadoresTotales,
+                            empresas.registrosAgrupadores,
 
                         actividadesDetalladas:
                             empresas.actividades.length
@@ -2280,7 +2651,7 @@ module.exports =
                             empleo.registrosTotales,
 
                         agrupadores:
-                            empleo.agrupadoresTotales,
+                            empleo.registrosAgrupadores,
 
                         actividadesDetalladas:
                             empleo.actividades.length
@@ -2307,12 +2678,8 @@ module.exports =
                 },
 
 
-                // ------------------------------------------------
-                // SIGUIENTE PASO
-                // ------------------------------------------------
-
                 siguientePaso:
-                    "Conectar industrias, productos, variables documentales y posteriormente calcular TAM/SAM/SOM."
+                    "Validar matriz Productos × Industrias y luego incorporar variables de precio para calcular TAM, SAM y SOM."
 
             };
 
