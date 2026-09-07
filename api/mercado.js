@@ -1029,7 +1029,7 @@ export default async function handler(
                     "conectado";
             }
 
-               } catch (error) {
+        } catch (error) {
 
             console.error(
                 "OEDE:",
