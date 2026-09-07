@@ -3,23 +3,28 @@ const XLSX = require("xlsx");
 // ============================================================
 // PREVENTA IA
 // MOTOR DE MERCADO 360
-// VERSION 3.5
+// VERSION 3.6
 //
-// Lee los archivos oficiales OEDE y consolida:
-// - Empresas por actividad
-// - Empleo por actividad
-// - Todas las provincias / regiones
+// BASE:
+// - OEDE Empresas
+// - OEDE Empleo
+// - Actividades detalladas
+// - Industrias PREVENTA
+// - Productos PREVENTA
 //
-// VERSION 3.5
-// - Mantiene el parser OEDE de la versión 3.4
-// - Utiliza actividades detalladas con códigos numéricos
-// - Excluye categorías agrupadoras
-// - Excluye Hoja1 del libro de empresas
-// - Separa Seguros de Bancos/Finanzas
-// - Agrega matriz Productos x Industrias
-// - Agrega variables documentales por industria
-// - Prepara cálculo de empresas potenciales
-// - NO modifica todavía TAM / SAM / SOM monetario
+// NUEVO:
+// - Supuestos comerciales editables
+// - Precio por producto
+// - TAM
+// - SAM
+// - SOM
+// - Mercado por producto
+// - Mercado por industria
+// - Empresas potenciales
+//
+// IMPORTANTE:
+// Los precios permanecen en 0 hasta ser definidos.
+// El motor NO inventa precios.
 // ============================================================
 
 
@@ -55,9 +60,9 @@ function normalizarTexto(valor) {
 }
 
 
-// ------------------------------------------------------------
-// Convertir valores del Excel a número
-// ------------------------------------------------------------
+// ============================================================
+// CONVERTIR VALORES DEL EXCEL
+// ============================================================
 
 function convertirNumero(valor) {
 
@@ -172,7 +177,7 @@ async function descargarArchivo(url) {
 
 
 // ============================================================
-// LEER HOJA COMO MATRIZ
+// LEER HOJA
 // ============================================================
 
 function leerMatriz(hoja) {
@@ -238,21 +243,33 @@ function detectarPeriodo(texto) {
     if (trimestre) {
 
         return {
+
             anio,
+
             trimestre:
                 Number(
                     trimestre[1]
                 ),
-            texto: valor
+
+            texto:
+                valor
+
         };
 
     }
 
     return {
+
         anio,
-        trimestre: null,
-        texto: valor
+
+        trimestre:
+            null,
+
+        texto:
+            valor
+
     };
+
 }
 
 
@@ -311,8 +328,11 @@ function detectarFilaEncabezado(
             if (periodo) {
 
                 columnasPeriodo.push({
+
                     columna,
+
                     ...periodo
+
                 });
 
             }
@@ -473,8 +493,11 @@ function detectarColumnasPeriodo(
                 ) {
 
                     mejorPeriodo = {
+
                         columna,
+
                         ...periodo
+
                     };
 
                 }
@@ -603,7 +626,7 @@ function pareceFilaActividad(
 
 
 // ============================================================
-// EXTRAER DATOS DE UNA HOJA
+// EXTRAER DATOS DE HOJA
 // ============================================================
 
 function extraerDatosHoja(
@@ -622,10 +645,19 @@ function extraerDatosHoja(
     ) {
 
         return {
-            hoja: nombreHoja,
-            registros: [],
-            periodo: null,
-            filas: 0
+
+            hoja:
+                nombreHoja,
+
+            registros:
+                [],
+
+            periodo:
+                null,
+
+            filas:
+                0
+
         };
 
     }
@@ -639,11 +671,19 @@ function extraerDatosHoja(
     if (!encabezado) {
 
         return {
-            hoja: nombreHoja,
-            registros: [],
-            periodo: null,
+
+            hoja:
+                nombreHoja,
+
+            registros:
+                [],
+
+            periodo:
+                null,
+
             filas:
                 matriz.length
+
         };
 
     }
@@ -662,11 +702,19 @@ function extraerDatosHoja(
     if (!ultimoPeriodo) {
 
         return {
-            hoja: nombreHoja,
-            registros: [],
-            periodo: null,
+
+            hoja:
+                nombreHoja,
+
+            registros:
+                [],
+
+            periodo:
+                null,
+
             filas:
                 matriz.length
+
         };
 
     }
@@ -676,7 +724,9 @@ function extraerDatosHoja(
     for (
         let fila =
             encabezado.fila + 1;
+
         fila < matriz.length;
+
         fila++
     ) {
 
@@ -758,23 +808,12 @@ function extraerDatosHoja(
             matriz.length
 
     };
+
 }
 
 
 // ============================================================
-// CONSOLIDAR TODAS LAS HOJAS
-//
-// IMPORTANTE:
-//
-// Los códigos de una sola letra son agrupadores OEDE.
-// Ejemplo:
-//
-// G = Comercio al por mayor y menor
-// 51 = Comercio al por mayor
-// 52 = Comercio al por menor
-//
-// Para el mercado utilizamos solamente códigos numéricos.
-// Los agrupadores se conservan separados como referencia.
+// CONSOLIDAR LIBRO
 // ============================================================
 
 function consolidarLibro(
@@ -796,6 +835,7 @@ function consolidarLibro(
 
     const resultados = [];
 
+
     for (
         const nombreHoja of hojas
     ) {
@@ -805,9 +845,6 @@ function consolidarLibro(
                 nombreHoja
             );
 
-        // ----------------------------------------------------
-        // Ignorar documentación
-        // ----------------------------------------------------
 
         if (
             nombreNormalizado.includes(
@@ -829,9 +866,6 @@ function consolidarLibro(
             continue;
         }
 
-        // ----------------------------------------------------
-        // Hoja auxiliar del libro de empresas
-        // ----------------------------------------------------
 
         if (
             tipo === "empresas" &&
@@ -847,10 +881,12 @@ function consolidarLibro(
 
         }
 
+
         const hoja =
             libro.Sheets[
                 nombreHoja
             ];
+
 
         const resultado =
             extraerDatosHoja(
@@ -859,16 +895,13 @@ function consolidarLibro(
                 tipo
             );
 
+
         resultados.push(
             resultado
         );
 
     }
 
-
-    // --------------------------------------------------------
-    // Consolidación
-    // --------------------------------------------------------
 
     const mapaDetalle =
         new Map();
@@ -896,6 +929,7 @@ function consolidarLibro(
             hojasConDatos++;
 
         }
+
 
         registrosTotales +=
             resultado.registros.length;
@@ -939,6 +973,7 @@ function consolidarLibro(
                 /^[A-Z]$/i.test(
                     registro.codigo
                 );
+
 
             const mapa =
                 esAgrupador
@@ -1090,13 +1125,12 @@ function consolidarLibro(
             ultimoPeriodoGlobal
 
     };
+
 }
 
 
 // ============================================================
 // MAPEO OEDE → INDUSTRIAS PREVENTA
-//
-// Se utiliza código OEDE cuando es posible y texto como apoyo.
 // ============================================================
 
 function mapearIndustria(
@@ -1117,9 +1151,7 @@ function mapearIndustria(
         );
 
 
-    // --------------------------------------------------------
-    // AGRICULTURA
-    // --------------------------------------------------------
+    // Agricultura
 
     if (
         [1, 2, 5].includes(
@@ -1136,9 +1168,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // MINERÍA
-    // --------------------------------------------------------
+    // Minería
 
     if (
         (
@@ -1155,11 +1185,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // INDUSTRIA
-    //
-    // Actividades manufactureras OEDE
-    // --------------------------------------------------------
+    // Industria
 
     if (
         (
@@ -1175,9 +1201,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // ENERGÍA / SERVICIOS BÁSICOS
-    // --------------------------------------------------------
+    // Energía
 
     if (
         codigoNumero === 40 ||
@@ -1191,9 +1215,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // CONSTRUCCIÓN
-    // --------------------------------------------------------
+    // Construcción
 
     if (
         codigoNumero === 45 ||
@@ -1205,9 +1227,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // RETAIL / COMERCIO
-    // --------------------------------------------------------
+    // Retail
 
     if (
         (
@@ -1222,9 +1242,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // LOGÍSTICA / TRANSPORTE
-    // --------------------------------------------------------
+    // Logística
 
     if (
         (
@@ -1240,9 +1258,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // TELECOM
-    // --------------------------------------------------------
+    // Telecom
 
     if (
         codigoNumero === 64 ||
@@ -1255,9 +1271,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // BANCOS / FINANZAS
-    // --------------------------------------------------------
+    // Bancos / Finanzas
 
     if (
         codigoNumero === 65 ||
@@ -1272,14 +1286,11 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // SEGUROS
-    // --------------------------------------------------------
+    // Seguros
 
     if (
         codigoNumero === 66 ||
-        texto.includes("seguro") ||
-        texto.includes("seguros")
+        texto.includes("seguro")
     ) {
 
         return "Seguros";
@@ -1287,9 +1298,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // SALUD
-    // --------------------------------------------------------
+    // Salud
 
     if (
         codigoNumero === 85 ||
@@ -1302,9 +1311,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // EDUCACIÓN
-    // --------------------------------------------------------
+    // Educación
 
     if (
         codigoNumero === 80 ||
@@ -1316,9 +1323,7 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // GOBIERNO
-    // --------------------------------------------------------
+    // Gobierno
 
     if (
         codigoNumero === 75 ||
@@ -1331,13 +1336,11 @@ function mapearIndustria(
     }
 
 
-    // --------------------------------------------------------
-    // SERVICIOS PROFESIONALES
-    // --------------------------------------------------------
+    // Servicios profesionales
 
     if (
-        codigoNumero === 74 ||
         codigoNumero === 72 ||
+        codigoNumero === 74 ||
         texto.includes("profesionales") ||
         texto.includes("servicios empresariales") ||
         texto.includes("servicios a empresas") ||
@@ -1348,10 +1351,6 @@ function mapearIndustria(
 
     }
 
-
-    // --------------------------------------------------------
-    // OTROS
-    // --------------------------------------------------------
 
     return "Otros";
 
@@ -1365,48 +1364,83 @@ function mapearIndustria(
 const productosPREVENTA = [
 
     {
-        id: "guarda",
-        nombre: "Guarda / Almacenamiento",
+
+        id:
+            "guarda",
+
+        nombre:
+            "Guarda / Almacenamiento",
+
         descripcion:
             "Almacenamiento y gestión de documentos digitales.",
+
         unidad:
             "empresa"
+
     },
 
     {
-        id: "digitalizacion",
-        nombre: "Digitalización",
+
+        id:
+            "digitalizacion",
+
+        nombre:
+            "Digitalización",
+
         descripcion:
             "Digitalización y conversión de documentación física.",
+
         unidad:
             "empresa"
+
     },
 
     {
-        id: "firma_recibos",
-        nombre: "Firma de recibos de sueldo",
+
+        id:
+            "firma_recibos",
+
+        nombre:
+            "Firma de recibos de sueldo",
+
         descripcion:
             "Firma electrónica de recibos y documentación laboral.",
+
         unidad:
             "empleado"
+
     },
 
     {
-        id: "firma_electronica",
-        nombre: "Firma electrónica",
+
+        id:
+            "firma_electronica",
+
+        nombre:
+            "Firma electrónica",
+
         descripcion:
             "Firma electrónica de documentos y contratos.",
+
         unidad:
             "empresa"
+
     },
 
     {
-        id: "thuban",
-        nombre: "Thuban",
+
+        id:
+            "thuban",
+
+        nombre:
+            "Thuban",
+
         descripcion:
             "Gestión documental, búsqueda, almacenamiento y procesos documentales.",
+
         unidad:
             "empresa"
+
     }
 
 ];
@@ -1414,15 +1448,6 @@ const productosPREVENTA = [
 
 // ============================================================
 // POTENCIAL PRODUCTO × INDUSTRIA
-//
-// 0.00 = sin prioridad
-// 0.25 = bajo
-// 0.50 = medio
-// 0.75 = alto
-// 1.00 = muy alto
-//
-// Estos valores son SUPUESTOS comerciales.
-// No son datos OEDE.
 // ============================================================
 
 const potencialProductosIndustria = {
@@ -1581,10 +1606,7 @@ const potencialProductosIndustria = {
 
 
 // ============================================================
-// VARIABLES DOCUMENTALES POR INDUSTRIA
-//
-// SUPUESTOS INICIALES.
-// Luego serán editables desde Mercado 360.
+// VARIABLES DOCUMENTALES
 // ============================================================
 
 const variablesDocumentales = {
@@ -1848,7 +1870,12 @@ const variablesDocumentales = {
 
 
 // ============================================================
-// SUPUESTOS GENERALES
+// SUPUESTOS DE MERCADO
+//
+// IMPORTANTE:
+// Los precios están en 0 porque todavía NO fueron definidos.
+//
+// Esto evita presentar números inventados como datos reales.
 // ============================================================
 
 const supuestosMercado = {
@@ -1859,9 +1886,6 @@ const supuestosMercado = {
     porcentajeClientes:
         6.76,
 
-    tasaCaptura:
-        3.5,
-
     porcentajeEmpresasObjetivo:
         20,
 
@@ -1869,157 +1893,32 @@ const supuestosMercado = {
         30,
 
     porcentajeSOM:
-        3.5
+        3.5,
+
+    preciosPorProducto: {
+
+        guarda:
+            0,
+
+        digitalizacion:
+            0,
+
+        firma_recibos:
+            0,
+
+        firma_electronica:
+            0,
+
+        thuban:
+            0
+
+    }
 
 };
 
 
 // ============================================================
-// CALCULAR POTENCIAL EMPRESAS POR PRODUCTO
-// ============================================================
-
-function calcularPotencialProductos(
-    ranking
-) {
-
-    const resultado = [];
-
-    for (
-        const industriaData of ranking
-    ) {
-
-        const industria =
-            industriaData.industria;
-
-        const matriz =
-            potencialProductosIndustria[
-                industria
-            ] ||
-            potencialProductosIndustria[
-                "Otros"
-            ];
-
-        const variables =
-            variablesDocumentales[
-                industria
-            ] ||
-            variablesDocumentales[
-                "Otros"
-            ];
-
-
-        for (
-            const producto of productosPREVENTA
-        ) {
-
-            const afinidad =
-                matriz[
-                    producto.id
-                ] ??
-                0.5;
-
-
-            const necesidad =
-                variables
-                    .necesidadDocumental ??
-                0.5;
-
-
-            const potencial =
-                Math.min(
-                    1,
-                    (
-                        afinidad *
-                        0.60
-                    ) +
-                    (
-                        necesidad *
-                        0.40
-                    )
-                );
-
-
-            const empresasPotenciales =
-                Math.round(
-                    industriaData.empresas *
-                    (
-                        supuestosMercado
-                            .porcentajeEmpresasObjetivo /
-                        100
-                    ) *
-                    potencial
-                );
-
-
-            const empleadosPotenciales =
-                Math.round(
-                    industriaData.empleo *
-                    (
-                        supuestosMercado
-                            .porcentajeEmpresasObjetivo /
-                        100
-                    ) *
-                    potencial
-                );
-
-
-            resultado.push({
-
-                industria,
-
-                producto:
-                    producto.id,
-
-                productoNombre:
-                    producto.nombre,
-
-                empresas:
-                    industriaData.empresas,
-
-                empleo:
-                    industriaData.empleo,
-
-                afinidad:
-
-                    Number(
-                        afinidad.toFixed(3)
-                    ),
-
-                necesidadDocumental:
-
-                    Number(
-                        necesidad.toFixed(3)
-                    ),
-
-                potencial:
-
-                    Number(
-                        potencial.toFixed(3)
-                    ),
-
-                empresasPotenciales,
-
-                empleadosPotenciales
-
-            });
-
-        }
-
-    }
-
-
-    return resultado
-        .sort(
-            (a, b) =>
-                b.empresasPotenciales -
-                a.empresasPotenciales
-        );
-
-}
-
-
-// ============================================================
-// GENERAR RANKING INICIAL
+// CALCULAR RANKING INICIAL
 // ============================================================
 
 function generarRanking(
@@ -2051,9 +1950,15 @@ function generarRanking(
             mapa.set(
                 industria,
                 {
+
                     industria,
-                    empresas: 0,
-                    empleo: 0
+
+                    empresas:
+                        0,
+
+                    empleo:
+                        0
+
                 }
             );
 
@@ -2088,9 +1993,15 @@ function generarRanking(
             mapa.set(
                 industria,
                 {
+
                     industria,
-                    empresas: 0,
-                    empleo: 0
+
+                    empresas:
+                        0,
+
+                    empleo:
+                        0
+
                 }
             );
 
@@ -2105,46 +2016,644 @@ function generarRanking(
     }
 
 
-    const ranking =
-        Array.from(
-            mapa.values()
-        )
-        .map(
-            item => {
+    return Array.from(
+        mapa.values()
+    )
+    .map(
+        item => {
 
-                const score =
-                    Math.round(
-                        (
-                            Math.log10(
-                                item.empresas + 1
-                            ) * 40
-                        ) +
-                        (
-                            Math.log10(
-                                item.empleo + 1
-                            ) * 60
-                        )
+            const score =
+                Math.round(
+
+                    (
+                        Math.log10(
+                            item.empresas + 1
+                        ) * 40
+                    )
+
+                    +
+
+                    (
+                        Math.log10(
+                            item.empleo + 1
+                        ) * 60
+                    )
+
+                );
+
+
+            return {
+
+                ...item,
+
+                score
+
+            };
+
+        }
+    )
+    .sort(
+        (a, b) =>
+            b.score -
+            a.score
+    );
+
+}
+
+
+// ============================================================
+// CALCULAR POTENCIAL POR PRODUCTO
+// ============================================================
+
+function calcularPotencialProductos(
+    ranking
+) {
+
+    const resultado = [];
+
+
+    for (
+        const industriaData of ranking
+    ) {
+
+        const industria =
+            industriaData.industria;
+
+
+        const matriz =
+            potencialProductosIndustria[
+                industria
+            ] ||
+            potencialProductosIndustria[
+                "Otros"
+            ];
+
+
+        const variables =
+            variablesDocumentales[
+                industria
+            ] ||
+            variablesDocumentales[
+                "Otros"
+            ];
+
+
+        for (
+            const producto of productosPREVENTA
+        ) {
+
+            const afinidad =
+                matriz[
+                    producto.id
+                ] ??
+                0.5;
+
+
+            const necesidad =
+                variables
+                    .necesidadDocumental ??
+                0.5;
+
+
+            const potencial =
+                Math.min(
+                    1,
+                    (
+                        afinidad *
+                        0.60
+                    )
+                    +
+                    (
+                        necesidad *
+                        0.40
+                    )
+                );
+
+
+            const empresasPotenciales =
+                Math.round(
+
+                    industriaData.empresas *
+
+                    (
+                        supuestosMercado
+                            .porcentajeEmpresasObjetivo /
+                        100
+                    )
+
+                    *
+
+                    potencial
+
+                );
+
+
+            const empleadosPotenciales =
+                Math.round(
+
+                    industriaData.empleo *
+
+                    (
+                        supuestosMercado
+                            .porcentajeEmpresasObjetivo /
+                        100
+                    )
+
+                    *
+
+                    potencial
+
+                );
+
+
+            resultado.push({
+
+                industria,
+
+                producto:
+                    producto.id,
+
+                productoNombre:
+                    producto.nombre,
+
+                empresas:
+                    industriaData.empresas,
+
+                empleo:
+                    industriaData.empleo,
+
+                afinidad:
+                    Number(
+                        afinidad.toFixed(3)
+                    ),
+
+                necesidadDocumental:
+                    Number(
+                        necesidad.toFixed(3)
+                    ),
+
+                potencial:
+                    Number(
+                        potencial.toFixed(3)
+                    ),
+
+                empresasPotenciales,
+
+                empleadosPotenciales
+
+            });
+
+        }
+
+    }
+
+
+    return resultado
+        .sort(
+            (a, b) =>
+                b.empresasPotenciales -
+                a.empresasPotenciales
+        );
+
+}
+
+
+// ============================================================
+// CALCULAR TAM / SAM / SOM
+//
+// Modelo inicial:
+//
+// TAM:
+// empresas potenciales × precio anual
+//
+// SAM:
+// TAM × % SAM
+//
+// SOM:
+// SAM × % SOM
+//
+// Si precio = 0:
+// no se inventa valor.
+// ============================================================
+
+function calcularTAMSAMSOM(
+    ranking
+) {
+
+    const resultado = [];
+
+    const faltantesPrecio = [];
+
+
+    for (
+        const industriaData of ranking
+    ) {
+
+        const industria =
+            industriaData.industria;
+
+
+        const matriz =
+            potencialProductosIndustria[
+                industria
+            ] ||
+            potencialProductosIndustria[
+                "Otros"
+            ];
+
+
+        const variables =
+            variablesDocumentales[
+                industria
+            ] ||
+            variablesDocumentales[
+                "Otros"
+            ];
+
+
+        for (
+            const producto of productosPREVENTA
+        ) {
+
+            const precio =
+                Number(
+                    supuestosMercado
+                        .preciosPorProducto[
+                            producto.id
+                        ] || 0
+                );
+
+
+            const afinidad =
+                matriz[
+                    producto.id
+                ] ??
+                0.5;
+
+
+            const necesidad =
+                variables
+                    .necesidadDocumental ??
+                0.5;
+
+
+            const potencial =
+                Math.min(
+                    1,
+                    (
+                        afinidad *
+                        0.60
+                    )
+                    +
+                    (
+                        necesidad *
+                        0.40
+                    )
+                );
+
+
+            const empresasPotenciales =
+                Math.round(
+
+                    industriaData.empresas *
+
+                    (
+                        supuestosMercado
+                            .porcentajeEmpresasObjetivo /
+                        100
+                    )
+
+                    *
+
+                    potencial
+
+                );
+
+
+            let tam = null;
+
+            let sam = null;
+
+            let som = null;
+
+
+            if (
+                precio > 0
+            ) {
+
+                tam =
+                    empresasPotenciales *
+                    precio;
+
+
+                sam =
+                    tam *
+                    (
+                        supuestosMercado
+                            .porcentajeSAM /
+                        100
                     );
 
 
-                return {
+                som =
+                    sam *
+                    (
+                        supuestosMercado
+                            .porcentajeSOM /
+                        100
+                    );
 
-                    ...item,
+            } else {
 
-                    score
+                if (
+                    !faltantesPrecio.includes(
+                        producto.id
+                    )
+                ) {
 
-                };
+                    faltantesPrecio.push(
+                        producto.id
+                    );
+
+                }
 
             }
-        )
-        .sort(
-            (a, b) =>
-                b.score -
-                a.score
-        );
 
 
-    return ranking;
+            resultado.push({
+
+                industria,
+
+                producto:
+                    producto.id,
+
+                productoNombre:
+                    producto.nombre,
+
+                empresasPotenciales,
+
+                precioAnual:
+                    precio,
+
+                tam,
+
+                sam,
+
+                som,
+
+                estadoPrecio:
+                    precio > 0
+                        ? "definido"
+                        : "faltante"
+
+            });
+
+        }
+
+    }
+
+
+    return {
+
+        detalle:
+            resultado,
+
+        faltantesPrecio
+
+    };
+
+}
+
+
+// ============================================================
+// RESUMEN DE MERCADO POR PRODUCTO
+// ============================================================
+
+function resumirMercadoPorProducto(
+    tamSamSom
+) {
+
+    const mapa =
+        new Map();
+
+
+    for (
+        const item of tamSamSom.detalle
+    ) {
+
+        if (
+            !mapa.has(
+                item.producto
+            )
+        ) {
+
+            mapa.set(
+                item.producto,
+                {
+
+                    producto:
+                        item.producto,
+
+                    productoNombre:
+                        item.productoNombre,
+
+                    empresasPotenciales:
+                        0,
+
+                    tam:
+                        0,
+
+                    sam:
+                        0,
+
+                    som:
+                        0,
+
+                    precioDefinido:
+                        false
+
+                }
+            );
+
+        }
+
+
+        const acumulado =
+            mapa.get(
+                item.producto
+            );
+
+
+        acumulado.empresasPotenciales +=
+            item.empresasPotenciales;
+
+
+        if (
+            item.tam !== null
+        ) {
+
+            acumulado.tam +=
+                item.tam;
+
+            acumulado.sam +=
+                item.sam;
+
+            acumulado.som +=
+                item.som;
+
+            acumulado.precioDefinido =
+                true;
+
+        }
+
+    }
+
+
+    return Array.from(
+        mapa.values()
+    )
+    .map(
+        item => ({
+
+            ...item,
+
+            tam:
+                item.precioDefinido
+                    ? item.tam
+                    : null,
+
+            sam:
+                item.precioDefinido
+                    ? item.sam
+                    : null,
+
+            som:
+                item.precioDefinido
+                    ? item.som
+                    : null
+
+        })
+    );
+
+}
+
+
+// ============================================================
+// RESUMEN DE MERCADO POR INDUSTRIA
+// ============================================================
+
+function resumirMercadoPorIndustria(
+    tamSamSom
+) {
+
+    const mapa =
+        new Map();
+
+
+    for (
+        const item of tamSamSom.detalle
+    ) {
+
+        if (
+            !mapa.has(
+                item.industria
+            )
+        ) {
+
+            mapa.set(
+                item.industria,
+                {
+
+                    industria:
+                        item.industria,
+
+                    empresasPotenciales:
+                        0,
+
+                    tam:
+                        0,
+
+                    sam:
+                        0,
+
+                    som:
+                        0,
+
+                    preciosDefinidos:
+                        0,
+
+                    productos:
+                        0
+
+                }
+            );
+
+        }
+
+
+        const acumulado =
+            mapa.get(
+                item.industria
+            );
+
+
+        acumulado.empresasPotenciales +=
+            item.empresasPotenciales;
+
+
+        acumulado.productos++;
+
+
+        if (
+            item.tam !== null
+        ) {
+
+            acumulado.tam +=
+                item.tam;
+
+            acumulado.sam +=
+                item.sam;
+
+            acumulado.som +=
+                item.som;
+
+            acumulado.preciosDefinidos++;
+
+        }
+
+    }
+
+
+    return Array.from(
+        mapa.values()
+    )
+    .map(
+        item => ({
+
+            ...item,
+
+            tam:
+                item.preciosDefinidos > 0
+                    ? item.tam
+                    : null,
+
+            sam:
+                item.preciosDefinidos > 0
+                    ? item.sam
+                    : null,
+
+            som:
+                item.preciosDefinidos > 0
+                    ? item.som
+                    : null
+
+        })
+    )
+    .sort(
+        (a, b) =>
+            b.empresasPotenciales -
+            a.empresasPotenciales
+    );
 
 }
 
@@ -2170,7 +2679,7 @@ module.exports =
             );
 
             console.log(
-                "VERSION 3.5"
+                "VERSION 3.6"
             );
 
             console.log(
@@ -2197,6 +2706,7 @@ module.exports =
                 console.log(
                     "Descargando empresas OEDE..."
                 );
+
 
                 empresasBuffer =
                     await descargarArchivo(
@@ -2337,7 +2847,7 @@ module.exports =
 
 
             // =================================================
-            // POTENCIAL PRODUCTOS
+            // POTENCIAL
             // =================================================
 
             const potencialProductos =
@@ -2347,15 +2857,68 @@ module.exports =
 
 
             // =================================================
+            // TAM / SAM / SOM
+            // =================================================
+
+            const tamSamSom =
+                calcularTAMSAMSOM(
+                    ranking
+                );
+
+
+            const mercadoPorProducto =
+                resumirMercadoPorProducto(
+                    tamSamSom
+                );
+
+
+            const mercadoPorIndustria =
+                resumirMercadoPorIndustria(
+                    tamSamSom
+                );
+
+
+            // =================================================
+            // FALTANTES
+            // =================================================
+
+            const faltantes = [];
+
+
+            if (
+                tamSamSom
+                    .faltantesPrecio
+                    .length > 0
+            ) {
+
+                faltantes.push(
+                    "Precio anual por producto"
+                );
+
+            }
+
+
+            faltantes.push(
+                "Validación final del mapeo OEDE → industrias PREVENTA"
+            );
+
+
+            faltantes.push(
+                "Validación de necesidad documental por industria"
+            );
+
+
+            // =================================================
             // RESPUESTA
             // =================================================
 
             const respuesta = {
 
-                ok: true,
+                ok:
+                    true,
 
                 version:
-                    "3.5",
+                    "3.6",
 
                 motor:
                     "Mercado 360",
@@ -2382,16 +2945,13 @@ module.exports =
                             ),
 
                         faltantes:
-                            estadoOEDE ===
-                            "descargado"
-                                ? 0
-                                : 2,
+                            faltantes.length,
 
                         oede:
                             estadoOEDE,
 
                         metodologia:
-                            "Se utilizan actividades OEDE detalladas con códigos numéricos para evitar doble conteo de categorías agrupadoras."
+                            "OEDE utiliza actividades detalladas con códigos numéricos para evitar doble conteo de categorías agrupadoras."
 
                     }
 
@@ -2511,7 +3071,7 @@ module.exports =
 
 
                 // ------------------------------------------------
-                // ACTIVIDADES REALES
+                // ACTIVIDADES
                 // ------------------------------------------------
 
                 actividades: {
@@ -2539,7 +3099,7 @@ module.exports =
 
 
                 // ------------------------------------------------
-                // PRODUCTOS PREVENTA
+                // PRODUCTOS
                 // ------------------------------------------------
 
                 productos:
@@ -2578,26 +3138,34 @@ module.exports =
 
 
                 // ------------------------------------------------
+                // TAM / SAM / SOM
+                // ------------------------------------------------
+
+                tamSamSom: {
+
+                    metodologia:
+                        "TAM = empresas potenciales × precio anual. SAM = TAM × porcentaje SAM. SOM = SAM × porcentaje SOM.",
+
+                    detalle:
+                        tamSamSom.detalle,
+
+                    faltantesPrecio:
+                        tamSamSom.faltantesPrecio,
+
+                    porProducto:
+                        mercadoPorProducto,
+
+                    porIndustria:
+                        mercadoPorIndustria
+
+                },
+
+
+                // ------------------------------------------------
                 // FALTANTES
                 // ------------------------------------------------
 
-                faltantes: [
-
-                    "Validación final del mapeo OEDE → industrias PREVENTA",
-
-                    "Variables específicas por producto",
-
-                    "Validación de necesidad documental por industria",
-
-                    "Precio por producto",
-
-                    "Cálculo TAM",
-
-                    "Cálculo SAM",
-
-                    "Cálculo SOM"
-
-                ],
+                faltantes,
 
 
                 // ------------------------------------------------
@@ -2679,7 +3247,7 @@ module.exports =
 
 
                 siguientePaso:
-                    "Validar matriz Productos × Industrias y luego incorporar variables de precio para calcular TAM, SAM y SOM."
+                    "Definir precios por producto y luego conectar TAM/SAM/SOM dinámicos con Mercado 360."
 
             };
 
@@ -2703,7 +3271,8 @@ module.exports =
                 .status(500)
                 .json({
 
-                    ok: false,
+                    ok:
+                        false,
 
                     error:
                         error.message ||
