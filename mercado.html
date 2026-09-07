@@ -3831,74 +3831,64 @@ function obtenerProducto360() {
 
 function cargarIndustrias360() {
 
-    const selector =
+    const select =
         document.getElementById(
             "industria360"
         );
 
+    if (!select || !mercado360) return;
 
-    if (
-        !selector ||
-        !mercado360
-    ) {
-        return;
-    }
-
-
-    const detalle =
-        mercado360.tamSamSom &&
-        Array.isArray(
-            mercado360.tamSamSom.detalle
-        )
-            ? mercado360.tamSamSom.detalle
+    const ranking =
+        Array.isArray(mercado360.ranking)
+            ? mercado360.ranking
             : [];
-
 
     const industrias =
         [
             ...new Set(
-                detalle
-                    .map(
-                        item =>
-                            item.industria
-                    )
-                    .filter(
-                        Boolean
-                    )
+                ranking
+                    .map(item => item.industria)
+                    .filter(Boolean)
             )
         ].sort();
 
+    const valorActual =
+        select.value || "todas";
 
-    selector.innerHTML =
-
-        `<option value="todas">
+    select.innerHTML =
+        `
+        <option value="todas">
             Todas las industrias
-        </option>`;
+        </option>
+        `;
 
+    industrias.forEach(industria => {
 
-    industrias.forEach(
-        industria => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                industria;
-
-            option.textContent =
-                industria;
-
-            selector.appendChild(
-                option
+        const option =
+            document.createElement(
+                "option"
             );
 
-        }
-    );
+        option.value = industria;
 
+        option.textContent =
+            industria;
+
+        select.appendChild(option);
+    });
+
+    if (
+        industrias.includes(
+            valorActual
+        )
+    ) {
+        select.value =
+            valorActual;
+    } else {
+        select.value =
+            "todas";
+    }
 }
-
 
 /* =========================================================
    SINCRONIZAR PRODUCTO 360
@@ -4135,461 +4125,391 @@ function guardarSupuestosMercado360() {
    ========================================================= */
 
 function calcularMercado360Frontend() {
+    if (!mercado360) return;
 
-    if (!mercado360) {
+    const producto = obtenerProducto360();
+
+    const ranking = Array.isArray(mercado360.ranking)
+        ? mercado360.ranking
+        : [];
+
+    if (!ranking.length) {
+        mostrarMercado360SinDatos();
         return;
     }
 
+    const industriaSeleccionada =
+        document.getElementById("industria360")
+            ? document.getElementById("industria360").value
+            : "todas";
 
-    const producto =
-        obtenerProducto360();
-
-
-    const detalle =
-        mercado360.tamSamSom &&
-        Array.isArray(
-            mercado360.tamSamSom.detalle
-        )
-            ? mercado360.tamSamSom.detalle
-            : [];
-
+    const porcentajeObjetivo = valor("mercadoObjetivo");
+    const porcentajeSAM = valor("porcentajeSAM");
+    const porcentajeSOM = valor("porcentajeSOM");
+    const precioAnual = valor("precioAnualMercado");
 
     /*
      * IMPORTANTE:
-     *
-     * Antes se hacía:
-     *
-     * potencial.find(...)
-     *
-     * Eso tomaba solamente una industria.
-     *
-     * Ahora filtramos todas las filas correspondientes
-     * al producto seleccionado.
+     * El backend puede devolver los datos con distintas estructuras.
+     * Intentamos utilizar primero los mapas específicos y después
+     * la información de potencialProductos.
      */
+    const afinidades =
+        mercado360.potencialProductosIndustria ||
+        mercado360.afinidadesProductos ||
+        {};
 
+    const variables =
+        mercado360.variablesDocumentales ||
+        {};
 
-    let filasProducto =
-        detalle.filter(
-            item =>
-                item.producto ===
-                producto
-        );
+    const potencialBackend =
+        mercado360.potencialProductos ||
+        {};
 
+    let filas = [];
 
-    if (
-        !filasProducto.length
-    ) {
+    ranking.forEach(item => {
 
-        mostrarMercado360SinDatos();
+        const industria = item.industria;
 
-        return;
-
-    }
-
-
-    /*
-     * =====================================================
-     * FILTRO POR INDUSTRIA
-     * =====================================================
-     */
-
-    const industriaSeleccionada =
-        document.getElementById(
-            "industria360"
-        )
-            ? document.getElementById(
-                "industria360"
-            ).value
-            : "todas";
-
-
-    if (
-        industriaSeleccionada &&
-        industriaSeleccionada !==
-        "todas"
-    ) {
-
-        filasProducto =
-            filasProducto.filter(
-                item =>
-                    item.industria ===
-                    industriaSeleccionada
-            );
-
-    }
-
-
-    if (
-        !filasProducto.length
-    ) {
-
-        mostrarMercado360SinDatos();
-
-        return;
-
-    }
-
-
-    /*
-     * =====================================================
-     * EMPRESAS POTENCIALES BASE
-     * =====================================================
-     *
-     * Cada fila ya viene calculada por el backend
-     * según:
-     *
-     * empresas
-     * × porcentaje empresas objetivo
-     * × afinidad producto
-     * × necesidad documental
-     *
-     * Sumamos todas las industrias.
-     */
-
-
-    let empresasBasePotenciales = 0;
-
-    let empleoBasePotencial = 0;
-
-
-    filasProducto.forEach(
-        item => {
-
-            empresasBasePotenciales +=
-                Number(
-                    item.empresasPotenciales ||
-                    0
-                );
-
-
-            /*
-             * Si el backend trae empleados potenciales,
-             * también los conservamos.
-             */
-
-            empleoBasePotencial +=
-                Number(
-                    item.empleoPotencial ||
-                    item.empleadosPotenciales ||
-                    0
-                );
-
+        if (
+            industriaSeleccionada &&
+            industriaSeleccionada !== "todas" &&
+            industria !== industriaSeleccionada
+        ) {
+            return;
         }
-    );
 
-
-    /*
-     * =====================================================
-     * PORCENTAJE EMPRESAS OBJETIVO
-     * =====================================================
-     *
-     * El backend utiliza actualmente 20%.
-     *
-     * Si el usuario cambia:
-     *
-     * 20% → 30%
-     *
-     * escalamos:
-     *
-     * potencial × 30 / 20
-     *
-     * Esto hace que el supuesto sea REALMENTE dinámico.
-     */
-
-
-    const baseObjetivo =
-        Number(
-            mercado360.supuestos &&
-            mercado360.supuestos.porcentajeEmpresasObjetivo
-        ) || 20;
-
-
-    const porcentajeObjetivo =
-        valor(
-            "mercadoObjetivo"
+        const empresas = Number(item.empresas || 0);
+        const empleo = Number(
+            item.empleo ||
+            item.empleados ||
+            item.empleadosTotales ||
+            0
         );
 
+        if (empresas <= 0 && empleo <= 0) return;
 
-    const factorObjetivo =
-        baseObjetivo > 0
-            ? porcentajeObjetivo /
-              baseObjetivo
-            : 1;
+        /*
+         * Afinidad del producto con la industria
+         */
+        let afinidad = 0;
 
+        if (
+            afinidades[industria] &&
+            afinidades[industria][producto] !== undefined
+        ) {
+            afinidad = Number(
+                afinidades[industria][producto]
+            );
+        }
 
+        /*
+         * Necesidad documental
+         */
+        let necesidad = 0;
+
+        if (
+            variables[industria] &&
+            variables[industria].necesidadDocumental !== undefined
+        ) {
+            necesidad = Number(
+                variables[industria].necesidadDocumental
+            );
+        }
+
+        /*
+         * Si el backend ya trae el potencial calculado,
+         * lo utilizamos como respaldo.
+         */
+        let potencial = null;
+
+        if (
+            potencialBackend[industria] &&
+            potencialBackend[industria][producto] !== undefined
+        ) {
+            potencial = Number(
+                potencialBackend[industria][producto]
+            );
+        }
+
+        if (potencial === null || isNaN(potencial)) {
+            potencial =
+                afinidad * 0.60 +
+                necesidad * 0.40;
+        }
+
+        potencial = Math.max(
+            0,
+            Math.min(1, potencial)
+        );
+
+        /*
+         * ESTE ES EL PUNTO CLAVE:
+         * el porcentaje editable afecta directamente
+         * a todas las industrias.
+         */
+        const empresasPotenciales =
+            empresas *
+            (porcentajeObjetivo / 100) *
+            potencial;
+
+        const empleadosPotenciales =
+            empleo *
+            (porcentajeObjetivo / 100) *
+            potencial;
+
+        filas.push({
+            industria,
+            empresas,
+            empleo,
+            afinidad,
+            necesidad,
+            potencial,
+            empresasPotenciales,
+            empleadosPotenciales
+        });
+    });
+
+    if (!filas.length) {
+        mostrarMercado360SinDatos();
+        return;
+    }
+
+    /*
+     * Totales
+     */
     const empresasPotenciales =
-        empresasBasePotenciales *
-        factorObjetivo;
-
-
-    const empleoPotencial =
-        empleoBasePotencial *
-        factorObjetivo;
-
-
-    /*
-     * =====================================================
-     * SAM
-     * =====================================================
-     */
-
-    const porcentajeSAM =
-        valor(
-            "porcentajeSAM"
-        ) / 100;
-
-
-    /*
-     * =====================================================
-     * SOM
-     * =====================================================
-     */
-
-    const porcentajeSOM =
-        valor(
-            "porcentajeSOM"
-        ) / 100;
-
-
-    /*
-     * =====================================================
-     * PRECIO
-     * =====================================================
-     */
-
-    const precioAnual =
-        valor(
-            "precioAnualMercado"
+        filas.reduce(
+            (total, fila) =>
+                total + fila.empresasPotenciales,
+            0
         );
 
-
-    /*
-     * =====================================================
-     * MOSTRAR EMPRESAS
-     * =====================================================
-     */
-
-    document.getElementById(
-        "empresasPotenciales360"
-    ).textContent =
-
-        numero(
-            Math.round(
-                empresasPotenciales
-            )
+    const empleadosPotenciales =
+        filas.reduce(
+            (total, fila) =>
+                total + fila.empleadosPotenciales,
+            0
         );
 
+    /*
+     * Mostrar cantidad de empresas
+     */
+    const empresasEl =
+        document.getElementById(
+            "empresasPotenciales360"
+        );
+
+    if (empresasEl) {
+        empresasEl.textContent =
+            numero(
+                Math.round(
+                    empresasPotenciales
+                )
+            );
+    }
 
     /*
-     * =====================================================
-     * DETALLE
-     * =====================================================
+     * Mostrar detalle
      */
-
     mostrarDetalleMercado360(
-        filasProducto,
+        filas,
         empresasPotenciales,
-        empleoPotencial,
+        empleadosPotenciales,
         porcentajeObjetivo
     );
 
+    /*
+     * Sin precio no hay TAM económico.
+     */
+    if (!precioAnual || precioAnual <= 0) {
+
+        document.getElementById("tam360").textContent =
+            "Pendiente";
+
+        document.getElementById("sam360").textContent =
+            "Pendiente";
+
+        document.getElementById("som360").textContent =
+            "Pendiente";
+
+        const estado =
+            document.getElementById(
+                "estadoTAM360"
+            );
+
+        if (estado) {
+
+            estado.className =
+                "warning-box";
+
+            estado.innerHTML =
+                "<strong>🟡 Mercado identificado — falta precio</strong><br><br>" +
+
+                "Producto: <strong>" +
+                (
+                    nombresProductos360[producto] ||
+                    producto
+                ) +
+                "</strong><br>" +
+
+                "Empresas potenciales: <strong>" +
+                numero(
+                    Math.round(
+                        empresasPotenciales
+                    )
+                ) +
+                "</strong><br>" +
+
+                "Empleados potenciales: <strong>" +
+                numero(
+                    Math.round(
+                        empleadosPotenciales
+                    )
+                ) +
+                "</strong><br><br>" +
+
+                "El porcentaje objetivo actual es <strong>" +
+                decimal(porcentajeObjetivo) +
+                "%</strong>." +
+                "<br><br>" +
+
+                "Ingresá un precio anual para calcular TAM, SAM y SOM.";
+        }
+
+        guardarSupuestosMercado360();
+        return;
+    }
 
     /*
-     * =====================================================
-     * SIN PRECIO
-     * =====================================================
+     * Unidad de monetización.
+     *
+     * Firma de recibos = por empleado.
+     * Los demás productos = por empresa.
      */
+    const unidad =
+        producto === "firma_recibos"
+            ? "empleado"
+            : "empresa";
 
-    if (
-        !precioAnual ||
-        precioAnual <= 0
-    ) {
+    const cantidadMonetizable =
+        unidad === "empleado"
+            ? empleadosPotenciales
+            : empresasPotenciales;
 
-        document.getElementById(
-            "tam360"
-        ).textContent =
-            "Pendiente";
+    /*
+     * Cálculo REAL
+     */
+    const tam =
+        cantidadMonetizable *
+        precioAnual;
 
+    const sam =
+        tam *
+        (porcentajeSAM / 100);
 
-        document.getElementById(
-            "sam360"
-        ).textContent =
-            "Pendiente";
+    const som =
+        sam *
+        (porcentajeSOM / 100);
 
+    /*
+     * KPIs
+     */
+    document.getElementById("tam360").textContent =
+        monedaUSD(tam);
 
-        document.getElementById(
-            "som360"
-        ).textContent =
-            "Pendiente";
+    document.getElementById("sam360").textContent =
+        monedaUSD(sam);
 
+    document.getElementById("som360").textContent =
+        monedaUSD(som);
 
+    /*
+     * Estado
+     */
+    const estado =
         document.getElementById(
             "estadoTAM360"
-        ).className =
-            "warning-box";
+        );
 
+    if (estado) {
 
-        document.getElementById(
-            "estadoTAM360"
-        ).innerHTML =
+        estado.className =
+            "success-box";
 
-            "<strong>🔴 Precio pendiente</strong><br>" +
+        estado.innerHTML =
+            "<strong>🟢 Mercado 360 calculado dinámicamente</strong><br><br>" +
 
-            "El mercado potencial ya fue identificado.<br><br>" +
+            "Producto: <strong>" +
+            (
+                nombresProductos360[producto] ||
+                producto
+            ) +
+            "</strong><br>" +
 
-            "<strong>" +
+            "Empresas potenciales: <strong>" +
             numero(
                 Math.round(
                     empresasPotenciales
                 )
             ) +
-            " empresas potenciales</strong> " +
+            "</strong><br>" +
 
-            "para el producto seleccionado." +
+            "Empleados potenciales: <strong>" +
+            numero(
+                Math.round(
+                    empleadosPotenciales
+                )
+            ) +
+            "</strong><br>" +
 
-            "<br><br>" +
+            "Unidad monetizable: <strong>" +
+            unidad +
+            "</strong><br>" +
 
-            "Ingresá el precio anual estimado " +
-            "por empresa para obtener TAM, SAM y SOM económicos.";
+            "Precio anual: <strong>" +
+            monedaUSD(precioAnual) +
+            "</strong><br><br>" +
 
+            "TAM = " +
+            numero(
+                Math.round(
+                    cantidadMonetizable
+                )
+            ) +
+            " × " +
+            monedaUSD(precioAnual) +
+            "<br>" +
 
-        guardarSupuestosMercado360();
+            "SAM = TAM × " +
+            decimal(porcentajeSAM) +
+            "%<br>" +
 
-        return;
-
+            "SOM = SAM × " +
+            decimal(porcentajeSOM) +
+            "%";
     }
 
-
     /*
-     * =====================================================
-     * TAM
-     * =====================================================
+     * Guardar configuración actual
      */
-
-    const tam =
-        empresasPotenciales *
-        precioAnual;
-
-
-    /*
-     * =====================================================
-     * SAM
-     * =====================================================
-     */
-
-    const sam =
-        tam *
-        porcentajeSAM;
-
-
-    /*
-     * =====================================================
-     * SOM
-     * =====================================================
-     */
-
-    const som =
-        sam *
-        porcentajeSOM;
-
-
-    /*
-     * =====================================================
-     * MOSTRAR TAM
-     * =====================================================
-     */
-
-    document.getElementById(
-        "tam360"
-    ).textContent =
-        monedaUSD(tam);
-
-
-    document.getElementById(
-        "sam360"
-    ).textContent =
-        monedaUSD(sam);
-
-
-    document.getElementById(
-        "som360"
-    ).textContent =
-        monedaUSD(som);
-
-
-    /*
-     * =====================================================
-     * ESTADO
-     * =====================================================
-     */
-
-    document.getElementById(
-        "estadoTAM360"
-    ).className =
-        "success-box";
-
-
-    document.getElementById(
-        "estadoTAM360"
-    ).innerHTML =
-
-        "<strong>🟢 Mercado 360 calculado dinámicamente</strong><br>" +
-
-        "Producto: " +
-        (
-            nombresProductos360[
-                producto
-            ] ||
-            producto
-        ) +
-
-        "<br>" +
-
-        "Empresas potenciales: " +
-        numero(
-            Math.round(
-                empresasPotenciales
-            )
-        ) +
-
-        "<br>" +
-
-        "Precio anual: " +
-        monedaUSD(
-            precioAnual
-        ) +
-
-        "<br><br>" +
-
-        "TAM = empresas potenciales × precio anual.<br>" +
-
-        "SAM = TAM × " +
-        decimal(
-            porcentajeSAM * 100
-        ) +
-        "%.<br>" +
-
-        "SOM = SAM × " +
-        decimal(
-            porcentajeSOM * 100
-        ) +
-        "%.";
-
-
-    /*
-     * =====================================================
-     * GUARDAR
-     * =====================================================
-     */
-
     guardarSupuestosMercado360();
 
+    /*
+     * Actualizar prompt si existe
+     */
+    const prompt =
+        document.getElementById(
+            "promptMaestro"
+        );
+
+    if (prompt) {
+        prompt.value =
+            construirPromptMaestro();
+    }
 }
-
-
-/* =========================================================
-   MERCADO 360 SIN DATOS
-   ========================================================= */
 
 function mostrarMercado360SinDatos() {
 
@@ -4645,288 +4565,114 @@ function mostrarMercado360SinDatos() {
 function mostrarDetalleMercado360(
     filas,
     empresasPotenciales,
-    empleoPotencial,
+    empleadosPotenciales,
     porcentajeObjetivo
 ) {
-
-    const contenedor =
-        document.getElementById(
-            "detalleMercado360"
-        );
-
 
     const body =
         document.getElementById(
             "detalleMercado360Body"
         );
 
+    const detalle =
+        document.getElementById(
+            "detalleMercado360"
+        );
 
-    if (
-        !contenedor ||
-        !body
-    ) {
-        return;
+    if (!body || !detalle) return;
+
+    detalle.style.display = "block";
+
+    body.innerHTML = "";
+
+    filas.forEach(fila => {
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>
+                <strong>
+                    ${fila.industria || "-"}
+                </strong>
+            </td>
+
+            <td>
+                ${numero(
+                    Math.round(
+                        fila.empresas || 0
+                    )
+                )}
+            </td>
+
+            <td>
+                ${decimal(
+                    (fila.afinidad || 0) * 100
+                )}%
+            </td>
+
+            <td>
+                ${decimal(
+                    (fila.necesidad || 0) * 100
+                )}%
+            </td>
+
+            <td>
+                <strong>
+                    ${decimal(
+                        (fila.potencial || 0) * 100
+                    )}%
+                </strong>
+            </td>
+
+            <td>
+                ${numero(
+                    Math.round(
+                        fila.empresasPotenciales || 0
+                    )
+                )}
+            </td>
+        `;
+
+        body.appendChild(tr);
+    });
+
+    const resumenExistente =
+        document.getElementById(
+            "resumenDetalleMercado360"
+        );
+
+    if (resumenExistente) {
+
+        resumenExistente.innerHTML =
+            `
+            <strong>Resultado actual</strong><br><br>
+
+            Porcentaje objetivo:
+            <strong>
+                ${decimal(porcentajeObjetivo)}%
+            </strong><br>
+
+            Empresas potenciales:
+            <strong>
+                ${numero(
+                    Math.round(
+                        empresasPotenciales
+                    )
+                )}
+            </strong><br>
+
+            Empleados potenciales:
+            <strong>
+                ${numero(
+                    Math.round(
+                        empleadosPotenciales
+                    )
+                )}
+            </strong>
+            `;
     }
-
-
-    contenedor.style.display =
-        "block";
-
-
-    const totalEmpresasBackend =
-        filas.reduce(
-            (
-                total,
-                item
-            ) =>
-                total +
-                Number(
-                    item.empresasPotenciales ||
-                    0
-                ),
-            0
-        );
-
-
-    const filasOrdenadas =
-        [...filas].sort(
-            (
-                a,
-                b
-            ) =>
-                Number(
-                    b.empresasPotenciales ||
-                    0
-                ) -
-                Number(
-                    a.empresasPotenciales ||
-                    0
-                )
-        );
-
-
-    const maxFilas =
-        filasOrdenadas.slice(
-            0,
-            10
-        );
-
-
-    body.innerHTML = `
-
-        <div class="market-mini">
-
-            <div class="market-mini-item">
-
-                <small>
-                    Producto
-                </small>
-
-                <strong>
-                    ${
-                        nombresProductos360[
-                            obtenerProducto360()
-                        ] ||
-                        obtenerProducto360()
-                    }
-                </strong>
-
-            </div>
-
-
-            <div class="market-mini-item">
-
-                <small>
-                    Industrias consideradas
-                </small>
-
-                <strong>
-                    ${filas.length}
-                </strong>
-
-            </div>
-
-
-            <div class="market-mini-item">
-
-                <small>
-                    Empresas base backend
-                </small>
-
-                <strong>
-                    ${numero(totalEmpresasBackend)}
-                </strong>
-
-            </div>
-
-
-            <div class="market-mini-item">
-
-                <small>
-                    % empresas objetivo
-                </small>
-
-                <strong>
-                    ${decimal(porcentajeObjetivo)}%
-                </strong>
-
-            </div>
-
-
-            <div class="market-mini-item">
-
-                <small>
-                    Empresas potenciales
-                </small>
-
-                <strong>
-                    ${numero(
-                        Math.round(
-                            empresasPotenciales
-                        )
-                    )}
-                </strong>
-
-            </div>
-
-
-            ${
-                empleoPotencial > 0
-                    ? `
-
-                        <div class="market-mini-item">
-
-                            <small>
-                                Empleo potencial
-                            </small>
-
-                            <strong>
-                                ${numero(
-                                    Math.round(
-                                        empleoPotencial
-                                    )
-                                )}
-                            </strong>
-
-                        </div>
-
-                    `
-                    : ""
-            }
-
-        </div>
-
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Industria
-                        </th>
-
-                        <th>
-                            Empresas base
-                        </th>
-
-                        <th>
-                            Potencial ajustado
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    ${
-                        maxFilas.map(
-                            item => {
-
-                                const base =
-                                    Number(
-                                        item.empresasPotenciales ||
-                                        0
-                                    );
-
-
-                                const ajustado =
-                                    base *
-                                    (
-                                        Number(
-                                            porcentajeObjetivo
-                                        ) /
-                                        (
-                                            Number(
-                                                mercado360.supuestos &&
-                                                mercado360.supuestos.porcentajeEmpresasObjetivo
-                                            ) || 20
-                                        )
-                                    );
-
-
-                                return `
-
-                                    <tr>
-
-                                        <td>
-                                            ${item.industria}
-                                        </td>
-
-                                        <td>
-                                            ${numero(base)}
-                                        </td>
-
-                                        <td>
-                                            <strong>
-                                                ${numero(
-                                                    Math.round(
-                                                        ajustado
-                                                    )
-                                                )}
-                                            </strong>
-                                        </td>
-
-                                    </tr>
-
-                                `;
-
-                            }
-                        ).join("")
-                    }
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-
-        ${
-            filasOrdenadas.length > 10
-                ? `
-
-                    <div class="info-box">
-
-                        Mostrando las 10 industrias
-                        con mayor potencial.
-                        El cálculo total utiliza
-                        todas las industrias disponibles.
-
-                    </div>
-
-                `
-                : ""
-        }
-
-    `;
-
 }
-
 
 /* =========================================================
    PROMPT MAESTRO
