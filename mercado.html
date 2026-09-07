@@ -15,358 +15,309 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: #f4f7fb;
+    background: #f5f7fb;
     color: #1f2937;
 }
 
 header {
     background: #111827;
     color: white;
-    padding: 18px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
+    padding: 24px 30px;
 }
 
 header h1 {
-    margin: 0;
-    font-size: 24px;
+    margin: 0 0 6px;
+    font-size: 28px;
 }
 
-header span {
-    display: block;
-    margin-top: 5px;
-    font-size: 13px;
+header p {
+    margin: 0;
     color: #cbd5e1;
 }
 
-button {
-    font-family: inherit;
-}
-
-.btn-home,
-.btn-primary,
-.btn-secondary {
-    border: none;
-    border-radius: 9px;
-    padding: 10px 16px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.btn-home {
-    background: white;
-    color: #111827;
-}
-
-.btn-primary {
-    background: #2563eb;
-    color: white;
-}
-
-.btn-secondary {
-    background: #e5e7eb;
-    color: #111827;
-}
-
 .container {
-    max-width: 1400px;
-    margin: 25px auto;
-    padding: 0 20px 40px;
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 24px;
 }
 
 .section {
     background: white;
     border-radius: 14px;
     padding: 22px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    margin-bottom: 22px;
+    box-shadow: 0 4px 18px rgba(15,23,42,.06);
 }
 
 .section h2 {
     margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 21px;
 }
 
 .section-description {
     color: #64748b;
-    line-height: 1.6;
-    margin-bottom: 18px;
+    font-size: 14px;
+    margin-bottom: 20px;
 }
 
-/* PRODUCTOS */
+/* =========================================================
+   MOTOR
+========================================================= */
 
-.products {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+.motor-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    margin-bottom: 22px;
+    font-size: 14px;
 }
 
-.product {
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 16px;
-    background: #f8fafc;
-    cursor: pointer;
-    transition: .2s ease;
+.motor-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #94a3b8;
 }
 
-.product:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,.07);
+.motor-ok .motor-dot {
+    background: #22c55e;
 }
 
-.product.active {
-    border: 2px solid #2563eb;
-    background: #eff6ff;
+.motor-error .motor-dot {
+    background: #ef4444;
 }
 
-.product .icon {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
+/* =========================================================
+   PRODUCTOS
+========================================================= */
 
-.product h3 {
-    margin: 0 0 7px;
-    font-size: 15px;
-}
-
-.product p {
-    margin: 0;
-    color: #64748b;
-    font-size: 12px;
-    line-height: 1.45;
-}
-
-/* CONFIGURACION */
-
-.config-grid {
+.product-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 14px;
 }
 
-label {
-    display: block;
-    font-weight: bold;
-    font-size: 12px;
-    margin-bottom: 7px;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 11px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
+.product-card {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: .2s;
     background: white;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
+.product-card:hover {
+    border-color: #94a3b8;
+    transform: translateY(-2px);
+}
+
+.product-card.active {
     border-color: #2563eb;
+    background: #eff6ff;
 }
 
-/* KPIS */
-
-.kpis {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+.product-card h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
 }
 
-.kpi {
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 18px;
-}
-
-.kpi-label {
+.product-card p {
+    margin: 0;
     color: #64748b;
-    font-size: 12px;
-    margin-bottom: 7px;
+    font-size: 13px;
+    line-height: 1.45;
 }
 
-.kpi-value {
-    font-size: 25px;
+/* =========================================================
+   CONTROLES
+========================================================= */
+
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+.control {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.control label {
+    font-size: 13px;
     font-weight: bold;
-    color: #111827;
+    color: #475569;
 }
 
-.kpi-small {
-    margin-top: 6px;
+.control input,
+.control select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    font-size: 15px;
+}
+
+.control small {
     color: #94a3b8;
     font-size: 11px;
 }
 
-/* ESTADO */
+/* =========================================================
+   KPI
+========================================================= */
 
-.status {
-    margin-top: 16px;
-    padding: 14px;
-    border-radius: 9px;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.status.ok {
-    background: #f0fdf4;
-    border-left: 4px solid #16a34a;
-    color: #14532d;
-}
-
-.status.warning {
-    background: #fff7ed;
-    border-left: 4px solid #f97316;
-    color: #7c2d12;
-}
-
-.status.info {
-    background: #eff6ff;
-    border-left: 4px solid #2563eb;
-    color: #1e3a8a;
-}
-
-/* POTENCIAL */
-
-.potential-box {
-    margin-top: 18px;
-    border: 1px solid #dbeafe;
-    background: #eff6ff;
-    border-radius: 12px;
-    padding: 18px;
-}
-
-.potential-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.potential-title {
-    font-size: 14px;
-    color: #475569;
-}
-
-.potential-value {
-    font-size: 30px;
-    font-weight: bold;
-    color: #1d4ed8;
-}
-
-.potential-level {
-    display: inline-block;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: white;
-    border: 1px solid #bfdbfe;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.potential-description {
-    margin-top: 12px;
-    color: #475569;
-    line-height: 1.5;
-    font-size: 13px;
-}
-
-.factors {
+.kpi-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 14px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
 }
 
-.factor {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 12px;
-}
-
-.factor-name {
-    font-weight: bold;
-    font-size: 12px;
-}
-
-.factor-value {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 4px;
-}
-
-.factor-small {
-    font-size: 10px;
-    color: #94a3b8;
-    margin-top: 4px;
-}
-
-/* OPORTUNIDAD */
-
-.opportunity {
-    display: grid;
-    grid-template-columns: 1.2fr .8fr;
-    gap: 18px;
-    margin-top: 18px;
-}
-
-.opportunity-main {
-    border: 1px solid #e5e7eb;
+.kpi {
+    border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 18px;
     background: #fff;
 }
 
-.opportunity-main h3 {
-    margin-top: 0;
-}
-
-.opportunity-value {
-    font-size: 30px;
-    font-weight: bold;
-    margin: 8px 0;
-}
-
-.opportunity-sub {
+.kpi-label {
     color: #64748b;
     font-size: 13px;
+    margin-bottom: 8px;
 }
 
-.opportunity-side {
+.kpi-value {
+    font-size: 25px;
+    font-weight: bold;
+    color: #0f172a;
+}
+
+.kpi-sub {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* =========================================================
+   POTENCIAL
+========================================================= */
+
+.potential-wrapper {
     display: grid;
-    gap: 10px;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
 }
 
-.mini-card {
+.potential-score {
+    border-radius: 14px;
     background: #f8fafc;
-    border: 1px solid #e5e7eb;
+    padding: 25px;
+    text-align: center;
+}
+
+.potential-score .number {
+    font-size: 52px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.potential-score .level {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.potential-score .caption {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.explanation {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #475569;
+}
+
+/* =========================================================
+   NECESIDADES
+========================================================= */
+
+.needs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.need-card {
+    border: 1px solid #e2e8f0;
     border-radius: 10px;
     padding: 14px;
+    background: #fff;
 }
 
-.mini-card small {
-    display: block;
+.need-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.need-name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.need-value {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.progress {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 10px;
+}
+
+.need-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 7px;
     color: #64748b;
-    margin-bottom: 5px;
+    font-size: 11px;
 }
 
-.mini-card strong {
-    font-size: 18px;
+.model-note {
+    margin-top: 16px;
+    padding: 13px 15px;
+    border-radius: 9px;
+    background: #f8fafc;
+    border-left: 4px solid #94a3b8;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
 }
 
-/* TABLAS */
+/* =========================================================
+   TABLAS
+========================================================= */
 
 .table-wrapper {
     overflow-x: auto;
-    margin-top: 15px;
 }
 
 table {
@@ -376,210 +327,150 @@ table {
 
 th,
 td {
-    padding: 11px;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 11px 10px;
+    border-bottom: 1px solid #e2e8f0;
     text-align: left;
     font-size: 13px;
 }
 
 th {
     background: #f8fafc;
+    color: #475569;
     font-weight: bold;
 }
 
-.rank {
-    font-weight: bold;
-    color: #2563eb;
+td.number {
+    text-align: right;
 }
 
-/* BARRAS */
-
-.bar-row {
-    margin: 15px 0;
-}
-
-.bar-label {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    font-size: 13px;
-    margin-bottom: 6px;
-}
-
-.bar-bg {
-    width: 100%;
-    height: 20px;
-    background: #e5e7eb;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.bar {
-    height: 100%;
-    border-radius: 20px;
-    background: #2563eb;
-    min-width: 2px;
-    transition: width .3s ease;
-}
-
-/* ALERTAS */
-
-.alerts {
-    display: grid;
-    gap: 10px;
-}
+/* =========================================================
+   ALERTAS
+========================================================= */
 
 .alert {
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
+    padding: 13px 15px;
+    border-radius: 9px;
+    margin-bottom: 10px;
     font-size: 13px;
     line-height: 1.5;
 }
 
-.alert strong {
-    display: block;
-    margin-bottom: 4px;
-}
-
-.alert.high {
-    background: #fef2f2;
-    border-color: #fecaca;
-}
-
-.alert.medium {
-    background: #fff7ed;
-    border-color: #fed7aa;
-}
-
-.alert.info {
+.alert-info {
     background: #eff6ff;
-    border-color: #bfdbfe;
+    color: #1e40af;
 }
 
-.alert.success {
+.alert-warning {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.alert-success {
     background: #f0fdf4;
-    border-color: #bbf7d0;
+    color: #166534;
 }
 
-/* PROMPT */
+/* =========================================================
+   PROMPT / IA
+========================================================= */
 
 textarea {
-    min-height: 150px;
-    resize: vertical;
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.5;
-}
-
-.prompt-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
-}
-
-.quick-prompt {
-    background: #f1f5f9;
+    width: 100%;
+    min-height: 180px;
     border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 14px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
     border-radius: 8px;
-    padding: 8px 12px;
+    padding: 11px 16px;
     cursor: pointer;
-    font-size: 12px;
     font-weight: bold;
 }
 
-.ai-result {
-    margin-top: 15px;
-    background: #0f172a;
-    color: #e2e8f0;
-    border-radius: 12px;
-    padding: 18px;
-    white-space: pre-wrap;
-    line-height: 1.6;
-    min-height: 120px;
-    font-size: 13px;
+.btn-primary {
+    background: #2563eb;
+    color: white;
 }
 
-/* REPORTE */
+.btn-secondary {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.btn-success {
+    background: #16a34a;
+    color: white;
+}
+
+.result-box {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #f8fafc;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   REPORTE
+========================================================= */
 
 .report {
     background: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 20px;
-    margin-top: 15px;
+    white-space: pre-wrap;
     line-height: 1.6;
+    font-size: 14px;
 }
 
-.report h3 {
-    margin-top: 0;
-}
-
-.footer {
-    text-align: center;
-    color: #94a3b8;
-    font-size: 12px;
-    margin-top: 25px;
-}
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
 @media (max-width: 1100px) {
 
-    .products {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .config-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .kpis {
+    .product-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .factors {
+    .controls-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
 }
 
-@media (max-width: 750px) {
+@media (max-width: 700px) {
 
-    .products,
-    .config-grid,
-    .kpis,
-    .opportunity,
-    .factors {
+    .container {
+        padding: 14px;
+    }
+
+    .product-grid,
+    .controls-grid,
+    .kpi-grid,
+    .needs-grid {
         grid-template-columns: 1fr;
     }
 
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .btn-home {
-        width: 100%;
-    }
-
-}
-
-@media print {
-
-    header,
-    .prompt-actions,
-    .btn-home,
-    .btn-primary,
-    .btn-secondary {
-        display: none !important;
-    }
-
-    body {
-        background: white;
-    }
-
-    .section {
-        box-shadow: none;
-        border: 1px solid #ddd;
+    .potential-wrapper {
+        grid-template-columns: 1fr;
     }
 
 }
@@ -591,815 +482,748 @@ textarea {
 
 <header>
 
-<div>
-    <h1>📊 Inteligencia de Mercado</h1>
+    <h1>Inteligencia de Mercado</h1>
 
-    <span>
-        PREVENTA IA · Mercado 360 · TAM · SAM · SOM
-    </span>
-</div>
-
-<button
-    class="btn-home"
-    onclick="window.location.href='index.html'">
-    🏠 Inicio
-</button>
+    <p>
+        PREVENTA IA · Motor Mercado 360 · TAM / SAM / SOM
+    </p>
 
 </header>
 
+
 <div class="container">
 
-<!-- =====================================================
-     INTRO
-===================================================== -->
 
-<div class="section">
-
-<h2>🌐 Mercado 360</h2>
-
-<div class="section-description">
-
-    Analizá el potencial comercial de cada producto de PREVENTA IA
-    utilizando el universo de empresas e industrias disponible en
-    el Motor de Mercado 360.
-
-</div>
-
-<div
-    id="estadoMotor"
-    class="status info">
-
-    Conectando con el Motor de Mercado 360...
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     PRODUCTOS
-===================================================== -->
-
-<div class="section">
-
-<h2>🧩 Producto a analizar</h2>
-
-<div class="section-description">
-
-    Seleccioná el producto que querés evaluar comercialmente.
-
-</div>
-
-<div class="products">
+    <!-- =====================================================
+         MOTOR
+    ====================================================== -->
 
     <div
-        class="product active"
-        data-producto="digitalizacion"
-        onclick="seleccionarProducto('digitalizacion')">
+        id="motorStatus"
+        class="motor-status"
+    >
 
-        <div class="icon">📄</div>
+        <span class="motor-dot"></span>
 
-        <h3>Digitalización</h3>
-
-        <p>
-            Digitalización de documentación física.
-        </p>
+        <span id="motorStatusTexto">
+            Conectando con el motor de mercado...
+        </span>
 
     </div>
 
-    <div
-        class="product"
-        data-producto="guarda"
-        onclick="seleccionarProducto('guarda')">
 
-        <div class="icon">🗄️</div>
+    <!-- =====================================================
+         PRODUCTOS
+    ====================================================== -->
 
-        <h3>Guarda / Almacenamiento</h3>
+    <section class="section">
 
-        <p>
-            Almacenamiento y conservación documental.
-        </p>
+        <h2>Productos PREVENTA</h2>
 
-    </div>
+        <div class="section-description">
 
-    <div
-        class="product"
-        data-producto="firma_recibos"
-        onclick="seleccionarProducto('firma_recibos')">
+            Seleccioná el producto que querés analizar.
 
-        <div class="icon">🧾</div>
+            Los indicadores y necesidades se adaptan
+            automáticamente al producto seleccionado.
 
-        <h3>Firma de recibos</h3>
+        </div>
 
-        <p>
-            Firma digital de recibos de sueldo.
-        </p>
-
-    </div>
-
-    <div
-        class="product"
-        data-producto="firma_electronica"
-        onclick="seleccionarProducto('firma_electronica')">
-
-        <div class="icon">✍️</div>
-
-        <h3>Firma electrónica</h3>
-
-        <p>
-            Firma electrónica de documentos y contratos.
-        </p>
-
-    </div>
-
-    <div
-        class="product"
-        data-producto="thuban"
-        onclick="seleccionarProducto('thuban')">
-
-        <div class="icon">📚</div>
-
-        <h3>Thuban</h3>
-
-        <p>
-            Gestión documental y procesos documentales.
-        </p>
-
-    </div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     ESCENARIO
-===================================================== -->
-
-<div class="section">
-
-<h2>⚙️ Escenario comercial</h2>
-
-<div class="section-description">
-
-    Estas variables modifican directamente el cálculo.
-    Podés crear distintos escenarios comerciales.
-
-</div>
-
-<div class="config-grid">
-
-    <div>
-
-        <label>Producto</label>
-
-        <select
-            id="producto360"
-            onchange="cambiarProducto360()">
-
-            <option value="digitalizacion">
-                Digitalización
-            </option>
-
-            <option value="guarda">
-                Guarda / Almacenamiento
-            </option>
-
-            <option value="firma_recibos">
-                Firma de recibos de sueldo
-            </option>
-
-            <option value="firma_electronica">
-                Firma electrónica
-            </option>
-
-            <option value="thuban">
-                Thuban
-            </option>
-
-        </select>
-
-    </div>
-
-    <div>
-
-        <label>Industria</label>
-
-        <select
-            id="industria360"
-            onchange="calcularMercado()">
-
-            <option value="todas">
-                Todas
-            </option>
-
-        </select>
-
-    </div>
-
-    <div>
-
-        <label>Mercado objetivo %</label>
-
-        <input
-            type="number"
-            id="mercadoObjetivo"
-            value="20"
-            min="0"
-            max="100"
-            step="0.1"
-            oninput="calcularMercado()">
-
-    </div>
-
-    <div>
-
-        <label>SAM sobre TAM %</label>
-
-        <input
-            type="number"
-            id="porcentajeSAM"
-            value="30"
-            min="0"
-            max="100"
-            step="0.1"
-            oninput="calcularMercado()">
-
-    </div>
-
-    <div>
-
-        <label>SOM sobre SAM %</label>
-
-        <input
-            type="number"
-            id="porcentajeSOM"
-            value="3.5"
-            min="0"
-            max="100"
-            step="0.1"
-            oninput="calcularMercado()">
-
-    </div>
-
-    <div>
-
-        <label>Precio anual USD</label>
-
-        <input
-            type="number"
-            id="precioAnual"
-            value="0"
-            min="0"
-            step="1"
-            oninput="calcularMercado()">
-
-    </div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     RESULTADO PRINCIPAL
-===================================================== -->
-
-<div class="section">
-
-<h2>💰 Resultado del mercado</h2>
-
-<div class="kpis">
-
-    <div class="kpi">
 
         <div
-            id="unidadMercadoLabel"
-            class="kpi-label">
-            Unidades potenciales
+            id="productos"
+            class="product-grid"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ESCENARIO
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Escenario de mercado</h2>
+
+        <div class="section-description">
+
+            Estos valores permiten construir un escenario comercial.
+            No modifican los datos oficiales de OEDE.
+
         </div>
 
-        <div
-            id="empresasPotenciales"
-            class="kpi-value">
-            —
-        </div>
 
-        <div
-            id="unidadMercadoTexto"
-            class="kpi-small">
-            Según mercado objetivo y potencial
-        </div>
-
-    </div>
-
-    <div class="kpi">
-
-        <div class="kpi-label">
-            TAM
-        </div>
-
-        <div
-            id="tam"
-            class="kpi-value">
-            —
-        </div>
-
-        <div class="kpi-small">
-            Mercado total
-        </div>
-
-    </div>
-
-    <div class="kpi">
-
-        <div class="kpi-label">
-            SAM
-        </div>
-
-        <div
-            id="sam"
-            class="kpi-value">
-            —
-        </div>
-
-        <div class="kpi-small">
-            Mercado direccionable
-        </div>
-
-    </div>
-
-    <div class="kpi">
-
-        <div class="kpi-label">
-            SOM
-        </div>
-
-        <div
-            id="som"
-            class="kpi-value">
-            —
-        </div>
-
-        <div class="kpi-small">
-            Mercado capturable
-        </div>
-
-    </div>
-
-</div>
+        <div class="controls-grid">
 
 
-<div
-    id="estadoResultado"
-    class="status info">
+            <div class="control">
 
-    Esperando datos...
+                <label for="producto360">
+                    Producto
+                </label>
 
-</div>
+                <select id="producto360"></select>
 
-
-<!-- POTENCIAL EXPLICADO -->
-
-<div
-    id="potencialBox"
-    class="potential-box"
-    style="display:none;">
-
-    <div class="potential-header">
-
-        <div>
-
-            <div class="potential-title">
-                Potencial comercial del producto
             </div>
 
-            <div
-                id="potencialValor"
-                class="potential-value">
-                —
+
+            <div class="control">
+
+                <label for="industria360">
+                    Industria
+                </label>
+
+                <select id="industria360"></select>
+
+            </div>
+
+
+            <div class="control">
+
+                <label for="mercadoObjetivo">
+                    Mercado objetivo %
+                </label>
+
+                <input
+                    id="mercadoObjetivo"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value="20"
+                >
+
+                <small>
+                    % de empresas/empleados considerados como universo objetivo
+                </small>
+
+            </div>
+
+
+            <div class="control">
+
+                <label for="porcentajeSAM">
+                    SAM %
+                </label>
+
+                <input
+                    id="porcentajeSAM"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value="30"
+                >
+
+                <small>
+                    SAM = % del TAM
+                </small>
+
+            </div>
+
+
+            <div class="control">
+
+                <label for="porcentajeSOM">
+                    SOM %
+                </label>
+
+                <input
+                    id="porcentajeSOM"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value="3.5"
+                >
+
+                <small>
+                    SOM = % del SAM
+                </small>
+
+            </div>
+
+
+            <div class="control">
+
+                <label for="precioAnual">
+                    Precio anual USD
+                </label>
+
+                <input
+                    id="precioAnual"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="0"
+                >
+
+                <small>
+                    Editable. El API no inventa precios.
+                </small>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         KPI
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Resultado del escenario</h2>
+
+        <div
+            id="estadoResultado"
+            class="section-description"
+        >
+            Seleccioná producto e industria.
+        </div>
+
+
+        <div class="kpi-grid">
+
+
+            <div class="kpi">
+
+                <div
+                    id="unidadMercadoLabel"
+                    class="kpi-label"
+                >
+                    Unidad de mercado
+                </div>
+
+                <div
+                    id="unidadMercadoTexto"
+                    class="kpi-value"
+                >
+                    -
+                </div>
+
+                <div class="kpi-sub">
+                    Base utilizada para TAM
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    Potenciales
+                </div>
+
+                <div
+                    id="empresasPotenciales"
+                    class="kpi-value"
+                >
+                    -
+                </div>
+
+                <div
+                    id="empleadosPotenciales"
+                    class="kpi-sub"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    TAM
+                </div>
+
+                <div
+                    id="tam"
+                    class="kpi-value"
+                >
+                    -
+                </div>
+
+                <div class="kpi-sub">
+                    Unidades × precio anual
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    SAM
+                </div>
+
+                <div
+                    id="sam"
+                    class="kpi-value"
+                >
+                    -
+                </div>
+
+                <div
+                    id="samLabel"
+                    class="kpi-sub"
+                >
+                    SAM = 30% del TAM
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    SOM
+                </div>
+
+                <div
+                    id="som"
+                    class="kpi-value"
+                >
+                    -
+                </div>
+
+                <div
+                    id="somLabel"
+                    class="kpi-sub"
+                >
+                    SOM = 3.5% del SAM
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         POTENCIAL
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Potencial del producto</h2>
+
+        <div class="section-description">
+
+            El potencial combina afinidad sectorial e indicadores
+            documentales específicos del producto.
+
+        </div>
+
+
+        <div
+            id="potencialBox"
+            class="potential-wrapper"
+        >
+
+
+            <div class="potential-score">
+
+                <div
+                    id="potencialValor"
+                    class="number"
+                >
+                    -
+                </div>
+
+                <div
+                    id="nivelPotencial"
+                    class="level"
+                >
+                    -
+                </div>
+
+                <div class="caption">
+                    Potencial estimado
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div
+                    id="explicacionPotencial"
+                    class="explanation"
+                >
+                    Seleccioná un producto e industria.
+                </div>
+
+                <br>
+
+                <strong>
+                    Factores principales
+                </strong>
+
+                <div
+                    id="factoresPotencial"
+                    style="margin-top:12px;"
+                ></div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         NECESIDADES
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>
+            Necesidades detectadas por producto
+        </h2>
+
+        <div class="section-description">
+
+            Indicadores sectoriales utilizados por el modelo
+            para estimar el potencial del producto seleccionado.
+
+        </div>
+
+
+        <div
+            id="necesidadesDetectadas"
+            class="needs-grid"
+        ></div>
+
+
+        <div class="model-note">
+
+            <strong>Importante:</strong>
+
+            estos porcentajes son indicadores sectoriales
+            modelados por PREVENTA IA.
+
+            No significan que ese porcentaje de empresas
+            individuales haya sido identificado con esa necesidad.
+
+            La identificación de prospectos empresa por empresa
+            requiere una segunda capa de señales reales.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         OPORTUNIDAD
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Oportunidad</h2>
+
+
+        <div class="kpi-grid">
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    Oportunidad
+                </div>
+
+                <div
+                    id="oportunidadValor"
+                    class="kpi-value"
+                >
+                    -
+                </div>
+
+                <div
+                    id="oportunidadTexto"
+                    class="kpi-sub"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    Potencial promedio
+                </div>
+
+                <div
+                    id="potencialPromedio"
+                    class="kpi-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    Empleados potenciales
+                </div>
+
+                <div
+                    id="empleadosPotencialesOportunidad"
+                    class="kpi-value"
+                >
+                    -
+                </div>
+
             </div>
 
         </div>
 
-        <div
-            id="nivelPotencial"
-            class="potential-level">
-            —
+    </section>
+
+
+    <!-- =====================================================
+         RANKING INDUSTRIA
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Ranking de industrias</h2>
+
+        <div class="section-description">
+
+            Ranking construido sobre empresas y empleo provenientes
+            de OEDE.
+
         </div>
 
-    </div>
-
-    <div
-        id="explicacionPotencial"
-        class="potential-description">
-        —
-    </div>
-
-    <div
-        id="factoresPotencial"
-        class="factors">
-    </div>
-
-</div>
-
-
-<div class="opportunity">
-
-    <div class="opportunity-main">
-
-        <h3>
-            🎯 Oportunidad comercial
-        </h3>
 
         <div
-            id="oportunidadValor"
-            class="opportunity-value">
-            —
+            id="rankingIndustria"
+            class="table-wrapper"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         COMPARACIÓN PRODUCTOS
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Comparación de productos</h2>
+
+        <div class="section-description">
+
+            Comparación de potencial y mercado para la industria
+            seleccionada.
+
         </div>
+
 
         <div
-            id="oportunidadTexto"
-            class="opportunity-sub">
-            —
+            id="comparacionProductos"
+            class="table-wrapper"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ALERTAS
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Alertas y observaciones</h2>
+
+        <div id="alertas"></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         METODOLOGÍA
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Metodología</h2>
+
+        <div
+            id="metodologiaTexto"
+            class="explanation"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         IA
+    ====================================================== -->
+
+    <section class="section">
+
+        <h2>Análisis asistido por IA</h2>
+
+        <div class="section-description">
+
+            Prompt generado automáticamente a partir del escenario
+            seleccionado.
+
         </div>
 
-    </div>
 
-    <div class="opportunity-side">
+        <textarea
+            id="promptMaestro"
+            placeholder="El prompt se generará automáticamente..."
+        ></textarea>
 
-        <div class="mini-card">
 
-            <small>
-                Potencial promedio
-            </small>
+        <div class="button-row">
 
-            <strong id="potencialPromedio">
-                —
-            </strong>
+            <button
+                class="btn-secondary"
+                onclick="usarPrompt()"
+            >
+                Usar prompt
+            </button>
 
-        </div>
-
-        <div class="mini-card">
-
-            <small>
-                Empleados potenciales
-            </small>
-
-            <strong id="empleadosPotenciales">
-                —
-            </strong>
+            <button
+                class="btn-primary"
+                onclick="analizarPrompt()"
+            >
+                Analizar
+            </button>
 
         </div>
 
-    </div>
 
-</div>
+        <div
+            id="resultadoIA"
+            class="result-box"
+            style="display:none;"
+        ></div>
 
-</div>
+    </section>
 
 
-<!-- =====================================================
-     INDUSTRIAS
-===================================================== -->
+    <!-- =====================================================
+         REPORTE
+    ====================================================== -->
 
-<div class="section">
+    <section class="section">
 
-<h2>🏭 Oportunidad por industria</h2>
+        <h2>Reporte Mercado 360</h2>
 
-<div class="section-description">
 
-    Permite detectar dónde concentrar la venta del producto seleccionado.
+        <div class="button-row">
 
-</div>
+            <button
+                class="btn-success"
+                onclick="generarReporte()"
+            >
+                Generar reporte
+            </button>
 
-<div
-    id="rankingIndustria">
-</div>
+        </div>
 
-</div>
 
+        <div
+            id="reporte"
+            class="report"
+            style="display:none;"
+        ></div>
 
-<!-- =====================================================
-     COMPARACION PRODUCTOS
-===================================================== -->
+    </section>
 
-<div class="section">
-
-<h2>⚖️ Comparación de productos</h2>
-
-<div class="section-description">
-
-    Compará el tamaño potencial de las distintas líneas de negocio.
-    Cada producto utiliza su propia afinidad y criterios documentales.
-
-</div>
-
-<div class="table-wrapper">
-
-<table>
-
-<thead>
-
-<tr>
-
-    <th>Producto</th>
-    <th>Unidad</th>
-    <th>Unidades potenciales</th>
-    <th>Potencial</th>
-    <th>Precio</th>
-    <th>TAM</th>
-    <th>SAM</th>
-    <th>SOM</th>
-
-</tr>
-
-</thead>
-
-<tbody id="comparacionProductos">
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     ALERTAS
-===================================================== -->
-
-<div class="section">
-
-<h2>🚨 Alertas comerciales</h2>
-
-<div
-    id="alertas"
-    class="alerts">
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     METODOLOGIA
-===================================================== -->
-
-<div class="section">
-
-<h2>🧠 Cómo se calcula</h2>
-
-<div class="section-description">
-
-    El modelo separa los datos reales del modelo sectorial
-    y de los supuestos comerciales.
-
-</div>
-
-<div
-    id="metodologiaTexto"
-    class="status info">
-
-    Cargando metodología...
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     IA
-===================================================== -->
-
-<div class="section">
-
-<h2>🤖 Análisis comercial</h2>
-
-<div class="section-description">
-
-    Utilizá los datos actuales del Mercado 360 para generar
-    una lectura comercial.
-
-</div>
-
-<div class="prompt-actions">
-
-    <button
-        class="quick-prompt"
-        onclick="usarPrompt('oportunidad')">
-        📍 Mayor oportunidad
-    </button>
-
-    <button
-        class="quick-prompt"
-        onclick="usarPrompt('industria')">
-        🏭 Mejor industria
-    </button>
-
-    <button
-        class="quick-prompt"
-        onclick="usarPrompt('producto')">
-        🧩 Producto prioritario
-    </button>
-
-    <button
-        class="quick-prompt"
-        onclick="usarPrompt('escenario')">
-        📊 Evaluar escenario
-    </button>
-
-</div>
-
-
-<textarea
-    id="promptMaestro"
-    placeholder="Escribí qué querés analizar...">
-</textarea>
-
-
-<div class="actions">
-
-    <button
-        class="btn-primary"
-        onclick="analizarPrompt()">
-        🧠 Analizar mercado
-    </button>
-
-</div>
-
-
-<div
-    id="resultadoIA"
-    class="ai-result">
-
-    Esperando análisis...
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     REPORTE
-===================================================== -->
-
-<div class="section">
-
-<h2>📑 Reporte ejecutivo</h2>
-
-<div class="actions">
-
-    <button
-        class="btn-primary"
-        onclick="generarReporte()">
-        📑 Generar reporte
-    </button>
-
-    <button
-        class="btn-secondary"
-        onclick="window.print()">
-        🖨️ Imprimir / PDF
-    </button>
-
-</div>
-
-
-<div
-    id="reporte"
-    class="report"
-    style="display:none;">
-</div>
-
-</div>
-
-
-<div class="footer">
-    PREVENTA IA · Inteligencia de Mercado
-</div>
 
 </div>
 
 
 <script>
 
-/* =========================================================
-   MERCADO 360
-========================================================= */
+/* ==========================================================
+   CONFIGURACIÓN
+========================================================== */
+
+const API_URL = "/api/mercado";
+
+const STORAGE_KEY =
+    "preventa_mercado_360_config";
+
 
 let mercado360 = null;
 
 
-/* =========================================================
-   PRODUCTOS
-========================================================= */
-
-const productos = {
-
-    digitalizacion: {
-        nombre: "Digitalización",
-        unidad: "empresa"
-    },
-
-    guarda: {
-        nombre: "Guarda / Almacenamiento",
-        unidad: "empresa"
-    },
-
-    firma_recibos: {
-        nombre: "Firma de recibos de sueldo",
-        unidad: "empleado"
-    },
-
-    firma_electronica: {
-        nombre: "Firma electrónica",
-        unidad: "empresa"
-    },
-
-    thuban: {
-        nombre: "Thuban",
-        unidad: "empresa"
-    }
-
-};
-
-
-/* =========================================================
-   NOMBRES VARIABLES DOCUMENTALES
-========================================================= */
-
-const nombresVariables = {
-
-    necesidadDocumental: "Necesidad documental",
-    archivoFisico: "Archivo físico",
-    digitalizacion: "Digitalización",
-    ocr: "OCR",
-    busqueda: "Búsqueda",
-    firmas: "Firmas",
-    workflows: "Workflows",
-    compliance: "Compliance",
-    contratos: "Contratos",
-    migracion: "Migración",
-    integraciones: "Integraciones",
-    almacenamiento: "Almacenamiento"
-
-};
-
-
-/* =========================================================
-   FORMATO
-========================================================= */
+/* ==========================================================
+   UTILIDADES
+========================================================== */
 
 function numero(valor) {
 
-    if (
-        valor === null ||
-        valor === undefined ||
-        isNaN(valor)
-    ) {
+    const n = Number(valor);
 
-        return "—";
-
-    }
-
-    return new Intl.NumberFormat("es-AR", {
-
-        maximumFractionDigits: 0
-
-    }).format(valor);
+    return Number.isFinite(n)
+        ? n
+        : 0;
 
 }
 
 
 function porcentaje(valor) {
 
-    if (
-        valor === null ||
-        valor === undefined ||
-        isNaN(valor)
-    ) {
-
-        return "—";
-
-    }
-
-    return new Intl.NumberFormat("es-AR", {
-
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1
-
-    }).format(valor) + "%";
+    return numero(valor) / 100;
 
 }
 
 
-function moneda(valor) {
+function formatearNumero(valor) {
+
+    return new Intl.NumberFormat(
+        "es-AR",
+        {
+            maximumFractionDigits: 0
+        }
+    ).format(
+        numero(valor)
+    );
+
+}
+
+
+function formatearDecimal(valor) {
+
+    return new Intl.NumberFormat(
+        "es-AR",
+        {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        }
+    ).format(
+        numero(valor)
+    );
+
+}
+
+
+function formatearUSD(valor) {
 
     if (
         valor === null ||
         valor === undefined ||
-        isNaN(valor)
+        !Number.isFinite(Number(valor))
     ) {
 
         return "—";
@@ -1407,154 +1231,102 @@ function moneda(valor) {
     }
 
     return "USD " +
-
-        new Intl.NumberFormat("es-AR", {
-
-            maximumFractionDigits: 0
-
-        }).format(valor);
-
-}
-
-
-function obtenerNumero(id) {
-
-    const elemento =
-        document.getElementById(id);
-
-    if (!elemento) {
-
-        return 0;
-
-    }
-
-    const numeroValor =
-        parseFloat(elemento.value);
-
-    return isNaN(numeroValor)
-        ? 0
-        : numeroValor;
-
-}
-
-
-/* =========================================================
-   PRODUCTO ACTUAL
-========================================================= */
-
-function productoActual() {
-
-    const elemento =
-        document.getElementById(
-            "producto360"
+        new Intl.NumberFormat(
+            "es-AR",
+            {
+                maximumFractionDigits: 0
+            }
+        ).format(
+            Number(valor)
         );
 
-    return elemento
-        ? elemento.value
-        : "digitalizacion";
+}
+
+
+function escaparHTML(texto) {
+
+    return String(texto ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-/* =========================================================
-   SELECCIONAR PRODUCTO
-========================================================= */
+/* ==========================================================
+   NOMBRES AMIGABLES
+========================================================== */
 
-function seleccionarProducto(producto) {
+const nombresVariables = {
 
-    const selector =
-        document.getElementById(
-            "producto360"
-        );
+    necesidadDocumental:
+        "Necesidad documental",
 
-    if (!selector) return;
+    archivoFisico:
+        "Archivo físico",
 
-    selector.value =
-        producto;
+    digitalizacion:
+        "Digitalización",
 
-    actualizarCards();
+    ocr:
+        "OCR",
 
-    cargarConfiguracionProducto();
+    busqueda:
+        "Búsqueda",
 
-    calcularMercado();
+    firmas:
+        "Firmas",
 
-}
+    workflows:
+        "Workflows",
+
+    compliance:
+        "Compliance",
+
+    contratos:
+        "Contratos",
+
+    migracion:
+        "Migración",
+
+    integraciones:
+        "Integraciones",
+
+    almacenamiento:
+        "Almacenamiento"
+
+};
 
 
-/* =========================================================
-   CAMBIAR PRODUCTO
-========================================================= */
+function nombreVariable(variable) {
 
-function cambiarProducto360() {
-
-    actualizarCards();
-
-    cargarConfiguracionProducto();
-
-    calcularMercado();
-
-}
-
-
-/* =========================================================
-   CARDS
-========================================================= */
-
-function actualizarCards() {
-
-    const producto =
-        productoActual();
-
-    document.querySelectorAll(
-        ".product[data-producto]"
-    ).forEach(card => {
-
-        if (
-            card.dataset.producto ===
-            producto
-        ) {
-
-            card.classList.add(
-                "active"
+    return nombresVariables[variable] ||
+        String(variable || "")
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, letra =>
+                letra.toUpperCase()
             );
 
-        } else {
-
-            card.classList.remove(
-                "active"
-            );
-
-        }
-
-    });
-
 }
 
 
-/* =========================================================
-   CONFIGURACION POR PRODUCTO
-========================================================= */
+/* ==========================================================
+   CONFIGURACIÓN LOCAL
+========================================================== */
 
 function obtenerConfiguraciones() {
-
-    const guardado =
-        localStorage.getItem(
-            "preventa_mercado_360_config"
-        );
-
-    if (!guardado) {
-
-        return {};
-
-    }
 
     try {
 
         return JSON.parse(
-            guardado
-        ) || {};
+            localStorage.getItem(
+                STORAGE_KEY
+            ) || "{}"
+        );
 
-    } catch {
+    } catch (error) {
 
         return {};
 
@@ -1566,37 +1338,54 @@ function obtenerConfiguraciones() {
 function guardarConfiguracionProducto() {
 
     const producto =
-        productoActual();
+        document.getElementById(
+            "producto360"
+        ).value;
 
     const configuraciones =
         obtenerConfiguraciones();
 
+
     configuraciones[producto] = {
 
+        industria:
+            document.getElementById(
+                "industria360"
+            ).value,
+
         mercadoObjetivo:
-            obtenerNumero(
-                "mercadoObjetivo"
+            numero(
+                document.getElementById(
+                    "mercadoObjetivo"
+                ).value
             ),
 
-        porcentajeSAM:
-            obtenerNumero(
-                "porcentajeSAM"
+        sam:
+            numero(
+                document.getElementById(
+                    "porcentajeSAM"
+                ).value
             ),
 
-        porcentajeSOM:
-            obtenerNumero(
-                "porcentajeSOM"
+        som:
+            numero(
+                document.getElementById(
+                    "porcentajeSOM"
+                ).value
             ),
 
-        precioAnual:
-            obtenerNumero(
-                "precioAnual"
+        precio:
+            numero(
+                document.getElementById(
+                    "precioAnual"
+                ).value
             )
 
     };
 
+
     localStorage.setItem(
-        "preventa_mercado_360_config",
+        STORAGE_KEY,
         JSON.stringify(
             configuraciones
         )
@@ -1608,7 +1397,9 @@ function guardarConfiguracionProducto() {
 function cargarConfiguracionProducto() {
 
     const producto =
-        productoActual();
+        document.getElementById(
+            "producto360"
+        ).value;
 
     const configuraciones =
         obtenerConfiguraciones();
@@ -1618,31 +1409,29 @@ function cargarConfiguracionProducto() {
 
 
     if (!config) {
-
-        document.getElementById(
-            "mercadoObjetivo"
-        ).value = 20;
-
-        document.getElementById(
-            "porcentajeSAM"
-        ).value = 30;
-
-        document.getElementById(
-            "porcentajeSOM"
-        ).value = 3.5;
-
-        document.getElementById(
-            "precioAnual"
-        ).value = 0;
-
         return;
+    }
+
+
+    if (
+        config.industria &&
+        document.getElementById(
+            "industria360"
+        ).querySelector(
+            `option[value="${CSS.escape(config.industria)}"]`
+        )
+    ) {
+
+        document.getElementById(
+            "industria360"
+        ).value =
+            config.industria;
 
     }
 
 
     if (
-        config.mercadoObjetivo !==
-        undefined
+        Number.isFinite(config.mercadoObjetivo)
     ) {
 
         document.getElementById(
@@ -1654,69 +1443,210 @@ function cargarConfiguracionProducto() {
 
 
     if (
-        config.porcentajeSAM !==
-        undefined
+        Number.isFinite(config.sam)
     ) {
 
         document.getElementById(
             "porcentajeSAM"
         ).value =
-            config.porcentajeSAM;
+            config.sam;
 
     }
 
 
     if (
-        config.porcentajeSOM !==
-        undefined
+        Number.isFinite(config.som)
     ) {
 
         document.getElementById(
             "porcentajeSOM"
         ).value =
-            config.porcentajeSOM;
+            config.som;
 
     }
 
 
     if (
-        config.precioAnual !==
-        undefined
+        Number.isFinite(config.precio)
     ) {
 
         document.getElementById(
             "precioAnual"
         ).value =
-            config.precioAnual;
+            config.precio;
 
     }
 
 }
 
 
-/* =========================================================
-   BUSCAR RESULTADO DEL API
-========================================================= */
+/* ==========================================================
+   PRODUCTOS
+========================================================== */
+
+function cargarProductos() {
+
+    const contenedor =
+        document.getElementById(
+            "productos"
+        );
+
+    const select =
+        document.getElementById(
+            "producto360"
+        );
+
+
+    contenedor.innerHTML = "";
+
+    select.innerHTML = "";
+
+
+    const productos =
+        mercado360?.productos || [];
+
+
+    productos.forEach(
+        producto => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "product-card";
+
+
+            card.dataset.producto =
+                producto.id;
+
+
+            card.innerHTML = `
+
+                <h3>
+                    ${escaparHTML(
+                        producto.nombre
+                    )}
+                </h3>
+
+                <p>
+                    ${escaparHTML(
+                        producto.descripcion
+                    )}
+                </p>
+
+            `;
+
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    select.value =
+                        producto.id;
+
+                    actualizarProducto();
+
+                }
+            );
+
+
+            contenedor.appendChild(
+                card
+            );
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                producto.id;
+
+            option.textContent =
+                producto.nombre;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   INDUSTRIAS
+========================================================== */
+
+function cargarIndustrias() {
+
+    const select =
+        document.getElementById(
+            "industria360"
+        );
+
+
+    select.innerHTML = "";
+
+
+    const ranking =
+        mercado360?.ranking || [];
+
+
+    ranking.forEach(
+        item => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                item.industria;
+
+            option.textContent =
+                item.industria;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    if (
+        ranking.length > 0
+    ) {
+
+        select.value =
+            ranking[0].industria;
+
+    }
+
+}
+
+
+/* ==========================================================
+   DETALLE API
+========================================================== */
 
 function obtenerDetalleAPI(
     industria,
     producto
 ) {
 
-    if (
-        !mercado360 ||
-        !mercado360.tamSamSom ||
-        !Array.isArray(
-            mercado360.tamSamSom.detalle
-        )
-    ) {
-
-        return null;
-
-    }
+    const detalle =
+        mercado360?.tamSamSom?.detalle || [];
 
 
-    return mercado360.tamSamSom.detalle.find(
+    return detalle.find(
         item =>
             item.industria === industria &&
             item.producto === producto
@@ -1725,9 +1655,9 @@ function obtenerDetalleAPI(
 }
 
 
-/* =========================================================
-   BUSCAR POTENCIAL DEL API
-========================================================= */
+/* ==========================================================
+   POTENCIAL API
+========================================================== */
 
 function obtenerPotencialAPI(
     industria,
@@ -1741,100 +1671,27 @@ function obtenerPotencialAPI(
         );
 
 
-    if (
-        detalle &&
-        detalle.potencial !== undefined
-    ) {
-
-        const valor =
-            Number(
-                detalle.potencial
-            );
-
-        if (!isNaN(valor)) {
-
-            return valor;
-
-        }
-
+    if (detalle) {
+        return detalle;
     }
 
 
-    if (
-        mercado360 &&
-        Array.isArray(
-            mercado360.potencialProductos
-        )
-    ) {
-
-        const encontrado =
-            mercado360.potencialProductos.find(
-                item =>
-                    item.industria === industria &&
-                    item.producto === producto
-            );
+    const potenciales =
+        mercado360?.potencialProductos || [];
 
 
-        if (encontrado) {
-
-            const valor =
-                Number(
-                    encontrado.potencial ??
-                    encontrado.score ??
-                    encontrado.valor ??
-                    0
-                );
-
-            if (!isNaN(valor)) {
-
-                return valor;
-
-            }
-
-        }
-
-    }
-
-
-    return 0;
+    return potenciales.find(
+        item =>
+            item.industria === industria &&
+            item.producto === producto
+    ) || null;
 
 }
 
 
-/* =========================================================
-   NIVEL POTENCIAL
-========================================================= */
-
-function obtenerNivelPotencial(
-    potencial
-) {
-
-    if (potencial < 0.40) {
-
-        return "Bajo";
-
-    }
-
-    if (potencial < 0.60) {
-
-        return "Medio";
-
-    }
-
-    if (potencial < 0.80) {
-
-        return "Alto";
-
-    }
-
-    return "Muy alto";
-
-}
-
-
-/* =========================================================
-   FACTORES DEL API
-========================================================= */
+/* ==========================================================
+   FACTORES
+========================================================== */
 
 function obtenerFactoresAPI(
     industria,
@@ -1848,25 +1705,19 @@ function obtenerFactoresAPI(
         );
 
 
-    if (!detalle) {
+    /*
+       IMPORTANTE:
 
-        return [];
+       factoresPrincipales = strings
 
-    }
+       factores = objetos completos
 
-
-    if (
-        Array.isArray(
-            detalle.factoresPrincipales
-        )
-    ) {
-
-        return detalle.factoresPrincipales;
-
-    }
-
+       Para mostrar valores debemos utilizar
+       detalle.factores.
+    */
 
     if (
+        detalle &&
         Array.isArray(
             detalle.factores
         )
@@ -1877,134 +1728,98 @@ function obtenerFactoresAPI(
     }
 
 
+    const potencial =
+        obtenerPotencialAPI(
+            industria,
+            producto
+        );
+
+
+    if (
+        potencial &&
+        Array.isArray(
+            potencial.factores
+        )
+    ) {
+
+        return potencial.factores;
+
+    }
+
+
     return [];
 
 }
 
 
-/* =========================================================
-   EXPLICACION POTENCIAL
-========================================================= */
+/* ==========================================================
+   CRITERIOS DEL PRODUCTO
+========================================================== */
 
-function generarExplicacion(
-    potencial,
-    factores
+function obtenerCriteriosProducto(
+    producto
 ) {
 
-    const nivel =
-        obtenerNivelPotencial(
-            potencial
-        );
-
-
-    if (!factores.length) {
-
-        return `Potencial ${nivel} según el modelo sectorial del Motor de Mercado 360.`;
-
-    }
-
-
-    const principales =
-        factores
-            .slice(0, 3)
-            .map(factor => {
-
-                const nombre =
-                    nombresVariables[
-                        factor.variable
-                    ] ||
-                    factor.variable ||
-                    "Factor";
-
-                return nombre
-                    .toLowerCase();
-
-            });
-
-
-    let texto =
-        `Potencial ${nivel} impulsado principalmente por `;
-
-
-    if (principales.length === 1) {
-
-        texto +=
-            principales[0] + ".";
-
-    } else if (
-        principales.length === 2
-    ) {
-
-        texto +=
-            principales[0] +
-            " y " +
-            principales[1] +
-            ".";
-
-    } else {
-
-        texto +=
-            principales[0] +
-            ", " +
-            principales[1] +
-            " y " +
-            principales[2] +
-            ".";
-
-    }
-
-
-    return texto;
+    return mercado360
+        ?.criteriosProducto
+        ?.[producto] || null;
 
 }
 
 
-/* =========================================================
+/* ==========================================================
+   ACTUALIZAR PRODUCTO
+========================================================== */
+
+function actualizarProducto() {
+
+    cargarConfiguracionProducto();
+
+    actualizarTodo();
+
+}
+
+
+/* ==========================================================
    MOSTRAR POTENCIAL
-========================================================= */
+========================================================== */
 
 function mostrarPotencial(
-    potencial,
-    factores,
-    explicacion
+    detalle
 ) {
 
-    const box =
-        document.getElementById(
-            "potencialBox"
+    const valor =
+        numero(
+            detalle?.potencialPorcentaje
         );
-
-
-    if (!box) return;
-
-
-    box.style.display =
-        "block";
 
 
     document.getElementById(
         "potencialValor"
     ).textContent =
-        porcentaje(
-            potencial * 100
-        );
+        formatearDecimal(valor) +
+        "%";
 
 
     document.getElementById(
         "nivelPotencial"
     ).textContent =
-        obtenerNivelPotencial(
-            potencial
-        );
+        detalle?.nivel ||
+        "Sin datos";
 
 
     document.getElementById(
         "explicacionPotencial"
     ).textContent =
-        explicacion ||
         generarExplicacion(
-            potencial,
-            factores
+            detalle
+        );
+
+
+    const factores =
+        obtenerFactoresAPI(
+            detalle?.industria,
+            detalle?.producto
         );
 
 
@@ -2014,22 +1829,248 @@ function mostrarPotencial(
         );
 
 
-    if (!factores.length) {
+    if (
+        factores.length === 0
+    ) {
 
         contenedor.innerHTML =
+            "<span style='color:#94a3b8;'>Sin factores disponibles.</span>";
+
+        return;
+
+    }
+
+
+    const principales =
+        [...factores]
+            .sort(
+                (a, b) =>
+                    numero(b.aporte) -
+                    numero(a.aporte)
+            )
+            .slice(
+                0,
+                3
+            );
+
+
+    contenedor.innerHTML =
+        principales.map(
+            factor => `
+
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        padding:8px 0;
+                        border-bottom:1px solid #e2e8f0;
+                    "
+                >
+
+                    <span>
+                        ${escaparHTML(
+                            nombreVariable(
+                                factor.variable
+                            )
+                        )}
+                    </span>
+
+                    <strong>
+                        ${formatearDecimal(
+                            factor.indicadorSectorialPorcentaje
+                        )}%
+                    </strong>
+
+                </div>
+
             `
-            <div class="factor">
+        ).join("");
 
-                <div class="factor-name">
-                    Modelo sectorial
-                </div>
+}
 
-                <div class="factor-small">
-                    No hay factores detallados disponibles.
-                </div>
 
-            </div>
-            `;
+/* ==========================================================
+   EXPLICACIÓN
+========================================================== */
+
+function generarExplicacion(
+    detalle
+) {
+
+    if (!detalle) {
+
+        return "No hay información disponible para la combinación seleccionada.";
+
+    }
+
+
+    const factores =
+        obtenerFactoresAPI(
+            detalle.industria,
+            detalle.producto
+        );
+
+
+    const principales =
+        [...factores]
+            .sort(
+                (a, b) =>
+                    numero(b.aporte) -
+                    numero(a.aporte)
+            )
+            .slice(
+                0,
+                3
+            )
+            .map(
+                factor =>
+                    nombreVariable(
+                        factor.variable
+                    )
+            );
+
+
+    let texto =
+        `Para ${detalle.industria}, el producto ${detalle.productoNombre} presenta un potencial estimado de ${formatearDecimal(detalle.potencialPorcentaje)}%, clasificado como ${detalle.nivel}.`;
+
+
+    if (
+        principales.length
+    ) {
+
+        texto +=
+            ` El resultado está impulsado principalmente por ${principales.join(", ")}.`;
+
+    }
+
+
+    return texto;
+
+}
+
+
+/* ==========================================================
+   NECESIDADES DETECTADAS
+========================================================== */
+
+function mostrarNecesidades(
+    detalle
+) {
+
+    const contenedor =
+        document.getElementById(
+            "necesidadesDetectadas"
+        );
+
+
+    if (!detalle) {
+
+        contenedor.innerHTML =
+            "<div class='model-note'>No hay datos disponibles.</div>";
+
+        return;
+
+    }
+
+
+    const factores =
+        obtenerFactoresAPI(
+            detalle.industria,
+            detalle.producto
+        );
+
+
+    const criterios =
+        obtenerCriteriosProducto(
+            detalle.producto
+        );
+
+
+    /*
+       Ordenamos por aporte.
+
+       De esta forma las necesidades que más
+       influyen en el cálculo aparecen primero.
+    */
+
+    let factoresOrdenados =
+        [...factores]
+            .sort(
+                (a, b) =>
+                    numero(b.aporte) -
+                    numero(a.aporte)
+            );
+
+
+    /*
+       Si por algún motivo el API no devuelve
+       factores completos, intentamos reconstruir
+       el orden usando criteriosProducto.
+    */
+
+    if (
+        factoresOrdenados.length === 0 &&
+        criterios?.factores
+    ) {
+
+        const variables =
+            mercado360?.variablesDocumentales
+            ?.[detalle.industria] || {};
+
+
+        factoresOrdenados =
+            Object.entries(
+                criterios.factores
+            )
+            .map(
+                ([variable, peso]) => {
+
+                    const indicador =
+                        numero(
+                            variables[variable]
+                        );
+
+
+                    return {
+
+                        variable,
+
+                        indicadorSectorial:
+                            indicador,
+
+                        indicadorSectorialPorcentaje:
+                            indicador * 100,
+
+                        peso,
+
+                        pesoPorcentaje:
+                            peso * 100,
+
+                        aporte:
+                            indicador * peso,
+
+                        aportePorcentaje:
+                            indicador * peso * 100
+
+                    };
+
+                }
+            )
+            .sort(
+                (a, b) =>
+                    b.aporte -
+                    a.aporte
+            );
+
+    }
+
+
+    if (
+        factoresOrdenados.length === 0
+    ) {
+
+        contenedor.innerHTML =
+            "<div class='model-note'>No hay indicadores documentales disponibles para esta combinación.</div>";
 
         return;
 
@@ -2037,1770 +2078,129 @@ function mostrarPotencial(
 
 
     contenedor.innerHTML =
-        factores
-            .slice(0, 6)
-            .map(factor => {
+        factoresOrdenados
+            .map(
+                factor => {
 
-                const nombre =
-                    nombresVariables[
-                        factor.variable
-                    ] ||
-                    factor.variable ||
-                    "Factor";
-
-
-                const indicador =
-                    Number(
-                        factor.indicadorSectorial ??
-                        factor.valor ??
-                        factor.indicador ??
-                        0
-                    );
+                    const indicador =
+                        Math.max(
+                            0,
+                            Math.min(
+                                100,
+                                numero(
+                                    factor.indicadorSectorialPorcentaje
+                                )
+                            )
+                        );
 
 
-                return `
+                    const peso =
+                        numero(
+                            factor.pesoPorcentaje
+                        );
 
-                    <div class="factor">
 
-                        <div class="factor-name">
-                            ${nombre}
+                    const aporte =
+                        numero(
+                            factor.aportePorcentaje
+                        );
+
+
+                    return `
+
+                        <div class="need-card">
+
+                            <div class="need-header">
+
+                                <span class="need-name">
+
+                                    ${escaparHTML(
+                                        nombreVariable(
+                                            factor.variable
+                                        )
+                                    )}
+
+                                </span>
+
+                                <span class="need-value">
+
+                                    ${formatearDecimal(
+                                        indicador
+                                    )}%
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress">
+
+                                <div
+                                    class="progress-bar"
+                                    style="
+                                        width:${indicador}%;
+                                    "
+                                ></div>
+
+                            </div>
+
+
+                            <div class="need-meta">
+
+                                <span>
+                                    Indicador sectorial
+                                </span>
+
+                                <span>
+                                    Peso ${formatearDecimal(
+                                        peso
+                                    )}%
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                style="
+                                    margin-top:8px;
+                                    font-size:11px;
+                                    color:#94a3b8;
+                                "
+                            >
+
+                                Aporte al score:
+                                ${formatearDecimal(
+                                    aporte
+                                )}%
+
+                            </div>
+
                         </div>
 
-                        <div class="factor-value">
-                            ${porcentaje(
-                                indicador * 100
-                            )}
-                        </div>
+                    `;
 
-                        <div class="factor-small">
-                            Indicador sectorial del modelo
-                        </div>
-
-                    </div>
-
-                `;
-
-            })
+                }
+            )
             .join("");
 
 }
 
 
-/* =========================================================
+/* ==========================================================
    CALCULAR MERCADO
-========================================================= */
+========================================================== */
 
 function calcularMercado() {
 
     if (!mercado360) {
-
         return;
-
     }
 
 
     const producto =
-        productoActual();
-
-
-    const ranking =
-        Array.isArray(
-            mercado360.ranking
-        )
-            ? mercado360.ranking
-            : [];
-
-
-    if (!ranking.length) {
-
-        mostrarSinDatos();
-
-        return;
-
-    }
-
-
-    const industriaSeleccionada =
         document.getElementById(
-            "industria360"
+            "producto360"
         ).value;
-
-
-    const mercadoObjetivo =
-        obtenerNumero(
-            "mercadoObjetivo"
-        );
-
-
-    const samPorcentaje =
-        obtenerNumero(
-            "porcentajeSAM"
-        );
-
-
-    const somPorcentaje =
-        obtenerNumero(
-            "porcentajeSOM"
-        );
-
-
-    const precio =
-        obtenerNumero(
-            "precioAnual"
-        );
-
-
-    let filas = [];
-
-
-    ranking.forEach(item => {
-
-        const industria =
-            item.industria;
-
-
-        if (!industria) {
-
-            return;
-
-        }
-
-
-        if (
-            industriaSeleccionada !==
-            "todas" &&
-            industria !==
-            industriaSeleccionada
-        ) {
-
-            return;
-
-        }
-
-
-        const empresas =
-            Number(
-                item.empresas ||
-                item.empresasTotales ||
-                0
-            );
-
-
-        const empleados =
-            Number(
-                item.empleo ||
-                item.empleados ||
-                item.empleadosTotales ||
-                0
-            );
-
-
-        if (
-            empresas <= 0 &&
-            empleados <= 0
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-         * IMPORTANTE:
-         *
-         * El potencial ya no se calcula
-         * con afinidad * 60% + necesidad * 40%.
-         *
-         * Ahora lo obtenemos del API 3.7.
-         */
-
-        const detalle =
-            obtenerDetalleAPI(
-                industria,
-                producto
-            );
-
-
-        const potencial =
-            obtenerPotencialAPI(
-                industria,
-                producto
-            );
-
-
-        const factores =
-            obtenerFactoresAPI(
-                industria,
-                producto
-            );
-
-
-        const empresasPotenciales =
-            Number(
-                detalle?.empresasPotenciales
-            ) ||
-            (
-                empresas *
-                (
-                    mercadoObjetivo /
-                    100
-                ) *
-                potencial
-            );
-
-
-        const empleadosPotenciales =
-            Number(
-                detalle?.empleadosPotenciales
-            ) ||
-            (
-                empleados *
-                (
-                    mercadoObjetivo /
-                    100
-                ) *
-                potencial
-            );
-
-
-        const unidad =
-            productos[producto]
-                ? productos[producto].unidad
-                : "empresa";
-
-
-        const unidadesPotenciales =
-            unidad === "empleado"
-                ? empleadosPotenciales
-                : empresasPotenciales;
-
-
-        filas.push({
-
-            industria,
-
-            empresas,
-
-            empleados,
-
-            potencial,
-
-            factores,
-
-            empresasPotenciales,
-
-            empleadosPotenciales,
-
-            unidadesPotenciales,
-
-            unidad
-
-        });
-
-    });
-
-
-    if (!filas.length) {
-
-        mostrarSinDatos();
-
-        return;
-
-    }
-
-
-    const empresasPotenciales =
-        filas.reduce(
-            (
-                total,
-                fila
-            ) =>
-                total +
-                fila.empresasPotenciales,
-            0
-        );
-
-
-    const empleadosPotenciales =
-        filas.reduce(
-            (
-                total,
-                fila
-            ) =>
-                total +
-                fila.empleadosPotenciales,
-            0
-        );
-
-
-    const unidadesPotenciales =
-        filas.reduce(
-            (
-                total,
-                fila
-            ) =>
-                total +
-                fila.unidadesPotenciales,
-            0
-        );
-
-
-    const potencialPromedio =
-        filas.length
-            ? filas.reduce(
-                (
-                    total,
-                    fila
-                ) =>
-                    total +
-                    fila.potencial,
-                0
-            ) /
-            filas.length
-            : 0;
-
-
-    const unidad =
-        productos[producto]
-            ? productos[producto].unidad
-            : "empresa";
-
-
-    const tam =
-        precio > 0
-            ? unidadesPotenciales *
-              precio
-            : 0;
-
-
-    const sam =
-        tam *
-        (
-            samPorcentaje /
-            100
-        );
-
-
-    const som =
-        sam *
-        (
-            somPorcentaje /
-            100
-        );
-
-
-    /* =====================================================
-       KPIS
-    ===================================================== */
-
-    const unidadLabel =
-        unidad === "empleado"
-            ? "Empleados potenciales"
-            : "Empresas potenciales";
-
-
-    document.getElementById(
-        "unidadMercadoLabel"
-    ).textContent =
-        unidadLabel;
-
-
-    document.getElementById(
-        "unidadMercadoTexto"
-    ).textContent =
-        `Unidad de mercado: ${unidad}`;
-
-
-    document.getElementById(
-        "empresasPotenciales"
-    ).textContent =
-        numero(
-            Math.round(
-                unidadesPotenciales
-            )
-        );
-
-
-    document.getElementById(
-        "empleadosPotenciales"
-    ).textContent =
-        numero(
-            Math.round(
-                empleadosPotenciales
-            )
-        );
-
-
-    document.getElementById(
-        "potencialPromedio"
-    ).textContent =
-        porcentaje(
-            potencialPromedio *
-            100
-        );
-
-
-    document.getElementById(
-        "tam"
-    ).textContent =
-        precio > 0
-            ? moneda(tam)
-            : "Pendiente";
-
-
-    document.getElementById(
-        "sam"
-    ).textContent =
-        precio > 0
-            ? moneda(sam)
-            : "Pendiente";
-
-
-    document.getElementById(
-        "som"
-    ).textContent =
-        precio > 0
-            ? moneda(som)
-            : "Pendiente";
-
-
-    /* =====================================================
-       POTENCIAL PRINCIPAL
-    ===================================================== */
-
-    let factoresPrincipales = [];
-
-
-    filas.forEach(
-        fila => {
-
-            fila.factores.forEach(
-                factor => {
-
-                    factoresPrincipales.push(
-                        factor
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-    factoresPrincipales =
-        factoresPrincipales
-            .sort(
-                (
-                    a,
-                    b
-                ) =>
-                    Number(
-                        b.aporte ??
-                        b.indicadorSectorial ??
-                        0
-                    ) -
-                    Number(
-                        a.aporte ??
-                        a.indicadorSectorial ??
-                        0
-                    )
-            )
-            .slice(0, 3);
-
-
-    const explicacion =
-        generarExplicacion(
-            potencialPromedio,
-            factoresPrincipales
-        );
-
-
-    mostrarPotencial(
-        potencialPromedio,
-        factoresPrincipales,
-        explicacion
-    );
-
-
-    /* =====================================================
-       ESTADO
-    ===================================================== */
-
-    const estado =
-        document.getElementById(
-            "estadoResultado"
-        );
-
-
-    estado.className =
-        precio > 0
-            ? "status ok"
-            : "status warning";
-
-
-    estado.innerHTML = `
-
-        <strong>
-            ${productos[producto].nombre}
-        </strong>
-
-        · Monetización por
-        <strong>
-            ${unidad}
-        </strong>
-
-        <br><br>
-
-        El mercado objetivo actual es
-        <strong>
-            ${porcentaje(
-                mercadoObjetivo
-            )}
-        </strong>.
-
-        El potencial específico del producto
-        proviene del modelo 3.7 del Motor de Mercado 360.
-
-        ${
-            precio <= 0
-                ? `
-                    <br><br>
-                    <strong>
-                        Falta ingresar el precio anual
-                        para obtener TAM, SAM y SOM económicos.
-                    </strong>
-                `
-                : ""
-        }
-
-    `;
-
-
-    /* =====================================================
-       OPORTUNIDAD
-    ===================================================== */
-
-    const oportunidad =
-        precio > 0
-            ? som
-            : unidadesPotenciales;
-
-
-    document.getElementById(
-        "oportunidadValor"
-    ).textContent =
-        precio > 0
-            ? moneda(
-                oportunidad
-            )
-            : numero(
-                Math.round(
-                    oportunidad
-                )
-            );
-
-
-    document.getElementById(
-        "oportunidadTexto"
-    ).textContent =
-        precio > 0
-            ? "SOM estimado para el escenario actual."
-            : `${numero(
-                Math.round(
-                    unidadesPotenciales
-                )
-            )} ${unidad === "empleado"
-                ? "empleados"
-                : "empresas"
-            } potenciales para el escenario actual.`;
-
-
-    /* =====================================================
-       RANKING
-    ===================================================== */
-
-    actualizarRankingIndustria(
-        filas,
-        precio,
-        producto
-    );
-
-
-    /* =====================================================
-       ALERTAS
-    ===================================================== */
-
-    actualizarAlertas(
-        filas,
-        tam,
-        sam,
-        som,
-        precio,
-        mercadoObjetivo,
-        samPorcentaje,
-        somPorcentaje
-    );
-
-
-    /* =====================================================
-       COMPARACION
-    ===================================================== */
-
-    actualizarComparacionProductos();
-
-
-    /* =====================================================
-       GUARDAR
-    ===================================================== */
-
-    guardarConfiguracionProducto();
-
-
-    /* =====================================================
-       PROMPT
-    ===================================================== */
-
-    actualizarPrompt();
-
-}
-
-
-/* =========================================================
-   RANKING INDUSTRIAS
-========================================================= */
-
-function actualizarRankingIndustria(
-    filas,
-    precio,
-    producto
-) {
-
-    const contenedor =
-        document.getElementById(
-            "rankingIndustria"
-        );
-
-
-    const unidad =
-        productos[producto]
-            ? productos[producto].unidad
-            : "empresa";
-
-
-    const ordenadas =
-        [...filas].sort(
-            (
-                a,
-                b
-            ) =>
-                b.unidadesPotenciales -
-                a.unidadesPotenciales
-        );
-
-
-    const max =
-        Math.max(
-            ...ordenadas.map(
-                fila =>
-                    fila.unidadesPotenciales
-            ),
-            1
-        );
-
-
-    contenedor.innerHTML =
-        ordenadas
-            .slice(0, 10)
-            .map(
-                (
-                    fila,
-                    index
-                ) => {
-
-                    const cantidad =
-                        fila.unidadesPotenciales;
-
-
-                    const tamIndustria =
-                        precio > 0
-                            ? cantidad *
-                              precio
-                            : 0;
-
-
-                    const width =
-                        (
-                            cantidad /
-                            max
-                        ) *
-                        100;
-
-
-                    return `
-
-                        <div class="bar-row">
-
-                            <div class="bar-label">
-
-                                <span>
-
-                                    <strong>
-                                        ${index + 1}.
-                                    </strong>
-
-                                    ${fila.industria}
-
-                                </span>
-
-                                <strong>
-
-                                    ${
-                                        precio > 0
-                                            ? moneda(
-                                                tamIndustria
-                                            )
-                                            : numero(
-                                                Math.round(
-                                                    cantidad
-                                                )
-                                            ) +
-                                              " " +
-                                              (
-                                                unidad ===
-                                                "empleado"
-                                                    ? "empleados"
-                                                    : "empresas"
-                                              )
-                                    }
-
-                                </strong>
-
-                            </div>
-
-                            <div class="bar-bg">
-
-                                <div
-                                    class="bar"
-                                    style="width:${Math.max(
-                                        1,
-                                        width
-                                    )}%">
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
-
-}
-
-
-/* =========================================================
-   COMPARACION DE PRODUCTOS
-========================================================= */
-
-function actualizarComparacionProductos() {
-
-    const tbody =
-        document.getElementById(
-            "comparacionProductos"
-        );
-
-
-    const ranking =
-        obtenerRanking();
-
-
-    if (!ranking.length) {
-
-        tbody.innerHTML =
-            "<tr><td colspan='8'>Sin datos.</td></tr>";
-
-        return;
-
-    }
-
-
-    const mercadoObjetivo =
-        obtenerNumero(
-            "mercadoObjetivo"
-        );
-
-
-    const samPorcentaje =
-        obtenerNumero(
-            "porcentajeSAM"
-        );
-
-
-    const somPorcentaje =
-        obtenerNumero(
-            "porcentajeSOM"
-        );
-
-
-    const configuraciones =
-        obtenerConfiguraciones();
-
-
-    const resultados = [];
-
-
-    Object.keys(
-        productos
-    ).forEach(
-        producto => {
-
-            let empresasPotenciales = 0;
-
-            let empleadosPotenciales = 0;
-
-
-            ranking.forEach(
-                item => {
-
-                    const industria =
-                        item.industria;
-
-
-                    if (!industria) {
-
-                        return;
-
-                    }
-
-
-                    const detalle =
-                        obtenerDetalleAPI(
-                            industria,
-                            producto
-                        );
-
-
-                    const empresas =
-                        Number(
-                            item.empresas ||
-                            item.empresasTotales ||
-                            0
-                        );
-
-
-                    const empleados =
-                        Number(
-                            item.empleo ||
-                            item.empleados ||
-                            item.empleadosTotales ||
-                            0
-                        );
-
-
-                    const potencial =
-                        obtenerPotencialAPI(
-                            industria,
-                            producto
-                        );
-
-
-                    const empresasFila =
-                        Number(
-                            detalle?.empresasPotenciales
-                        ) ||
-                        (
-                            empresas *
-                            (
-                                mercadoObjetivo /
-                                100
-                            ) *
-                            potencial
-                        );
-
-
-                    const empleadosFila =
-                        Number(
-                            detalle?.empleadosPotenciales
-                        ) ||
-                        (
-                            empleados *
-                            (
-                                mercadoObjetivo /
-                                100
-                            ) *
-                            potencial
-                        );
-
-
-                    empresasPotenciales +=
-                        empresasFila;
-
-
-                    empleadosPotenciales +=
-                        empleadosFila;
-
-                }
-            );
-
-
-            const config =
-                configuraciones[
-                    producto
-                ] || {};
-
-
-            const precio =
-                Number(
-                    config.precioAnual ||
-                    0
-                );
-
-
-            const unidad =
-                productos[
-                    producto
-                ].unidad;
-
-
-            const cantidad =
-                unidad === "empleado"
-                    ? empleadosPotenciales
-                    : empresasPotenciales;
-
-
-            const tam =
-                precio > 0
-                    ? cantidad *
-                      precio
-                    : 0;
-
-
-            const sam =
-                tam *
-                (
-                    Number(
-                        config.porcentajeSAM ??
-                        samPorcentaje
-                    ) /
-                    100
-                );
-
-
-            const som =
-                sam *
-                (
-                    Number(
-                        config.porcentajeSOM ??
-                        somPorcentaje
-                    ) /
-                    100
-                );
-
-
-            /*
-             * Potencial promedio del producto
-             */
-
-            let potencialTotal = 0;
-
-            let cantidadIndustrias = 0;
-
-
-            ranking.forEach(
-                item => {
-
-                    const industria =
-                        item.industria;
-
-
-                    if (!industria) {
-
-                        return;
-
-                    }
-
-
-                    potencialTotal +=
-                        obtenerPotencialAPI(
-                            industria,
-                            producto
-                        );
-
-
-                    cantidadIndustrias++;
-
-                }
-            );
-
-
-            const potencialPromedioProducto =
-                cantidadIndustrias
-                    ? potencialTotal /
-                      cantidadIndustrias
-                    : 0;
-
-
-            resultados.push({
-
-                producto,
-
-                unidad,
-
-                cantidad,
-
-                empresasPotenciales,
-
-                empleadosPotenciales,
-
-                potencial:
-                    potencialPromedioProducto,
-
-                precio,
-
-                tam,
-
-                sam,
-
-                som
-
-            });
-
-        }
-    );
-
-
-    resultados.sort(
-        (
-            a,
-            b
-        ) =>
-            b.som -
-            a.som
-    );
-
-
-    tbody.innerHTML =
-        resultados
-            .map(
-                (
-                    item,
-                    index
-                ) => {
-
-                    return `
-
-                        <tr>
-
-                            <td>
-
-                                <span class="rank">
-                                    #${index + 1}
-                                </span>
-
-                                <strong>
-                                    ${productos[
-                                        item.producto
-                                    ].nombre}
-                                </strong>
-
-                            </td>
-
-                            <td>
-                                ${item.unidad}
-                            </td>
-
-                            <td>
-                                ${numero(
-                                    Math.round(
-                                        item.cantidad
-                                    )
-                                )}
-                            </td>
-
-                            <td>
-                                ${porcentaje(
-                                    item.potencial *
-                                    100
-                                )}
-                            </td>
-
-                            <td>
-                                ${
-                                    item.precio > 0
-                                        ? moneda(
-                                            item.precio
-                                        )
-                                        : "Pendiente"
-                                }
-                            </td>
-
-                            <td>
-                                ${
-                                    item.tam > 0
-                                        ? moneda(
-                                            item.tam
-                                        )
-                                        : "Pendiente"
-                                }
-                            </td>
-
-                            <td>
-                                ${
-                                    item.sam > 0
-                                        ? moneda(
-                                            item.sam
-                                        )
-                                        : "Pendiente"
-                                }
-                            </td>
-
-                            <td>
-                                ${
-                                    item.som > 0
-                                        ? moneda(
-                                            item.som
-                                        )
-                                        : "Pendiente"
-                                }
-                            </td>
-
-                        </tr>
-
-                    `;
-
-                }
-            )
-            .join("");
-
-}
-
-
-/* =========================================================
-   ALERTAS
-========================================================= */
-
-function actualizarAlertas(
-    filas,
-    tam,
-    sam,
-    som,
-    precio,
-    mercadoObjetivo,
-    samPorcentaje,
-    somPorcentaje
-) {
-
-    const alertas = [];
-
-
-    const totalPotencial =
-        filas.reduce(
-            (
-                total,
-                fila
-            ) =>
-                total +
-                fila.potencial,
-            0
-        );
-
-
-    const promedio =
-        filas.length
-            ? totalPotencial /
-              filas.length
-            : 0;
-
-
-    if (
-        promedio >= 0.80
-    ) {
-
-        alertas.push(`
-
-            <div class="alert success">
-
-                <strong>
-                    🟢 Potencial muy alto
-                </strong>
-
-                El potencial promedio del producto
-                es
-                ${porcentaje(
-                    promedio * 100
-                )}.
-
-                Conviene revisar las industrias
-                con mayor cantidad de unidades potenciales.
-
-            </div>
-
-        `);
-
-    } else if (
-        promedio >= 0.60
-    ) {
-
-        alertas.push(`
-
-            <div class="alert success">
-
-                <strong>
-                    🟢 Alto potencial de mercado
-                </strong>
-
-                El potencial promedio del producto
-                es
-                ${porcentaje(
-                    promedio * 100
-                )}.
-
-            </div>
-
-        `);
-
-    } else if (
-        promedio >= 0.40
-    ) {
-
-        alertas.push(`
-
-            <div class="alert medium">
-
-                <strong>
-                    🟡 Potencial medio
-                </strong>
-
-                Existe oportunidad, pero conviene
-                priorizar las industrias con mayor
-                potencial específico para el producto.
-
-            </div>
-
-        `);
-
-    } else {
-
-        alertas.push(`
-
-            <div class="alert high">
-
-                <strong>
-                    🔴 Potencial limitado
-                </strong>
-
-                El producto presenta bajo potencial
-                promedio dentro del universo analizado.
-
-            </div>
-
-        `);
-
-    }
-
-
-    if (
-        precio <= 0
-    ) {
-
-        alertas.push(`
-
-            <div class="alert medium">
-
-                <strong>
-                    💰 Falta precio
-                </strong>
-
-                El mercado potencial ya fue identificado,
-                pero todavía no puede expresarse en USD.
-
-            </div>
-
-        `);
-
-    }
-
-
-    if (
-        mercadoObjetivo > 50
-    ) {
-
-        alertas.push(`
-
-            <div class="alert medium">
-
-                <strong>
-                    ⚠️ Mercado objetivo agresivo
-                </strong>
-
-                Estás considerando el
-                ${porcentaje(
-                    mercadoObjetivo
-                )}
-                del universo.
-
-                Conviene validar este supuesto.
-
-            </div>
-
-        `);
-
-    }
-
-
-    if (
-        somPorcentaje >= 10
-    ) {
-
-        alertas.push(`
-
-            <div class="alert high">
-
-                <strong>
-                    🚨 SOM agresivo
-                </strong>
-
-                El escenario supone capturar
-                ${porcentaje(
-                    somPorcentaje
-                )}
-                del SAM.
-
-            </div>
-
-        `);
-
-    }
-
-
-    if (
-        precio > 0 &&
-        som > 1000000
-    ) {
-
-        alertas.push(`
-
-            <div class="alert success">
-
-                <strong>
-                    💰 Oportunidad comercial relevante
-                </strong>
-
-                El SOM del escenario supera
-                USD 1 millón.
-
-            </div>
-
-        `);
-
-    }
-
-
-    alertas.push(`
-
-        <div class="alert info">
-
-            <strong>
-                🧠 Modelo sectorial
-            </strong>
-
-            Los indicadores documentales utilizados
-            para explicar el potencial son estimaciones
-            sectoriales del modelo y no identifican por
-            sí solos empresas concretas con una necesidad.
-
-        </div>
-
-    `);
-
-
-    alertas.push(`
-
-        <div class="alert info">
-
-            <strong>
-                🎯 Uso comercial
-            </strong>
-
-            Utilizá el ranking de industrias para
-            priorizar dónde concentrar la prospección
-            del producto seleccionado.
-
-        </div>
-
-    `);
-
-
-    document.getElementById(
-        "alertas"
-    ).innerHTML =
-        alertas.join("");
-
-}
-
-
-/* =========================================================
-   INDUSTRIAS
-========================================================= */
-
-function cargarIndustrias() {
-
-    const select =
-        document.getElementById(
-            "industria360"
-        );
-
-
-    const ranking =
-        obtenerRanking();
-
-
-    const actual =
-        select.value;
-
-
-    const industrias =
-        [
-            ...new Set(
-                ranking
-                    .map(
-                        item =>
-                            item.industria
-                    )
-                    .filter(Boolean)
-            )
-        ].sort();
-
-
-    select.innerHTML = `
-
-        <option value="todas">
-            Todas
-        </option>
-
-    `;
-
-
-    industrias.forEach(
-        industria => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                industria;
-
-
-            option.textContent =
-                industria;
-
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    if (
-        industrias.includes(
-            actual
-        )
-    ) {
-
-        select.value =
-            actual;
-
-    }
-
-}
-
-
-/* =========================================================
-   METODOLOGIA
-========================================================= */
-
-function actualizarMetodologia() {
-
-    const contenedor =
-        document.getElementById(
-            "metodologiaTexto"
-        );
-
-
-    if (!mercado360) {
-
-        return;
-
-    }
-
-
-    const metodologia =
-        mercado360.metodologiaPotencial;
-
-
-    const metodologiaTAM =
-        mercado360.tamSamSom &&
-        mercado360.tamSamSom.metodologia
-            ? mercado360.tamSamSom.metodologia
-            : "";
-
-
-    if (
-        metodologia
-    ) {
-
-        const descripcion =
-            metodologia.descripcion ||
-            "El potencial se calcula mediante un modelo sectorial específico por producto.";
-
-
-        contenedor.innerHTML = `
-
-            <strong>
-                Datos reales
-            </strong>
-
-            <br>
-
-            Empresas, empleo y actividad
-            provenientes del Motor de Mercado 360.
-
-            <br><br>
-
-            <strong>
-                Potencial
-            </strong>
-
-            <br>
-
-            ${descripcion}
-
-            <br><br>
-
-            <strong>
-                Indicadores modelados
-            </strong>
-
-            <br>
-
-            Los indicadores documentales son
-            estimaciones sectoriales y sirven para
-            explicar el potencial. No representan
-            una identificación individual de empresas
-            con una necesidad concreta.
-
-            <br><br>
-
-            <strong>
-                TAM / SAM / SOM
-            </strong>
-
-            <br>
-
-            ${metodologiaTAM}
-
-        `;
-
-        return;
-
-    }
-
-
-    contenedor.innerHTML = `
-
-        <strong>
-            Datos reales
-        </strong>
-
-        <br>
-
-        Empresas y empleo provenientes
-        del Motor de Mercado 360.
-
-        <br><br>
-
-        <strong>
-            Potencial
-        </strong>
-
-        <br>
-
-        Se determina mediante criterios
-        específicos para cada producto e industria.
-
-        <br><br>
-
-        <strong>
-            TAM / SAM / SOM
-        </strong>
-
-        <br>
-
-        ${metodologiaTAM}
-
-    `;
-
-}
-
-
-/* =========================================================
-   SIN DATOS
-========================================================= */
-
-function mostrarSinDatos() {
-
-    document.getElementById(
-        "unidadMercadoLabel"
-    ).textContent =
-        "Unidades potenciales";
-
-
-    document.getElementById(
-        "unidadMercadoTexto"
-    ).textContent =
-        "Sin datos";
-
-
-    document.getElementById(
-        "empresasPotenciales"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        "empleadosPotenciales"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        "potencialPromedio"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        "tam"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        "sam"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        "som"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        "potencialBox"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "oportunidadValor"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        "oportunidadTexto"
-    ).textContent =
-        "No hay datos suficientes para esta combinación.";
-
-
-    document.getElementById(
-        "estadoResultado"
-    ).className =
-        "status warning";
-
-
-    document.getElementById(
-        "estadoResultado"
-    ).innerHTML = `
-
-        <strong>
-            ⚠️ Sin datos compatibles
-        </strong>
-
-        <br>
-
-        El Motor de Mercado 360 no encontró
-        datos suficientes para esta combinación
-        de producto e industria.
-
-    `;
-
-
-    document.getElementById(
-        "rankingIndustria"
-    ).innerHTML =
-        "<p>Sin datos.</p>";
-
-
-    document.getElementById(
-        "alertas"
-    ).innerHTML = `
-
-        <div class="alert info">
-
-            <strong>
-                ℹ️ Sin oportunidad calculable
-            </strong>
-
-            Revisá el producto o la industria seleccionada.
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   RANKING
-========================================================= */
-
-function obtenerRanking() {
-
-    if (
-        !mercado360 ||
-        !Array.isArray(
-            mercado360.ranking
-        )
-    ) {
-
-        return [];
-
-    }
-
-    return mercado360.ranking;
-
-}
-
-
-/* =========================================================
-   PROMPT
-========================================================= */
-
-function actualizarPrompt() {
-
-    const producto =
-        productoActual();
 
 
     const industria =
@@ -3810,189 +2210,1240 @@ function actualizarPrompt() {
 
 
     const mercadoObjetivo =
-        obtenerNumero(
-            "mercadoObjetivo"
+        Math.max(
+            0,
+            Math.min(
+                100,
+                numero(
+                    document.getElementById(
+                        "mercadoObjetivo"
+                    ).value
+                )
+            )
         );
 
 
-    const sam =
-        obtenerNumero(
-            "porcentajeSAM"
+    const samPorcentaje =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                numero(
+                    document.getElementById(
+                        "porcentajeSAM"
+                    ).value
+                )
+            )
         );
 
 
-    const som =
-        obtenerNumero(
-            "porcentajeSOM"
+    const somPorcentaje =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                numero(
+                    document.getElementById(
+                        "porcentajeSOM"
+                    ).value
+                )
+            )
         );
 
 
     const precio =
-        obtenerNumero(
-            "precioAnual"
+        Math.max(
+            0,
+            numero(
+                document.getElementById(
+                    "precioAnual"
+                ).value
+            )
         );
 
 
-    const unidades =
-        document.getElementById(
-            "empresasPotenciales"
-        ).textContent;
-
-
-    const empleados =
-        document.getElementById(
-            "empleadosPotenciales"
-        ).textContent;
-
-
-    const tam =
-        document.getElementById(
-            "tam"
-        ).textContent;
-
-
-    const samValor =
-        document.getElementById(
-            "sam"
-        ).textContent;
-
-
-    const somValor =
-        document.getElementById(
-            "som"
-        ).textContent;
-
-
-    const potencial =
-        document.getElementById(
-            "potencialValor"
-        )?.textContent ||
-        "—";
-
-
-    const nivel =
-        document.getElementById(
-            "nivelPotencial"
-        )?.textContent ||
-        "—";
-
-
-    const prompt =
-        document.getElementById(
-            "promptMaestro"
+    const detalle =
+        obtenerDetalleAPI(
+            industria,
+            producto
         );
 
 
-    if (!prompt) {
+    if (!detalle) {
+
+        mostrarSinDatos();
 
         return;
 
     }
 
 
-    prompt.value = `
+    /*
+       ========================================================
+       IMPORTANTE
 
-Analizá comercialmente el producto ${productos[producto].nombre}.
+       NO usamos:
 
-Industria:
-${industria === "todas"
-    ? "Todas las industrias"
-    : industria}
+       detalle.tam
+       detalle.sam
+       detalle.som
 
-Unidad de mercado:
-${productos[producto].unidad}
+       para el escenario actual.
 
-Mercado objetivo:
-${mercadoObjetivo}%
+       Los valores del API corresponden a los supuestos
+       del backend.
 
-SAM:
-${sam}%
-
-SOM:
-${som}%
-
-Precio anual:
-USD ${precio}
-
-Unidades potenciales:
-${unidades}
-
-Empleados potenciales:
-${empleados}
-
-Potencial:
-${potencial}
-
-Nivel de potencial:
-${nivel}
-
-TAM:
-${tam}
-
-SAM calculado:
-${samValor}
-
-SOM calculado:
-${somValor}
-
-Quiero determinar:
-
-1. Si este producto presenta una oportunidad comercial relevante.
-2. Qué industrias debería priorizar.
-3. Qué segmentos deberían atacarse primero.
-4. Qué supuestos son más sensibles.
-5. Qué riesgos tiene el escenario.
-6. Qué información debería validar antes de utilizarlo comercialmente.
-
-No inventes datos.
-Diferenciá datos reales, cálculos y supuestos sectoriales.
-`;
+       Acá recalculamos siempre con los valores actuales
+       de la pantalla.
+       ========================================================
+    */
 
 
-}
+    const empresas =
+        numero(
+            detalle.empresas
+        );
 
 
-/* =========================================================
-   PROMPTS RAPIDOS
-========================================================= */
+    const empleados =
+        numero(
+            detalle.empleo
+        );
 
-function usarPrompt(tipo) {
+
+    const potencial =
+        numero(
+            detalle.potencial
+        );
+
+
+    /*
+       Mismo criterio utilizado por el API.
+    */
+
+    const empresasPotenciales =
+        Math.round(
+
+            empresas *
+
+            porcentaje(
+                mercadoObjetivo
+            ) *
+
+            potencial
+
+        );
+
+
+    const empleadosPotenciales =
+        Math.round(
+
+            empleados *
+
+            porcentaje(
+                mercadoObjetivo
+            ) *
+
+            potencial
+
+        );
+
+
+    const unidad =
+        detalle.unidadMercado;
+
+
+    const unidadesPotenciales =
+        unidad === "empleado"
+            ? empleadosPotenciales
+            : empresasPotenciales;
+
+
+    /*
+       ========================================================
+       TAM
+       ========================================================
+    */
+
+    const tam =
+        precio > 0
+            ? unidadesPotenciales * precio
+            : null;
+
+
+    /*
+       ========================================================
+       SAM
+       ========================================================
+    */
+
+    const sam =
+        tam !== null
+            ? tam *
+              porcentaje(
+                  samPorcentaje
+              )
+            : null;
+
+
+    /*
+       ========================================================
+       SOM
+       ========================================================
+    */
+
+    const som =
+        sam !== null
+            ? sam *
+              porcentaje(
+                  somPorcentaje
+              )
+            : null;
+
+
+    /*
+       ========================================================
+       RENDER
+       ========================================================
+    */
+
+    document.getElementById(
+        "unidadMercadoTexto"
+    ).textContent =
+        unidad === "empleado"
+            ? "Empleado"
+            : "Empresa";
+
+
+    document.getElementById(
+        "unidadMercadoLabel"
+    ).textContent =
+        unidad === "empleado"
+            ? "Unidad de mercado"
+            : "Unidad de mercado";
+
+
+    document.getElementById(
+        "empresasPotenciales"
+    ).textContent =
+        formatearNumero(
+            empresasPotenciales
+        );
+
+
+    document.getElementById(
+        "empleadosPotenciales"
+    ).textContent =
+        formatearNumero(
+            empleadosPotenciales
+        ) +
+        " empleados potenciales";
+
+
+    document.getElementById(
+        "tam"
+    ).textContent =
+        formatearUSD(
+            tam
+        );
+
+
+    document.getElementById(
+        "sam"
+    ).textContent =
+        formatearUSD(
+            sam
+        );
+
+
+    document.getElementById(
+        "som"
+    ).textContent =
+        formatearUSD(
+            som
+        );
+
+
+    document.getElementById(
+        "samLabel"
+    ).textContent =
+        `SAM = ${formatearDecimal(
+            samPorcentaje
+        )}% del TAM`;
+
+
+    document.getElementById(
+        "somLabel"
+    ).textContent =
+        `SOM = ${formatearDecimal(
+            somPorcentaje
+        )}% del SAM`;
+
+
+    document.getElementById(
+        "estadoResultado"
+    ).textContent =
+        `${detalle.productoNombre} · ${industria} · Mercado objetivo ${formatearDecimal(mercadoObjetivo)}%`;
+
+
+    mostrarPotencial(
+        detalle
+    );
+
+
+    mostrarNecesidades(
+        detalle
+    );
+
+
+    actualizarOportunidad(
+        detalle,
+        unidadesPotenciales,
+        tam,
+        sam,
+        som
+    );
+
 
     actualizarPrompt();
 
 
-    const prompt =
+    guardarConfiguracionProducto();
+
+}
+
+
+/* ==========================================================
+   OPORTUNIDAD
+========================================================== */
+
+function actualizarOportunidad(
+    detalle,
+    unidades,
+    tam,
+    sam,
+    som
+) {
+
+    const oportunidad =
+        som !== null
+            ? som
+            : unidades;
+
+
+    document.getElementById(
+        "oportunidadValor"
+    ).textContent =
+        som !== null
+            ? formatearUSD(
+                oportunidad
+            )
+            : formatearNumero(
+                oportunidad
+            );
+
+
+    document.getElementById(
+        "oportunidadTexto"
+    ).textContent =
+        som !== null
+            ? "SOM estimado"
+            : "Unidades potenciales";
+
+
+    document.getElementById(
+        "potencialPromedio"
+    ).textContent =
+        formatearDecimal(
+            detalle.potencialPorcentaje
+        ) +
+        "%";
+
+
+    document.getElementById(
+        "empleadosPotencialesOportunidad"
+    ).textContent =
+        formatearNumero(
+            detalle.empleadosPotenciales
+        );
+
+}
+
+
+/* ==========================================================
+   RANKING INDUSTRIA
+========================================================== */
+
+function actualizarRankingIndustria() {
+
+    const contenedor =
+        document.getElementById(
+            "rankingIndustria"
+        );
+
+
+    const ranking =
+        mercado360?.ranking || [];
+
+
+    if (
+        ranking.length === 0
+    ) {
+
+        contenedor.innerHTML =
+            "Sin datos de ranking.";
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        #
+                    </th>
+
+                    <th>
+                        Industria
+                    </th>
+
+                    <th>
+                        Empresas
+                    </th>
+
+                    <th>
+                        Empleo
+                    </th>
+
+                    <th>
+                        Score
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${ranking.map(
+                    (item, index) => `
+
+                        <tr>
+
+                            <td>
+                                ${index + 1}
+                            </td>
+
+                            <td>
+                                ${escaparHTML(
+                                    item.industria
+                                )}
+                            </td>
+
+                            <td class="number">
+                                ${formatearNumero(
+                                    item.empresas
+                                )}
+                            </td>
+
+                            <td class="number">
+                                ${formatearNumero(
+                                    item.empleo
+                                )}
+                            </td>
+
+                            <td class="number">
+                                ${formatearNumero(
+                                    item.score
+                                )}
+                            </td>
+
+                        </tr>
+
+                    `
+                ).join("")}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+
+
+/* ==========================================================
+   COMPARACIÓN PRODUCTOS
+========================================================== */
+
+function actualizarComparacionProductos() {
+
+    const contenedor =
+        document.getElementById(
+            "comparacionProductos"
+        );
+
+
+    const industria =
+        document.getElementById(
+            "industria360"
+        ).value;
+
+
+    const productos =
+        mercado360?.productos || [];
+
+
+    const mercadoObjetivo =
+        numero(
+            document.getElementById(
+                "mercadoObjetivo"
+            ).value
+        );
+
+
+    const samPorcentaje =
+        numero(
+            document.getElementById(
+                "porcentajeSAM"
+            ).value
+        );
+
+
+    const somPorcentaje =
+        numero(
+            document.getElementById(
+                "porcentajeSOM"
+            ).value
+        );
+
+
+    /*
+       Para comparación usamos el precio guardado
+       en el backend si existe.
+
+       Si el producto seleccionado tiene precio
+       editable en pantalla, usamos ese precio.
+    */
+
+
+    const precioSeleccionado =
+        numero(
+            document.getElementById(
+                "precioAnual"
+            ).value
+        );
+
+
+    const productoSeleccionado =
+        document.getElementById(
+            "producto360"
+        ).value;
+
+
+    let filas = [];
+
+
+    productos.forEach(
+        producto => {
+
+            const detalle =
+                obtenerDetalleAPI(
+                    industria,
+                    producto.id
+                );
+
+
+            if (!detalle) {
+                return;
+            }
+
+
+            let precio =
+                numero(
+                    detalle.precioAnual
+                );
+
+
+            if (
+                producto.id ===
+                productoSeleccionado
+            ) {
+
+                precio =
+                    precioSeleccionado;
+
+            }
+
+
+            const empresasPotenciales =
+                Math.round(
+
+                    numero(
+                        detalle.empresas
+                    ) *
+
+                    porcentaje(
+                        mercadoObjetivo
+                    ) *
+
+                    numero(
+                        detalle.potencial
+                    )
+
+                );
+
+
+            const empleadosPotenciales =
+                Math.round(
+
+                    numero(
+                        detalle.empleo
+                    ) *
+
+                    porcentaje(
+                        mercadoObjetivo
+                    ) *
+
+                    numero(
+                        detalle.potencial
+                    )
+
+                );
+
+
+            const unidades =
+                detalle.unidadMercado ===
+                "empleado"
+                    ? empleadosPotenciales
+                    : empresasPotenciales;
+
+
+            const tam =
+                precio > 0
+                    ? unidades * precio
+                    : null;
+
+
+            const sam =
+                tam !== null
+                    ? tam *
+                      porcentaje(
+                          samPorcentaje
+                      )
+                    : null;
+
+
+            const som =
+                sam !== null
+                    ? sam *
+                      porcentaje(
+                          somPorcentaje
+                      )
+                    : null;
+
+
+            filas.push({
+
+                producto,
+                detalle,
+                precio,
+                unidades,
+                tam,
+                sam,
+                som
+
+            });
+
+        }
+    );
+
+
+    contenedor.innerHTML = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Producto
+                    </th>
+
+                    <th>
+                        Unidad
+                    </th>
+
+                    <th>
+                        Potencial
+                    </th>
+
+                    <th>
+                        Unidades
+                    </th>
+
+                    <th>
+                        Precio anual
+                    </th>
+
+                    <th>
+                        TAM
+                    </th>
+
+                    <th>
+                        SAM
+                    </th>
+
+                    <th>
+                        SOM
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${filas.map(
+                    fila => `
+
+                        <tr>
+
+                            <td>
+                                ${escaparHTML(
+                                    fila.producto.nombre
+                                )}
+                            </td>
+
+                            <td>
+                                ${escaparHTML(
+                                    fila.detalle.unidadMercado
+                                )}
+                            </td>
+
+                            <td class="number">
+
+                                ${formatearDecimal(
+                                    fila.detalle.potencialPorcentaje
+                                )}%
+
+                            </td>
+
+                            <td class="number">
+
+                                ${formatearNumero(
+                                    fila.unidades
+                                )}
+
+                            </td>
+
+                            <td class="number">
+
+                                ${fila.precio > 0
+                                    ? formatearUSD(
+                                        fila.precio
+                                      )
+                                    : "Sin definir"}
+
+                            </td>
+
+                            <td class="number">
+
+                                ${formatearUSD(
+                                    fila.tam
+                                )}
+
+                            </td>
+
+                            <td class="number">
+
+                                ${formatearUSD(
+                                    fila.sam
+                                )}
+
+                            </td>
+
+                            <td class="number">
+
+                                ${formatearUSD(
+                                    fila.som
+                                )}
+
+                            </td>
+
+                        </tr>
+
+                    `
+                ).join("")}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+
+
+/* ==========================================================
+   ALERTAS
+========================================================== */
+
+function actualizarAlertas() {
+
+    const contenedor =
+        document.getElementById(
+            "alertas"
+        );
+
+
+    const producto =
+        document.getElementById(
+            "producto360"
+        ).value;
+
+
+    const industria =
+        document.getElementById(
+            "industria360"
+        ).value;
+
+
+    const detalle =
+        obtenerDetalleAPI(
+            industria,
+            producto
+        );
+
+
+    const alertas = [];
+
+
+    if (!detalle) {
+
+        alertas.push({
+
+            tipo: "warning",
+
+            texto:
+                "No hay datos disponibles para la combinación seleccionada."
+
+        });
+
+    }
+
+
+    const precio =
+        numero(
+            document.getElementById(
+                "precioAnual"
+            ).value
+        );
+
+
+    if (
+        precio <= 0
+    ) {
+
+        alertas.push({
+
+            tipo: "warning",
+
+            texto:
+                "El precio anual todavía no está definido. TAM, SAM y SOM se muestran sin valor monetario."
+
+        });
+
+    } else {
+
+        alertas.push({
+
+            tipo: "success",
+
+            texto:
+                "Precio definido. TAM, SAM y SOM se calculan dinámicamente según el escenario actual."
+
+        });
+
+    }
+
+
+    alertas.push({
+
+        tipo: "info",
+
+        texto:
+            "Los indicadores documentales representan estimaciones sectoriales del modelo y no identifican intención de compra de empresas individuales."
+
+    });
+
+
+    alertas.push({
+
+        tipo: "info",
+
+        texto:
+            "Para convertir este universo en prospectos concretos se necesita una segunda capa de señales empresa por empresa."
+
+    });
+
+
+    contenedor.innerHTML =
+        alertas.map(
+            alerta => `
+
+                <div
+                    class="alert alert-${alerta.tipo}"
+                >
+
+                    ${escaparHTML(
+                        alerta.texto
+                    )}
+
+                </div>
+
+            `
+        ).join("");
+
+}
+
+
+/* ==========================================================
+   METODOLOGÍA
+========================================================== */
+
+function actualizarMetodologia() {
+
+    const contenedor =
+        document.getElementById(
+            "metodologiaTexto"
+        );
+
+
+    const metodologia =
+        mercado360?.metodologiaPotencial;
+
+
+    const tamSamSom =
+        mercado360?.tamSamSom;
+
+
+    contenedor.innerHTML = `
+
+        <p>
+
+            <strong>Potencial:</strong>
+
+            ${escaparHTML(
+                metodologia?.formula ||
+                "Potencial = afinidad sectorial + indicadores documentales."
+            )}
+
+        </p>
+
+
+        <p>
+
+            <strong>TAM / SAM / SOM:</strong>
+
+            ${escaparHTML(
+                tamSamSom?.metodologia ||
+                "TAM = unidades potenciales × precio anual."
+            )}
+
+        </p>
+
+
+        <p>
+
+            <strong>Datos reales:</strong>
+
+            empresas, empleo, actividad económica y códigos
+            de actividad provienen de OEDE.
+
+        </p>
+
+
+        <p>
+
+            <strong>Modelo:</strong>
+
+            los indicadores documentales son variables
+            sectoriales modeladas para estimar afinidad
+            con cada producto.
+
+        </p>
+
+
+        <p>
+
+            <strong>Advertencia:</strong>
+
+            una estimación sectorial no significa que una
+            empresa individual haya sido identificada con
+            esa necesidad.
+
+        </p>
+
+    `;
+
+}
+
+
+/* ==========================================================
+   SIN DATOS
+========================================================== */
+
+function mostrarSinDatos() {
+
+    [
+        "empresasPotenciales",
+        "tam",
+        "sam",
+        "som",
+        "potencialValor",
+        "nivelPotencial",
+        "unidadMercadoTexto",
+        "oportunidadValor",
+        "potencialPromedio",
+        "empleadosPotencialesOportunidad"
+    ].forEach(
+        id => {
+
+            const elemento =
+                document.getElementById(
+                    id
+                );
+
+            if (elemento) {
+
+                elemento.textContent =
+                    "—";
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "explicacionPotencial"
+    ).textContent =
+        "No hay datos disponibles para la combinación seleccionada.";
+
+
+    document.getElementById(
+        "necesidadesDetectadas"
+    ).innerHTML =
+        "<div class='model-note'>No hay indicadores disponibles.</div>";
+
+}
+
+
+/* ==========================================================
+   PROMPT
+========================================================== */
+
+function actualizarPrompt() {
+
+    if (!mercado360) {
+        return;
+    }
+
+
+    const producto =
+        document.getElementById(
+            "producto360"
+        ).value;
+
+
+    const industria =
+        document.getElementById(
+            "industria360"
+        ).value;
+
+
+    const detalle =
+        obtenerDetalleAPI(
+            industria,
+            producto
+        );
+
+
+    if (!detalle) {
+        return;
+    }
+
+
+    const mercadoObjetivo =
+        numero(
+            document.getElementById(
+                "mercadoObjetivo"
+            ).value
+        );
+
+
+    const sam =
+        numero(
+            document.getElementById(
+                "porcentajeSAM"
+            ).value
+        );
+
+
+    const som =
+        numero(
+            document.getElementById(
+                "porcentajeSOM"
+            ).value
+        );
+
+
+    const precio =
+        numero(
+            document.getElementById(
+                "precioAnual"
+            ).value
+        );
+
+
+    const factores =
+        obtenerFactoresAPI(
+            industria,
+            producto
+        );
+
+
+    const principales =
+        [...factores]
+            .sort(
+                (a, b) =>
+                    numero(b.aporte) -
+                    numero(a.aporte)
+            )
+            .slice(
+                0,
+                5
+            )
+            .map(
+                factor =>
+                    `${nombreVariable(
+                        factor.variable
+                    )}: ${formatearDecimal(
+                        factor.indicadorSectorialPorcentaje
+                    )}%`
+            );
+
+
+    const prompt = `
+
+Analizá el siguiente escenario de mercado para PREVENTA IA.
+
+PRODUCTO:
+${detalle.productoNombre}
+
+INDUSTRIA:
+${industria}
+
+EMPRESAS OEDE:
+${formatearNumero(
+    detalle.empresas
+)}
+
+EMPLEO OEDE:
+${formatearNumero(
+    detalle.empleo
+)}
+
+POTENCIAL ESTIMADO:
+${formatearDecimal(
+    detalle.potencialPorcentaje
+)}%
+
+NIVEL:
+${detalle.nivel}
+
+EMPRESAS POTENCIALES:
+${formatearNumero(
+    detalle.empresasPotenciales
+)}
+
+EMPLEADOS POTENCIALES:
+${formatearNumero(
+    detalle.empleadosPotenciales
+)}
+
+MERCADO OBJETIVO:
+${formatearDecimal(
+    mercadoObjetivo
+)}%
+
+SAM:
+${formatearDecimal(
+    sam
+)}%
+
+SOM:
+${formatearDecimal(
+    som
+)}%
+
+PRECIO ANUAL:
+${precio > 0
+    ? "USD " + formatearNumero(precio)
+    : "No definido"}
+
+FACTORES PRINCIPALES:
+${principales.join("\n")}
+
+IMPORTANTE:
+Los indicadores documentales son estimaciones sectoriales
+modeladas y no representan identificación individual
+de empresas con intención de compra.
+
+Analizar:
+
+1. atractivo del mercado;
+2. atractivo del producto;
+3. principales necesidades documentales;
+4. riesgos del supuesto;
+5. qué información adicional debería obtener PREVENTA;
+6. cómo convertir este universo sectorial en prospectos concretos;
+7. qué señales empresa por empresa deberían buscarse.
+
+No asumir intención de compra si no existe evidencia.
+`;
+
+    document.getElementById(
+        "promptMaestro"
+    ).value =
+        prompt.trim();
+
+}
+
+
+function usarPrompt() {
+
+    const textarea =
         document.getElementById(
             "promptMaestro"
         );
 
 
-    const preguntas = {
+    textarea.focus();
 
-        oportunidad:
-            "\n\nPREGUNTA: ¿Dónde está la mayor oportunidad comercial para este producto?",
-
-        industria:
-            "\n\nPREGUNTA: ¿Qué industrias debería priorizar para vender este producto y por qué?",
-
-        producto:
-            "\n\nPREGUNTA: Compará el potencial de este producto con las otras líneas de PREVENTA IA y determiná cuál debería priorizar comercialmente.",
-
-        escenario:
-            "\n\nPREGUNTA: Evaluá si los porcentajes utilizados representan un escenario conservador, base o agresivo y explicá qué debería validarse."
-
-    };
-
-
-    prompt.value +=
-        preguntas[tipo] || "";
+    textarea.select();
 
 }
 
-
-/* =========================================================
-   ANALISIS IA
-========================================================= */
 
 async function analizarPrompt() {
 
@@ -4010,16 +3461,22 @@ async function analizarPrompt() {
 
     if (!prompt) {
 
+        resultado.style.display =
+            "block";
+
         resultado.textContent =
-            "Escribí una consulta.";
+            "No hay prompt para analizar.";
 
         return;
 
     }
 
 
+    resultado.style.display =
+        "block";
+
     resultado.textContent =
-        "Analizando mercado...";
+        "Analizando...";
 
 
     try {
@@ -4050,35 +3507,32 @@ async function analizarPrompt() {
             );
 
 
-        const datos =
+        const data =
             await respuesta.json();
 
 
         if (
-            !respuesta.ok ||
-            !datos
+            !respuesta.ok
         ) {
 
             throw new Error(
-                "No fue posible obtener el análisis."
+                data?.error ||
+                "Error al consultar IA."
             );
 
         }
 
 
         resultado.textContent =
-            datos.reply ||
-            datos.message ||
-            datos.response ||
+            data?.reply ||
+            data?.message ||
+            data?.respuesta ||
             "La IA no devolvió contenido.";
-
 
     } catch (error) {
 
         resultado.textContent =
-            "No se pudo obtener el análisis de IA.\n\n" +
-            "El cálculo del Mercado 360 continúa disponible.\n\n" +
-            "Detalle: " +
+            "No se pudo analizar con IA: " +
             error.message;
 
     }
@@ -4086,14 +3540,16 @@ async function analizarPrompt() {
 }
 
 
-/* =========================================================
+/* ==========================================================
    REPORTE
-========================================================= */
+========================================================== */
 
 function generarReporte() {
 
     const producto =
-        productoActual();
+        document.getElementById(
+            "producto360"
+        ).value;
 
 
     const industria =
@@ -4102,402 +3558,480 @@ function generarReporte() {
         ).value;
 
 
-    const unidades =
-        document.getElementById(
-            "empresasPotenciales"
-        ).textContent;
-
-
-    const empleados =
-        document.getElementById(
-            "empleadosPotenciales"
-        ).textContent;
-
-
-    const tam =
-        document.getElementById(
-            "tam"
-        ).textContent;
-
-
-    const sam =
-        document.getElementById(
-            "sam"
-        ).textContent;
-
-
-    const som =
-        document.getElementById(
-            "som"
-        ).textContent;
-
-
-    const potencial =
-        document.getElementById(
-            "potencialValor"
-        )?.textContent ||
-        "—";
-
-
-    const nivel =
-        document.getElementById(
-            "nivelPotencial"
-        )?.textContent ||
-        "—";
-
-
-    const explicacion =
-        document.getElementById(
-            "explicacionPotencial"
-        )?.textContent ||
-        "—";
-
-
-    const mercadoObjetivo =
-        obtenerNumero(
-            "mercadoObjetivo"
+    const detalle =
+        obtenerDetalleAPI(
+            industria,
+            producto
         );
 
 
-    const porcentajeSAM =
-        obtenerNumero(
-            "porcentajeSAM"
-        );
-
-
-    const porcentajeSOM =
-        obtenerNumero(
-            "porcentajeSOM"
-        );
-
-
-    const precio =
-        obtenerNumero(
-            "precioAnual"
-        );
-
-
-    const unidad =
-        productos[producto]
-            ? productos[producto].unidad
-            : "empresa";
-
-
-    const reporte =
-        document.getElementById(
-            "reporte"
-        );
-
-
-    reporte.style.display =
-        "block";
-
-
-    reporte.innerHTML = `
-
-        <h3>
-            Informe de Inteligencia de Mercado
-        </h3>
-
-        <p>
-
-            <strong>Producto:</strong>
-            ${productos[producto].nombre}
-
-            <br>
-
-            <strong>Industria:</strong>
-            ${
-                industria === "todas"
-                    ? "Todas"
-                    : industria
-            }
-
-            <br>
-
-            <strong>Unidad de mercado:</strong>
-            ${unidad}
-
-        </p>
-
-
-        <h4>
-            Potencial comercial
-        </h4>
-
-        <p>
-
-            <strong>
-                Potencial:
-            </strong>
-
-            ${potencial}
-
-            <br>
-
-            <strong>
-                Nivel:
-            </strong>
-
-            ${nivel}
-
-            <br><br>
-
-            ${explicacion}
-
-        </p>
-
-
-        <h4>
-            Mercado identificado
-        </h4>
-
-        <p>
-
-            <strong>
-                Unidades potenciales:
-            </strong>
-
-            ${unidades}
-
-            <br>
-
-            <strong>
-                Empleados potenciales:
-            </strong>
-
-            ${empleados}
-
-        </p>
-
-
-        <h4>
-            Tamaño económico
-        </h4>
-
-        <p>
-
-            <strong>
-                TAM:
-            </strong>
-
-            ${tam}
-
-            <br>
-
-            <strong>
-                SAM:
-            </strong>
-
-            ${sam}
-
-            <br>
-
-            <strong>
-                SOM:
-            </strong>
-
-            ${som}
-
-        </p>
-
-
-        <h4>
-            Escenario
-        </h4>
-
-        <p>
-
-            Mercado objetivo:
-            ${porcentaje(
-                mercadoObjetivo
-            )}
-
-            <br>
-
-            SAM:
-            ${porcentaje(
-                porcentajeSAM
-            )}
-
-            <br>
-
-            SOM:
-            ${porcentaje(
-                porcentajeSOM
-            )}
-
-            <br>
-
-            Precio anual:
-            ${
-                precio > 0
-                    ? moneda(
-                        precio
-                    )
-                    : "Pendiente"
-            }
-
-        </p>
-
-
-        <h4>
-            Lectura comercial
-        </h4>
-
-        <p>
-
-            El Mercado 360 identifica un universo
-            potencial a partir de datos de empresas
-            y empleo, complementados con indicadores
-            sectoriales específicos del producto.
-
-            Los indicadores documentales son
-            estimaciones del modelo y deben validarse
-            antes de utilizarlos como afirmaciones
-            sobre empresas concretas.
-
-        </p>
-
-    `;
-
-}
-
-
-/* =========================================================
-   ESTADO MOTOR
-========================================================= */
-
-function actualizarEstadoMotor() {
-
-    const estado =
-        document.getElementById(
-            "estadoMotor"
-        );
-
-
-    if (!mercado360) {
+    if (!detalle) {
 
         return;
 
     }
 
 
-    const mercado =
-        mercado360.mercado &&
-        mercado360.mercado.estado
-            ? mercado360.mercado.estado
-            : {};
+    const mercadoObjetivo =
+        numero(
+            document.getElementById(
+                "mercadoObjetivo"
+            ).value
+        );
 
 
-    estado.className =
-        "status ok";
+    const samPorcentaje =
+        numero(
+            document.getElementById(
+                "porcentajeSAM"
+            ).value
+        );
 
 
-    estado.innerHTML = `
+    const somPorcentaje =
+        numero(
+            document.getElementById(
+                "porcentajeSOM"
+            ).value
+        );
 
-        <strong>
-            🟢 Motor de Mercado 360 conectado
-        </strong>
 
-        <br>
+    const precio =
+        numero(
+            document.getElementById(
+                "precioAnual"
+            ).value
+        );
 
-        Datos reales cargados:
-        ${
-            mercado.datosReales ??
-            "Disponibles"
-        }
 
-        ·
+    /*
+       Recalculamos los valores actuales.
+    */
 
-        Fuentes oficiales:
-        ${
-            mercado.fuentesOficiales ??
-            "OEDE"
-        }
+    const empresasPotenciales =
+        Math.round(
 
-        <br><br>
+            numero(
+                detalle.empresas
+            ) *
 
-        El análisis se construye dinámicamente
-        a partir del mercado real, criterios
-        específicos por producto e industria
-        y los supuestos comerciales seleccionados.
+            porcentaje(
+                mercadoObjetivo
+            ) *
 
-    `;
+            numero(
+                detalle.potencial
+            )
+
+        );
+
+
+    const empleadosPotenciales =
+        Math.round(
+
+            numero(
+                detalle.empleo
+            ) *
+
+            porcentaje(
+                mercadoObjetivo
+            ) *
+
+            numero(
+                detalle.potencial
+            )
+
+        );
+
+
+    const unidades =
+        detalle.unidadMercado ===
+        "empleado"
+            ? empleadosPotenciales
+            : empresasPotenciales;
+
+
+    const tam =
+        precio > 0
+            ? unidades * precio
+            : null;
+
+
+    const sam =
+        tam !== null
+            ? tam *
+              porcentaje(
+                  samPorcentaje
+              )
+            : null;
+
+
+    const som =
+        sam !== null
+            ? sam *
+              porcentaje(
+                  somPorcentaje
+              )
+            : null;
+
+
+    const factores =
+        obtenerFactoresAPI(
+            industria,
+            producto
+        );
+
+
+    const necesidades =
+        [...factores]
+            .sort(
+                (a, b) =>
+                    numero(b.aporte) -
+                    numero(a.aporte)
+            )
+            .map(
+                factor =>
+                    `- ${nombreVariable(
+                        factor.variable
+                    )}: ${formatearDecimal(
+                        factor.indicadorSectorialPorcentaje
+                    )}%`
+            )
+            .join("\n");
+
+
+    const reporteTexto = `
+
+REPORTE MERCADO 360
+===================
+
+Producto:
+${detalle.productoNombre}
+
+Industria:
+${industria}
+
+
+DATOS DE MERCADO
+----------------
+
+Empresas OEDE:
+${formatearNumero(
+    detalle.empresas
+)}
+
+Empleo OEDE:
+${formatearNumero(
+    detalle.empleo
+)}
+
+
+POTENCIAL
+---------
+
+Potencial:
+${formatearDecimal(
+    detalle.potencialPorcentaje
+)}%
+
+Nivel:
+${detalle.nivel}
+
+Empresas potenciales:
+${formatearNumero(
+    empresasPotenciales
+)}
+
+Empleados potenciales:
+${formatearNumero(
+    empleadosPotenciales
+)}
+
+
+NECESIDADES DETECTADAS
+----------------------
+
+${necesidades}
+
+
+ESCENARIO COMERCIAL
+-------------------
+
+Mercado objetivo:
+${formatearDecimal(
+    mercadoObjetivo
+)}%
+
+Precio anual:
+${
+    precio > 0
+        ? "USD " + formatearNumero(precio)
+        : "No definido"
+}
+
+
+TAM / SAM / SOM
+---------------
+
+TAM:
+${formatearUSD(
+    tam
+)}
+
+SAM:
+${formatearUSD(
+    sam
+)}
+
+SOM:
+${formatearUSD(
+    som
+)}
+
+
+ACLARACIÓN METODOLÓGICA
+-----------------------
+
+Los datos de empresas y empleo provienen de OEDE.
+
+Los indicadores documentales son estimaciones sectoriales
+modeladas por PREVENTA IA.
+
+No representan identificación individual de empresas
+con intención de compra.
+
+Para identificar prospectos concretos es necesario
+incorporar señales empresa por empresa.
+`;
+
+
+    const contenedor =
+        document.getElementById(
+            "reporte"
+        );
+
+
+    contenedor.style.display =
+        "block";
+
+
+    contenedor.textContent =
+        reporteTexto.trim();
 
 }
 
 
-/* =========================================================
-   CARGAR MOTOR
-========================================================= */
+/* ==========================================================
+   ACTUALIZAR TODO
+========================================================== */
 
-async function cargarMercado360() {
+function actualizarTodo() {
 
-    const estado =
+    if (!mercado360) {
+        return;
+    }
+
+
+    calcularMercado();
+
+    actualizarRankingIndustria();
+
+    actualizarComparacionProductos();
+
+    actualizarAlertas();
+
+    actualizarMetodologia();
+
+}
+
+
+/* ==========================================================
+   EVENTOS
+========================================================== */
+
+document.getElementById(
+    "producto360"
+).addEventListener(
+    "change",
+    () => {
+
+        actualizarProducto();
+
+    }
+);
+
+
+document.getElementById(
+    "industria360"
+).addEventListener(
+    "change",
+    () => {
+
+        actualizarTodo();
+
+    }
+);
+
+
+/*
+   MUY IMPORTANTE:
+
+   Los cuatro valores comerciales generan
+   recalculo inmediato.
+
+   Por eso SAM y SOM nunca quedan "manuales".
+*/
+
+[
+    "mercadoObjetivo",
+    "porcentajeSAM",
+    "porcentajeSOM",
+    "precioAnual"
+].forEach(
+    id => {
+
         document.getElementById(
-            "estadoMotor"
+            id
+        ).addEventListener(
+            "input",
+            () => {
+
+                actualizarTodo();
+
+            }
         );
 
+    }
+);
+
+
+/* ==========================================================
+   ESTADO MOTOR
+========================================================== */
+
+function actualizarEstadoMotor() {
+
+    const status =
+        document.getElementById(
+            "motorStatus"
+        );
+
+
+    const texto =
+        document.getElementById(
+            "motorStatusTexto"
+        );
+
+
+    if (
+        mercado360?.ok
+    ) {
+
+        status.classList.add(
+            "motor-ok"
+        );
+
+
+        texto.textContent =
+            `Motor conectado · Datos reales cargados: ${
+                mercado360.mercado?.estado?.datosReales || 0
+            } · Fuentes oficiales: ${
+                mercado360.mercado?.estado?.fuentesOficiales || 0
+            }`;
+
+    } else {
+
+        status.classList.add(
+            "motor-error"
+        );
+
+
+        texto.textContent =
+            "El motor de mercado no pudo cargar los datos.";
+
+    }
+
+}
+
+
+/* ==========================================================
+   CARGAR MERCADO 360
+========================================================== */
+
+async function cargarMercado360() {
 
     try {
 
         const respuesta =
             await fetch(
-                "/api/mercado"
+                API_URL,
+                {
+                    cache:
+                        "no-store"
+                }
             );
 
 
-        if (!respuesta.ok) {
+        if (
+            !respuesta.ok
+        ) {
 
             throw new Error(
-                "Error HTTP " +
+                "HTTP " +
                 respuesta.status
             );
 
         }
 
 
-        const datos =
+        mercado360 =
             await respuesta.json();
 
 
-        if (!datos.ok) {
+        if (
+            !mercado360.ok
+        ) {
 
             throw new Error(
-                datos.error ||
-                "El motor no devolvió datos."
+                mercado360.error ||
+                "Respuesta inválida del motor."
             );
 
         }
 
 
-        mercado360 =
-            datos;
+        actualizarEstadoMotor();
 
 
-        console.log(
-            "Motor Mercado 360 3.7:",
-            mercado360
-        );
-
+        cargarProductos();
 
         cargarIndustrias();
+
+
+        /*
+           Selección inicial
+        */
+
+        const productoSelect =
+            document.getElementById(
+                "producto360"
+            );
+
+
+        if (
+            mercado360.productos?.length
+        ) {
+
+            productoSelect.value =
+                mercado360.productos[0].id;
+
+        }
 
 
         cargarConfiguracionProducto();
 
 
-        actualizarCards();
-
-
-        actualizarEstadoMotor();
-
-
-        actualizarMetodologia();
-
-
-        calcularMercado();
+        actualizarTodo();
 
 
     } catch (error) {
@@ -4508,30 +4042,35 @@ async function cargarMercado360() {
         );
 
 
-        estado.className =
-            "status warning";
+        const status =
+            document.getElementById(
+                "motorStatus"
+            );
 
 
-        estado.innerHTML = `
+        const texto =
+            document.getElementById(
+                "motorStatusTexto"
+            );
 
-            <strong>
-                ⚠️ No se pudo conectar con Mercado 360
-            </strong>
 
-            <br>
+        status.classList.add(
+            "motor-error"
+        );
 
-            ${error.message}
 
-        `;
+        texto.textContent =
+            "Error conectando con Mercado 360: " +
+            error.message;
 
     }
 
 }
 
 
-/* =========================================================
+/* ==========================================================
    INICIO
-========================================================= */
+========================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
