@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Inteligencia de Mercado | PREVENTA IA</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f7fb;
+        color: #1f2937;
+    }
+
+    header {
+        background: #111827;
+        color: white;
+        padding: 18px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+    header span {
+        display: block;
+        margin-top: 5px;
+        font-size: 13px;
+        color: #cbd5e1;
+    }
+
+    .btn-home {
+        background: white;
+        color: #111827;
+        border: none;
+        border-radius: 9px;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 25px auto;
+        padding: 0 20px 40px;
+    }
+
+    .intro {
+        background: white;
+        border-radius: 14px;
+        padding: 22px;
+        margin-bottom: 20px;
+        box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    }
+
+    .intro h2 {
+        margin-top: 0;
+    }
+
+    .intro p {
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    .section {
+        background: white;
+        border-radius: 14px;
+        padding: 22px;
+        margin-bottom: 20px;
+        box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    }
+
+    .section h2 {
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .section-description {
+        color: #64748b;
+        margin-bottom: 20px;
+    }
+
+    .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 15px;
+    }
+
+    .product {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 18px;
+        background: #f8fafc;
+    }
+
+    .product .icon {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .product h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+    }
+
+    .product p {
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 16px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 11px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        background: white;
+    }
+
+    .info-box {
+        margin-top: 18px;
+        padding: 15px;
+        background: #eff6ff;
+        border-left: 4px solid #2563eb;
+        border-radius: 8px;
+        color: #334155;
+        line-height: 1.5;
+        font-size: 14px;
+    }
+
+    .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 12px;
+    }
+
+    .step {
+        padding: 15px;
+        border-radius: 10px;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        text-align: center;
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #111827;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-weight: bold;
+    }
+
+    .step strong {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .step small {
+        color: #64748b;
+    }
+
+    .future {
+        border: 2px dashed #cbd5e1;
+        background: #f8fafc;
+        text-align: center;
+        padding: 30px;
+        border-radius: 12px;
+    }
+
+    .future .big {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .future h3 {
+        margin: 5px 0 10px;
+    }
+
+    .future p {
+        color: #64748b;
+        max-width: 700px;
+        margin: auto;
+        line-height: 1.6;
+    }
+
+    .footer {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 12px;
+        margin-top: 25px;
+    }
+
+    @media (max-width: 700px) {
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .btn-home {
+            width: 100%;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>📊 Inteligencia de Mercado</h1>
+        <span>PREVENTA IA · TAM · SAM · SOM · oportunidades de mercado</span>
+    </div>
+
+    <button class="btn-home" onclick="window.location.href='index.html'">
+        🏠 Inicio
+    </button>
+</header>
+
+<div class="container">
+
+    <div class="intro">
+        <h2>🚀 Inteligencia de Mercado</h2>
+
+        <p>
+            Este módulo permitirá analizar el mercado potencial de PREVENTA IA
+            utilizando datos reales, supuestos configurables y cálculos de
+            TAM, SAM y SOM para cada línea de negocio.
+        </p>
+
+        <p>
+            La idea es transformar el análisis histórico de 2022 en un modelo
+            dinámico que podamos actualizar y utilizar para detectar nuevas
+            oportunidades comerciales.
+        </p>
+    </div>
+
+
+    <!-- PRODUCTOS -->
+
+    <div class="section">
+
+        <h2>🧩 Líneas de negocio</h2>
+
+        <div class="section-description">
+            Estas son las cinco líneas que vamos a utilizar como base del modelo.
+        </div>
+
+        <div class="products">
+
+            <div class="product">
+                <div class="icon">🗄️</div>
+                <h3>Guarda / Almacenamiento</h3>
+                <p>
+                    Servicios de guarda, almacenamiento documental y
+                    conservación de archivos.
+                </p>
+            </div>
+
+            <div class="product">
+                <div class="icon">📄</div>
+                <h3>Digitalización</h3>
+                <p>
+                    Digitalización de documentos, imágenes y archivos
+                    físicos.
+                </p>
+            </div>
+
+            <div class="product">
+                <div class="icon">🧾</div>
+                <h3>Firma de recibos de sueldo</h3>
+                <p>
+                    Plataforma para firma y gestión digital de recibos
+                    de sueldo.
+                </p>
+            </div>
+
+            <div class="product">
+                <div class="icon">✍️</div>
+                <h3>Firma electrónica</h3>
+                <p>
+                    Firma electrónica de contratos, documentos y
+                    circuitos empresariales.
+                </p>
+            </div>
+
+            <div class="product">
+                <div class="icon">📚</div>
+                <h3>Thuban</h3>
+                <p>
+                    Gestión documental, almacenamiento, búsqueda y
+                    administración de documentos.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONFIGURACIÓN -->
+
+    <div class="section">
+
+        <h2>⚙️ Configuración del análisis</h2>
+
+        <div class="section-description">
+            Estos parámetros determinarán qué mercado queremos analizar.
+        </div>
+
+        <div class="form-grid">
+
+            <div>
+                <label>Producto</label>
+
+                <select id="producto">
+                    <option value="guarda">Guarda / Almacenamiento</option>
+                    <option value="digitalizacion">Digitalización</option>
+                    <option value="recibos">Firma de recibos de sueldo</option>
+                    <option value="firma">Firma electrónica</option>
+                    <option value="thuban">Thuban</option>
+                </select>
+            </div>
+
+            <div>
+                <label>País / mercado</label>
+
+                <select id="pais">
+                    <option>Argentina</option>
+                    <option>Uruguay</option>
+                    <option>Paraguay</option>
+                    <option>Chile</option>
+                    <option>Brasil</option>
+                    <option>Latinoamérica</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Año del análisis</label>
+
+                <input
+                    type="number"
+                    id="anio"
+                    value="2026"
+                    min="2020"
+                    max="2100"
+                >
+            </div>
+
+            <div>
+                <label>% de captura / SOM</label>
+
+                <input
+                    type="number"
+                    id="captura"
+                    value="3"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                >
+            </div>
+
+        </div>
+
+        <div class="info-box">
+            💡 El porcentaje de captura será editable.
+            Más adelante, al modificarlo, los valores del SOM y los gráficos
+            se recalcularán automáticamente.
+        </div>
+
+    </div>
+
+
+    <!-- METODOLOGÍA -->
+
+    <div class="section">
+
+        <h2>🔬 Cómo funcionará el modelo</h2>
+
+        <div class="section-description">
+            El cálculo estará basado en una cadena de información trazable.
+        </div>
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <strong>Fuentes</strong>
+                <small>Datos reales y fuentes verificables</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <strong>Datos</strong>
+                <small>Empresas, empleados, sectores, precios, etc.</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <strong>Supuestos</strong>
+                <small>Variables utilizadas para el cálculo</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <strong>Fórmulas</strong>
+                <small>Cálculo transparente del mercado</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <strong>TAM / SAM / SOM</strong>
+                <small>Mercado total, direccionable y capturable</small>
+            </div>
+
+            <div class="step">
+                <div class="step-number">6</div>
+                <strong>Oportunidades</strong>
+                <small>Sectores y mercados prioritarios</small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FUTURO -->
+
+    <div class="section">
+
+        <div class="future">
+
+            <div class="big">📈</div>
+
+            <h3>Próxima etapa: calculadora TAM / SAM / SOM</h3>
+
+            <p>
+                En la siguiente etapa vamos a incorporar los datos históricos
+                del Excel 2022, convertirlos en variables editables y construir
+                el primer cálculo real de TAM, SAM y SOM.
+            </p>
+
+            <p style="margin-top:12px;">
+                Después agregaremos gráficos interactivos, análisis por sector,
+                alertas de oportunidades y finalmente el Prompt Maestro.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        PREVENTA IA · Inteligencia de Mercado
+    </div>
+
+</div>
+
+</body>
+</html>
