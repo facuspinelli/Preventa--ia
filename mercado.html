@@ -546,43 +546,62 @@ button {
          PRODUCTOS
     ====================================================== -->
 
-   <section class="section">
+    <section class="section">
 
-    <h2>Reporte Mercado 360</h2>
+        <h2>Productos</h2>
 
-    <div class="section-description">
+        <div class="section-description">
 
-        Generá el reporte visual o exportá todo el análisis
-        completo a un archivo Excel.
+            Seleccioná el producto que querés analizar.
 
-    </div>
+        </div>
 
-    <div class="button-row">
+        <div
+            id="productos"
+            class="product-grid"
+        ></div>
 
-        <button
-            class="btn-success"
-            onclick="generarReporte()"
-        >
-            Generar reporte
-        </button>
-
-        <button
-            class="btn-primary"
-            onclick="exportarExcel()"
-        >
-            📊 Exportar Excel completo
-        </button>
-
-    </div>
+    </section>
 
 
-    <div
-        id="reporte"
-        class="report"
-        style="display:none;"
-    ></div>
+    <!-- =====================================================
+         REPORTE MERCADO 360
+    ====================================================== -->
 
-</section>
+    <section class="section">
+
+        <h2>Reporte Mercado 360</h2>
+
+        <div class="section-description">
+
+            Generá el reporte visual o exportá todo el análisis
+            completo a un archivo Excel.
+
+        </div>
+
+        <div class="button-row">
+
+            <button
+                class="btn-success"
+                onclick="generarReporte()"
+            >
+                Generar reporte
+            </button>
+
+            <button
+                class="btn-primary"
+                onclick="exportarExcel()"
+            >
+                📊 Exportar Excel completo
+            </button>
+
+        </div>
+
+        <div
+            id="reporte"
+            class="report"
+            style="display:none;"
+        ></div>
 
     </section>
 
@@ -1168,40 +1187,16 @@ button {
     </section>
 
 
-    <!-- =====================================================
-         REPORTE
-    ====================================================== -->
-
-    <section class="section">
-
-        <h2>Reporte Mercado 360</h2>
-
-
-        <div class="button-row">
-
-            <button
-                class="btn-success"
-                onclick="generarReporte()"
-            >
-                Generar reporte
-            </button>
-
-        </div>
-
-
-        <div
-            id="reporte"
-            class="report"
-            style="display:none;"
-        ></div>
-
-    </section>
-
-
 </div>
 
+
+<!-- =========================================================
+     LIBRERÍA EXCEL
+========================================================= -->
+
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-    
+
+
 <script>
 
 /* ==========================================================
@@ -1212,7 +1207,6 @@ const API_URL = "/api/mercado";
 
 const STORAGE_KEY =
     "preventa_mercado_360_config";
-
 
 let mercado360 = null;
 
@@ -1755,17 +1749,6 @@ function obtenerFactoresAPI(
         );
 
 
-    /*
-       IMPORTANTE:
-
-       factoresPrincipales = strings
-
-       factores = objetos completos
-
-       Para mostrar valores debemos utilizar
-       detalle.factores.
-    */
-
     if (
         detalle &&
         Array.isArray(
@@ -2036,13 +2019,6 @@ function mostrarNecesidades(
         );
 
 
-    /*
-       Ordenamos por aporte.
-
-       De esta forma las necesidades que más
-       influyen en el cálculo aparecen primero.
-    */
-
     let factoresOrdenados =
         [...factores]
             .sort(
@@ -2051,12 +2027,6 @@ function mostrarNecesidades(
                     numero(a.aporte)
             );
 
-
-    /*
-       Si por algún motivo el API no devuelve
-       factores completos, intentamos reconstruir
-       el orden usando criteriosProducto.
-    */
 
     if (
         factoresOrdenados.length === 0 &&
@@ -2328,27 +2298,6 @@ function calcularMercado() {
     }
 
 
-    /*
-       ========================================================
-       IMPORTANTE
-
-       NO usamos:
-
-       detalle.tam
-       detalle.sam
-       detalle.som
-
-       para el escenario actual.
-
-       Los valores del API corresponden a los supuestos
-       del backend.
-
-       Acá recalculamos siempre con los valores actuales
-       de la pantalla.
-       ========================================================
-    */
-
-
     const empresas =
         numero(
             detalle.empresas
@@ -2366,10 +2315,6 @@ function calcularMercado() {
             detalle.potencial
         );
 
-
-    /*
-       Mismo criterio utilizado por el API.
-    */
 
     const empresasPotenciales =
         Math.round(
@@ -2409,23 +2354,11 @@ function calcularMercado() {
             : empresasPotenciales;
 
 
-    /*
-       ========================================================
-       TAM
-       ========================================================
-    */
-
     const tam =
         precio > 0
             ? unidadesPotenciales * precio
             : null;
 
-
-    /*
-       ========================================================
-       SAM
-       ========================================================
-    */
 
     const sam =
         tam !== null
@@ -2436,12 +2369,6 @@ function calcularMercado() {
             : null;
 
 
-    /*
-       ========================================================
-       SOM
-       ========================================================
-    */
-
     const som =
         sam !== null
             ? sam *
@@ -2450,12 +2377,6 @@ function calcularMercado() {
               )
             : null;
 
-
-    /*
-       ========================================================
-       RENDER
-       ========================================================
-    */
 
     document.getElementById(
         "unidadMercadoTexto"
@@ -2468,9 +2389,7 @@ function calcularMercado() {
     document.getElementById(
         "unidadMercadoLabel"
     ).textContent =
-        unidad === "empleado"
-            ? "Unidad de mercado"
-            : "Unidad de mercado";
+        "Unidad de mercado";
 
 
     document.getElementById(
@@ -2549,6 +2468,7 @@ function calcularMercado() {
     actualizarOportunidad(
         detalle,
         unidadesPotenciales,
+        empleadosPotenciales,
         tam,
         sam,
         som
@@ -2556,7 +2476,6 @@ function calcularMercado() {
 
 
     actualizarPrompt();
-
 
     guardarConfiguracionProducto();
 
@@ -2570,6 +2489,7 @@ function calcularMercado() {
 function actualizarOportunidad(
     detalle,
     unidades,
+    empleadosPotenciales,
     tam,
     sam,
     som
@@ -2614,7 +2534,7 @@ function actualizarOportunidad(
         "empleadosPotencialesOportunidad"
     ).textContent =
         formatearNumero(
-            detalle.empleadosPotenciales
+            empleadosPotenciales
         );
 
 }
@@ -2656,25 +2576,11 @@ function actualizarRankingIndustria() {
 
                 <tr>
 
-                    <th>
-                        #
-                    </th>
-
-                    <th>
-                        Industria
-                    </th>
-
-                    <th>
-                        Empresas
-                    </th>
-
-                    <th>
-                        Empleo
-                    </th>
-
-                    <th>
-                        Score
-                    </th>
+                    <th>#</th>
+                    <th>Industria</th>
+                    <th>Empresas</th>
+                    <th>Empleo</th>
+                    <th>Score</th>
 
                 </tr>
 
@@ -2773,15 +2679,6 @@ function actualizarComparacionProductos() {
                 "porcentajeSOM"
             ).value
         );
-
-
-    /*
-       Para comparación usamos el precio guardado
-       en el backend si existe.
-
-       Si el producto seleccionado tiene precio
-       editable en pantalla, usamos ese precio.
-    */
 
 
     const precioSeleccionado =
@@ -2924,37 +2821,14 @@ function actualizarComparacionProductos() {
 
                 <tr>
 
-                    <th>
-                        Producto
-                    </th>
-
-                    <th>
-                        Unidad
-                    </th>
-
-                    <th>
-                        Potencial
-                    </th>
-
-                    <th>
-                        Unidades
-                    </th>
-
-                    <th>
-                        Precio anual
-                    </th>
-
-                    <th>
-                        TAM
-                    </th>
-
-                    <th>
-                        SAM
-                    </th>
-
-                    <th>
-                        SOM
-                    </th>
+                    <th>Producto</th>
+                    <th>Unidad</th>
+                    <th>Potencial</th>
+                    <th>Unidades</th>
+                    <th>Precio anual</th>
+                    <th>TAM</th>
+                    <th>SAM</th>
+                    <th>SOM</th>
 
                 </tr>
 
@@ -3256,6 +3130,7 @@ function mostrarSinDatos() {
 
     [
         "empresasPotenciales",
+        "empleadosPotenciales",
         "tam",
         "sam",
         "som",
@@ -3654,10 +3529,6 @@ function generarReporte() {
         );
 
 
-    /*
-       Recalculamos los valores actuales.
-    */
-
     const empresasPotenciales =
         Math.round(
 
@@ -3869,6 +3740,8 @@ incorporar señales empresa por empresa.
         reporteTexto.trim();
 
 }
+
+
 /* ==========================================================
    EXPORTAR EXCEL COMPLETO
 ========================================================== */
@@ -3960,12 +3833,6 @@ function exportarExcel() {
 
     }
 
-
-    /*
-       ======================================================
-       FUNCIÓN CENTRAL PARA RECALCULAR CADA PRODUCTO
-       ======================================================
-    */
 
     function calcularProducto(
         industria,
@@ -4148,12 +4015,6 @@ function exportarExcel() {
     }
 
 
-    /*
-       ======================================================
-       PRODUCTO ACTUAL
-       ======================================================
-    */
-
     const productoActual =
         (mercado360.productos || [])
             .find(
@@ -4171,21 +4032,9 @@ function exportarExcel() {
         );
 
 
-    /*
-       ======================================================
-       WORKBOOK
-       ======================================================
-    */
-
     const workbook =
         XLSX.utils.book_new();
 
-
-    /*
-       ======================================================
-       1. RESUMEN
-       ======================================================
-    */
 
     const resumen = [
 
@@ -4299,12 +4148,6 @@ function exportarExcel() {
     );
 
 
-    /*
-       ======================================================
-       2. TAM SAM SOM
-       ======================================================
-    */
-
     const tamSamSom = [
 
         [
@@ -4404,12 +4247,6 @@ function exportarExcel() {
     );
 
 
-    /*
-       ======================================================
-       3. PRODUCTOS
-       ======================================================
-    */
-
     const productosExcel = [
 
         [
@@ -4445,12 +4282,6 @@ function exportarExcel() {
         productosExcel
     );
 
-
-    /*
-       ======================================================
-       4. RANKING INDUSTRIAS
-       ======================================================
-    */
 
     const rankingExcel = [
 
@@ -4499,12 +4330,6 @@ function exportarExcel() {
         rankingExcel
     );
 
-
-    /*
-       ======================================================
-       5. POTENCIAL POR INDUSTRIA / PRODUCTO
-       ======================================================
-    */
 
     const potencialExcel = [
 
@@ -4585,12 +4410,6 @@ function exportarExcel() {
     );
 
 
-    /*
-       ======================================================
-       6. NECESIDADES
-       ======================================================
-    */
-
     const necesidadesExcel = [
 
         [
@@ -4667,12 +4486,6 @@ function exportarExcel() {
     );
 
 
-    /*
-       ======================================================
-       7. DATOS OEDE
-       ======================================================
-    */
-
     const oedeExcel = [
 
         [
@@ -4717,12 +4530,6 @@ function exportarExcel() {
         oedeExcel
     );
 
-
-    /*
-       ======================================================
-       8. SUPUESTOS
-       ======================================================
-    */
 
     const supuestosExcel = [
 
@@ -4785,12 +4592,6 @@ function exportarExcel() {
         supuestosExcel
     );
 
-
-    /*
-       ======================================================
-       9. METODOLOGÍA
-       ======================================================
-    */
 
     const metodologiaExcel = [
 
@@ -4879,12 +4680,6 @@ function exportarExcel() {
     );
 
 
-    /*
-       ======================================================
-       10. ALERTAS
-       ======================================================
-    */
-
     const alertasExcel = [
 
         [
@@ -4954,12 +4749,6 @@ function exportarExcel() {
     );
 
 
-    /*
-       ======================================================
-       FORMATO
-       ======================================================
-    */
-
     workbook.SheetNames.forEach(
         nombre => {
 
@@ -4967,6 +4756,11 @@ function exportarExcel() {
                 workbook.Sheets[
                     nombre
                 ];
+
+
+            if (!hoja["!ref"]) {
+                return;
+            }
 
 
             const rango =
@@ -5045,12 +4839,6 @@ function exportarExcel() {
     );
 
 
-    /*
-       ======================================================
-       DESCARGA
-       ======================================================
-    */
-
     const fecha =
         new Date()
             .toISOString()
@@ -5098,6 +4886,7 @@ function agregarHoja(
     );
 
 }
+
 
 /* ==========================================================
    ACTUALIZAR TODO
@@ -5151,15 +4940,6 @@ document.getElementById(
 );
 
 
-/*
-   MUY IMPORTANTE:
-
-   Los cuatro valores comerciales generan
-   recalculo inmediato.
-
-   Por eso SAM y SOM nunca quedan "manuales".
-*/
-
 [
     "mercadoObjetivo",
     "porcentajeSAM",
@@ -5205,6 +4985,10 @@ function actualizarEstadoMotor() {
         mercado360?.ok
     ) {
 
+        status.classList.remove(
+            "motor-error"
+        );
+
         status.classList.add(
             "motor-ok"
         );
@@ -5218,6 +5002,10 @@ function actualizarEstadoMotor() {
             }`;
 
     } else {
+
+        status.classList.remove(
+            "motor-ok"
+        );
 
         status.classList.add(
             "motor-error"
@@ -5286,10 +5074,6 @@ async function cargarMercado360() {
         cargarIndustrias();
 
 
-        /*
-           Selección inicial
-        */
-
         const productoSelect =
             document.getElementById(
                 "producto360"
@@ -5331,6 +5115,10 @@ async function cargarMercado360() {
                 "motorStatusTexto"
             );
 
+
+        status.classList.remove(
+            "motor-ok"
+        );
 
         status.classList.add(
             "motor-error"
