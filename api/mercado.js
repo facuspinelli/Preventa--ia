@@ -3,7 +3,7 @@ const XLSX = require("xlsx");
 // ============================================================
 // PREVENTA IA
 // MOTOR DE MERCADO 360
-// VERSION 3.6
+// VERSION 3.7
 //
 // BASE:
 // - OEDE Empresas
@@ -12,7 +12,7 @@ const XLSX = require("xlsx");
 // - Industrias PREVENTA
 // - Productos PREVENTA
 //
-// NUEVO:
+// NUEVO 3.7:
 // - Supuestos comerciales editables
 // - Precio por producto
 // - TAM
@@ -21,8 +21,20 @@ const XLSX = require("xlsx");
 // - Mercado por producto
 // - Mercado por industria
 // - Empresas potenciales
+// - Empleados potenciales
+// - Unidad de mercado por producto
+// - Criterios específicos por producto
+// - Factores explicativos del potencial
+// - Indicadores sectoriales por variable
+// - Potencial dinámico
 //
 // IMPORTANTE:
+// OEDE aporta datos reales de empresas y empleo.
+//
+// Las variables documentales y sus pesos son indicadores/modelos
+// sectoriales. NO representan una identificación individual de
+// empresas que necesariamente tengan esa necesidad.
+//
 // Los precios permanecen en 0 hasta ser definidos.
 // El motor NO inventa precios.
 // ============================================================
@@ -216,11 +228,12 @@ function detectarAnio(texto) {
             coincidencias.length - 1
         ]
     );
+
 }
 
 
 // ============================================================
-// DETECTAR PERIODO
+// DETECTAR PERÍODO
 // ============================================================
 
 function detectarPeriodo(texto) {
@@ -1870,6 +1883,229 @@ const variablesDocumentales = {
 
 
 // ============================================================
+// CRITERIOS ESPECÍFICOS POR PRODUCTO
+//
+// Cada producto utiliza diferentes variables para determinar
+// su potencial.
+//
+// Los pesos de cada producto deben sumar aproximadamente 1.
+//
+// IMPORTANTE:
+// Estos pesos son parte del modelo comercial y son editables.
+// No representan datos observados directamente en OEDE.
+// ============================================================
+
+const criteriosProducto = {
+
+    // --------------------------------------------------------
+    // GUARDA / ALMACENAMIENTO
+    // --------------------------------------------------------
+
+    guarda: {
+
+        descripcion:
+            "Potencial de empresas con necesidad de conservar, almacenar, buscar y gestionar documentación digital.",
+
+        pesoAfinidad:
+            0.30,
+
+        pesoVariables:
+            0.70,
+
+        factores: {
+
+            necesidadDocumental:
+                0.20,
+
+            almacenamiento:
+                0.30,
+
+            busqueda:
+                0.15,
+
+            archivoFisico:
+                0.15,
+
+            migracion:
+                0.10,
+
+            integraciones:
+                0.10
+
+        }
+
+    },
+
+
+    // --------------------------------------------------------
+    // DIGITALIZACIÓN
+    // --------------------------------------------------------
+
+    digitalizacion: {
+
+        descripcion:
+            "Potencial de empresas con documentación física y necesidad de convertirla a formato digital.",
+
+        pesoAfinidad:
+            0.30,
+
+        pesoVariables:
+            0.70,
+
+        factores: {
+
+            archivoFisico:
+                0.25,
+
+            digitalizacion:
+                0.30,
+
+            ocr:
+                0.15,
+
+            necesidadDocumental:
+                0.15,
+
+            almacenamiento:
+                0.10,
+
+            busqueda:
+                0.05
+
+        }
+
+    },
+
+
+    // --------------------------------------------------------
+    // FIRMA DE RECIBOS
+    // --------------------------------------------------------
+
+    firma_recibos: {
+
+        descripcion:
+            "Potencial de trabajadores alcanzables mediante procesos de firma de recibos y documentación laboral.",
+
+        pesoAfinidad:
+            0.20,
+
+        pesoVariables:
+            0.80,
+
+        factores: {
+
+            firmas:
+                0.50,
+
+            necesidadDocumental:
+                0.15,
+
+            workflows:
+                0.15,
+
+            compliance:
+                0.10,
+
+            almacenamiento:
+                0.10
+
+        }
+
+    },
+
+
+    // --------------------------------------------------------
+    // FIRMA ELECTRÓNICA
+    // --------------------------------------------------------
+
+    firma_electronica: {
+
+        descripcion:
+            "Potencial de empresas con necesidades de firma de documentos, contratos, workflows y cumplimiento.",
+
+        pesoAfinidad:
+            0.30,
+
+        pesoVariables:
+            0.70,
+
+        factores: {
+
+            firmas:
+                0.30,
+
+            contratos:
+                0.20,
+
+            workflows:
+                0.20,
+
+            compliance:
+                0.15,
+
+            integraciones:
+                0.10,
+
+            necesidadDocumental:
+                0.05
+
+        }
+
+    },
+
+
+    // --------------------------------------------------------
+    // THUBAN
+    // --------------------------------------------------------
+
+    thuban: {
+
+        descripcion:
+            "Potencial de empresas con necesidades de gestión documental integral, búsqueda, workflows, almacenamiento, OCR, integraciones y migración.",
+
+        pesoAfinidad:
+            0.30,
+
+        pesoVariables:
+            0.70,
+
+        factores: {
+
+            necesidadDocumental:
+                0.15,
+
+            busqueda:
+                0.15,
+
+            workflows:
+                0.15,
+
+            almacenamiento:
+                0.15,
+
+            integraciones:
+                0.10,
+
+            ocr:
+                0.10,
+
+            migracion:
+                0.10,
+
+            contratos:
+                0.05,
+
+            archivoFisico:
+                0.05
+
+        }
+
+    }
+
+};
+
+
+// ============================================================
 // SUPUESTOS DE MERCADO
 //
 // IMPORTANTE:
@@ -2062,6 +2298,522 @@ function generarRanking(
 
 
 // ============================================================
+// CALCULAR POTENCIAL DE UN PRODUCTO PARA UNA INDUSTRIA
+//
+// Fórmula:
+//
+// potencial =
+//     afinidad × pesoAfinidad
+//     +
+//     scoreVariables × pesoVariables
+//
+// scoreVariables:
+//
+//     promedio ponderado de los indicadores específicos
+//     del producto.
+//
+// IMPORTANTE:
+// Las estimaciones por factor NO se suman entre sí porque
+// diferentes factores pueden afectar a las mismas empresas.
+// ============================================================
+
+function calcularPotencialProducto(
+    industriaData,
+    producto
+) {
+
+    const industria =
+        industriaData.industria;
+
+
+    const matriz =
+        potencialProductosIndustria[
+            industria
+        ] ||
+        potencialProductosIndustria[
+            "Otros"
+        ];
+
+
+    const variables =
+        variablesDocumentales[
+            industria
+        ] ||
+        variablesDocumentales[
+            "Otros"
+        ];
+
+
+    const criterios =
+        criteriosProducto[
+            producto.id
+        ] ||
+        {
+
+            descripcion:
+                producto.descripcion,
+
+            pesoAfinidad:
+                0.30,
+
+            pesoVariables:
+                0.70,
+
+            factores:
+                {}
+
+        };
+
+
+    const afinidad =
+        Number(
+            matriz[
+                producto.id
+            ] ?? 0.5
+        );
+
+
+    const factores = [];
+
+    let sumaFactores = 0;
+
+    let pesoTotal = 0;
+
+
+    // ========================================================
+    // CALCULAR INDICADORES ESPECÍFICOS
+    // ========================================================
+
+    for (
+        const [variable, peso] of
+        Object.entries(
+            criterios.factores
+        )
+    ) {
+
+        const indicador =
+            Number(
+                variables[
+                    variable
+                ] ?? 0.5
+            );
+
+
+        const aporte =
+            indicador *
+            peso;
+
+
+        sumaFactores +=
+            aporte;
+
+
+        pesoTotal +=
+            peso;
+
+
+        const empresasBase =
+            industriaData.empresas *
+            (
+                supuestosMercado
+                    .porcentajeEmpresasObjetivo /
+                100
+            );
+
+
+        const empleoBase =
+            industriaData.empleo *
+            (
+                supuestosMercado
+                    .porcentajeEmpresasObjetivo /
+                100
+            );
+
+
+        const empresasEstimadas =
+            Math.round(
+                empresasBase *
+                indicador
+            );
+
+
+        const empleadosEstimados =
+            Math.round(
+                empleoBase *
+                indicador
+            );
+
+
+        factores.push({
+
+            variable,
+
+            indicadorSectorial:
+                Number(
+                    indicador.toFixed(3)
+                ),
+
+            indicadorSectorialPorcentaje:
+                Number(
+                    (
+                        indicador *
+                        100
+                    ).toFixed(1)
+                ),
+
+            peso:
+                Number(
+                    peso.toFixed(3)
+                ),
+
+            pesoPorcentaje:
+                Number(
+                    (
+                        peso *
+                        100
+                    ).toFixed(1)
+                ),
+
+            aporte:
+                Number(
+                    aporte.toFixed(3)
+                ),
+
+            aportePorcentaje:
+                Number(
+                    (
+                        aporte *
+                        100
+                    ).toFixed(1)
+                ),
+
+            empresasEstimadas,
+
+            empleadosEstimados
+
+        });
+
+    }
+
+
+    // ========================================================
+    // SCORE DE VARIABLES
+    // ========================================================
+
+    const scoreVariables =
+        pesoTotal > 0
+            ? sumaFactores / pesoTotal
+            : 0.5;
+
+
+    // ========================================================
+    // PESOS DEL MODELO
+    // ========================================================
+
+    const pesoAfinidad =
+        Number(
+            criterios.pesoAfinidad ??
+            0.30
+        );
+
+
+    const pesoVariables =
+        Number(
+            criterios.pesoVariables ??
+            0.70
+        );
+
+
+    const pesoModeloTotal =
+        pesoAfinidad +
+        pesoVariables;
+
+
+    const pesoAfinidadNormalizado =
+        pesoModeloTotal > 0
+            ? pesoAfinidad /
+              pesoModeloTotal
+            : 0.30;
+
+
+    const pesoVariablesNormalizado =
+        pesoModeloTotal > 0
+            ? pesoVariables /
+              pesoModeloTotal
+            : 0.70;
+
+
+    // ========================================================
+    // POTENCIAL FINAL
+    // ========================================================
+
+    const potencial =
+        Math.min(
+
+            1,
+
+            (
+                afinidad *
+                pesoAfinidadNormalizado
+            )
+
+            +
+
+            (
+                scoreVariables *
+                pesoVariablesNormalizado
+            )
+
+        );
+
+
+    // ========================================================
+    // EMPRESAS POTENCIALES
+    // ========================================================
+
+    const empresasPotenciales =
+        Math.round(
+
+            industriaData.empresas *
+
+            (
+                supuestosMercado
+                    .porcentajeEmpresasObjetivo /
+                100
+            )
+
+            *
+
+            potencial
+
+        );
+
+
+    // ========================================================
+    // EMPLEADOS POTENCIALES
+    // ========================================================
+
+    const empleadosPotenciales =
+        Math.round(
+
+            industriaData.empleo *
+
+            (
+                supuestosMercado
+                    .porcentajeEmpresasObjetivo /
+                100
+            )
+
+            *
+
+            potencial
+
+        );
+
+
+    // ========================================================
+    // UNIDAD DE MERCADO
+    // ========================================================
+
+    const unidadMercado =
+        producto.unidad === "empleado"
+            ? "empleado"
+            : "empresa";
+
+
+    const unidadesPotenciales =
+        unidadMercado === "empleado"
+            ? empleadosPotenciales
+            : empresasPotenciales;
+
+
+    // ========================================================
+    // NIVEL DE POTENCIAL
+    // ========================================================
+
+    let nivel =
+        "Bajo";
+
+
+    if (
+        potencial >= 0.80
+    ) {
+
+        nivel =
+            "Muy alto";
+
+    } else if (
+        potencial >= 0.60
+    ) {
+
+        nivel =
+            "Alto";
+
+    } else if (
+        potencial >= 0.40
+    ) {
+
+        nivel =
+            "Medio";
+
+    }
+
+
+    // ========================================================
+    // ORDENAR FACTORES POR APORTE
+    // ========================================================
+
+    factores.sort(
+        (a, b) =>
+            b.aporte -
+            a.aporte
+    );
+
+
+    // ========================================================
+    // FACTORES PRINCIPALES
+    // ========================================================
+
+    const factoresPrincipales =
+        factores
+            .slice(
+                0,
+                3
+            )
+            .map(
+                factor =>
+                    factor.variable
+            );
+
+
+    // ========================================================
+    // EXPLICACIÓN
+    // ========================================================
+
+    let explicacion =
+        criterios.descripcion ||
+        producto.descripcion;
+
+
+    if (
+        factoresPrincipales.length > 0
+    ) {
+
+        explicacion +=
+            " Los principales factores del modelo son: " +
+            factoresPrincipales.join(
+                ", "
+            ) +
+            ".";
+
+    }
+
+
+    // ========================================================
+    // RESULTADO
+    // ========================================================
+
+    return {
+
+        industria,
+
+        producto:
+            producto.id,
+
+        productoNombre:
+            producto.nombre,
+
+        unidad:
+            producto.unidad,
+
+        unidadMercado,
+
+        descripcion:
+            producto.descripcion,
+
+        empresas:
+            industriaData.empresas,
+
+        empleo:
+            industriaData.empleo,
+
+        afinidad:
+            Number(
+                afinidad.toFixed(3)
+            ),
+
+        afinidadPorcentaje:
+            Number(
+                (
+                    afinidad *
+                    100
+                ).toFixed(1)
+            ),
+
+        pesoAfinidad:
+            Number(
+                pesoAfinidadNormalizado.toFixed(3)
+            ),
+
+        pesoVariables:
+            Number(
+                pesoVariablesNormalizado.toFixed(3)
+            ),
+
+        scoreVariables:
+            Number(
+                scoreVariables.toFixed(3)
+            ),
+
+        scoreVariablesPorcentaje:
+            Number(
+                (
+                    scoreVariables *
+                    100
+                ).toFixed(1)
+            ),
+
+        potencial:
+            Number(
+                potencial.toFixed(3)
+            ),
+
+        potencialPorcentaje:
+            Number(
+                (
+                    potencial *
+                    100
+                ).toFixed(1)
+            ),
+
+        nivel,
+
+        empresasPotenciales,
+
+        empleadosPotenciales,
+
+        unidadesPotenciales,
+
+        factores,
+
+        factoresPrincipales,
+
+        factorPrincipal:
+            factores.length > 0
+                ? factores[0].variable
+                : null,
+
+        explicacion,
+
+        metodologia:
+            "Potencial = afinidad sectorial ponderada + promedio ponderado de indicadores documentales específicos del producto. Las estimaciones por factor no se suman entre sí porque pueden referirse a las mismas empresas. OEDE aporta empresas y empleo; los indicadores documentales son variables sectoriales modeladas."
+
+    };
+
+}
+
+
+// ============================================================
 // CALCULAR POTENCIAL POR PRODUCTO
 // ============================================================
 
@@ -2076,132 +2828,20 @@ function calcularPotencialProductos(
         const industriaData of ranking
     ) {
 
-        const industria =
-            industriaData.industria;
-
-
-        const matriz =
-            potencialProductosIndustria[
-                industria
-            ] ||
-            potencialProductosIndustria[
-                "Otros"
-            ];
-
-
-        const variables =
-            variablesDocumentales[
-                industria
-            ] ||
-            variablesDocumentales[
-                "Otros"
-            ];
-
-
         for (
             const producto of productosPREVENTA
         ) {
 
-            const afinidad =
-                matriz[
-                    producto.id
-                ] ??
-                0.5;
-
-
-            const necesidad =
-                variables
-                    .necesidadDocumental ??
-                0.5;
-
-
             const potencial =
-                Math.min(
-                    1,
-                    (
-                        afinidad *
-                        0.60
-                    )
-                    +
-                    (
-                        necesidad *
-                        0.40
-                    )
+                calcularPotencialProducto(
+                    industriaData,
+                    producto
                 );
 
 
-            const empresasPotenciales =
-                Math.round(
-
-                    industriaData.empresas *
-
-                    (
-                        supuestosMercado
-                            .porcentajeEmpresasObjetivo /
-                        100
-                    )
-
-                    *
-
-                    potencial
-
-                );
-
-
-            const empleadosPotenciales =
-                Math.round(
-
-                    industriaData.empleo *
-
-                    (
-                        supuestosMercado
-                            .porcentajeEmpresasObjetivo /
-                        100
-                    )
-
-                    *
-
-                    potencial
-
-                );
-
-
-            resultado.push({
-
-                industria,
-
-                producto:
-                    producto.id,
-
-                productoNombre:
-                    producto.nombre,
-
-                empresas:
-                    industriaData.empresas,
-
-                empleo:
-                    industriaData.empleo,
-
-                afinidad:
-                    Number(
-                        afinidad.toFixed(3)
-                    ),
-
-                necesidadDocumental:
-                    Number(
-                        necesidad.toFixed(3)
-                    ),
-
-                potencial:
-                    Number(
-                        potencial.toFixed(3)
-                    ),
-
-                empresasPotenciales,
-
-                empleadosPotenciales
-
-            });
+            resultado.push(
+                potencial
+            );
 
         }
 
@@ -2211,8 +2851,8 @@ function calcularPotencialProductos(
     return resultado
         .sort(
             (a, b) =>
-                b.empresasPotenciales -
-                a.empresasPotenciales
+                b.unidadesPotenciales -
+                a.unidadesPotenciales
         );
 
 }
@@ -2221,10 +2861,16 @@ function calcularPotencialProductos(
 // ============================================================
 // CALCULAR TAM / SAM / SOM
 //
-// Modelo inicial:
+// UNIDAD DE MERCADO:
+//
+// - Productos por empresa:
+//   empresas potenciales
+//
+// - Productos por empleado:
+//   empleados potenciales
 //
 // TAM:
-// empresas potenciales × precio anual
+// unidades potenciales × precio anual
 //
 // SAM:
 // TAM × % SAM
@@ -2249,31 +2895,22 @@ function calcularTAMSAMSOM(
         const industriaData of ranking
     ) {
 
-        const industria =
-            industriaData.industria;
-
-
-        const matriz =
-            potencialProductosIndustria[
-                industria
-            ] ||
-            potencialProductosIndustria[
-                "Otros"
-            ];
-
-
-        const variables =
-            variablesDocumentales[
-                industria
-            ] ||
-            variablesDocumentales[
-                "Otros"
-            ];
-
-
         for (
             const producto of productosPREVENTA
         ) {
+
+            // =================================================
+            // IMPORTANTE:
+            // Utilizamos exactamente el mismo motor de
+            // potencial utilizado en potencialProductos.
+            // =================================================
+
+            const potencial =
+                calcularPotencialProducto(
+                    industriaData,
+                    producto
+                );
+
 
             const precio =
                 Number(
@@ -2284,50 +2921,8 @@ function calcularTAMSAMSOM(
                 );
 
 
-            const afinidad =
-                matriz[
-                    producto.id
-                ] ??
-                0.5;
-
-
-            const necesidad =
-                variables
-                    .necesidadDocumental ??
-                0.5;
-
-
-            const potencial =
-                Math.min(
-                    1,
-                    (
-                        afinidad *
-                        0.60
-                    )
-                    +
-                    (
-                        necesidad *
-                        0.40
-                    )
-                );
-
-
-            const empresasPotenciales =
-                Math.round(
-
-                    industriaData.empresas *
-
-                    (
-                        supuestosMercado
-                            .porcentajeEmpresasObjetivo /
-                        100
-                    )
-
-                    *
-
-                    potencial
-
-                );
+            const unidadesPotenciales =
+                potencial.unidadesPotenciales;
 
 
             let tam = null;
@@ -2342,7 +2937,7 @@ function calcularTAMSAMSOM(
             ) {
 
                 tam =
-                    empresasPotenciales *
+                    unidadesPotenciales *
                     precio;
 
 
@@ -2382,7 +2977,8 @@ function calcularTAMSAMSOM(
 
             resultado.push({
 
-                industria,
+                industria:
+                    potencial.industria,
 
                 producto:
                     producto.id,
@@ -2390,7 +2986,52 @@ function calcularTAMSAMSOM(
                 productoNombre:
                     producto.nombre,
 
-                empresasPotenciales,
+                unidad:
+                    producto.unidad,
+
+                unidadMercado:
+                    potencial.unidadMercado,
+
+                empresas:
+                    potencial.empresas,
+
+                empleo:
+                    potencial.empleo,
+
+                afinidad:
+                    potencial.afinidad,
+
+                scoreVariables:
+                    potencial.scoreVariables,
+
+                potencial:
+                    potencial.potencial,
+
+                potencialPorcentaje:
+                    potencial.potencialPorcentaje,
+
+                nivel:
+                    potencial.nivel,
+
+                empresasPotenciales:
+                    potencial.empresasPotenciales,
+
+                empleadosPotenciales:
+                    potencial.empleadosPotenciales,
+
+                unidadesPotenciales,
+
+                factores:
+                    potencial.factores,
+
+                factoresPrincipales:
+                    potencial.factoresPrincipales,
+
+                factorPrincipal:
+                    potencial.factorPrincipal,
+
+                explicacion:
+                    potencial.explicacion,
 
                 precioAnual:
                     precio,
@@ -2457,7 +3098,19 @@ function resumirMercadoPorProducto(
                     productoNombre:
                         item.productoNombre,
 
+                    unidad:
+                        item.unidad,
+
+                    unidadMercado:
+                        item.unidadMercado,
+
                     empresasPotenciales:
+                        0,
+
+                    empleadosPotenciales:
+                        0,
+
+                    unidadesPotenciales:
                         0,
 
                     tam:
@@ -2486,6 +3139,14 @@ function resumirMercadoPorProducto(
 
         acumulado.empresasPotenciales +=
             item.empresasPotenciales;
+
+
+        acumulado.empleadosPotenciales +=
+            item.empleadosPotenciales;
+
+
+        acumulado.unidadesPotenciales +=
+            item.unidadesPotenciales;
 
 
         if (
@@ -2570,6 +3231,12 @@ function resumirMercadoPorIndustria(
                     empresasPotenciales:
                         0,
 
+                    empleadosPotenciales:
+                        0,
+
+                    unidadesPotenciales:
+                        0,
+
                     tam:
                         0,
 
@@ -2599,6 +3266,14 @@ function resumirMercadoPorIndustria(
 
         acumulado.empresasPotenciales +=
             item.empresasPotenciales;
+
+
+        acumulado.empleadosPotenciales +=
+            item.empleadosPotenciales;
+
+
+        acumulado.unidadesPotenciales +=
+            item.unidadesPotenciales;
 
 
         acumulado.productos++;
@@ -2651,8 +3326,8 @@ function resumirMercadoPorIndustria(
     )
     .sort(
         (a, b) =>
-            b.empresasPotenciales -
-            a.empresasPotenciales
+            b.unidadesPotenciales -
+            a.unidadesPotenciales
     );
 
 }
@@ -2679,7 +3354,7 @@ module.exports =
             );
 
             console.log(
-                "VERSION 3.6"
+                "VERSION 3.7"
             );
 
             console.log(
@@ -2904,7 +3579,12 @@ module.exports =
 
 
             faltantes.push(
-                "Validación de necesidad documental por industria"
+                "Validación de indicadores documentales por industria"
+            );
+
+
+            faltantes.push(
+                "Los indicadores documentales son estimaciones sectoriales y no identifican empresas individuales."
             );
 
 
@@ -2918,7 +3598,7 @@ module.exports =
                     true,
 
                 version:
-                    "3.6",
+                    "3.7",
 
                 motor:
                     "Mercado 360",
@@ -2951,7 +3631,7 @@ module.exports =
                             estadoOEDE,
 
                         metodologia:
-                            "OEDE utiliza actividades detalladas con códigos numéricos para evitar doble conteo de categorías agrupadoras."
+                            "OEDE utiliza actividades detalladas con códigos numéricos para evitar doble conteo de categorías agrupadoras. Las empresas y el empleo provienen de OEDE; los indicadores documentales son variables sectoriales modeladas."
 
                     }
 
@@ -3123,10 +3803,70 @@ module.exports =
 
 
                 // ------------------------------------------------
+                // CRITERIOS ESPECÍFICOS POR PRODUCTO
+                // ------------------------------------------------
+
+                criteriosProducto:
+                    criteriosProducto,
+
+
+                // ------------------------------------------------
+                // METODOLOGÍA DEL POTENCIAL
+                // ------------------------------------------------
+
+                metodologiaPotencial: {
+
+                    descripcion:
+                        "El potencial de cada producto se calcula combinando afinidad sectorial e indicadores documentales específicos del producto.",
+
+                    formula:
+                        "Potencial = afinidad sectorial × peso de afinidad + score de variables × peso de variables.",
+
+                    pesoAfinidad:
+                        "Configurado individualmente por producto.",
+
+                    pesoVariables:
+                        "Configurado individualmente por producto.",
+
+                    datosOEDE:
+                        [
+                            "Empresas",
+                            "Empleo",
+                            "Actividad económica",
+                            "Código de actividad"
+                        ],
+
+                    indicadoresModelados:
+                        [
+                            "necesidadDocumental",
+                            "archivoFisico",
+                            "digitalizacion",
+                            "ocr",
+                            "busqueda",
+                            "firmas",
+                            "workflows",
+                            "compliance",
+                            "contratos",
+                            "migracion",
+                            "integraciones",
+                            "almacenamiento"
+                        ],
+
+                    aclaracion:
+                        "Los indicadores documentales son estimaciones sectoriales utilizadas por el modelo. No significan que un porcentaje determinado de empresas individuales haya sido identificado con esa necesidad.",
+
+                    estimaciones:
+                        "Las estimaciones de empresas o empleados potenciales no deben sumarse entre factores porque los factores pueden corresponder a las mismas organizaciones o personas."
+
+                },
+
+
+                // ------------------------------------------------
                 // POTENCIAL
                 // ------------------------------------------------
 
-                potencialProductos,
+                potencialProductos:
+                    potencialProductos,
 
 
                 // ------------------------------------------------
@@ -3144,7 +3884,10 @@ module.exports =
                 tamSamSom: {
 
                     metodologia:
-                        "TAM = empresas potenciales × precio anual. SAM = TAM × porcentaje SAM. SOM = SAM × porcentaje SOM.",
+                        "TAM = unidades potenciales × precio anual. Para productos por empresa se utilizan empresas potenciales. Para productos por empleado se utilizan empleados potenciales. SAM = TAM × porcentaje SAM. SOM = SAM × porcentaje SOM.",
+
+                    unidadMercado:
+                        "La unidad de mercado se determina por producto: empresa o empleado.",
 
                     detalle:
                         tamSamSom.detalle,
@@ -3239,15 +3982,31 @@ module.exports =
                             true,
 
                         hojaAuxiliarEmpresasExcluida:
-                            "Hoja1"
+                            "Hoja1",
+
+                        potencialPorProducto:
+                            true,
+
+                        factoresEspecificosPorProducto:
+                            true,
+
+                        unidadDeMercado:
+                            true,
+
+                        tamSamSomMismaLogica:
+                            true
 
                     }
 
                 },
 
 
+                // ------------------------------------------------
+                // SIGUIENTE PASO
+                // ------------------------------------------------
+
                 siguientePaso:
-                    "Definir precios por producto y luego conectar TAM/SAM/SOM dinámicos con Mercado 360."
+                    "Definir precios por producto, validar los indicadores sectoriales y luego conectar Mercado 360 con prospectos empresa por empresa."
 
             };
 
