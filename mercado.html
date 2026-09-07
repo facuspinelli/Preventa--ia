@@ -40,14 +40,29 @@
         color: #cbd5e1;
     }
 
-    .btn-home {
-        background: white;
-        color: #111827;
+    .btn-home,
+    .btn-primary,
+    .btn-secondary {
         border: none;
         border-radius: 9px;
         padding: 10px 16px;
         cursor: pointer;
         font-weight: bold;
+    }
+
+    .btn-home {
+        background: white;
+        color: #111827;
+    }
+
+    .btn-primary {
+        background: #2563eb;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #e5e7eb;
+        color: #111827;
     }
 
     .container {
@@ -56,23 +71,7 @@
         padding: 0 20px 40px;
     }
 
-    .intro {
-        background: white;
-        border-radius: 14px;
-        padding: 22px;
-        margin-bottom: 20px;
-        box-shadow: 0 3px 12px rgba(0,0,0,.06);
-    }
-
-    .intro h2 {
-        margin-top: 0;
-    }
-
-    .intro p {
-        color: #64748b;
-        line-height: 1.6;
-    }
-
+    .intro,
     .section {
         background: white;
         border-radius: 14px;
@@ -81,14 +80,15 @@
         box-shadow: 0 3px 12px rgba(0,0,0,.06);
     }
 
+    .intro h2,
     .section h2 {
         margin-top: 0;
-        margin-bottom: 8px;
     }
 
+    .intro p,
     .section-description {
         color: #64748b;
-        margin-bottom: 20px;
+        line-height: 1.6;
     }
 
     .products {
@@ -102,6 +102,11 @@
         border-radius: 12px;
         padding: 18px;
         background: #f8fafc;
+    }
+
+    .product.active {
+        border: 2px solid #2563eb;
+        background: #eff6ff;
     }
 
     .product .icon {
@@ -123,7 +128,7 @@
 
     .form-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 16px;
     }
 
@@ -135,13 +140,28 @@
     }
 
     input,
-    select {
+    select,
+    textarea {
         width: 100%;
         padding: 11px 12px;
         border: 1px solid #d1d5db;
         border-radius: 8px;
         font-size: 14px;
         background: white;
+    }
+
+    textarea {
+        min-height: 180px;
+        resize: vertical;
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.5;
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
     }
 
     .info-box {
@@ -155,64 +175,287 @@
         font-size: 14px;
     }
 
-    .steps {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-        gap: 12px;
+    .warning-box {
+        margin-top: 18px;
+        padding: 15px;
+        background: #fff7ed;
+        border-left: 4px solid #f97316;
+        border-radius: 8px;
+        color: #7c2d12;
+        line-height: 1.5;
+        font-size: 14px;
     }
 
-    .step {
+    .success-box {
+        margin-top: 18px;
         padding: 15px;
-        border-radius: 10px;
+        background: #f0fdf4;
+        border-left: 4px solid #16a34a;
+        border-radius: 8px;
+        color: #14532d;
+        line-height: 1.5;
+        font-size: 14px;
+    }
+
+    /* KPI */
+
+    .kpis {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .kpi {
         background: #f8fafc;
         border: 1px solid #e5e7eb;
-        text-align: center;
+        border-radius: 12px;
+        padding: 20px;
     }
 
-    .step-number {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #111827;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 10px;
+    .kpi-label {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .kpi-value {
+        font-size: 25px;
+        font-weight: bold;
+        color: #111827;
+    }
+
+    .kpi-small {
+        margin-top: 6px;
+        color: #94a3b8;
+        font-size: 12px;
+    }
+
+    /* Tabla */
+
+    .table-wrapper {
+        overflow-x: auto;
+        margin-top: 18px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 750px;
+    }
+
+    th,
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #e5e7eb;
+        text-align: left;
+        font-size: 13px;
+    }
+
+    th {
+        background: #f8fafc;
         font-weight: bold;
     }
 
-    .step strong {
+    .tag {
+        display: inline-block;
+        padding: 5px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    .tag-source {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .tag-calc {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .tag-assumption {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .tag-pending {
+        background: #e5e7eb;
+        color: #475569;
+    }
+
+    /* Gráficos */
+
+    .charts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .chart-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        background: #fff;
+    }
+
+    .chart-card h3 {
+        margin-top: 0;
+    }
+
+    .bar-row {
+        margin: 18px 0;
+    }
+
+    .bar-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .bar-bg {
+        width: 100%;
+        height: 22px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .bar {
+        height: 100%;
+        border-radius: 20px;
+        background: #2563eb;
+        min-width: 2px;
+        transition: width .3s ease;
+    }
+
+    .bar.sam {
+        background: #16a34a;
+    }
+
+    .bar.som {
+        background: #f59e0b;
+    }
+
+    .year-chart {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: end;
+        gap: 15px;
+        height: 260px;
+        margin-top: 25px;
+        padding: 10px;
+        border-bottom: 1px solid #cbd5e1;
+    }
+
+    .year-column {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .year-bar {
+        width: 45px;
+        max-width: 100%;
+        min-height: 4px;
+        background: #2563eb;
+        border-radius: 8px 8px 0 0;
+        transition: height .3s ease;
+    }
+
+    .year-label {
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .year-value {
+        font-size: 10px;
+        color: #64748b;
+        text-align: center;
+    }
+
+    /* Alertas */
+
+    .alerts {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+    }
+
+    .alert {
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .alert strong {
         display: block;
         margin-bottom: 5px;
     }
 
-    .step small {
-        color: #64748b;
+    .alert.high {
+        background: #fef2f2;
+        border-color: #fecaca;
     }
 
-    .future {
-        border: 2px dashed #cbd5e1;
-        background: #f8fafc;
-        text-align: center;
-        padding: 30px;
+    .alert.medium {
+        background: #fff7ed;
+        border-color: #fed7aa;
+    }
+
+    .alert.info {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+    }
+
+    /* Prompt */
+
+    .prompt-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 12px 0;
+    }
+
+    .quick-prompt {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .ai-result {
+        margin-top: 18px;
+        background: #0f172a;
+        color: #e2e8f0;
         border-radius: 12px;
-    }
-
-    .future .big {
-        font-size: 40px;
-        margin-bottom: 10px;
-    }
-
-    .future h3 {
-        margin: 5px 0 10px;
-    }
-
-    .future p {
-        color: #64748b;
-        max-width: 700px;
-        margin: auto;
+        padding: 20px;
+        white-space: pre-wrap;
         line-height: 1.6;
+        min-height: 130px;
+        font-size: 13px;
+    }
+
+    .report {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 18px;
+        line-height: 1.6;
+    }
+
+    .report h3 {
+        margin-top: 0;
     }
 
     .footer {
@@ -220,6 +463,12 @@
         color: #94a3b8;
         font-size: 12px;
         margin-top: 25px;
+    }
+
+    @media (max-width: 850px) {
+        .charts {
+            grid-template-columns: 1fr;
+        }
     }
 
     @media (max-width: 700px) {
@@ -230,6 +479,29 @@
 
         .btn-home {
             width: 100%;
+        }
+
+        .year-chart {
+            gap: 5px;
+        }
+    }
+
+    @media print {
+        header,
+        .actions,
+        .prompt-actions,
+        .btn-home {
+            display: none !important;
+        }
+
+        body {
+            background: white;
+        }
+
+        .section,
+        .intro {
+            box-shadow: none;
+            border: 1px solid #ddd;
         }
     }
 </style>
@@ -250,20 +522,32 @@
 
 <div class="container">
 
+    <!-- INTRO -->
+
     <div class="intro">
+
         <h2>🚀 Inteligencia de Mercado</h2>
 
         <p>
-            Este módulo permitirá analizar el mercado potencial de PREVENTA IA
-            utilizando datos reales, supuestos configurables y cálculos de
-            TAM, SAM y SOM para cada línea de negocio.
+            Este módulo permite construir un modelo de mercado basado en
+            datos reales, fuentes verificables, supuestos configurables
+            y cálculos transparentes de TAM, SAM y SOM.
         </p>
 
         <p>
-            La idea es transformar el análisis histórico de 2022 en un modelo
-            dinámico que podamos actualizar y utilizar para detectar nuevas
-            oportunidades comerciales.
+            El modelo toma como base el análisis histórico de PREVENTA IA
+            y está preparado para incorporar información actualizada de
+            fuentes externas.
         </p>
+
+        <div class="success-box">
+            <strong>✅ Modelo preparado</strong><br>
+            Actualmente está cargado el histórico 2022 de
+            <strong>Digitalización</strong> a partir de los datos proporcionados
+            del análisis original. Los demás productos quedarán pendientes
+            hasta incorporar sus datos reales.
+        </div>
+
     </div>
 
 
@@ -274,10 +558,19 @@
         <h2>🧩 Líneas de negocio</h2>
 
         <div class="section-description">
-            Estas son las cinco líneas que vamos a utilizar como base del modelo.
+            Estas son las líneas de negocio que vamos a analizar.
         </div>
 
         <div class="products">
+
+            <div class="product active">
+                <div class="icon">📄</div>
+                <h3>Digitalización</h3>
+                <p>
+                    Digitalización de documentos, imágenes y archivos físicos.
+                    Histórico 2022 disponible.
+                </p>
+            </div>
 
             <div class="product">
                 <div class="icon">🗄️</div>
@@ -285,15 +578,6 @@
                 <p>
                     Servicios de guarda, almacenamiento documental y
                     conservación de archivos.
-                </p>
-            </div>
-
-            <div class="product">
-                <div class="icon">📄</div>
-                <h3>Digitalización</h3>
-                <p>
-                    Digitalización de documentos, imágenes y archivos
-                    físicos.
                 </p>
             </div>
 
@@ -336,7 +620,8 @@
         <h2>⚙️ Configuración del análisis</h2>
 
         <div class="section-description">
-            Estos parámetros determinarán qué mercado queremos analizar.
+            Modificá las variables del escenario. Los resultados se
+            recalculan automáticamente.
         </div>
 
         <div class="form-grid">
@@ -344,9 +629,9 @@
             <div>
                 <label>Producto</label>
 
-                <select id="producto">
-                    <option value="guarda">Guarda / Almacenamiento</option>
+                <select id="producto" onchange="cambiarProducto()">
                     <option value="digitalizacion">Digitalización</option>
+                    <option value="guarda">Guarda / Almacenamiento</option>
                     <option value="recibos">Firma de recibos de sueldo</option>
                     <option value="firma">Firma electrónica</option>
                     <option value="thuban">Thuban</option>
@@ -356,7 +641,7 @@
             <div>
                 <label>País / mercado</label>
 
-                <select id="pais">
+                <select id="pais" onchange="calcular()">
                     <option>Argentina</option>
                     <option>Uruguay</option>
                     <option>Paraguay</option>
@@ -369,13 +654,13 @@
             <div>
                 <label>Año del análisis</label>
 
-                <input
-                    type="number"
-                    id="anio"
-                    value="2026"
-                    min="2020"
-                    max="2100"
-                >
+                <select id="anio" onchange="cambiarAnio()">
+                    <option value="2022">2022 · Histórico cargado</option>
+                    <option value="2023">2023 · Proyección histórica</option>
+                    <option value="2024">2024 · Proyección histórica</option>
+                    <option value="2025">2025 · Proyección histórica</option>
+                    <option value="2026" selected>2026 · Actualización pendiente</option>
+                </select>
             </div>
 
             <div>
@@ -388,15 +673,287 @@
                     min="0"
                     max="100"
                     step="0.1"
+                    oninput="calcular()"
+                >
+            </div>
+
+        </div>
+
+        <div class="actions">
+
+            <button class="btn-primary" onclick="cargarHistorico()">
+                📚 Cargar histórico 2022
+            </button>
+
+            <button class="btn-secondary" onclick="limpiarModelo()">
+                🧹 Limpiar escenario
+            </button>
+
+        </div>
+
+        <div id="estadoModelo" class="info-box">
+            Seleccioná un producto y un año para analizar el mercado.
+        </div>
+
+    </div>
+
+
+    <!-- DATOS BASE -->
+
+    <div class="section">
+
+        <h2>📌 Datos base del modelo</h2>
+
+        <div class="section-description">
+            Cada dato se identifica como fuente, cálculo, supuesto o dato pendiente.
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Valor</th>
+                        <th>Tipo</th>
+                        <th>Año</th>
+                        <th>Fuente / explicación</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaDatos">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUPUESTOS -->
+
+    <div class="section">
+
+        <h2>🔬 Supuestos editables</h2>
+
+        <div class="section-description">
+            Estos valores permiten realizar escenarios. Los cambios no modifican
+            los datos originales y pueden guardarse en el navegador.
+        </div>
+
+        <div class="form-grid">
+
+            <div>
+                <label>Consumo considerado como hojas (%)</label>
+
+                <input
+                    type="number"
+                    id="porcentajeHojas"
+                    value="80"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    oninput="calcular()"
+                >
+            </div>
+
+            <div>
+                <label>Hojas por persona / año</label>
+
+                <input
+                    type="number"
+                    id="hojasPersona"
+                    value="9303"
+                    min="0"
+                    step="1"
+                    oninput="calcular()"
+                >
+            </div>
+
+            <div>
+                <label>% de hojas que realmente se digitalizan</label>
+
+                <input
+                    type="number"
+                    id="porcentajeDigitalizado"
+                    value="43.48"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    oninput="calcular()"
+                >
+            </div>
+
+            <div>
+                <label>% de clientes que digitalizan</label>
+
+                <input
+                    type="number"
+                    id="porcentajeClientes"
+                    value="6.76"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    oninput="calcular()"
+                >
+            </div>
+
+            <div>
+                <label>Precio promedio por hoja (ARS)</label>
+
+                <input
+                    type="number"
+                    id="precioHoja"
+                    value="5.68"
+                    min="0"
+                    step="0.01"
+                    oninput="calcular()"
+                >
+            </div>
+
+            <div>
+                <label>Tipo de cambio histórico (ARS/USD)</label>
+
+                <input
+                    type="number"
+                    id="tipoCambio"
+                    value="102.75"
+                    min="0"
+                    step="0.01"
+                    oninput="calcular()"
                 >
             </div>
 
         </div>
 
         <div class="info-box">
-            💡 El porcentaje de captura será editable.
-            Más adelante, al modificarlo, los valores del SOM y los gráficos
-            se recalcularán automáticamente.
+            💡 Los valores anteriores provienen del modelo histórico
+            de Digitalización 2022 que acabamos de reconstruir.
+            En la próxima etapa podremos reemplazar cada variable
+            por datos actualizados de fuentes reales.
+        </div>
+
+    </div>
+
+
+    <!-- RESULTADOS -->
+
+    <div class="section">
+
+        <h2>💰 Resultado del mercado</h2>
+
+        <div class="kpis">
+
+            <div class="kpi">
+                <div class="kpi-label">TAM</div>
+                <div class="kpi-value" id="tamUSD">—</div>
+                <div class="kpi-small">Mercado total</div>
+            </div>
+
+            <div class="kpi">
+                <div class="kpi-label">SAM</div>
+                <div class="kpi-value" id="samUSD">—</div>
+                <div class="kpi-small">Mercado direccionable</div>
+            </div>
+
+            <div class="kpi">
+                <div class="kpi-label">SOM</div>
+                <div class="kpi-value" id="somUSD">—</div>
+                <div class="kpi-small">Mercado capturable</div>
+            </div>
+
+            <div class="kpi">
+                <div class="kpi-label">Captura</div>
+                <div class="kpi-value" id="capturaResultado">—</div>
+                <div class="kpi-small">Escenario actual</div>
+            </div>
+
+        </div>
+
+        <div id="formulaResultado" class="info-box">
+            —
+        </div>
+
+    </div>
+
+
+    <!-- GRÁFICOS -->
+
+    <div class="section">
+
+        <h2>📈 Visualización del mercado</h2>
+
+        <div class="charts">
+
+            <div class="chart-card">
+
+                <h3>TAM / SAM / SOM</h3>
+
+                <div class="bar-row">
+
+                    <div class="bar-label">
+                        <span>TAM</span>
+                        <strong id="barTamText">—</strong>
+                    </div>
+
+                    <div class="bar-bg">
+                        <div id="barTam" class="bar" style="width:0%"></div>
+                    </div>
+
+                </div>
+
+                <div class="bar-row">
+
+                    <div class="bar-label">
+                        <span>SAM</span>
+                        <strong id="barSamText">—</strong>
+                    </div>
+
+                    <div class="bar-bg">
+                        <div id="barSam" class="bar sam" style="width:0%"></div>
+                    </div>
+
+                </div>
+
+                <div class="bar-row">
+
+                    <div class="bar-label">
+                        <span>SOM</span>
+                        <strong id="barSomText">—</strong>
+                    </div>
+
+                    <div class="bar-bg">
+                        <div id="barSom" class="bar som" style="width:0%"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="chart-card">
+
+                <h3>Evolución del SOM</h3>
+
+                <div id="evolucionChart" class="year-chart">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ALERTAS -->
+
+    <div class="section">
+
+        <h2>🚨 Alertas y oportunidades</h2>
+
+        <div id="alertas" class="alerts">
         </div>
 
     </div>
@@ -406,10 +963,11 @@
 
     <div class="section">
 
-        <h2>🔬 Cómo funcionará el modelo</h2>
+        <h2>🧠 Trazabilidad del modelo</h2>
 
         <div class="section-description">
-            El cálculo estará basado en una cadena de información trazable.
+            La lógica utilizada para Digitalización reproduce la estructura
+            del análisis histórico.
         </div>
 
         <div class="steps">
@@ -423,7 +981,7 @@
             <div class="step">
                 <div class="step-number">2</div>
                 <strong>Datos</strong>
-                <small>Empresas, empleados, sectores, precios, etc.</small>
+                <small>Empresas, empleados, hojas y precios</small>
             </div>
 
             <div class="step">
@@ -435,7 +993,7 @@
             <div class="step">
                 <div class="step-number">4</div>
                 <strong>Fórmulas</strong>
-                <small>Cálculo transparente del mercado</small>
+                <small>Cálculo transparente</small>
             </div>
 
             <div class="step">
@@ -455,27 +1013,83 @@
     </div>
 
 
-    <!-- FUTURO -->
+    <!-- PROMPT MAESTRO -->
 
     <div class="section">
 
-        <div class="future">
+        <h2>🤖 Prompt Maestro · Análisis de Mercado</h2>
 
-            <div class="big">📈</div>
+        <div class="section-description">
+            Esta sección será la capa de inteligencia que analizará los datos
+            calculados y permitirá hacer preguntas sobre el mercado.
+        </div>
 
-            <h3>Próxima etapa: calculadora TAM / SAM / SOM</h3>
+        <div class="prompt-actions">
 
-            <p>
-                En la siguiente etapa vamos a incorporar los datos históricos
-                del Excel 2022, convertirlos en variables editables y construir
-                el primer cálculo real de TAM, SAM y SOM.
-            </p>
+            <button class="quick-prompt" onclick="usarPrompt('oportunidad')">
+                📍 Mayor oportunidad
+            </button>
 
-            <p style="margin-top:12px;">
-                Después agregaremos gráficos interactivos, análisis por sector,
-                alertas de oportunidades y finalmente el Prompt Maestro.
-            </p>
+            <button class="quick-prompt" onclick="usarPrompt('segmento')">
+                🎯 Mejor segmento
+            </button>
 
+            <button class="quick-prompt" onclick="usarPrompt('comparar')">
+                ⚖️ Comparar mercado
+            </button>
+
+            <button class="quick-prompt" onclick="usarPrompt('alertas')">
+                🚨 Detectar alertas
+            </button>
+
+            <button class="quick-prompt" onclick="usarPrompt('ejecutivo')">
+                📑 Informe ejecutivo
+            </button>
+
+        </div>
+
+        <textarea id="promptMaestro"></textarea>
+
+        <div class="actions">
+
+            <button class="btn-primary" onclick="analizarPrompt()">
+                🧠 Analizar mercado
+            </button>
+
+        </div>
+
+        <div id="resultadoIA" class="ai-result">
+Esperando una consulta...
+
+Podés utilizar los botones superiores o escribir tu propia pregunta.
+        </div>
+
+    </div>
+
+
+    <!-- REPORTE -->
+
+    <div class="section">
+
+        <h2>📑 Reporte ejecutivo</h2>
+
+        <div class="section-description">
+            Generá una vista ejecutiva del escenario actualmente seleccionado.
+        </div>
+
+        <div class="actions">
+
+            <button class="btn-primary" onclick="generarReporte()">
+                📑 Generar reporte
+            </button>
+
+            <button class="btn-secondary" onclick="window.print()">
+                🖨️ Imprimir / PDF
+            </button>
+
+        </div>
+
+        <div id="reporte" class="report" style="display:none;">
         </div>
 
     </div>
@@ -486,6 +1100,1632 @@
     </div>
 
 </div>
+
+
+<script>
+
+/* =========================================================
+   DATOS HISTÓRICOS
+   ========================================================= */
+
+const historicoDigitalizacion = {
+
+    2022: {
+        empresas: 519425,
+        empleadosPromedio: 53,
+        hojasPersona: 9303,
+        porcentajeHojas: 80,
+        porcentajeDigitalizado: 43.48,
+        porcentajeClientes: 6.76,
+        precioHoja: 5.68,
+        tipoCambio: 102.75,
+        crecimiento: 0,
+        tasaCaptura: 3,
+        empresasObjetivo: 5336,
+        contratosObjetivo: 160,
+        hojasObjetivo: 34382423,
+        tamUSDOriginal: 2154794857,
+        samUSDOriginal: 63355121,
+        somUSDOriginal: 1900654
+    },
+
+    2023: {
+        empresasObjetivo: 6083,
+        contratosObjetivo: 182,
+        hojasObjetivo: 39195962,
+        crecimiento: 14,
+        tasaCaptura: 3
+    },
+
+    2024: {
+        empresasObjetivo: 6934,
+        contratosObjetivo: 208,
+        hojasObjetivo: 39195962,
+        crecimiento: 14,
+        tasaCaptura: 3
+    },
+
+    2025: {
+        empresasObjetivo: 7905,
+        contratosObjetivo: 277,
+        hojasObjetivo: 45728622,
+        crecimiento: 14,
+        tasaCaptura: 3.5
+    },
+
+    2026: {
+        empresasObjetivo: 9012,
+        contratosObjetivo: 315,
+        hojasObjetivo: 45728622,
+        crecimiento: 14,
+        tasaCaptura: 3.5
+    }
+
+};
+
+
+/* =========================================================
+   FORMATO
+   ========================================================= */
+
+function numero(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined ||
+        isNaN(valor)
+    ) {
+        return "—";
+    }
+
+    return new Intl.NumberFormat("es-AR", {
+        maximumFractionDigits: 0
+    }).format(valor);
+}
+
+
+function decimal(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined ||
+        isNaN(valor)
+    ) {
+        return "—";
+    }
+
+    return new Intl.NumberFormat("es-AR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(valor);
+}
+
+
+function monedaUSD(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined ||
+        isNaN(valor)
+    ) {
+        return "—";
+    }
+
+    return "USD " + new Intl.NumberFormat("es-AR", {
+        maximumFractionDigits: 0
+    }).format(valor);
+}
+
+
+function monedaARS(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined ||
+        isNaN(valor)
+    ) {
+        return "—";
+    }
+
+    return "$ " + new Intl.NumberFormat("es-AR", {
+        maximumFractionDigits: 0
+    }).format(valor);
+}
+
+
+/* =========================================================
+   OBTENER VALORES
+   ========================================================= */
+
+function valor(id) {
+
+    const elemento = document.getElementById(id);
+
+    if (!elemento) {
+        return 0;
+    }
+
+    const numeroValor = parseFloat(elemento.value);
+
+    return isNaN(numeroValor) ? 0 : numeroValor;
+}
+
+
+/* =========================================================
+   CALCULAR
+   ========================================================= */
+
+function calcular() {
+
+    const producto = document.getElementById("producto").value;
+    const anio = parseInt(document.getElementById("anio").value);
+
+    if (producto !== "digitalizacion") {
+
+        mostrarProductoPendiente();
+
+        return;
+    }
+
+    if (anio !== 2022) {
+
+        calcularProyeccion(anio);
+
+        return;
+    }
+
+
+    const empresas = 519425;
+
+    const empleadosPromedio = 53;
+
+    const hojasPersona = valor("hojasPersona");
+
+    const porcentajeHojas = valor("porcentajeHojas") / 100;
+
+    const porcentajeDigitalizado =
+        valor("porcentajeDigitalizado") / 100;
+
+    const porcentajeClientes =
+        valor("porcentajeClientes") / 100;
+
+    const precioHoja = valor("precioHoja");
+
+    const tipoCambio = valor("tipoCambio");
+
+    const captura =
+        valor("captura") / 100;
+
+
+    /*
+        Modelo histórico:
+
+        hojas totales =
+        empresas × empleados promedio × hojas por persona
+        × porcentaje considerado como hojas
+    */
+
+    const hojasTotales =
+        empresas *
+        empleadosPromedio *
+        hojasPersona *
+        porcentajeHojas;
+
+
+    /*
+        TAM ARS
+    */
+
+    const tamARS =
+        hojasTotales *
+        precioHoja;
+
+
+    /*
+        TAM USD
+    */
+
+    const tamUSD =
+        tipoCambio > 0
+            ? tamARS / tipoCambio
+            : 0;
+
+
+    /*
+        SAM
+
+        El modelo original aplica:
+        TAM × % hojas digitalizadas × % clientes que digitalizan
+    */
+
+    const samUSD =
+        tamUSD *
+        porcentajeDigitalizado *
+        porcentajeClientes;
+
+
+    /*
+        SOM
+
+        SAM × tasa de captura
+    */
+
+    const somUSD =
+        samUSD *
+        captura;
+
+
+    actualizarKPIs(
+        tamARS,
+        tamUSD,
+        samUSD,
+        somUSD,
+        captura
+    );
+
+
+    actualizarTabla(
+        empresas,
+        empleadosPromedio,
+        hojasPersona,
+        porcentajeHojas,
+        porcentajeDigitalizado,
+        porcentajeClientes,
+        precioHoja,
+        tipoCambio,
+        tamARS,
+        tamUSD,
+        samUSD,
+        somUSD
+    );
+
+
+    actualizarGrafico(
+        tamUSD,
+        samUSD,
+        somUSD
+    );
+
+
+    actualizarEvolucion();
+
+    actualizarAlertas(
+        tamUSD,
+        samUSD,
+        somUSD,
+        captura
+    );
+
+
+    guardarConfiguracion();
+
+
+    document.getElementById("estadoModelo").innerHTML =
+        "<strong>✅ Modelo calculado</strong><br>" +
+        "Producto: Digitalización · País: Argentina · Año: 2022. " +
+        "Los resultados se calculan utilizando los datos históricos " +
+        "y los supuestos actualmente configurados.";
+
+}
+
+
+/* =========================================================
+   PROYECCIONES 2023-2025
+   ========================================================= */
+
+function calcularProyeccion(anio) {
+
+    const datos = historicoDigitalizacion[anio];
+
+    if (!datos) {
+
+        mostrarProductoPendiente();
+
+        return;
+    }
+
+
+    /*
+        Para las proyecciones históricas utilizamos las
+        variables del modelo 2022 y la cantidad de hojas
+        objetivo registrada en el análisis original.
+    */
+
+    const precioHoja = valor("precioHoja");
+
+    const tipoCambio = valor("tipoCambio");
+
+    const captura = valor("captura") / 100;
+
+
+    if (
+        !datos.hojasObjetivo ||
+        !precioHoja ||
+        !tipoCambio
+    ) {
+
+        document.getElementById("estadoModelo").innerHTML =
+            "<strong>⚠️ Datos incompletos</strong><br>" +
+            "La proyección necesita datos históricos suficientes.";
+
+        return;
+    }
+
+
+    const tamARS =
+        datos.hojasObjetivo *
+        precioHoja;
+
+
+    const tamUSD =
+        tamARS / tipoCambio;
+
+
+    /*
+        Para la proyección conservamos los porcentajes
+        del modelo histórico hasta que sean actualizados
+        con fuentes reales.
+    */
+
+    const porcentajeDigitalizado =
+        valor("porcentajeDigitalizado") / 100;
+
+    const porcentajeClientes =
+        valor("porcentajeClientes") / 100;
+
+
+    const samUSD =
+        tamUSD *
+        porcentajeDigitalizado *
+        porcentajeClientes;
+
+
+    const somUSD =
+        samUSD *
+        captura;
+
+
+    actualizarKPIs(
+        tamARS,
+        tamUSD,
+        samUSD,
+        somUSD,
+        captura
+    );
+
+
+    actualizarTablaProyeccion(
+        datos,
+        tamARS,
+        tamUSD,
+        samUSD,
+        somUSD
+    );
+
+
+    actualizarGrafico(
+        tamUSD,
+        samUSD,
+        somUSD
+    );
+
+
+    actualizarEvolucion();
+
+    actualizarAlertas(
+        tamUSD,
+        samUSD,
+        somUSD,
+        captura
+    );
+
+
+    document.getElementById("estadoModelo").innerHTML =
+        "<strong>📈 Proyección histórica</strong><br>" +
+        "Año " + anio +
+        ". Los valores de empresas, contratos y hojas provienen " +
+        "del escenario histórico proporcionado. " +
+        "Los datos actuales deberán actualizarse con fuentes reales.";
+}
+
+
+/* =========================================================
+   PRODUCTOS PENDIENTES
+   ========================================================= */
+
+function mostrarProductoPendiente() {
+
+    document.getElementById("tamUSD").textContent = "Pendiente";
+    document.getElementById("samUSD").textContent = "Pendiente";
+    document.getElementById("somUSD").textContent = "Pendiente";
+    document.getElementById("capturaResultado").textContent =
+        valor("captura") + "%";
+
+
+    document.getElementById("formulaResultado").innerHTML =
+        "<strong>📌 Producto todavía no cargado</strong><br>" +
+        "Todavía no se incorporaron datos reales para este producto. " +
+        "No se muestran valores inventados.";
+
+
+    document.getElementById("tablaDatos").innerHTML =
+        "<tr>" +
+        "<td colspan='5'>" +
+        "<span class='tag tag-pending'>DATOS PENDIENTES</span> " +
+        "Se incorporarán cuando tengamos el modelo y las fuentes correspondientes." +
+        "</td>" +
+        "</tr>";
+
+
+    document.getElementById("barTam").style.width = "0%";
+    document.getElementById("barSam").style.width = "0%";
+    document.getElementById("barSom").style.width = "0%";
+
+    document.getElementById("barTamText").textContent = "—";
+    document.getElementById("barSamText").textContent = "—";
+    document.getElementById("barSomText").textContent = "—";
+
+
+    document.getElementById("alertas").innerHTML =
+        "<div class='alert info'>" +
+        "<strong>ℹ️ Sin datos suficientes</strong>" +
+        "Este producto todavía necesita incorporar sus datos reales." +
+        "</div>";
+
+
+    document.getElementById("estadoModelo").innerHTML =
+        "<strong>📌 Producto pendiente</strong><br>" +
+        "No hay datos reales cargados para este producto. " +
+        "El sistema no inventará valores.";
+}
+
+
+/* =========================================================
+   ACTUALIZAR KPIs
+   ========================================================= */
+
+function actualizarKPIs(
+    tamARS,
+    tamUSD,
+    samUSD,
+    somUSD,
+    captura
+) {
+
+    document.getElementById("tamUSD").textContent =
+        monedaUSD(tamUSD);
+
+    document.getElementById("samUSD").textContent =
+        monedaUSD(samUSD);
+
+    document.getElementById("somUSD").textContent =
+        monedaUSD(somUSD);
+
+    document.getElementById("capturaResultado").textContent =
+        decimal(captura * 100) + "%";
+
+
+    document.getElementById("formulaResultado").innerHTML =
+        "<strong>Fórmula utilizada</strong><br>" +
+
+        "TAM = hojas totales × precio promedio por hoja.<br>" +
+
+        "SAM = TAM × % de hojas efectivamente digitalizadas × " +
+        "% de clientes que digitalizan.<br>" +
+
+        "SOM = SAM × % de captura seleccionado.<br><br>" +
+
+        "<strong>TAM en ARS:</strong> " +
+        monedaARS(tamARS) + "<br>" +
+
+        "<strong>TAM en USD:</strong> " +
+        monedaUSD(tamUSD) + "<br>" +
+
+        "<strong>SAM:</strong> " +
+        monedaUSD(samUSD) + "<br>" +
+
+        "<strong>SOM:</strong> " +
+        monedaUSD(somUSD);
+}
+
+
+/* =========================================================
+   TABLA DATOS
+   ========================================================= */
+
+function actualizarTabla(
+    empresas,
+    empleadosPromedio,
+    hojasPersona,
+    porcentajeHojas,
+    porcentajeDigitalizado,
+    porcentajeClientes,
+    precioHoja,
+    tipoCambio,
+    tamARS,
+    tamUSD,
+    samUSD,
+    somUSD
+) {
+
+    const filas = [
+
+        [
+            "Empresas consideradas",
+            numero(empresas),
+            "source",
+            "2022",
+            "Datos de empresas utilizados en el modelo histórico."
+        ],
+
+        [
+            "Empleados promedio ponderado",
+            numero(empleadosPromedio),
+            "calc",
+            "2022",
+            "Promedio ponderado por tamaño de empresa."
+        ],
+
+        [
+            "Hojas por persona / año",
+            numero(hojasPersona),
+            "source",
+            "2022",
+            "Estimación utilizada en el análisis histórico."
+        ],
+
+        [
+            "Consumo considerado como hojas",
+            decimal(porcentajeHojas * 100) + "%",
+            "assumption",
+            "2022",
+            "Supuesto del modelo original."
+        ],
+
+        [
+            "Hojas que efectivamente se digitalizan",
+            decimal(porcentajeDigitalizado * 100) + "%",
+            "assumption",
+            "2022",
+            "Supuesto utilizado para construir el SAM."
+        ],
+
+        [
+            "Clientes que digitalizan",
+            decimal(porcentajeClientes * 100) + "%",
+            "source",
+            "2022",
+            "Referencia de clientes Addoc utilizada en el modelo."
+        ],
+
+        [
+            "Precio promedio por hoja",
+            monedaARS(precioHoja),
+            "source",
+            "2022",
+            "Precio promedio de Digitalización Addoc/Adea."
+        ],
+
+        [
+            "Tipo de cambio",
+            decimal(tipoCambio),
+            "source",
+            "2022",
+            "Tipo de cambio utilizado en el modelo histórico."
+        ],
+
+        [
+            "TAM",
+            monedaUSD(tamUSD),
+            "calc",
+            "2022",
+            "Resultado calculado."
+        ],
+
+        [
+            "SAM",
+            monedaUSD(samUSD),
+            "calc",
+            "2022",
+            "Resultado calculado."
+        ],
+
+        [
+            "SOM",
+            monedaUSD(somUSD),
+            "calc",
+            "2022",
+            "Resultado calculado según % de captura."
+        ]
+
+    ];
+
+
+    document.getElementById("tablaDatos").innerHTML =
+        filas.map(fila => {
+
+            let clase = "tag-pending";
+            let texto = "PENDIENTE";
+
+            if (fila[2] === "source") {
+                clase = "tag-source";
+                texto = "FUENTE";
+            }
+
+            if (fila[2] === "calc") {
+                clase = "tag-calc";
+                texto = "CÁLCULO";
+            }
+
+            if (fila[2] === "assumption") {
+                clase = "tag-assumption";
+                texto = "SUPUESTO";
+            }
+
+            return `
+                <tr>
+                    <td>${fila[0]}</td>
+                    <td><strong>${fila[1]}</strong></td>
+                    <td>
+                        <span class="tag ${clase}">
+                            ${texto}
+                        </span>
+                    </td>
+                    <td>${fila[3]}</td>
+                    <td>${fila[4]}</td>
+                </tr>
+            `;
+
+        }).join("");
+}
+
+
+/* =========================================================
+   TABLA PROYECCIÓN
+   ========================================================= */
+
+function actualizarTablaProyeccion(
+    datos,
+    tamARS,
+    tamUSD,
+    samUSD,
+    somUSD
+) {
+
+    document.getElementById("tablaDatos").innerHTML = `
+
+        <tr>
+            <td>Empresas objetivo</td>
+            <td><strong>${numero(datos.empresasObjetivo)}</strong></td>
+            <td>
+                <span class="tag tag-source">HISTÓRICO</span>
+            </td>
+            <td>${document.getElementById("anio").value}</td>
+            <td>Dato proveniente del modelo histórico proporcionado.</td>
+        </tr>
+
+        <tr>
+            <td>Contratos objetivo</td>
+            <td><strong>${numero(datos.contratosObjetivo)}</strong></td>
+            <td>
+                <span class="tag tag-source">HISTÓRICO</span>
+            </td>
+            <td>${document.getElementById("anio").value}</td>
+            <td>Proyección incluida en el modelo histórico.</td>
+        </tr>
+
+        <tr>
+            <td>Hojas objetivo</td>
+            <td><strong>${numero(datos.hojasObjetivo)}</strong></td>
+            <td>
+                <span class="tag tag-source">HISTÓRICO</span>
+            </td>
+            <td>${document.getElementById("anio").value}</td>
+            <td>Proyección incluida en el modelo histórico.</td>
+        </tr>
+
+        <tr>
+            <td>Crecimiento</td>
+            <td><strong>${decimal(datos.crecimiento)}%</strong></td>
+            <td>
+                <span class="tag tag-assumption">SUPUESTO</span>
+            </td>
+            <td>${document.getElementById("anio").value}</td>
+            <td>Crecimiento utilizado en la proyección histórica.</td>
+        </tr>
+
+        <tr>
+            <td>Tasa de captura histórica</td>
+            <td><strong>${decimal(datos.tasaCaptura)}%</strong></td>
+            <td>
+                <span class="tag tag-assumption">SUPUESTO</span>
+            </td>
+            <td>${document.getElementById("anio").value}</td>
+            <td>Valor registrado en el modelo original.</td>
+        </tr>
+
+        <tr>
+            <td>TAM</td>
+            <td><strong>${monedaUSD(tamUSD)}</strong></td>
+            <td>
+                <span class="tag tag-calc">CÁLCULO</span>
+            </td>
+            <td>${document.getElementById("anio").value}</td>
+            <td>Calculado con las hojas objetivo y precio configurado.</td>
+        </tr>
+
+        <tr>
+            <td>SAM</td>
+            <td><strong>${monedaUSD(samUSD)}</strong></td>
+            <td>
+                <span class="tag tag-calc">CÁLCULO</span>
+            </td>
+            <td>${document.getElementById("anio").value}</td>
+            <td>Calculado utilizando los porcentajes configurados.</td>
+        </tr>
+
+        <tr>
+            <td>SOM</td>
+            <td><strong>${monedaUSD(somUSD)}</strong></td>
+            <td>
+                <span class="tag tag-calc">CÁLCULO</span>
+            </td>
+            <td>${document.getElementById("anio").value}</td>
+            <td>Calculado según la captura seleccionada.</td>
+        </tr>
+
+    `;
+}
+
+
+/* =========================================================
+   GRÁFICO TAM SAM SOM
+   ========================================================= */
+
+function actualizarGrafico(
+    tam,
+    sam,
+    som
+) {
+
+    if (!tam || tam <= 0) {
+
+        document.getElementById("barTam").style.width = "0%";
+        document.getElementById("barSam").style.width = "0%";
+        document.getElementById("barSom").style.width = "0%";
+
+        return;
+    }
+
+
+    const samPorcentaje =
+        Math.max(0, Math.min(100, (sam / tam) * 100));
+
+    const somPorcentaje =
+        Math.max(0, Math.min(100, (som / tam) * 100));
+
+
+    document.getElementById("barTam").style.width = "100%";
+
+    document.getElementById("barSam").style.width =
+        samPorcentaje + "%";
+
+    document.getElementById("barSom").style.width =
+        somPorcentaje + "%";
+
+
+    document.getElementById("barTamText").textContent =
+        monedaUSD(tam);
+
+    document.getElementById("barSamText").textContent =
+        monedaUSD(sam);
+
+    document.getElementById("barSomText").textContent =
+        monedaUSD(som);
+}
+
+
+/* =========================================================
+   EVOLUCIÓN
+   ========================================================= */
+
+function actualizarEvolucion() {
+
+    const años = [2022, 2023, 2024, 2025, 2026];
+
+    const valores = años.map(anio => {
+
+        const datos = historicoDigitalizacion[anio];
+
+        if (!datos) {
+            return 0;
+        }
+
+        if (anio === 2022) {
+
+            return historicoDigitalizacion[2022].somUSDOriginal;
+        }
+
+
+        const hojas = datos.hojasObjetivo;
+
+        const precio = valor("precioHoja");
+
+        const cambio = valor("tipoCambio");
+
+        const porcentajeDigitalizado =
+            valor("porcentajeDigitalizado") / 100;
+
+        const porcentajeClientes =
+            valor("porcentajeClientes") / 100;
+
+        const captura =
+            anio >= 2025
+                ? 3.5 / 100
+                : 3 / 100;
+
+
+        if (!hojas || !precio || !cambio) {
+            return 0;
+        }
+
+
+        const tam =
+            hojas * precio / cambio;
+
+        const sam =
+            tam *
+            porcentajeDigitalizado *
+            porcentajeClientes;
+
+        return sam * captura;
+
+    });
+
+
+    const max =
+        Math.max(...valores, 1);
+
+
+    document.getElementById("evolucionChart").innerHTML =
+        años.map((anio, index) => {
+
+            const value = valores[index];
+
+            const altura =
+                value > 0
+                    ? Math.max(5, (value / max) * 190)
+                    : 4;
+
+
+            return `
+                <div class="year-column">
+
+                    <div class="year-value">
+                        ${value > 0 ? monedaUSD(value) : "Pendiente"}
+                    </div>
+
+                    <div
+                        class="year-bar"
+                        style="height:${altura}px"
+                    ></div>
+
+                    <div class="year-label">
+                        ${anio}
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+/* =========================================================
+   ALERTAS
+   ========================================================= */
+
+function actualizarAlertas(
+    tam,
+    sam,
+    som,
+    captura
+) {
+
+    const alertas = [];
+
+
+    if (!sam || sam <= 0) {
+
+        alertas.push(`
+            <div class="alert info">
+                <strong>ℹ️ Sin mercado direccionable calculado</strong>
+                Se necesitan datos reales para determinar la oportunidad.
+            </div>
+        `);
+
+    } else {
+
+        const porcentajeSamTam =
+            (sam / tam) * 100;
+
+
+        const porcentajeSomSam =
+            (som / sam) * 100;
+
+
+        if (porcentajeSamTam < 10) {
+
+            alertas.push(`
+                <div class="alert medium">
+                    <strong>⚠️ SAM reducido frente al TAM</strong>
+                    El mercado direccionable representa
+                    ${decimal(porcentajeSamTam)}% del TAM.
+                    Conviene revisar los supuestos que determinan el SAM.
+                </div>
+            `);
+
+        } else {
+
+            alertas.push(`
+                <div class="alert info">
+                    <strong>📊 Mercado direccionable identificado</strong>
+                    El SAM representa
+                    ${decimal(porcentajeSamTam)}% del TAM.
+                </div>
+            `);
+
+        }
+
+
+        if (porcentajeSomSam >= 10) {
+
+            alertas.push(`
+                <div class="alert high">
+                    <strong>🚨 Captura agresiva</strong>
+                    El escenario seleccionado implica capturar
+                    ${decimal(porcentajeSomSam)}% del SAM.
+                    Conviene validar si la capacidad comercial permite
+                    alcanzar este objetivo.
+                </div>
+            `);
+
+        } else {
+
+            alertas.push(`
+                <div class="alert info">
+                    <strong>🎯 Escenario de captura</strong>
+                    El SOM representa
+                    ${decimal(porcentajeSomSam)}% del SAM.
+                </div>
+            `);
+
+        }
+
+
+        if (som >= 1000000) {
+
+            alertas.push(`
+                <div class="alert high">
+                    <strong>💰 Oportunidad económica relevante</strong>
+                    El SOM calculado supera USD 1 millón.
+                    Este segmento merece análisis comercial específico.
+                </div>
+            `);
+
+        }
+
+    }
+
+
+    alertas.push(`
+        <div class="alert info">
+            <strong>🔎 Próximo paso</strong>
+            Actualizar las variables históricas mediante fuentes
+            reales 2026 y comparar la evolución del mercado.
+        </div>
+    `);
+
+
+    document.getElementById("alertas").innerHTML =
+        alertas.join("");
+}
+
+
+/* =========================================================
+   CAMBIAR PRODUCTO
+   ========================================================= */
+
+function cambiarProducto() {
+
+    const producto =
+        document.getElementById("producto").value;
+
+
+    if (producto !== "digitalizacion") {
+
+        mostrarProductoPendiente();
+
+        return;
+    }
+
+
+    calcular();
+}
+
+
+/* =========================================================
+   CAMBIAR AÑO
+   ========================================================= */
+
+function cambiarAnio() {
+
+    const anio =
+        parseInt(document.getElementById("anio").value);
+
+
+    if (anio === 2022) {
+
+        cargarHistorico();
+
+        return;
+    }
+
+
+    calcular();
+}
+
+
+/* =========================================================
+   CARGAR HISTÓRICO
+   ========================================================= */
+
+function cargarHistorico() {
+
+    document.getElementById("producto").value =
+        "digitalizacion";
+
+    document.getElementById("pais").value =
+        "Argentina";
+
+    document.getElementById("anio").value =
+        "2022";
+
+
+    document.getElementById("porcentajeHojas").value =
+        80;
+
+    document.getElementById("hojasPersona").value =
+        9303;
+
+    document.getElementById("porcentajeDigitalizado").value =
+        43.48;
+
+    document.getElementById("porcentajeClientes").value =
+        6.76;
+
+    document.getElementById("precioHoja").value =
+        5.68;
+
+    document.getElementById("tipoCambio").value =
+        102.75;
+
+    document.getElementById("captura").value =
+        3;
+
+
+    calcular();
+}
+
+
+/* =========================================================
+   LIMPIAR
+   ========================================================= */
+
+function limpiarModelo() {
+
+    document.getElementById("porcentajeHojas").value = 0;
+
+    document.getElementById("hojasPersona").value = 0;
+
+    document.getElementById("porcentajeDigitalizado").value = 0;
+
+    document.getElementById("porcentajeClientes").value = 0;
+
+    document.getElementById("precioHoja").value = 0;
+
+    document.getElementById("tipoCambio").value = 0;
+
+    document.getElementById("captura").value = 0;
+
+
+    document.getElementById("tamUSD").textContent = "—";
+    document.getElementById("samUSD").textContent = "—";
+    document.getElementById("somUSD").textContent = "—";
+    document.getElementById("capturaResultado").textContent = "0%";
+
+
+    document.getElementById("tablaDatos").innerHTML =
+        "<tr><td colspan='5'>Escenario vacío.</td></tr>";
+
+
+    document.getElementById("alertas").innerHTML =
+        "<div class='alert info'>" +
+        "<strong>ℹ️ Escenario limpio</strong>" +
+        "Cargá datos para comenzar un nuevo análisis." +
+        "</div>";
+
+
+    actualizarGrafico(0, 0, 0);
+
+    guardarConfiguracion();
+}
+
+
+/* =========================================================
+   GUARDAR CONFIGURACIÓN
+   ========================================================= */
+
+function guardarConfiguracion() {
+
+    const configuracion = {
+
+        producto:
+            document.getElementById("producto").value,
+
+        pais:
+            document.getElementById("pais").value,
+
+        anio:
+            document.getElementById("anio").value,
+
+        captura:
+            document.getElementById("captura").value,
+
+        porcentajeHojas:
+            document.getElementById("porcentajeHojas").value,
+
+        hojasPersona:
+            document.getElementById("hojasPersona").value,
+
+        porcentajeDigitalizado:
+            document.getElementById("porcentajeDigitalizado").value,
+
+        porcentajeClientes:
+            document.getElementById("porcentajeClientes").value,
+
+        precioHoja:
+            document.getElementById("precioHoja").value,
+
+        tipoCambio:
+            document.getElementById("tipoCambio").value
+
+    };
+
+
+    localStorage.setItem(
+        "preventa_market_model",
+        JSON.stringify(configuracion)
+    );
+}
+
+
+/* =========================================================
+   RECUPERAR CONFIGURACIÓN
+   ========================================================= */
+
+function recuperarConfiguracion() {
+
+    const guardado =
+        localStorage.getItem("preventa_market_model");
+
+
+    if (!guardado) {
+
+        calcular();
+
+        return;
+    }
+
+
+    try {
+
+        const configuracion =
+            JSON.parse(guardado);
+
+
+        Object.keys(configuracion).forEach(key => {
+
+            const elemento =
+                document.getElementById(key);
+
+            if (elemento) {
+
+                elemento.value =
+                    configuracion[key];
+
+            }
+
+        });
+
+
+        calcular();
+
+    } catch (error) {
+
+        calcular();
+
+    }
+}
+
+
+/* =========================================================
+   PROMPT MAESTRO
+   ========================================================= */
+
+function construirPromptMaestro() {
+
+    const producto =
+        document.getElementById("producto").value;
+
+    const pais =
+        document.getElementById("pais").value;
+
+    const anio =
+        document.getElementById("anio").value;
+
+    const tam =
+        document.getElementById("tamUSD").textContent;
+
+    const sam =
+        document.getElementById("samUSD").textContent;
+
+    const som =
+        document.getElementById("somUSD").textContent;
+
+    const captura =
+        document.getElementById("captura").value;
+
+
+    return `
+Sos un analista senior de Inteligencia de Mercado especializado en Preventa B2B.
+
+Analizá exclusivamente los datos disponibles en este modelo.
+
+PRODUCTO:
+${producto}
+
+PAÍS / MERCADO:
+${pais}
+
+AÑO:
+${anio}
+
+TAM:
+${tam}
+
+SAM:
+${sam}
+
+SOM:
+${som}
+
+TASA DE CAPTURA:
+${captura}%
+
+OBJETIVO DEL ANÁLISIS:
+
+Determinar el potencial comercial del mercado analizado.
+
+Quiero que analices:
+
+1. Tamaño del mercado.
+2. Mercado direccionable.
+3. Mercado capturable.
+4. Principales oportunidades.
+5. Segmentos que deberían priorizarse.
+6. Riesgos del modelo.
+7. Supuestos que deberían validarse.
+8. Datos faltantes.
+9. Qué información adicional debería buscarse.
+10. Recomendaciones concretas para Preventa y Comercial.
+
+REGLAS:
+
+- No inventes datos.
+- Diferenciá datos reales, cálculos y supuestos.
+- Si falta información, indicá claramente "dato faltante".
+- Si una fuente parece antigua, indicá que debe actualizarse.
+- Priorizá fuentes oficiales y verificables.
+- Explicá las fórmulas cuando sea necesario.
+- No confundas TAM, SAM y SOM.
+- Presentá las conclusiones de forma ejecutiva.
+`;
+}
+
+
+/* =========================================================
+   USAR PROMPTS RÁPIDOS
+   ========================================================= */
+
+function usarPrompt(tipo) {
+
+    const base =
+        construirPromptMaestro();
+
+
+    let pregunta = "";
+
+
+    if (tipo === "oportunidad") {
+
+        pregunta =
+            "¿Dónde está la mayor oportunidad comercial y por qué?";
+
+    }
+
+
+    if (tipo === "segmento") {
+
+        pregunta =
+            "¿Qué segmento debería atacar primero y qué variables debería priorizar?";
+
+    }
+
+
+    if (tipo === "comparar") {
+
+        pregunta =
+            "¿Cómo debería comparar este mercado con los otros productos de PREVENTA IA? ¿Qué indicadores debería utilizar?";
+
+    }
+
+
+    if (tipo === "alertas") {
+
+        pregunta =
+            "Detectá todas las alertas, inconsistencias o supuestos que deberían revisarse antes de utilizar este análisis comercialmente.";
+
+    }
+
+
+    if (tipo === "ejecutivo") {
+
+        pregunta =
+            "Generá un informe ejecutivo para dirección con las principales conclusiones, oportunidades, riesgos y próximos pasos.";
+
+    }
+
+
+    document.getElementById("promptMaestro").value =
+        base +
+        "\n\nPREGUNTA ESPECÍFICA:\n" +
+        pregunta;
+
+}
+
+
+/* =========================================================
+   ANALIZAR PROMPT
+   ========================================================= */
+
+function analizarPrompt() {
+
+    const pregunta =
+        document.getElementById("promptMaestro").value.trim();
+
+
+    if (!pregunta) {
+
+        document.getElementById("resultadoIA").textContent =
+            "Escribí una consulta para analizar el mercado.";
+
+        return;
+    }
+
+
+    const tamTexto =
+        document.getElementById("tamUSD").textContent;
+
+    const samTexto =
+        document.getElementById("samUSD").textContent;
+
+    const somTexto =
+        document.getElementById("somUSD").textContent;
+
+
+    /*
+        Esta primera versión funciona localmente.
+        No depende de una API paga.
+
+        Más adelante conectaremos esta sección con
+        la IA real de PREVENTA IA.
+    */
+
+    let resultado = "";
+
+
+    resultado +=
+        "ANÁLISIS PRELIMINAR DE INTELIGENCIA DE MERCADO\n\n";
+
+
+    resultado +=
+        "Producto: " +
+        document.getElementById("producto").value +
+        "\n";
+
+    resultado +=
+        "País: " +
+        document.getElementById("pais").value +
+        "\n";
+
+    resultado +=
+        "Año: " +
+        document.getElementById("anio").value +
+        "\n\n";
+
+
+    resultado +=
+        "TAM: " +
+        tamTexto +
+        "\n";
+
+    resultado +=
+        "SAM: " +
+        samTexto +
+        "\n";
+
+    resultado +=
+        "SOM: " +
+        somTexto +
+        "\n\n";
+
+
+    resultado +=
+        "PREGUNTA:\n" +
+        pregunta +
+        "\n\n";
+
+
+    resultado +=
+        "LECTURA DEL MODELO:\n";
+
+
+    if (
+        tamTexto === "—" ||
+        tamTexto === "Pendiente"
+    ) {
+
+        resultado +=
+            "- Todavía no existen suficientes datos para realizar un análisis económico.\n";
+
+    } else {
+
+        resultado +=
+            "- El modelo cuenta con un TAM calculado.\n";
+
+        resultado +=
+            "- El SAM depende de los porcentajes configurados y debe validarse con fuentes actuales.\n";
+
+        resultado +=
+            "- El SOM depende directamente de la tasa de captura seleccionada.\n";
+
+        resultado +=
+            "- Antes de utilizar el resultado comercialmente se deben actualizar los datos históricos con fuentes 2026.\n";
+
+    }
+
+
+    resultado +=
+        "\nPRÓXIMO PASO:\n";
+
+    resultado +=
+        "Actualizar las variables con fuentes reales y luego ejecutar nuevamente el análisis.\n";
+
+
+    document.getElementById("resultadoIA").textContent =
+        resultado;
+}
+
+
+/* =========================================================
+   REPORTE
+   ========================================================= */
+
+function generarReporte() {
+
+    const producto =
+        document.getElementById("producto").value;
+
+    const pais =
+        document.getElementById("pais").value;
+
+    const anio =
+        document.getElementById("anio").value;
+
+    const tam =
+        document.getElementById("tamUSD").textContent;
+
+    const sam =
+        document.getElementById("samUSD").textContent;
+
+    const som =
+        document.getElementById("somUSD").textContent;
+
+    const captura =
+        document.getElementById("captura").value;
+
+
+    const reporte =
+        document.getElementById("reporte");
+
+
+    reporte.style.display =
+        "block";
+
+
+    reporte.innerHTML = `
+
+        <h3>Informe Ejecutivo de Mercado</h3>
+
+        <p>
+            <strong>Producto:</strong> ${producto}<br>
+            <strong>Mercado:</strong> ${pais}<br>
+            <strong>Año:</strong> ${anio}
+        </p>
+
+        <h4>Dimensión del mercado</h4>
+
+        <p>
+            <strong>TAM:</strong> ${tam}<br>
+            <strong>SAM:</strong> ${sam}<br>
+            <strong>SOM:</strong> ${som}<br>
+            <strong>Tasa de captura:</strong> ${captura}%
+        </p>
+
+        <h4>Interpretación</h4>
+
+        <p>
+            El modelo permite estimar el mercado total, el mercado
+            direccionable y el mercado potencialmente capturable.
+            Los resultados dependen de las variables y supuestos
+            actualmente configurados.
+        </p>
+
+        <h4>Advertencia metodológica</h4>
+
+        <p>
+            Los datos históricos utilizados deben ser contrastados y
+            actualizados mediante fuentes oficiales y verificables
+            antes de utilizar este análisis como proyección comercial
+            definitiva.
+        </p>
+
+        <h4>Próximos pasos</h4>
+
+        <p>
+            1. Actualizar datos 2026.<br>
+            2. Incorporar fuentes verificables.<br>
+            3. Analizar segmentos e industrias.<br>
+            4. Comparar productos.<br>
+            5. Ejecutar análisis mediante el Prompt Maestro.
+        </p>
+
+    `;
+}
+
+
+/* =========================================================
+   INICIALIZACIÓN
+   ========================================================= */
+
+document.getElementById("promptMaestro").value =
+    construirPromptMaestro();
+
+
+recuperarConfiguracion();
+
+</script>
 
 </body>
 </html>
