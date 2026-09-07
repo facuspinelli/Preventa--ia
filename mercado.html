@@ -2724,6 +2724,78 @@ document.getElementById("promptMaestro").value =
 
 
 recuperarConfiguracion();
+   /* =========================================================
+   MOTOR DE MERCADO 360°
+   ========================================================= */
+
+let mercado360 = null;
+
+async function cargarMercado360() {
+
+    try {
+
+        const respuesta = await fetch("/api/mercado");
+
+        if (!respuesta.ok) {
+            throw new Error(
+                "El servidor respondió con estado " +
+                respuesta.status
+            );
+        }
+
+        const datos = await respuesta.json();
+
+        if (!datos.ok) {
+            throw new Error(
+                datos.error || "Error en el motor de mercado"
+            );
+        }
+
+        mercado360 = datos;
+
+        console.log("✅ Motor de Mercado 360 cargado:", mercado360);
+
+        const estado =
+            document.getElementById("estadoModelo");
+
+        if (estado) {
+
+            estado.innerHTML =
+                "<strong>✅ Motor de Mercado 360 conectado</strong><br>" +
+                "Fuentes oficiales disponibles: " +
+                datos.mercado.estado.fuentesOficiales +
+                " · Datos reales cargados: " +
+                datos.mercado.estado.datosReales +
+                " · Datos pendientes: " +
+                datos.mercado.estado.faltantes;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "❌ Error conectando con el Motor de Mercado 360:",
+            error
+        );
+
+        const estado =
+            document.getElementById("estadoModelo");
+
+        if (estado) {
+
+            estado.innerHTML =
+                "<strong>⚠️ Motor 360 no disponible</strong><br>" +
+                "El modelo histórico continúa funcionando normalmente. " +
+                "No se modificaron sus cálculos.";
+        }
+    }
+}
+
+
+/* =========================================================
+   INICIAR MOTOR 360°
+   ========================================================= */
+
+cargarMercado360();
 
 </script>
 
