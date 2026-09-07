@@ -1165,6 +1165,13 @@ const historicoDigitalizacion = {
 
 
 /* =========================================================
+   MOTOR DE MERCADO 360°
+   ========================================================= */
+
+let mercado360 = null;
+
+
+/* =========================================================
    FORMATO
    ========================================================= */
 
@@ -1297,14 +1304,6 @@ function calcular() {
         valor("captura") / 100;
 
 
-    /*
-        Modelo histórico:
-
-        hojas totales =
-        empresas × empleados promedio × hojas por persona
-        × porcentaje considerado como hojas
-    */
-
     const hojasTotales =
         empresas *
         empleadosPromedio *
@@ -1312,18 +1311,10 @@ function calcular() {
         porcentajeHojas;
 
 
-    /*
-        TAM ARS
-    */
-
     const tamARS =
         hojasTotales *
         precioHoja;
 
-
-    /*
-        TAM USD
-    */
 
     const tamUSD =
         tipoCambio > 0
@@ -1331,24 +1322,11 @@ function calcular() {
             : 0;
 
 
-    /*
-        SAM
-
-        El modelo original aplica:
-        TAM × % hojas digitalizadas × % clientes que digitalizan
-    */
-
     const samUSD =
         tamUSD *
         porcentajeDigitalizado *
         porcentajeClientes;
 
-
-    /*
-        SOM
-
-        SAM × tasa de captura
-    */
 
     const somUSD =
         samUSD *
@@ -1410,7 +1388,7 @@ function calcular() {
 
 
 /* =========================================================
-   PROYECCIONES 2023-2025
+   PROYECCIONES
    ========================================================= */
 
 function calcularProyeccion(anio) {
@@ -1424,12 +1402,6 @@ function calcularProyeccion(anio) {
         return;
     }
 
-
-    /*
-        Para las proyecciones históricas utilizamos las
-        variables del modelo 2022 y la cantidad de hojas
-        objetivo registrada en el análisis original.
-    */
 
     const precioHoja = valor("precioHoja");
 
@@ -1460,12 +1432,6 @@ function calcularProyeccion(anio) {
     const tamUSD =
         tamARS / tipoCambio;
 
-
-    /*
-        Para la proyección conservamos los porcentajes
-        del modelo histórico hasta que sean actualizados
-        con fuentes reales.
-    */
 
     const porcentajeDigitalizado =
         valor("porcentajeDigitalizado") / 100;
@@ -2534,14 +2500,6 @@ function analizarPrompt() {
         document.getElementById("somUSD").textContent;
 
 
-    /*
-        Esta primera versión funciona localmente.
-        No depende de una API paga.
-
-        Más adelante conectaremos esta sección con
-        la IA real de PREVENTA IA.
-    */
-
     let resultado = "";
 
 
@@ -2716,59 +2674,50 @@ function generarReporte() {
 
 
 /* =========================================================
-   INICIALIZACIÓN
-   ========================================================= */
-
-document.getElementById("promptMaestro").value =
-    construirPromptMaestro();
-
-
-recuperarConfiguracion();
-   /* =========================================================
    MOTOR DE MERCADO 360°
+   CARGA DE FUENTES Y DATOS
    ========================================================= */
-
-let mercado360 = null;
 
 async function cargarMercado360() {
 
     try {
 
-        const respuesta = await fetch("/api/mercado");
+        const respuesta =
+            await fetch("/api/mercado");
 
         if (!respuesta.ok) {
+
             throw new Error(
                 "El servidor respondió con estado " +
                 respuesta.status
             );
         }
 
-        const datos = await respuesta.json();
+
+        const datos =
+            await respuesta.json();
+
 
         if (!datos.ok) {
+
             throw new Error(
-                datos.error || "Error en el motor de mercado"
+                datos.error ||
+                "Error en el motor de mercado"
             );
         }
 
+
         mercado360 = datos;
 
-        console.log("✅ Motor de Mercado 360 cargado:", mercado360);
 
-        const estado =
-            document.getElementById("estadoModelo");
+        console.log(
+            "✅ Motor de Mercado 360 cargado:",
+            mercado360
+        );
 
-        if (estado) {
 
-            estado.innerHTML =
-                "<strong>✅ Motor de Mercado 360 conectado</strong><br>" +
-                "Fuentes oficiales disponibles: " +
-                datos.mercado.estado.fuentesOficiales +
-                " · Datos reales cargados: " +
-                datos.mercado.estado.datosReales +
-                " · Datos pendientes: " +
-                datos.mercado.estado.faltantes;
-        }
+        actualizarEstadoMotor360();
+
 
     } catch (error) {
 
@@ -2777,8 +2726,10 @@ async function cargarMercado360() {
             error
         );
 
+
         const estado =
             document.getElementById("estadoModelo");
+
 
         if (estado) {
 
@@ -2786,14 +2737,93 @@ async function cargarMercado360() {
                 "<strong>⚠️ Motor 360 no disponible</strong><br>" +
                 "El modelo histórico continúa funcionando normalmente. " +
                 "No se modificaron sus cálculos.";
+
         }
+
     }
+
 }
 
 
 /* =========================================================
-   INICIAR MOTOR 360°
+   MOSTRAR ESTADO MOTOR 360°
    ========================================================= */
+
+function actualizarEstadoMotor360() {
+
+    const estado =
+        document.getElementById("estadoModelo");
+
+
+    if (!estado || !mercado360) {
+        return;
+    }
+
+
+    const estadoMercado =
+        mercado360.mercado &&
+        mercado360.mercado.estado
+            ? mercado360.mercado.estado
+            : {};
+
+
+    const producto =
+        document.getElementById("producto")
+            ? document.getElementById("producto").value
+            : "—";
+
+
+    const pais =
+        document.getElementById("pais")
+            ? document.getElementById("pais").value
+            : "—";
+
+
+    const anio =
+        document.getElementById("anio")
+            ? document.getElementById("anio").value
+            : "—";
+
+
+    estado.innerHTML =
+
+        "<strong>🟢 Motor de Mercado 360 conectado</strong><br>" +
+
+        "Producto: " +
+        producto +
+        " · País: " +
+        pais +
+        " · Año: " +
+        anio +
+        "<br><br>" +
+
+        "Fuentes oficiales disponibles: " +
+        (estadoMercado.fuentesOficiales ?? "—") +
+
+        " · Datos reales cargados: " +
+        (estadoMercado.datosReales ?? "—") +
+
+        " · Datos pendientes: " +
+        (estadoMercado.faltantes ?? "—");
+
+}
+
+
+/* =========================================================
+   INICIALIZACIÓN
+   ========================================================= */
+
+document.getElementById("promptMaestro").value =
+    construirPromptMaestro();
+
+
+recuperarConfiguracion();
+
+
+/*
+    El modelo histórico se carga primero.
+    Después se conecta el Motor de Mercado 360.
+*/
 
 cargarMercado360();
 
