@@ -482,11 +482,41 @@ button {
 
 <header>
 
-    <h1>Inteligencia de Mercado</h1>
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:20px;
+        flex-wrap:wrap;
+    ">
 
-    <p>
-        PREVENTA IA · Motor Mercado 360 · TAM / SAM / SOM
-    </p>
+        <div>
+
+            <h1>Inteligencia de Mercado</h1>
+
+            <p>
+                PREVENTA IA · Motor Mercado 360 · TAM / SAM / SOM
+            </p>
+
+        </div>
+
+        <a
+            href="index.html"
+            style="
+                display:inline-block;
+                background:#2563eb;
+                color:white;
+                text-decoration:none;
+                padding:11px 18px;
+                border-radius:8px;
+                font-weight:bold;
+                font-size:14px;
+            "
+        >
+            ← Inicio
+        </a>
+
+    </div>
 
 </header>
 
@@ -516,24 +546,43 @@ button {
          PRODUCTOS
     ====================================================== -->
 
-    <section class="section">
+   <section class="section">
 
-        <h2>Productos PREVENTA</h2>
+    <h2>Reporte Mercado 360</h2>
 
-        <div class="section-description">
+    <div class="section-description">
 
-            Seleccioná el producto que querés analizar.
+        Generá el reporte visual o exportá todo el análisis
+        completo a un archivo Excel.
 
-            Los indicadores y necesidades se adaptan
-            automáticamente al producto seleccionado.
+    </div>
 
-        </div>
+    <div class="button-row">
+
+        <button
+            class="btn-success"
+            onclick="generarReporte()"
+        >
+            Generar reporte
+        </button>
+
+        <button
+            class="btn-primary"
+            onclick="exportarExcel()"
+        >
+            📊 Exportar Excel completo
+        </button>
+
+    </div>
 
 
-        <div
-            id="productos"
-            class="product-grid"
-        ></div>
+    <div
+        id="reporte"
+        class="report"
+        style="display:none;"
+    ></div>
+
+</section>
 
     </section>
 
@@ -1151,7 +1200,8 @@ button {
 
 </div>
 
-
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    
 <script>
 
 /* ==========================================================
@@ -3819,7 +3869,1235 @@ incorporar señales empresa por empresa.
         reporteTexto.trim();
 
 }
+/* ==========================================================
+   EXPORTAR EXCEL COMPLETO
+========================================================== */
 
+function exportarExcel() {
+
+    if (!mercado360) {
+
+        alert(
+            "El motor de Mercado 360 todavía no terminó de cargar."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        typeof XLSX === "undefined"
+    ) {
+
+        alert(
+            "No se pudo cargar el motor de Excel."
+        );
+
+        return;
+
+    }
+
+
+    const productoSeleccionado =
+        document.getElementById(
+            "producto360"
+        ).value;
+
+
+    const industriaSeleccionada =
+        document.getElementById(
+            "industria360"
+        ).value;
+
+
+    const mercadoObjetivo =
+        numero(
+            document.getElementById(
+                "mercadoObjetivo"
+            ).value
+        );
+
+
+    const samPorcentaje =
+        numero(
+            document.getElementById(
+                "porcentajeSAM"
+            ).value
+        );
+
+
+    const somPorcentaje =
+        numero(
+            document.getElementById(
+                "porcentajeSOM"
+            ).value
+        );
+
+
+    const precioSeleccionado =
+        numero(
+            document.getElementById(
+                "precioAnual"
+            ).value
+        );
+
+
+    const detalleSeleccionado =
+        obtenerDetalleAPI(
+            industriaSeleccionada,
+            productoSeleccionado
+        );
+
+
+    if (!detalleSeleccionado) {
+
+        alert(
+            "No hay datos para la combinación seleccionada."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       ======================================================
+       FUNCIÓN CENTRAL PARA RECALCULAR CADA PRODUCTO
+       ======================================================
+    */
+
+    function calcularProducto(
+        industria,
+        producto,
+        precioForzado = null
+    ) {
+
+        const detalle =
+            obtenerDetalleAPI(
+                industria,
+                producto.id
+            );
+
+
+        if (!detalle) {
+
+            return null;
+
+        }
+
+
+        const mercado =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    mercadoObjetivo
+                )
+            );
+
+
+        const potencial =
+            numero(
+                detalle.potencial
+            );
+
+
+        const empresasBase =
+            numero(
+                detalle.empresas
+            );
+
+
+        const empleadosBase =
+            numero(
+                detalle.empleo
+            );
+
+
+        const empresasPotenciales =
+            Math.round(
+
+                empresasBase *
+
+                porcentaje(
+                    mercado
+                ) *
+
+                potencial
+
+            );
+
+
+        const empleadosPotenciales =
+            Math.round(
+
+                empleadosBase *
+
+                porcentaje(
+                    mercado
+                ) *
+
+                potencial
+
+            );
+
+
+        const unidades =
+            detalle.unidadMercado ===
+            "empleado"
+
+                ? empleadosPotenciales
+
+                : empresasPotenciales;
+
+
+        let precio;
+
+
+        if (
+            precioForzado !== null
+        ) {
+
+            precio =
+                numero(
+                    precioForzado
+                );
+
+        } else {
+
+            precio =
+                numero(
+                    detalle.precioAnual
+                );
+
+        }
+
+
+        const tam =
+            precio > 0
+                ? unidades * precio
+                : null;
+
+
+        const sam =
+            tam !== null
+                ? tam *
+                  porcentaje(
+                      samPorcentaje
+                  )
+                : null;
+
+
+        const som =
+            sam !== null
+                ? sam *
+                  porcentaje(
+                      somPorcentaje
+                  )
+                : null;
+
+
+        return {
+
+            producto:
+                producto.nombre,
+
+            productoId:
+                producto.id,
+
+            industria,
+
+            unidad:
+                detalle.unidadMercado,
+
+            empresasOEDE:
+                empresasBase,
+
+            empleadosOEDE:
+                empleadosBase,
+
+            mercadoObjetivo,
+
+            potencial:
+                numero(
+                    detalle.potencialPorcentaje
+                ),
+
+            nivel:
+                detalle.nivel,
+
+            empresasPotenciales,
+
+            empleadosPotenciales,
+
+            unidadesPotenciales:
+                unidades,
+
+            precioAnual:
+                precio,
+
+            tam,
+
+            sam,
+
+            som
+
+        };
+
+    }
+
+
+    /*
+       ======================================================
+       PRODUCTO ACTUAL
+       ======================================================
+    */
+
+    const productoActual =
+        (mercado360.productos || [])
+            .find(
+                producto =>
+                    producto.id ===
+                    productoSeleccionado
+            );
+
+
+    const escenarioActual =
+        calcularProducto(
+            industriaSeleccionada,
+            productoActual,
+            precioSeleccionado
+        );
+
+
+    /*
+       ======================================================
+       WORKBOOK
+       ======================================================
+    */
+
+    const workbook =
+        XLSX.utils.book_new();
+
+
+    /*
+       ======================================================
+       1. RESUMEN
+       ======================================================
+    */
+
+    const resumen = [
+
+        ["REPORTE MERCADO 360"],
+
+        [],
+
+        ["Fecha", new Date().toLocaleString("es-AR")],
+
+        ["Producto",
+            detalleSeleccionado.productoNombre
+        ],
+
+        ["Industria",
+            industriaSeleccionada
+        ],
+
+        [],
+
+        ["ESCENARIO"],
+
+        ["Mercado objetivo %",
+            mercadoObjetivo
+        ],
+
+        ["SAM %",
+            samPorcentaje
+        ],
+
+        ["SOM %",
+            somPorcentaje
+        ],
+
+        ["Precio anual USD",
+            precioSeleccionado
+        ],
+
+        [],
+
+        ["RESULTADO"],
+
+        ["Unidad de mercado",
+            detalleSeleccionado.unidadMercado
+        ],
+
+        ["Empresas OEDE",
+            detalleSeleccionado.empresas
+        ],
+
+        ["Empleo OEDE",
+            detalleSeleccionado.empleo
+        ],
+
+        ["Potencial %",
+            detalleSeleccionado.potencialPorcentaje
+        ],
+
+        ["Nivel",
+            detalleSeleccionado.nivel
+        ],
+
+        ["Empresas potenciales",
+            escenarioActual?.empresasPotenciales || 0
+        ],
+
+        ["Empleados potenciales",
+            escenarioActual?.empleadosPotenciales || 0
+        ],
+
+        ["Unidades potenciales",
+            escenarioActual?.unidadesPotenciales || 0
+        ],
+
+        [],
+
+        ["TAM USD",
+            escenarioActual?.tam ?? ""
+        ],
+
+        ["SAM USD",
+            escenarioActual?.sam ?? ""
+        ],
+
+        ["SOM USD",
+            escenarioActual?.som ?? ""
+        ],
+
+        [],
+
+        ["ACLARACIÓN"],
+
+        [
+            "Los datos de empresas y empleo provienen de OEDE."
+        ],
+
+        [
+            "Los indicadores documentales son estimaciones sectoriales modeladas por PREVENTA IA."
+        ],
+
+        [
+            "No representan intención de compra individual de empresas."
+        ]
+
+    ];
+
+
+    agregarHoja(
+        workbook,
+        "Resumen",
+        resumen
+    );
+
+
+    /*
+       ======================================================
+       2. TAM SAM SOM
+       ======================================================
+    */
+
+    const tamSamSom = [
+
+        [
+            "Producto",
+            "Industria",
+            "Unidad",
+            "Empresas OEDE",
+            "Empleo OEDE",
+            "Mercado objetivo %",
+            "Potencial %",
+            "Nivel",
+            "Unidades potenciales",
+            "Precio anual USD",
+            "TAM USD",
+            "SAM %",
+            "SAM USD",
+            "SOM %",
+            "SOM USD"
+        ]
+
+    ];
+
+
+    (mercado360.productos || [])
+        .forEach(
+            producto => {
+
+                const precio =
+                    producto.id ===
+                    productoSeleccionado
+
+                        ? precioSeleccionado
+
+                        : numero(
+                            obtenerDetalleAPI(
+                                industriaSeleccionada,
+                                producto.id
+                            )?.precioAnual
+                        );
+
+
+                const resultado =
+                    calcularProducto(
+                        industriaSeleccionada,
+                        producto,
+                        precio
+                    );
+
+
+                if (!resultado) {
+                    return;
+                }
+
+
+                tamSamSom.push([
+
+                    resultado.producto,
+
+                    resultado.industria,
+
+                    resultado.unidad,
+
+                    resultado.empresasOEDE,
+
+                    resultado.empleadosOEDE,
+
+                    resultado.mercadoObjetivo,
+
+                    resultado.potencial,
+
+                    resultado.nivel,
+
+                    resultado.unidadesPotenciales,
+
+                    resultado.precioAnual,
+
+                    resultado.tam ?? "",
+
+                    samPorcentaje,
+
+                    resultado.sam ?? "",
+
+                    somPorcentaje,
+
+                    resultado.som ?? ""
+
+                ]);
+
+            }
+        );
+
+
+    agregarHoja(
+        workbook,
+        "TAM SAM SOM",
+        tamSamSom
+    );
+
+
+    /*
+       ======================================================
+       3. PRODUCTOS
+       ======================================================
+    */
+
+    const productosExcel = [
+
+        [
+            "Producto",
+            "Descripción",
+            "Unidad"
+        ]
+
+    ];
+
+
+    (mercado360.productos || [])
+        .forEach(
+            producto => {
+
+                productosExcel.push([
+
+                    producto.nombre,
+
+                    producto.descripcion,
+
+                    producto.unidad
+
+                ]);
+
+            }
+        );
+
+
+    agregarHoja(
+        workbook,
+        "Productos",
+        productosExcel
+    );
+
+
+    /*
+       ======================================================
+       4. RANKING INDUSTRIAS
+       ======================================================
+    */
+
+    const rankingExcel = [
+
+        [
+            "Ranking",
+            "Industria",
+            "Empresas",
+            "Empleo",
+            "Score"
+        ]
+
+    ];
+
+
+    (mercado360.ranking || [])
+        .forEach(
+            (item, index) => {
+
+                rankingExcel.push([
+
+                    index + 1,
+
+                    item.industria,
+
+                    numero(
+                        item.empresas
+                    ),
+
+                    numero(
+                        item.empleo
+                    ),
+
+                    numero(
+                        item.score
+                    )
+
+                ]);
+
+            }
+        );
+
+
+    agregarHoja(
+        workbook,
+        "Ranking industrias",
+        rankingExcel
+    );
+
+
+    /*
+       ======================================================
+       5. POTENCIAL POR INDUSTRIA / PRODUCTO
+       ======================================================
+    */
+
+    const potencialExcel = [
+
+        [
+            "Industria",
+            "Producto",
+            "Unidad",
+            "Empresas",
+            "Empleo",
+            "Afinidad %",
+            "Score variables %",
+            "Potencial %",
+            "Nivel",
+            "Empresas potenciales",
+            "Empleados potenciales"
+        ]
+
+    ];
+
+
+    const detalles =
+        mercado360?.tamSamSom?.detalle || [];
+
+
+    detalles.forEach(
+        detalle => {
+
+            potencialExcel.push([
+
+                detalle.industria,
+
+                detalle.productoNombre,
+
+                detalle.unidadMercado,
+
+                numero(
+                    detalle.empresas
+                ),
+
+                numero(
+                    detalle.empleo
+                ),
+
+                numero(
+                    detalle.afinidadPorcentaje ??
+                    numero(detalle.afinidad) * 100
+                ),
+
+                numero(
+                    detalle.scoreVariablesPorcentaje ??
+                    numero(detalle.scoreVariables) * 100
+                ),
+
+                numero(
+                    detalle.potencialPorcentaje
+                ),
+
+                detalle.nivel,
+
+                numero(
+                    detalle.empresasPotenciales
+                ),
+
+                numero(
+                    detalle.empleadosPotenciales
+                )
+
+            ]);
+
+        }
+    );
+
+
+    agregarHoja(
+        workbook,
+        "Potencial",
+        potencialExcel
+    );
+
+
+    /*
+       ======================================================
+       6. NECESIDADES
+       ======================================================
+    */
+
+    const necesidadesExcel = [
+
+        [
+            "Industria",
+            "Producto",
+            "Variable",
+            "Indicador sectorial %",
+            "Peso %",
+            "Aporte %",
+            "Empresas estimadas",
+            "Empleados estimados"
+        ]
+
+    ];
+
+
+    detalles.forEach(
+        detalle => {
+
+            const factores =
+                Array.isArray(
+                    detalle.factores
+                )
+                    ? detalle.factores
+                    : [];
+
+
+            factores.forEach(
+                factor => {
+
+                    necesidadesExcel.push([
+
+                        detalle.industria,
+
+                        detalle.productoNombre,
+
+                        nombreVariable(
+                            factor.variable
+                        ),
+
+                        numero(
+                            factor.indicadorSectorialPorcentaje
+                        ),
+
+                        numero(
+                            factor.pesoPorcentaje
+                        ),
+
+                        numero(
+                            factor.aportePorcentaje
+                        ),
+
+                        numero(
+                            factor.empresasEstimadas
+                        ),
+
+                        numero(
+                            factor.empleadosEstimados
+                        )
+
+                    ]);
+
+                }
+            );
+
+        }
+    );
+
+
+    agregarHoja(
+        workbook,
+        "Necesidades",
+        necesidadesExcel
+    );
+
+
+    /*
+       ======================================================
+       7. DATOS OEDE
+       ======================================================
+    */
+
+    const oedeExcel = [
+
+        [
+            "Industria",
+            "Empresas",
+            "Empleo",
+            "Score"
+        ]
+
+    ];
+
+
+    (mercado360.ranking || [])
+        .forEach(
+            item => {
+
+                oedeExcel.push([
+
+                    item.industria,
+
+                    numero(
+                        item.empresas
+                    ),
+
+                    numero(
+                        item.empleo
+                    ),
+
+                    numero(
+                        item.score
+                    )
+
+                ]);
+
+            }
+        );
+
+
+    agregarHoja(
+        workbook,
+        "Datos OEDE",
+        oedeExcel
+    );
+
+
+    /*
+       ======================================================
+       8. SUPUESTOS
+       ======================================================
+    */
+
+    const supuestosExcel = [
+
+        [
+            "Variable",
+            "Valor"
+        ],
+
+        [
+            "Mercado objetivo %",
+            mercadoObjetivo
+        ],
+
+        [
+            "SAM %",
+            samPorcentaje
+        ],
+
+        [
+            "SOM %",
+            somPorcentaje
+        ],
+
+        [
+            "Producto seleccionado",
+            detalleSeleccionado.productoNombre
+        ],
+
+        [
+            "Industria seleccionada",
+            industriaSeleccionada
+        ],
+
+        [
+            "Precio anual USD",
+            precioSeleccionado
+        ],
+
+        [
+            "Fuente empresas",
+            "OEDE"
+        ],
+
+        [
+            "Fuente empleo",
+            "OEDE"
+        ],
+
+        [
+            "Datos individuales",
+            "No disponibles"
+        ]
+
+    ];
+
+
+    agregarHoja(
+        workbook,
+        "Supuestos",
+        supuestosExcel
+    );
+
+
+    /*
+       ======================================================
+       9. METODOLOGÍA
+       ======================================================
+    */
+
+    const metodologiaExcel = [
+
+        [
+            "METODOLOGÍA MERCADO 360"
+        ],
+
+        [],
+
+        [
+            "Potencial"
+        ],
+
+        [
+            mercado360?.metodologiaPotencial?.formula ||
+            "Potencial = afinidad sectorial + indicadores documentales."
+        ],
+
+        [],
+
+        [
+            "TAM"
+        ],
+
+        [
+            "TAM = unidades potenciales × precio anual."
+        ],
+
+        [],
+
+        [
+            "SAM"
+        ],
+
+        [
+            "SAM = TAM × SAM %."
+        ],
+
+        [],
+
+        [
+            "SOM"
+        ],
+
+        [
+            "SOM = SAM × SOM %."
+        ],
+
+        [],
+
+        [
+            "Datos reales"
+        ],
+
+        [
+            "Empresas y empleo provienen de OEDE."
+        ],
+
+        [],
+
+        [
+            "Indicadores documentales"
+        ],
+
+        [
+            "Son estimaciones sectoriales modeladas."
+        ],
+
+        [],
+
+        [
+            "Limitación"
+        ],
+
+        [
+            "No permiten afirmar que una empresa individual tenga intención de comprar un producto."
+        ]
+
+    ];
+
+
+    agregarHoja(
+        workbook,
+        "Metodología",
+        metodologiaExcel
+    );
+
+
+    /*
+       ======================================================
+       10. ALERTAS
+       ======================================================
+    */
+
+    const alertasExcel = [
+
+        [
+            "Tipo",
+            "Observación"
+        ]
+
+    ];
+
+
+    if (
+        precioSeleccionado <= 0
+    ) {
+
+        alertasExcel.push([
+
+            "WARNING",
+
+            "El precio anual no está definido. TAM/SAM/SOM no tienen valor monetario."
+
+        ]);
+
+    } else {
+
+        alertasExcel.push([
+
+            "OK",
+
+            "Precio definido. TAM/SAM/SOM calculados dinámicamente."
+
+        ]);
+
+    }
+
+
+    alertasExcel.push([
+
+        "INFO",
+
+        "Los indicadores documentales son estimaciones sectoriales."
+
+    ]);
+
+
+    alertasExcel.push([
+
+        "INFO",
+
+        "No se identifican empresas individuales con intención de compra."
+
+    ]);
+
+
+    alertasExcel.push([
+
+        "INFO",
+
+        "La identificación de prospectos requiere señales empresa por empresa."
+
+    ]);
+
+
+    agregarHoja(
+        workbook,
+        "Alertas",
+        alertasExcel
+    );
+
+
+    /*
+       ======================================================
+       FORMATO
+       ======================================================
+    */
+
+    workbook.SheetNames.forEach(
+        nombre => {
+
+            const hoja =
+                workbook.Sheets[
+                    nombre
+                ];
+
+
+            const rango =
+                XLSX.utils.decode_range(
+                    hoja["!ref"]
+                );
+
+
+            const anchos = [];
+
+
+            for (
+                let columna =
+                    rango.s.c;
+                columna <=
+                    rango.e.c;
+                columna++
+            ) {
+
+                let maximo = 12;
+
+
+                for (
+                    let fila =
+                        rango.s.r;
+                    fila <=
+                        rango.e.r;
+                    fila++
+                ) {
+
+                    const celda =
+                        hoja[
+                            XLSX.utils.encode_cell({
+                                r: fila,
+                                c: columna
+                            })
+                        ];
+
+
+                    if (
+                        celda &&
+                        celda.v !==
+                            undefined
+                    ) {
+
+                        maximo =
+                            Math.max(
+                                maximo,
+                                String(
+                                    celda.v
+                                ).length + 2
+                            );
+
+                    }
+
+                }
+
+
+                anchos.push({
+
+                    wch:
+                        Math.min(
+                            maximo,
+                            45
+                        )
+
+                });
+
+            }
+
+
+            hoja["!cols"] =
+                anchos;
+
+        }
+    );
+
+
+    /*
+       ======================================================
+       DESCARGA
+       ======================================================
+    */
+
+    const fecha =
+        new Date()
+            .toISOString()
+            .slice(
+                0,
+                10
+            );
+
+
+    const nombreArchivo =
+        `Mercado_360_${industriaSeleccionada}_${fecha}.xlsx`;
+
+
+    XLSX.writeFile(
+        workbook,
+        nombreArchivo
+    );
+
+}
+
+
+/* ==========================================================
+   CREAR HOJA
+========================================================== */
+
+function agregarHoja(
+    workbook,
+    nombre,
+    datos
+) {
+
+    const hoja =
+        XLSX.utils.aoa_to_sheet(
+            datos
+        );
+
+
+    XLSX.utils.book_append_sheet(
+        workbook,
+        hoja,
+        nombre.substring(
+            0,
+            31
+        )
+    );
+
+}
 
 /* ==========================================================
    ACTUALIZAR TODO
