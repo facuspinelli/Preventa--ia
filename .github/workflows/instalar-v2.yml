@@ -1,10 +1,10 @@
-name: Instalar PREVENTA IA V3
+name: Instalar PREVENTA IA FINAL
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'PREVENTA-IA-INTEGRADO-ARCHIVOS-V3.zip'
+      - 'PREVENTA-IA-FINAL-FUNCIONAL.zip'
 
 permissions:
   contents: write
@@ -19,100 +19,79 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Buscar paquete V3
+      - name: Verificar paquete final
         run: |
-          ZIP="PREVENTA-IA-INTEGRADO-ARCHIVOS-V3.zip"
+          ZIP="PREVENTA-IA-FINAL-FUNCIONAL.zip"
 
           if [ ! -f "$ZIP" ]; then
             echo "ERROR: No se encontró $ZIP"
-            echo "Archivos disponibles en la raíz:"
             ls -la
             exit 1
           fi
 
-          echo "Paquete encontrado: $ZIP"
-          echo "ZIP=$ZIP" >> "$GITHUB_ENV"
+          echo "Paquete final encontrado: $ZIP"
 
-      - name: Extraer V3
+      - name: Extraer paquete final
         run: |
-          rm -rf _v3
-          mkdir _v3
-          unzip -q "$ZIP" -d _v3
+          rm -rf _final
+          mkdir _final
+          unzip -q PREVENTA-IA-FINAL-FUNCIONAL.zip -d _final
 
-      - name: Verificar V3
+      - name: Verificar archivos funcionales
         run: |
           archivos=(
             "index.html"
             "asistente.html"
             "oportunidades.html"
-            "analisis.html"
             "documentos.html"
+            "analisis.html"
             "cotizador.html"
             "mercado.html"
             "biblioteca.html"
             "repositorio.html"
             "conocimientoiaasistente.html"
             "preventa-core.js"
+            "conocimiento.json"
+            "api/chat.js"
+            "api/mercado.js"
           )
 
           for archivo in "${archivos[@]}"; do
-            if [ ! -f "_v3/$archivo" ]; then
-              echo "ERROR: Falta $archivo en V3"
+            if [ ! -f "_final/$archivo" ]; then
+              echo "ERROR: Falta $archivo"
               exit 1
             fi
           done
 
-          echo "V3 validada correctamente."
+          echo "OK: paquete final validado."
 
-      - name: Instalar V3
+      - name: Instalar sistema final
         run: |
-          cp _v3/index.html .
-          cp _v3/asistente.html .
-          cp _v3/oportunidades.html .
-          cp _v3/analisis.html .
-          cp _v3/documentos.html .
-          cp _v3/cotizador.html .
-          cp _v3/mercado.html .
-          cp _v3/biblioteca.html .
-          cp _v3/repositorio.html .
-          cp _v3/conocimientoiaasistente.html .
-          cp _v3/cotizador.html .
-          cp _v3/preventa-core.js .
+          cp _final/index.html .
+          cp _final/asistente.html .
+          cp _final/oportunidades.html .
+          cp _final/documentos.html .
+          cp _final/analisis.html .
+          cp _final/cotizador.html .
+          cp _final/mercado.html .
+          cp _final/biblioteca.html .
+          cp _final/repositorio.html .
+          cp _final/conocimientoiaasistente.html .
+          cp _final/preventa-core.js .
+          cp _final/conocimiento.json .
+          cp _final/package.json .
 
-          if [ -d "_v3/lib" ]; then
-            mkdir -p lib
-            cp -a _v3/lib/. lib/
-          fi
+          mkdir -p api data docs
+          cp -a _final/api/. api/
+          cp -a _final/data/. data/
+          cp -a _final/docs/. docs/
 
-          if [ -d "_v3/data" ]; then
-            mkdir -p data
-            cp -a _v3/data/. data/
-          fi
-
-          if [ -d "_v3/api" ]; then
-            mkdir -p api
-            cp -a _v3/api/. api/
-          fi
-
-          if [ -d "_v3/docs" ]; then
-            mkdir -p docs
-            cp -a _v3/docs/. docs/
-          fi
-
-          if [ -f "_v3/conocimiento.json" ]; then
-            cp _v3/conocimiento.json .
-          fi
-
-          if [ -f "_v3/package.json" ]; then
-            cp _v3/package.json .
-          fi
-
-      - name: Limpiar instalador
+      - name: Limpiar paquete
         run: |
-          rm -rf _v3
-          rm -f "$ZIP"
+          rm -rf _final
+          rm -f PREVENTA-IA-FINAL-FUNCIONAL.zip
 
-      - name: Guardar V3
+      - name: Guardar sistema final
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -127,5 +106,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Instalar PREVENTA IA V3 completa"
+          git commit -m "Instalar PREVENTA IA funcional integrada"
           git push origin main
