@@ -1,9 +1,10 @@
-name: Instalar PREVENTA IA V2
+name: Instalar PREVENTA IA Integrado
 
 on:
+  workflow_dispatch:
   push:
     paths:
-      - 'PREVENTA-IA-V2-WINDOWS.zip'
+      - 'PREVENTA-IA-INTEGRADO-ARCHIVOS.zip'
 
 permissions:
   contents: write
@@ -15,19 +16,108 @@ jobs:
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Instalar V2
+      - name: Verificar archivo integrado
         run: |
-          rm -rf _v2
-          mkdir _v2
-          unzip -q PREVENTA-IA-V2-WINDOWS.zip -d _v2
-          cp -a _v2/. .
-          rm -rf _v2 PREVENTA-IA-V2-WINDOWS.zip
+          if [ ! -f "PREVENTA-IA-INTEGRADO-ARCHIVOS.zip" ]; then
+            echo "ERROR: No existe PREVENTA-IA-INTEGRADO-ARCHIVOS.zip"
+            exit 1
+          fi
 
-      - name: Guardar V2
+      - name: Extraer paquete
+        run: |
+          rm -rf _integrado
+          mkdir _integrado
+          unzip -q PREVENTA-IA-INTEGRADO-ARCHIVOS.zip -d _integrado
+
+      - name: Detectar carpeta del paquete
+        run: |
+          ANALISIS=$(find _integrado -type f -name "analisis.html" | head -1)
+
+          if [ -z "$ANALISIS" ]; then
+            echo "ERROR: El paquete no contiene analisis.html"
+            find _integrado -maxdepth 3 -type f | sort
+            exit 1
+          fi
+
+          PACKAGE_ROOT=$(dirname "$ANALISIS")
+          echo "PACKAGE_ROOT=$PACKAGE_ROOT" >> "$GITHUB_ENV"
+
+          echo "Paquete encontrado en: $PACKAGE_ROOT"
+
+      - name: Verificar archivos principales
+        run: |
+          archivos=(
+            "analisis.html"
+            "asistente.html"
+            "biblioteca.html"
+            "conocimientoiaasistente.html"
+            "cotizador.html"
+            "documentos.html"
+            "index.html"
+            "mercado.html"
+            "oportunidades.html"
+            "repositorio.html"
+          )
+
+          for archivo in "${archivos[@]}"; do
+            if [ ! -f "$PACKAGE_ROOT/$archivo" ]; then
+              echo "ERROR: Falta $archivo en el paquete"
+              exit 1
+            fi
+          done
+
+          echo "Todos los archivos principales están presentes."
+
+      - name: Instalar archivos integrados
+        run: |
+          archivos=(
+            "analisis.html"
+            "asistente.html"
+            "biblioteca.html"
+            "conocimientoiaasistente.html"
+            "cotizador.html"
+            "documentos.html"
+            "index.html"
+            "mercado.html"
+            "oportunidades.html"
+            "repositorio.html"
+          )
+
+          for archivo in "${archivos[@]}"; do
+            cp "$PACKAGE_ROOT/$archivo" "./$archivo"
+          done
+
+          if [ -f "$PACKAGE_ROOT/preventa-core.js" ]; then
+            cp "$PACKAGE_ROOT/preventa-core.js" "./preventa-core.js"
+          fi
+
+          if [ -d "$PACKAGE_ROOT/docs" ]; then
+            mkdir -p docs
+            cp -a "$PACKAGE_ROOT/docs/." "./docs/"
+          fi
+
+      - name: Eliminar paquete instalador
+        run: |
+          rm -rf _integrado
+          rm -f PREVENTA-IA-INTEGRADO-ARCHIVOS.zip
+
+      - name: Guardar cambios
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git pull --rebase origin main
+
           git add -A
-          git commit -m "Instalar PREVENTA IA V2" || echo "Sin cambios"
-          git push
+
+          if git diff --cached --quiet; then
+            echo "Sin cambios para guardar."
+            exit 0
+          fi
+
+          git commit -m "Instalar PREVENTA IA Integrado"
+          git push origin main
