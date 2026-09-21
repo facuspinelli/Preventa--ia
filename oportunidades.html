@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Oportunidades | PREVENTA IA</title>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   background: #f4f6f8;
-  color: #172033;
+  color: #1f2937;
 }
 
 header {
   background: #111827;
   color: white;
-  padding: 18px 32px;
+  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,7 +32,7 @@ header {
 
 header h1 {
   margin: 0;
-  font-size: 21px;
+  font-size: 22px;
 }
 
 .back {
@@ -39,287 +42,305 @@ header h1 {
 }
 
 .container {
-  max-width: 1400px;
-  margin: 30px auto;
+  max-width: 1200px;
+  margin: 40px auto;
   padding: 0 20px;
 }
 
-.page-title {
+.welcome {
+  margin-bottom: 30px;
+}
+
+.welcome h2 {
+  margin-bottom: 8px;
+}
+
+.top-actions {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 25px;
-}
-
-.page-title h2 {
-  margin: 0 0 7px;
-  font-size: 30px;
-}
-
-.page-title p {
-  margin: 0;
-  color: #6b7280;
-}
-
-button {
-  border: 0;
-  border-radius: 8px;
-  padding: 11px 16px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-button:hover {
-  opacity: .92;
-}
-
-.primary {
-  background: #2563eb;
-  color: white;
-}
-
-.dark {
-  background: #111827;
-  color: white;
-}
-
-.green {
-  background: #15803d;
-  color: white;
-}
-
-.red {
-  background: #dc2626;
-  color: white;
-}
-
-.gray {
-  background: #e5e7eb;
-  color: #1f2937;
-}
-
-.small {
-  padding: 8px 11px;
-  font-size: 12px;
-}
-
-/* RESUMEN */
-
-.summary {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
-  margin-bottom: 25px;
-}
-
-.summary-card {
-  background: white;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.05);
-  border-top: 4px solid #d1d5db;
-}
-
-.summary-card h3 {
-  margin: 0 0 8px;
-  font-size: 13px;
-  color: #6b7280;
-}
-
-.summary-number {
-  font-size: 27px;
-  font-weight: bold;
-}
-
-.summary-card.new {
-  border-color: #64748b;
-}
-
-.summary-card.analysis {
-  border-color: #f59e0b;
-}
-
-.summary-card.quote {
-  border-color: #2563eb;
-}
-
-.summary-card.proposal {
-  border-color: #7c3aed;
-}
-
-.summary-card.won {
-  border-color: #16a34a;
-}
-
-.summary-card.lost {
-  border-color: #dc2626;
-}
-
-/* TOOLBAR */
-
-.toolbar {
-  background: white;
-  border-radius: 12px;
-  padding: 15px;
-  display: flex;
-  gap: 10px;
+  align-items: center;
   margin-bottom: 20px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.05);
 }
 
-.toolbar input,
-.toolbar select {
-  padding: 11px;
+.top-actions h3 {
+  margin: 0;
+}
+
+.search {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.search input {
+  width: 100%;
+  padding: 12px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 14px;
 }
 
-.toolbar input {
-  flex: 1;
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 17px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #111827;
+  color: white;
 }
 
-/* PIPELINE */
+button:hover {
+  background: #374151;
+}
 
-.pipeline {
+.primary {
+  background: #2563eb;
+}
+
+.primary:hover {
+  background: #1d4ed8;
+}
+
+.green {
+  background: #166534;
+}
+
+.green:hover {
+  background: #15803d;
+}
+
+.edit {
+  background: #2563eb;
+}
+
+.edit:hover {
+  background: #1d4ed8;
+}
+
+.secondary {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.secondary:hover {
+  background: #d1d5db;
+}
+
+.danger {
+  background: #dc2626;
+}
+
+.danger:hover {
+  background: #b91c1c;
+}
+
+.opportunities {
   display: grid;
-  grid-template-columns: repeat(6, minmax(210px, 1fr));
-  gap: 14px;
-  align-items: start;
-  overflow-x: auto;
-  padding-bottom: 10px;
+  gap: 16px;
 }
 
-.column {
-  background: #e9edf2;
-  border-radius: 12px;
-  min-height: 300px;
-  padding: 10px;
+.opportunity {
+  background: white;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
-.column-header {
+.opportunity-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 7px 5px 12px;
+  gap: 20px;
+  align-items: flex-start;
 }
 
-.column-header strong {
-  font-size: 13px;
+.opportunity-title h3 {
+  margin: 0 0 8px;
 }
 
-.column-count {
-  background: white;
+.opportunity-title p {
+  margin: 5px 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 10px;
   border-radius: 20px;
-  padding: 4px 8px;
   font-size: 12px;
   font-weight: bold;
+  margin-top: 8px;
 }
 
-.card {
-  background: white;
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
-  cursor: pointer;
+.analysis-status {
+  background: #fef3c7;
+  color: #92400e;
 }
 
-.card:hover {
-  box-shadow: 0 5px 15px rgba(0,0,0,.10);
+.quote-status {
+  background: #dbeafe;
+  color: #1e40af;
 }
 
-.card-company {
-  font-size: 11px;
+.proposal-status {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.won-status {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.lost-status {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.data-box {
+  background: #f9fafb;
+  padding: 13px;
+  border-radius: 8px;
+}
+
+.data-label {
   color: #6b7280;
+  font-size: 11px;
   margin-bottom: 5px;
 }
 
-.card-title {
-  font-size: 15px;
+.data-value {
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 8px;
+  white-space: pre-wrap;
 }
 
-.card-solution {
-  font-size: 12px;
-  color: #374151;
-  margin-bottom: 10px;
+.quote-box {
+  margin-top: 20px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 18px;
 }
 
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #edf0f2;
-  padding-top: 9px;
+.quote-title {
+  font-weight: bold;
+  color: #166534;
+  margin-bottom: 12px;
+}
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.quote-item {
+  background: white;
+  padding: 14px;
+  border-radius: 8px;
+}
+
+.quote-label {
   font-size: 11px;
   color: #6b7280;
 }
 
-.empty-column {
-  color: #9ca3af;
-  font-size: 12px;
-  text-align: center;
-  padding: 30px 10px;
+.quote-value {
+  margin-top: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #166534;
 }
 
-/* MODAL */
+.no-quote {
+  margin-top: 20px;
+  padding: 13px;
+  background: #fff7ed;
+  color: #9a3412;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.detail {
+  display: none;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detail-section {
+  margin-bottom: 18px;
+}
+
+.detail-section h4 {
+  margin: 0 0 7px;
+}
+
+.detail-text {
+  background: #f9fafb;
+  padding: 14px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.empty {
+  background: white;
+  border-radius: 12px;
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
 
 .modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.55);
-  z-index: 1000;
-  align-items: center;
+  background: rgba(0,0,0,0.55);
   justify-content: center;
+  align-items: center;
   padding: 20px;
-}
-
-.modal.show {
-  display: flex;
+  z-index: 100;
 }
 
 .modal-content {
   width: 100%;
-  max-width: 950px;
-  max-height: 94vh;
+  max-width: 850px;
+  max-height: 92vh;
   overflow-y: auto;
   background: white;
-  border-radius: 15px;
-  padding: 28px;
+  border-radius: 14px;
+  padding: 30px;
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 20px;
+.modal-content h3 {
+  margin-top: 0;
 }
 
-.modal-header h3 {
-  margin: 0 0 5px;
-  font-size: 23px;
-}
-
-.modal-header p {
-  margin: 0;
+.modal-subtitle {
   color: #6b7280;
   font-size: 13px;
-}
-
-.close {
-  background: #e5e7eb;
-  color: #111827;
-  border-radius: 50%;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  font-size: 20px;
+  margin-bottom: 25px;
 }
 
 .form-grid {
@@ -334,9 +355,9 @@ button:hover {
 
 label {
   display: block;
-  margin-bottom: 6px;
   font-size: 13px;
   font-weight: bold;
+  margin-bottom: 6px;
 }
 
 input,
@@ -345,13 +366,13 @@ textarea {
   width: 100%;
   padding: 11px;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 7px;
+  font-family: Arial, sans-serif;
   font-size: 14px;
 }
 
 textarea {
-  min-height: 100px;
+  min-height: 90px;
   resize: vertical;
 }
 
@@ -362,557 +383,430 @@ textarea:focus {
   border-color: #2563eb;
 }
 
-.modal-actions {
+.modal-buttons {
   display: flex;
-  justify-content: flex-end;
   gap: 10px;
   margin-top: 25px;
 }
 
-/* DETALLE */
+@media (max-width: 900px) {
 
-.detail-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 18px;
-}
-
-.detail-box {
-  background: #f8fafc;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 15px;
-}
-
-.detail-box h4 {
-  margin: 0 0 12px;
-  font-size: 14px;
-}
-
-.detail-value {
-  white-space: pre-wrap;
-  line-height: 1.5;
-  font-size: 14px;
-  color: #374151;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.info-item {
-  background: white;
-  border-radius: 8px;
-  padding: 11px;
-}
-
-.info-label {
-  font-size: 10px;
-  color: #6b7280;
-  margin-bottom: 4px;
-}
-
-.info-value {
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.product-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.product-tag {
-  background: #dbeafe;
-  color: #1e40af;
-  padding: 6px 9px;
-  border-radius: 15px;
-  font-size: 11px;
-}
-
-.next-action {
-  background: #fff7ed;
-  border: 1px solid #fed7aa;
-  border-radius: 10px;
-  padding: 14px;
-}
-
-.next-action strong {
-  display: block;
-  color: #9a3412;
-  margin-bottom: 5px;
-}
-
-.detail-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 5px 9px;
-  border-radius: 15px;
-  font-size: 11px;
-  font-weight: bold;
-}
-
-.badge-new {
-  background: #e2e8f0;
-  color: #334155;
-}
-
-.badge-analysis {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.badge-quote {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.badge-proposal {
-  background: #ede9fe;
-  color: #5b21b6;
-}
-
-.badge-won {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.badge-lost {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-@media (max-width: 1200px) {
-  .summary {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .pipeline {
-    grid-template-columns: repeat(6, 230px);
-  }
-}
-
-@media (max-width: 700px) {
-  header {
-    padding: 15px;
-  }
-
-  .page-title {
-    flex-direction: column;
-  }
-
-  .summary {
+  .data-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .toolbar {
+}
+
+@media (max-width: 700px) {
+
+  header {
     flex-direction: column;
+    gap: 15px;
   }
 
-  .form-grid,
-  .detail-grid,
-  .info-grid {
+  .top-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .data-grid,
+  .quote-grid,
+  .form-grid {
     grid-template-columns: 1fr;
   }
 
   .full {
     grid-column: auto;
   }
+
+  .opportunity-header {
+    flex-direction: column;
+  }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
 <header>
+
   <h1>💼 PREVENTA IA</h1>
 
-  <a href="index.html" class="back">
+  <a
+    href="index.html"
+    class="back"
+  >
     ← Volver al inicio
   </a>
+
 </header>
+
 
 <main class="container">
 
-  <div class="page-title">
-    <div>
-      <h2>Oportunidades</h2>
-      <p>
-        Centro de gestión del ciclo comercial y técnico de Preventa.
-      </p>
-    </div>
+  <div class="welcome">
 
-    <button class="primary" onclick="openNewOpportunity()">
-      + Nueva oportunidad
-    </button>
+    <h2>
+      💼 Oportunidades
+    </h2>
+
+    <p>
+      Centralizá clientes, proyectos, requerimientos,
+      estados y cotizaciones.
+    </p>
+
   </div>
 
-  <!-- RESUMEN -->
 
-  <section class="summary">
+  <div class="top-actions">
 
-    <div class="summary-card new">
-      <h3>Nueva</h3>
-      <div class="summary-number" id="count-new">0</div>
-    </div>
+    <h3>
+      Mis oportunidades
+    </h3>
 
-    <div class="summary-card analysis">
-      <h3>En análisis</h3>
-      <div class="summary-number" id="count-analysis">0</div>
-    </div>
+    <button
+      class="primary"
+      onclick="openNewModal()"
+    >
+      + Nueva oportunidad
+    </button>
 
-    <div class="summary-card quote">
-      <h3>Cotizando</h3>
-      <div class="summary-number" id="count-quote">0</div>
-    </div>
+  </div>
 
-    <div class="summary-card proposal">
-      <h3>Propuesta</h3>
-      <div class="summary-number" id="count-proposal">0</div>
-    </div>
 
-    <div class="summary-card won">
-      <h3>Ganadas</h3>
-      <div class="summary-number" id="count-won">0</div>
-    </div>
-
-    <div class="summary-card lost">
-      <h3>Perdidas</h3>
-      <div class="summary-number" id="count-lost">0</div>
-    </div>
-
-  </section>
-
-  <!-- BUSCADOR -->
-
-  <section class="toolbar">
+  <div class="search">
 
     <input
       id="search"
       type="text"
-      placeholder="🔎 Buscar empresa, oportunidad, contacto, solución..."
-      oninput="render()"
+      placeholder="🔎 Buscar por cliente, proyecto o solución..."
+      oninput="renderOpportunities()"
     >
 
-    <select id="filterStage" onchange="render()">
+  </div>
 
-      <option value="all">
-        Todos los estados
-      </option>
 
-      <option value="new">
-        Nueva
-      </option>
-
-      <option value="analysis">
-        En análisis
-      </option>
-
-      <option value="quote">
-        Cotizando
-      </option>
-
-      <option value="proposal">
-        Propuesta
-      </option>
-
-      <option value="won">
-        Ganada
-      </option>
-
-      <option value="lost">
-        Perdida
-      </option>
-
-    </select>
-
-    <button class="gray" onclick="clearFilters()">
-      Limpiar
-    </button>
-
-  </section>
-
-  <!-- PIPELINE -->
-
-  <section class="pipeline" id="pipeline"></section>
+  <div
+    id="opportunities"
+    class="opportunities"
+  ></div>
 
 </main>
 
 
-<!-- =====================================================
-     MODAL NUEVA / EDITAR
-===================================================== -->
+<!-- MODAL -->
 
-<div class="modal" id="opportunityModal">
+<div
+  id="modal"
+  class="modal"
+>
 
   <div class="modal-content">
 
-    <div class="modal-header">
+    <h3 id="modalTitle">
+      ➕ Nueva oportunidad
+    </h3>
 
-      <div>
-        <h3 id="modalTitle">
-          Nueva oportunidad
-        </h3>
+    <p class="modal-subtitle">
+      Completá o corregí los datos de la oportunidad.
+    </p>
 
-        <p>
-          Registrá la información principal de la oportunidad.
-        </p>
-      </div>
-
-      <button class="close" onclick="closeModal()">
-        ×
-      </button>
-
-    </div>
 
     <div class="form-grid">
 
+
       <div>
-        <label>Empresa / Cliente *</label>
+
+        <label>
+          Cliente
+        </label>
 
         <input
-          id="fCompany"
+          id="client"
           type="text"
-          placeholder="Ej: Banco CMF"
+          placeholder="Nombre del cliente"
         >
+
       </div>
 
+
       <div>
-        <label>Oportunidad / Proyecto *</label>
+
+        <label>
+          Oportunidad / Proyecto
+        </label>
 
         <input
-          id="fTitle"
+          id="project"
           type="text"
-          placeholder="Ej: Gestión documental"
+          placeholder="Nombre del proyecto"
         >
+
       </div>
 
+
       <div>
-        <label>Contacto</label>
+
+        <label>
+          Solución
+        </label>
 
         <input
-          id="fContact"
+          id="solution"
           type="text"
-          placeholder="Nombre del contacto"
+          placeholder="Thuban / Captika / etc."
         >
+
       </div>
 
-      <div>
-        <label>Origen</label>
-
-        <select id="fOrigin">
-
-          <option value="Comercial">
-            Comercial
-          </option>
-
-          <option value="Pliego">
-            Pliego
-          </option>
-
-          <option value="Relevamiento">
-            Relevamiento
-          </option>
-
-          <option value="Mercado">
-            Mercado
-          </option>
-
-          <option value="Renovación">
-            Renovación
-          </option>
-
-          <option value="Referido">
-            Referido
-          </option>
-
-          <option value="Otro">
-            Otro
-          </option>
-
-        </select>
-      </div>
 
       <div>
-        <label>Estado</label>
 
-        <select id="fStage">
+        <label>
+          Estado
+        </label>
 
-          <option value="new">
-            Nueva
-          </option>
+        <select id="status">
 
           <option value="analysis">
-            En análisis
+            🟡 En análisis
           </option>
 
           <option value="quote">
-            Cotizando
+            🔵 Cotizando
           </option>
 
           <option value="proposal">
-            Propuesta
+            🟣 Propuesta
           </option>
 
           <option value="won">
-            Ganada
+            🟢 Ganada
           </option>
 
           <option value="lost">
-            Perdida
+            🔴 Perdida
           </option>
 
         </select>
+
       </div>
 
+
       <div>
-        <label>Responsable</label>
+
+        <label>
+          Usuarios
+        </label>
 
         <input
-          id="fOwner"
+          id="users"
           type="text"
-          placeholder="Responsable comercial"
+          placeholder="Ejemplo: 500"
         >
+
       </div>
+
 
       <div>
-        <label>Monto estimado</label>
+
+        <label>
+          Storage
+        </label>
 
         <input
-          id="fAmount"
-          type="number"
-          min="0"
-          step="0.01"
-          placeholder="0"
-        >
-      </div>
-
-      <div>
-        <label>Fecha próxima acción</label>
-
-        <input
-          id="fNextDate"
-          type="date"
-        >
-      </div>
-
-      <div class="full">
-        <label>Objetivo / necesidad del cliente</label>
-
-        <textarea
-          id="fObjective"
-          placeholder="¿Qué problema quiere resolver el cliente?"
-        ></textarea>
-      </div>
-
-      <div class="full">
-        <label>Requerimientos</label>
-
-        <textarea
-          id="fRequirements"
-          placeholder="Usuarios, almacenamiento, documentos, OCR, workflows, firmas, integraciones, migración, etc."
-        ></textarea>
-      </div>
-
-      <div class="full">
-        <label>Solución propuesta</label>
-
-        <textarea
-          id="fSolution"
-          placeholder="Describí la solución técnica que se está evaluando."
-        ></textarea>
-      </div>
-
-      <div class="full">
-        <label>Productos involucrados</label>
-
-        <input
-          id="fProducts"
+          id="storage"
           type="text"
-          placeholder="Ej: Thuban, Captika, Firmas Addoc"
+          placeholder="Ejemplo: 250 GB"
         >
+
       </div>
 
-      <div class="full">
-        <label>Riesgos / puntos a validar</label>
 
-        <textarea
-          id="fRisks"
-          placeholder="Integraciones, alcance, migración, firma, infraestructura, información faltante..."
-        ></textarea>
+      <div>
+
+        <label>
+          Documentos / Volumen
+        </label>
+
+        <input
+          id="documents"
+          type="text"
+          placeholder="Legajos, contratos, etc."
+        >
+
       </div>
 
-      <div class="full">
-        <label>Próxima acción</label>
 
-        <textarea
-          id="fNextAction"
-          placeholder="Ej: Validar cantidad de workflows con cliente."
-        ></textarea>
+      <div>
+
+        <label>
+          Workflows
+        </label>
+
+        <input
+          id="workflows"
+          type="text"
+          placeholder="Ejemplo: 3 circuitos"
+        >
+
       </div>
 
+
+      <div>
+
+        <label>
+          OCR
+        </label>
+
+        <select id="ocr">
+
+          <option value="No definido">
+            No definido
+          </option>
+
+          <option value="No requerido">
+            No requerido
+          </option>
+
+          <option value="Requerido">
+            Requerido
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Firmas
+        </label>
+
+        <select id="signatures">
+
+          <option value="No definido">
+            No definido
+          </option>
+
+          <option value="No requerido">
+            No requerido
+          </option>
+
+          <option value="Requerido">
+            Requerido
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Infraestructura
+        </label>
+
+        <input
+          id="infrastructure"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Plazo
+        </label>
+
+        <input
+          id="deadline"
+          type="text"
+        >
+
+      </div>
+
+
       <div class="full">
-        <label>Notas</label>
+
+        <label>
+          Objetivo
+        </label>
 
         <textarea
-          id="fNotes"
-          placeholder="Información adicional."
+          id="objective"
         ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Requerimientos
+        </label>
+
+        <textarea
+          id="requirements"
+        ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Riesgos
+        </label>
+
+        <textarea
+          id="risks"
+        ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Notas
+        </label>
+
+        <textarea
+          id="notes"
+        ></textarea>
+
       </div>
 
     </div>
 
-    <div class="modal-actions">
 
-      <button class="gray" onclick="closeModal()">
+    <div class="modal-buttons">
+
+      <button
+        class="green"
+        onclick="saveOpportunity()"
+      >
+        💾 Guardar
+      </button>
+
+
+      <button
+        class="secondary"
+        onclick="closeModal()"
+      >
         Cancelar
       </button>
 
-      <button class="green" onclick="saveOpportunity()">
-        💾 Guardar oportunidad
-      </button>
-
     </div>
-
-  </div>
-
-</div>
-
-
-<!-- =====================================================
-     MODAL DETALLE
-===================================================== -->
-
-<div class="modal" id="detailModal">
-
-  <div class="modal-content">
-
-    <div class="modal-header">
-
-      <div>
-        <h3 id="detailTitle">
-          Oportunidad
-        </h3>
-
-        <p id="detailSubtitle"></p>
-      </div>
-
-      <button class="close" onclick="closeDetail()">
-        ×
-      </button>
-
-    </div>
-
-    <div id="detailContent"></div>
 
   </div>
 
@@ -921,660 +815,756 @@ textarea:focus {
 
 <script>
 
-/* =====================================================
-   CONFIGURACIÓN
-===================================================== */
 
-const STORAGE_KEY = "preventa_opportunities_v2";
+/* ==========================================
+   DATOS
+========================================== */
 
-const OLD_STORAGE_KEY = "preventa_opportunities";
-
-let opportunities = [];
-
-let editingId = null;
+let opportunities =
+  getOpportunities();
 
 
-/* =====================================================
-   ESTADOS
-===================================================== */
-
-const stages = [
-
-  {
-    id: "new",
-    name: "Nueva",
-    badge: "badge-new"
-  },
-
-  {
-    id: "analysis",
-    name: "En análisis",
-    badge: "badge-analysis"
-  },
-
-  {
-    id: "quote",
-    name: "Cotizando",
-    badge: "badge-quote"
-  },
-
-  {
-    id: "proposal",
-    name: "Propuesta",
-    badge: "badge-proposal"
-  },
-
-  {
-    id: "won",
-    name: "Ganada",
-    badge: "badge-won"
-  },
-
-  {
-    id: "lost",
-    name: "Perdida",
-    badge: "badge-lost"
-  }
-
-];
+let editingId =
+  null;
 
 
-/* =====================================================
-   INICIALIZACIÓN
-===================================================== */
+/* ==========================================
+   LOCAL STORAGE
+========================================== */
 
-function init() {
-
-  loadData();
-
-  render();
-
-}
-
-
-/* =====================================================
-   CARGA DE DATOS
-===================================================== */
-
-function loadData() {
+function getOpportunities() {
 
   try {
 
-    const current =
-      localStorage.getItem(STORAGE_KEY);
-
-    if (current) {
-
-      opportunities =
-        JSON.parse(current);
-
-      return;
-
-    }
-
-
-    /*
-      MIGRACIÓN DE LA V1
-
-      Si existían oportunidades
-      en la versión anterior,
-      intentamos conservarlas.
-    */
-
-    const old =
-      localStorage.getItem(OLD_STORAGE_KEY);
-
-    if (old) {
-
-      const oldData =
-        JSON.parse(old);
-
-      opportunities =
-        oldData.map(oldOpportunity =>
-          migrateOldOpportunity(oldOpportunity)
-        );
-
-      saveData();
-
-      return;
-
-    }
-
-    opportunities = [];
+    return JSON.parse(
+      localStorage.getItem(
+        "preventa_opportunities"
+      )
+    ) || [];
 
   }
 
   catch(error) {
 
     console.error(
-      "Error cargando oportunidades:",
+      "Error leyendo oportunidades:",
       error
     );
 
-    opportunities = [];
+    return [];
 
   }
 
 }
 
 
-/* =====================================================
-   MIGRACIÓN V1 → V2
-===================================================== */
-
-function migrateOldOpportunity(old) {
-
-  return {
-
-    id:
-      old.id ||
-      generateId(),
-
-    createdAt:
-      old.createdAt ||
-      new Date().toISOString(),
-
-    updatedAt:
-      new Date().toISOString(),
-
-    company:
-      old.client ||
-      "",
-
-    title:
-      old.project ||
-      "Oportunidad migrada",
-
-    contact:
-      "",
-
-    origin:
-      "Migrada V1",
-
-    stage:
-      old.status ||
-      "analysis",
-
-    owner:
-      "",
-
-    amount:
-      old.amount ||
-      "",
-
-    objective:
-      old.objective ||
-      "",
-
-    requirements:
-      old.requirements ||
-      "",
-
-    solution:
-      old.solution ||
-      "",
-
-    products:
-      old.solution
-        ? [old.solution]
-        : [],
-
-    risks:
-      old.risks ||
-      "",
-
-    nextAction:
-      "",
-
-    nextActionDate:
-      "",
-
-    notes:
-      old.notes ||
-      "",
-
-    technical: {
-
-      users:
-        old.users ||
-        "",
-
-      storage:
-        old.storage ||
-        "",
-
-      documents:
-        old.documents ||
-        "",
-
-      workflows:
-        old.workflows ||
-        "",
-
-      ocr:
-        old.ocr ||
-        "",
-
-      signatures:
-        old.signatures ||
-        "",
-
-      infrastructure:
-        old.infrastructure ||
-        "",
-
-      deadline:
-        old.deadline ||
-        ""
-
-    }
-
-  };
-
-}
-
-
-/* =====================================================
-   GUARDADO
-===================================================== */
-
-function saveData() {
+function saveOpportunities() {
 
   localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(opportunities)
+    "preventa_opportunities",
+    JSON.stringify(
+      opportunities
+    )
   );
 
 }
 
 
-/* =====================================================
-   ID
-===================================================== */
+/* ==========================================
+   ESTADO
+========================================== */
 
-function generateId() {
+function getStatusName(
+  status
+) {
 
-  return "OP-" +
-    Date.now().toString(36).toUpperCase();
+  const names = {
+
+    analysis:
+      "🟡 En análisis",
+
+    quote:
+      "🔵 Cotizando",
+
+    proposal:
+      "🟣 Propuesta",
+
+    won:
+      "🟢 Ganada",
+
+    lost:
+      "🔴 Perdida"
+
+  };
+
+
+  return (
+    names[status] ||
+    "Sin estado"
+  );
 
 }
 
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
+function getStatusClass(
+  status
+) {
 
-function escapeHtml(value) {
+  const classes = {
 
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    analysis:
+      "analysis-status",
+
+    quote:
+      "quote-status",
+
+    proposal:
+      "proposal-status",
+
+    won:
+      "won-status",
+
+    lost:
+      "lost-status"
+
+  };
+
+
+  return (
+    classes[status] ||
+    "analysis-status"
+  );
 
 }
 
 
-/* =====================================================
-   RENDER PRINCIPAL
-===================================================== */
+/* ==========================================
+   RENDER
+========================================== */
 
-function render() {
+function renderOpportunities() {
 
-  updateCounters();
+  const container =
+    document.getElementById(
+      "opportunities"
+    );
+
 
   const search =
-    document
-      .getElementById("search")
-      .value
-      .toLowerCase()
-      .trim();
-
-  const filterStage =
-    document
-      .getElementById("filterStage")
-      .value;
+    document.getElementById(
+      "search"
+    )
+    .value
+    .toLowerCase()
+    .trim();
 
 
-  let filtered =
-    opportunities.filter(opportunity => {
-
-      const searchable = [
-
-        opportunity.company,
-
-        opportunity.title,
-
-        opportunity.contact,
-
-        opportunity.origin,
-
-        opportunity.solution,
-
-        ...(opportunity.products || [])
-
-      ]
-        .join(" ")
-        .toLowerCase();
+  opportunities =
+    getOpportunities();
 
 
-      const matchesSearch =
-        !search ||
-        searchable.includes(search);
+  container.innerHTML = "";
 
 
-      const matchesStage =
-        filterStage === "all" ||
-        opportunity.stage === filterStage;
+  const filtered =
+    opportunities.filter(
+      function(opportunity) {
+
+        const texto =
+          (
+            opportunity.client ||
+            ""
+          ) +
+          " " +
+          (
+            opportunity.project ||
+            ""
+          ) +
+          " " +
+          (
+            opportunity.solution ||
+            ""
+          );
 
 
-      return (
-        matchesSearch &&
-        matchesStage
-      );
+        return texto
+          .toLowerCase()
+          .includes(
+            search
+          );
 
-    });
-
-
-  const pipeline =
-    document.getElementById("pipeline");
-
-  pipeline.innerHTML = "";
+      }
+    );
 
 
-  stages.forEach(stage => {
+  if (
+    filtered.length === 0
+  ) {
 
-    const column =
-      document.createElement("div");
+    container.innerHTML = `
 
-    column.className =
-      "column";
+      <div class="empty">
 
+        <div style="font-size:42px;">
+          💼
+        </div>
 
-    const stageItems =
-      filtered.filter(
-        opportunity =>
-          opportunity.stage === stage.id
-      );
+        <h3>
+          No hay oportunidades
+        </h3>
 
-
-    column.innerHTML = `
-
-      <div class="column-header">
-
-        <strong>
-          ${stage.name}
-        </strong>
-
-        <span class="column-count">
-          ${stageItems.length}
-        </span>
+        <p>
+          Creá una oportunidad nueva para comenzar.
+        </p>
 
       </div>
 
-      <div class="column-body"></div>
-
     `;
 
+    return;
 
-    const body =
-      column.querySelector(".column-body");
+  }
 
 
-    if (stageItems.length === 0) {
+  filtered.forEach(
+    function(opportunity) {
 
-      body.innerHTML = `
-        <div class="empty-column">
-          Sin oportunidades
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "opportunity";
+
+
+      const quote =
+        opportunity.quote;
+
+
+      card.innerHTML = `
+
+        <div class="opportunity-header">
+
+          <div class="opportunity-title">
+
+            <h3>
+              ${escapeHTML(
+                opportunity.project ||
+                "Sin nombre"
+              )}
+            </h3>
+
+            <p>
+              👤 Cliente:
+              ${escapeHTML(
+                opportunity.client ||
+                "Sin definir"
+              )}
+            </p>
+
+            <p>
+              🧩 Solución:
+              ${escapeHTML(
+                opportunity.solution ||
+                "Por definir"
+              )}
+            </p>
+
+            <span
+              class="status ${getStatusClass(
+                opportunity.status
+              )}"
+            >
+              ${getStatusName(
+                opportunity.status
+              )}
+            </span>
+
+          </div>
+
         </div>
+
+
+        <div class="data-grid">
+
+          ${dataCard(
+            "👥 Usuarios",
+            opportunity.users
+          )}
+
+          ${dataCard(
+            "💾 Storage",
+            opportunity.storage
+          )}
+
+          ${dataCard(
+            "📑 Documentos",
+            opportunity.documents
+          )}
+
+          ${dataCard(
+            "🔄 Workflows",
+            opportunity.workflows
+          )}
+
+          ${dataCard(
+            "🔎 OCR",
+            opportunity.ocr
+          )}
+
+          ${dataCard(
+            "✍️ Firmas",
+            opportunity.signatures
+          )}
+
+          ${dataCard(
+            "🏗️ Infraestructura",
+            opportunity.infrastructure
+          )}
+
+          ${dataCard(
+            "📅 Plazo",
+            opportunity.deadline
+          )}
+
+        </div>
+
+
+        ${
+          quote
+
+            ? `
+
+              <div class="quote-box">
+
+                <div class="quote-title">
+                  💰 Cotización guardada
+                </div>
+
+                <div class="quote-grid">
+
+                  ${quoteCard(
+                    "SETUP",
+                    quote.totalSetup
+                  )}
+
+                  ${quoteCard(
+                    "MENSUAL",
+                    quote.totalMonthly
+                  )}
+
+                  ${quoteCard(
+                    "PRIMER AÑO",
+                    quote.totalYear
+                  )}
+
+                </div>
+
+              </div>
+
+            `
+
+            : `
+
+              <div class="no-quote">
+                ⚠️ Esta oportunidad todavía no tiene cotización.
+              </div>
+
+            `
+        }
+
+
+        <div class="actions">
+
+          <button
+            class="edit"
+            onclick="editOpportunity('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            ✏️ Editar
+          </button>
+
+
+          <button
+            onclick="toggleDetail(this)"
+          >
+            👁️ Ver detalle
+          </button>
+
+
+          <button
+            class="green"
+            onclick="goToQuote('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            💰 ${
+              quote
+                ? "Editar cotización"
+                : "Cotizar"
+            }
+          </button>
+
+
+          <button
+            class="danger"
+            onclick="deleteOpportunity('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            🗑️ Eliminar
+          </button>
+
+        </div>
+
+
+        <div class="detail">
+
+          <div class="detail-section">
+
+            <h4>
+              🎯 Objetivo
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.objective ||
+                "No definido"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              🧩 Requerimientos
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.requirements ||
+                "No definidos"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              ⚠️ Riesgos
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.risks ||
+                "No definidos"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              📝 Notas
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.notes ||
+                "Sin notas"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              📄 Documento de origen
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.sourceDocument ||
+                "No asociado"
+              )}
+            </div>
+
+          </div>
+
+        </div>
+
       `;
 
-    }
-    else {
 
-      stageItems
-        .sort(
-          (a,b) =>
-            new Date(b.updatedAt || 0) -
-            new Date(a.updatedAt || 0)
-        )
-        .forEach(opportunity => {
-
-          body.appendChild(
-            createCard(opportunity)
-          );
-
-        });
+      container.appendChild(
+        card
+      );
 
     }
-
-
-    pipeline.appendChild(column);
-
-  });
+  );
 
 }
 
 
-/* =====================================================
-   TARJETA
-===================================================== */
+/* ==========================================
+   DATA CARD
+========================================== */
 
-function createCard(opportunity) {
+function dataCard(
+  label,
+  value
+) {
 
-  const card =
-    document.createElement("div");
+  return `
 
-  card.className =
-    "card";
+    <div class="data-box">
 
+      <div class="data-label">
+        ${escapeHTML(label)}
+      </div>
 
-  const products =
-    opportunity.products || [];
-
-
-  card.innerHTML = `
-
-    <div class="card-company">
-      ${escapeHtml(opportunity.company)}
-    </div>
-
-    <div class="card-title">
-      ${escapeHtml(opportunity.title)}
-    </div>
-
-    <div class="card-solution">
-      ${
-        products.length
-          ? escapeHtml(products.join(" · "))
-          : "Sin solución definida"
-      }
-    </div>
-
-    <div class="card-footer">
-
-      <span>
-        ${escapeHtml(opportunity.origin || "Sin origen")}
-      </span>
-
-      <span>
-        ${opportunity.nextActionDate
-          ? formatDate(opportunity.nextActionDate)
-          : "Sin próxima acción"}
-      </span>
+      <div class="data-value">
+        ${escapeHTML(
+          String(
+            value ||
+            "No definido"
+          )
+        )}
+      </div>
 
     </div>
 
   `;
 
-
-  card.onclick =
-    () => openDetail(opportunity.id);
+}
 
 
-  return card;
+/* ==========================================
+   QUOTE CARD
+========================================== */
+
+function quoteCard(
+  label,
+  value
+) {
+
+  return `
+
+    <div class="quote-item">
+
+      <div class="quote-label">
+        ${escapeHTML(label)}
+      </div>
+
+      <div class="quote-value">
+        ${escapeHTML(
+          String(
+            value ||
+            "USD 0,00"
+          )
+        )}
+      </div>
+
+    </div>
+
+  `;
 
 }
 
 
-/* =====================================================
-   CONTADORES
-===================================================== */
+/* ==========================================
+   NUEVA
+========================================== */
 
-function updateCounters() {
+function openNewModal() {
 
-  stages.forEach(stage => {
+  editingId =
+    null;
 
-    const count =
-      opportunities.filter(
-        opportunity =>
-          opportunity.stage === stage.id
-      ).length;
-
-
-    const element =
-      document.getElementById(
-        "count-" + stage.id
-      );
-
-
-    if (element) {
-
-      element.textContent =
-        count;
-
-    }
-
-  });
-
-}
-
-
-/* =====================================================
-   NUEVA OPORTUNIDAD
-===================================================== */
-
-function openNewOpportunity() {
-
-  editingId = null;
 
   document.getElementById(
     "modalTitle"
   ).textContent =
-    "Nueva oportunidad";
+    "➕ Nueva oportunidad";
 
 
   clearForm();
 
 
   document.getElementById(
-    "opportunityModal"
-  ).classList.add("show");
+    "modal"
+  ).style.display =
+    "flex";
 
 }
 
 
-/* =====================================================
+/* ==========================================
    EDITAR
-===================================================== */
+========================================== */
 
-function editOpportunity(id) {
+function editOpportunity(
+  id
+) {
 
   const opportunity =
     opportunities.find(
-      item => item.id === id
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
     );
 
 
   if (!opportunity) {
+
+    alert(
+      "No encontré la oportunidad."
+    );
+
     return;
+
   }
 
 
-  editingId = id;
+  editingId =
+    opportunity.id;
 
 
   document.getElementById(
     "modalTitle"
   ).textContent =
-    "Editar oportunidad";
+    "✏️ Editar oportunidad";
 
 
-  document.getElementById("fCompany").value =
-    opportunity.company || "";
+  setValue(
+    "client",
+    opportunity.client
+  );
 
-  document.getElementById("fTitle").value =
-    opportunity.title || "";
+  setValue(
+    "project",
+    opportunity.project
+  );
 
-  document.getElementById("fContact").value =
-    opportunity.contact || "";
+  setValue(
+    "solution",
+    opportunity.solution
+  );
 
-  document.getElementById("fOrigin").value =
-    opportunity.origin || "Comercial";
+  setValue(
+    "status",
+    opportunity.status
+  );
 
-  document.getElementById("fStage").value =
-    opportunity.stage || "new";
+  setValue(
+    "users",
+    opportunity.users
+  );
 
-  document.getElementById("fOwner").value =
-    opportunity.owner || "";
+  setValue(
+    "storage",
+    opportunity.storage
+  );
 
-  document.getElementById("fAmount").value =
-    opportunity.amount || "";
+  setValue(
+    "documents",
+    opportunity.documents
+  );
 
-  document.getElementById("fNextDate").value =
-    opportunity.nextActionDate || "";
+  setValue(
+    "workflows",
+    opportunity.workflows
+  );
 
-  document.getElementById("fObjective").value =
-    opportunity.objective || "";
+  setValue(
+    "ocr",
+    opportunity.ocr ||
+    "No definido"
+  );
 
-  document.getElementById("fRequirements").value =
-    opportunity.requirements || "";
+  setValue(
+    "signatures",
+    opportunity.signatures ||
+    "No definido"
+  );
 
-  document.getElementById("fSolution").value =
-    opportunity.solution || "";
+  setValue(
+    "infrastructure",
+    opportunity.infrastructure
+  );
 
-  document.getElementById("fProducts").value =
-    (opportunity.products || []).join(", ");
+  setValue(
+    "deadline",
+    opportunity.deadline
+  );
 
-  document.getElementById("fRisks").value =
-    opportunity.risks || "";
+  setValue(
+    "objective",
+    opportunity.objective
+  );
 
-  document.getElementById("fNextAction").value =
-    opportunity.nextAction || "";
+  setValue(
+    "requirements",
+    opportunity.requirements
+  );
 
-  document.getElementById("fNotes").value =
-    opportunity.notes || "";
+  setValue(
+    "risks",
+    opportunity.risks
+  );
+
+  setValue(
+    "notes",
+    opportunity.notes
+  );
 
 
   document.getElementById(
-    "opportunityModal"
-  ).classList.add("show");
+    "modal"
+  ).style.display =
+    "flex";
 
 }
 
 
-/* =====================================================
+/* ==========================================
    GUARDAR
-===================================================== */
+========================================== */
 
 function saveOpportunity() {
 
-  const company =
-    document.getElementById("fCompany")
-      .value
-      .trim();
-
-  const title =
-    document.getElementById("fTitle")
-      .value
-      .trim();
+  const client =
+    getValue(
+      "client"
+    );
 
 
-  if (!company || !title) {
+  const project =
+    getValue(
+      "project"
+    );
+
+
+  if (
+    !client ||
+    !project
+  ) {
 
     alert(
-      "Completá Empresa y Oportunidad."
+      "Completá al menos Cliente y Oportunidad / Proyecto."
     );
 
     return;
@@ -1582,543 +1572,352 @@ function saveOpportunity() {
   }
 
 
-  const now =
-    new Date().toISOString();
-
-
   const data = {
 
-    company,
+    client:
+      client,
 
-    title,
-
-    contact:
-      document.getElementById("fContact").value.trim(),
-
-    origin:
-      document.getElementById("fOrigin").value,
-
-    stage:
-      document.getElementById("fStage").value,
-
-    owner:
-      document.getElementById("fOwner").value.trim(),
-
-    amount:
-      document.getElementById("fAmount").value,
-
-    nextActionDate:
-      document.getElementById("fNextDate").value,
-
-    objective:
-      document.getElementById("fObjective").value.trim(),
-
-    requirements:
-      document.getElementById("fRequirements").value.trim(),
+    project:
+      project,
 
     solution:
-      document.getElementById("fSolution").value.trim(),
+      getValue(
+        "solution"
+      ) ||
+      "Por definir",
 
-    products:
-      document.getElementById("fProducts")
-        .value
-        .split(",")
-        .map(item => item.trim())
-        .filter(Boolean),
+    status:
+      getValue(
+        "status"
+      ) ||
+      "analysis",
+
+    users:
+      getValue(
+        "users"
+      ),
+
+    storage:
+      getValue(
+        "storage"
+      ),
+
+    documents:
+      getValue(
+        "documents"
+      ),
+
+    workflows:
+      getValue(
+        "workflows"
+      ),
+
+    ocr:
+      getValue(
+        "ocr"
+      ),
+
+    signatures:
+      getValue(
+        "signatures"
+      ),
+
+    infrastructure:
+      getValue(
+        "infrastructure"
+      ),
+
+    deadline:
+      getValue(
+        "deadline"
+      ),
+
+    objective:
+      getValue(
+        "objective"
+      ),
+
+    requirements:
+      getValue(
+        "requirements"
+      ),
 
     risks:
-      document.getElementById("fRisks").value.trim(),
-
-    nextAction:
-      document.getElementById("fNextAction").value.trim(),
+      getValue(
+        "risks"
+      ),
 
     notes:
-      document.getElementById("fNotes").value.trim()
+      getValue(
+        "notes"
+      ),
+
+    updatedAt:
+      new Date().toISOString()
 
   };
 
 
-  if (editingId) {
+  /*
+    EDITAR EXISTENTE
+  */
+
+  if (
+    editingId !== null
+  ) {
 
     const index =
       opportunities.findIndex(
-        item => item.id === editingId
+        opportunity =>
+          String(
+            opportunity.id
+          ) ===
+          String(
+            editingId
+          )
       );
 
 
-    if (index !== -1) {
+    if (
+      index === -1
+    ) {
 
-      opportunities[index] = {
+      alert(
+        "No encontré la oportunidad."
+      );
 
-        ...opportunities[index],
-
-        ...data,
-
-        updatedAt: now
-
-      };
+      return;
 
     }
 
+
+    const anterior =
+      opportunities[index];
+
+
+    /*
+      Mantenemos todos los datos
+      que no estamos editando.
+
+      MUY IMPORTANTE:
+      quote NO SE PIERDE.
+    */
+
+    opportunities[index] = {
+
+      ...anterior,
+
+      ...data,
+
+      id:
+        anterior.id,
+
+      createdAt:
+        anterior.createdAt,
+
+      quote:
+        anterior.quote ||
+        null,
+
+      sourceDocument:
+        anterior.sourceDocument ||
+        ""
+
+    };
+
   }
+
   else {
+
+    /*
+      CREAR NUEVA
+    */
 
     opportunities.unshift({
 
       id:
-        generateId(),
-
-      createdAt:
-        now,
-
-      updatedAt:
-        now,
+        Date.now(),
 
       ...data,
 
-      technical: {
+      createdAt:
+        new Date().toISOString(),
 
-        users: "",
-        storage: "",
-        documents: "",
-        workflows: "",
-        ocr: "",
-        signatures: "",
-        infrastructure: "",
-        deadline: ""
+      quote:
+        null,
 
-      }
+      sourceDocument:
+        ""
 
     });
 
   }
 
 
-  saveData();
+  saveOpportunities();
+
+
+  /*
+    Actualizar oportunidad actual
+  */
+
+  const updated =
+    opportunities.find(
+      opportunity =>
+        String(
+          opportunity.id
+        ) ===
+        String(
+          editingId
+        )
+    );
+
+
+  if (
+    updated
+  ) {
+
+    localStorage.setItem(
+      "preventa_current_opportunity",
+      JSON.stringify(
+        updated
+      )
+    );
+
+  }
+
 
   closeModal();
 
-  render();
+
+  renderOpportunities();
 
 }
 
 
-/* =====================================================
-   DETALLE
-===================================================== */
+/* ==========================================
+   ELIMINAR
+========================================== */
 
-function openDetail(id) {
+function deleteOpportunity(
+  id
+) {
 
   const opportunity =
     opportunities.find(
-      item => item.id === id
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
     );
 
 
   if (!opportunity) {
+
     return;
+
   }
 
 
-  const stage =
-    stages.find(
-      item => item.id === opportunity.stage
+  if (
+    !confirm(
+      "¿Querés eliminar la oportunidad '" +
+      (
+        opportunity.project ||
+        ""
+      ) +
+      "'?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  opportunities =
+    opportunities.filter(
+      item =>
+        String(
+          item.id
+        ) !==
+        String(id)
     );
 
 
-  document.getElementById(
-    "detailTitle"
-  ).textContent =
-    opportunity.title;
+  saveOpportunities();
 
 
-  document.getElementById(
-    "detailSubtitle"
-  ).innerHTML = `
+  /*
+    Si era la actual,
+    eliminar también la selección.
+  */
 
-    ${escapeHtml(opportunity.company)}
+  const current =
+    JSON.parse(
+      localStorage.getItem(
+        "preventa_current_opportunity"
+      ) || "null"
+    );
 
-    ·
 
-    <span class="badge ${stage ? stage.badge : "badge-new"}">
-      ${stage ? stage.name : "Sin estado"}
-    </span>
+  if (
+    current &&
+    String(
+      current.id
+    ) ===
+    String(id)
+  ) {
 
-  `;
+    localStorage.removeItem(
+      "preventa_current_opportunity"
+    );
 
+  }
 
-  const products =
-    opportunity.products || [];
 
-
-  const technical =
-    opportunity.technical || {};
-
-
-  document.getElementById(
-    "detailContent"
-  ).innerHTML = `
-
-    <div class="detail-grid">
-
-      <div>
-
-        <div class="detail-box">
-
-          <h4>
-            🎯 Necesidad / objetivo
-          </h4>
-
-          <div class="detail-value">
-            ${escapeHtml(
-              opportunity.objective ||
-              "No cargado."
-            )}
-          </div>
-
-        </div>
-
-
-        <div class="detail-box">
-
-          <h4>
-            📋 Requerimientos
-          </h4>
-
-          <div class="detail-value">
-            ${escapeHtml(
-              opportunity.requirements ||
-              "No cargados."
-            )}
-          </div>
-
-        </div>
-
-
-        <div class="detail-box">
-
-          <h4>
-            🧩 Solución propuesta
-          </h4>
-
-          <div class="detail-value">
-            ${escapeHtml(
-              opportunity.solution ||
-              "Todavía no definida."
-            )}
-          </div>
-
-        </div>
-
-
-        <div class="detail-box">
-
-          <h4>
-            ⚠️ Riesgos / puntos a validar
-          </h4>
-
-          <div class="detail-value">
-            ${escapeHtml(
-              opportunity.risks ||
-              "No registrados."
-            )}
-          </div>
-
-        </div>
-
-
-        <div class="detail-box">
-
-          <h4>
-            📝 Notas
-          </h4>
-
-          <div class="detail-value">
-            ${escapeHtml(
-              opportunity.notes ||
-              "Sin notas."
-            )}
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div>
-
-        <div class="detail-box">
-
-          <h4>
-            Información
-          </h4>
-
-          <div class="info-grid">
-
-            <div class="info-item">
-
-              <div class="info-label">
-                EMPRESA
-              </div>
-
-              <div class="info-value">
-                ${escapeHtml(opportunity.company)}
-              </div>
-
-            </div>
-
-
-            <div class="info-item">
-
-              <div class="info-label">
-                CONTACTO
-              </div>
-
-              <div class="info-value">
-                ${escapeHtml(
-                  opportunity.contact ||
-                  "Sin contacto"
-                )}
-              </div>
-
-            </div>
-
-
-            <div class="info-item">
-
-              <div class="info-label">
-                ORIGEN
-              </div>
-
-              <div class="info-value">
-                ${escapeHtml(
-                  opportunity.origin ||
-                  "Sin origen"
-                )}
-              </div>
-
-            </div>
-
-
-            <div class="info-item">
-
-              <div class="info-label">
-                RESPONSABLE
-              </div>
-
-              <div class="info-value">
-                ${escapeHtml(
-                  opportunity.owner ||
-                  "Sin responsable"
-                )}
-              </div>
-
-            </div>
-
-
-            <div class="info-item">
-
-              <div class="info-label">
-                MONTO ESTIMADO
-              </div>
-
-              <div class="info-value">
-                ${
-                  opportunity.amount
-                    ? "$ " +
-                      escapeHtml(
-                        Number(
-                          opportunity.amount
-                        ).toLocaleString("es-AR")
-                      )
-                    : "Sin definir"
-                }
-              </div>
-
-            </div>
-
-
-            <div class="info-item">
-
-              <div class="info-label">
-                PRÓXIMA ACCIÓN
-              </div>
-
-              <div class="info-value">
-                ${
-                  opportunity.nextActionDate
-                    ? formatDate(
-                        opportunity.nextActionDate
-                      )
-                    : "Sin fecha"
-                }
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="detail-box">
-
-          <h4>
-            🧩 Productos
-          </h4>
-
-          <div class="product-tags">
-
-            ${
-              products.length
-                ? products.map(
-                    product => `
-                      <span class="product-tag">
-                        ${escapeHtml(product)}
-                      </span>
-                    `
-                  ).join("")
-                : `
-                  <span>
-                    No definidos
-                  </span>
-                `
-            }
-
-          </div>
-
-        </div>
-
-
-        <div class="detail-box">
-
-          <h4>
-            🔧 Datos técnicos
-          </h4>
-
-          <div class="info-grid">
-
-            <div class="info-item">
-              <div class="info-label">
-                USUARIOS
-              </div>
-              <div class="info-value">
-                ${escapeHtml(technical.users || "—")}
-              </div>
-            </div>
-
-            <div class="info-item">
-              <div class="info-label">
-                STORAGE
-              </div>
-              <div class="info-value">
-                ${escapeHtml(technical.storage || "—")}
-              </div>
-            </div>
-
-            <div class="info-item">
-              <div class="info-label">
-                DOCUMENTOS
-              </div>
-              <div class="info-value">
-                ${escapeHtml(technical.documents || "—")}
-              </div>
-            </div>
-
-            <div class="info-item">
-              <div class="info-label">
-                WORKFLOWS
-              </div>
-              <div class="info-value">
-                ${escapeHtml(technical.workflows || "—")}
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="next-action">
-
-          <strong>
-            Próxima acción
-          </strong>
-
-          ${
-            opportunity.nextAction
-              ? escapeHtml(
-                  opportunity.nextAction
-                )
-              : "Todavía no definida."
-          }
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="detail-buttons">
-
-      <button
-        class="primary"
-        onclick="goToAnalysis()"
-      >
-        📄 Ir a Análisis
-      </button>
-
-      <button
-        class="green"
-        onclick="goToQuote()"
-      >
-        💰 Ir a Cotizador
-      </button>
-
-      <button
-        class="dark"
-        onclick="editOpportunity('${opportunity.id}')"
-      >
-        ✏️ Editar
-      </button>
-
-      <button
-        class="red"
-        onclick="deleteOpportunity('${opportunity.id}')"
-      >
-        🗑️ Eliminar
-      </button>
-
-    </div>
-
-  `;
-
-
-  document.getElementById(
-    "detailModal"
-  ).classList.add("show");
+  renderOpportunities();
 
 }
 
 
-/* =====================================================
-   IR A ANÁLISIS
-===================================================== */
+/* ==========================================
+   COTIZADOR
+========================================== */
 
-function goToAnalysis() {
+function goToQuote(
+  id
+) {
 
-  window.location.href =
-    "analisis.html";
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
 
-}
+
+  if (!opportunity) {
+
+    alert(
+      "No encontré la oportunidad."
+    );
+
+    return;
+
+  }
 
 
-/* =====================================================
-   IR A COTIZADOR
-===================================================== */
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(
+      opportunity
+    )
+  );
 
-function goToQuote() {
 
   window.location.href =
     "cotizador.html";
@@ -2126,215 +1925,212 @@ function goToQuote() {
 }
 
 
-/* =====================================================
-   ELIMINAR
-===================================================== */
+/* ==========================================
+   DETALLE
+========================================== */
 
-function deleteOpportunity(id) {
+function toggleDetail(
+  button
+) {
 
-  const opportunity =
-    opportunities.find(
-      item => item.id === id
+  const card =
+    button.closest(
+      ".opportunity"
     );
 
 
-  if (!opportunity) {
-    return;
+  const detail =
+    card.querySelector(
+      ".detail"
+    );
+
+
+  if (
+    detail.style.display ===
+    "block"
+  ) {
+
+    detail.style.display =
+      "none";
+
+    button.textContent =
+      "👁️ Ver detalle";
+
   }
 
+  else {
 
-  const confirmed =
-    confirm(
-      "¿Querés eliminar la oportunidad \"" +
-      opportunity.title +
-      "\"?"
-    );
+    detail.style.display =
+      "block";
 
+    button.textContent =
+      "🔼 Ocultar detalle";
 
-  if (!confirmed) {
-    return;
   }
-
-
-  opportunities =
-    opportunities.filter(
-      item => item.id !== id
-    );
-
-
-  saveData();
-
-  closeDetail();
-
-  render();
 
 }
 
 
-/* =====================================================
+/* ==========================================
    FORMULARIO
-===================================================== */
+========================================== */
+
+function getValue(
+  id
+) {
+
+  return document
+    .getElementById(
+      id
+    )
+    .value
+    .trim();
+
+}
+
+
+function setValue(
+  id,
+  value
+) {
+
+  document.getElementById(
+    id
+  ).value =
+    value ||
+    "";
+
+}
+
 
 function clearForm() {
 
   const fields = [
 
-    "fCompany",
-    "fTitle",
-    "fContact",
-    "fOwner",
-    "fAmount",
-    "fNextDate",
-    "fObjective",
-    "fRequirements",
-    "fSolution",
-    "fProducts",
-    "fRisks",
-    "fNextAction",
-    "fNotes"
+    "client",
+    "project",
+    "solution",
+    "users",
+    "storage",
+    "documents",
+    "workflows",
+    "infrastructure",
+    "deadline",
+    "objective",
+    "requirements",
+    "risks",
+    "notes"
 
   ];
 
 
-  fields.forEach(id => {
+  fields.forEach(
+    function(id) {
 
-    document.getElementById(id).value = "";
+      setValue(
+        id,
+        ""
+      );
 
-  });
+    }
+  );
 
 
-  document.getElementById(
-    "fOrigin"
-  ).value = "Comercial";
+  setValue(
+    "status",
+    "analysis"
+  );
 
 
-  document.getElementById(
-    "fStage"
-  ).value = "new";
+  setValue(
+    "ocr",
+    "No definido"
+  );
+
+
+  setValue(
+    "signatures",
+    "No definido"
+  );
 
 }
 
-
-/* =====================================================
-   CERRAR MODAL
-===================================================== */
 
 function closeModal() {
 
   document.getElementById(
-    "opportunityModal"
-  ).classList.remove("show");
+    "modal"
+  ).style.display =
+    "none";
 
 }
 
 
-function closeDetail() {
+/* ==========================================
+   ESCAPE
+========================================== */
 
-  document.getElementById(
-    "detailModal"
-  ).classList.remove("show");
+function escapeHTML(
+  value
+) {
 
-}
+  return String(
+    value ||
+    ""
+  )
 
+  .replace(
+    /&/g,
+    "&amp;"
+  )
 
-/* =====================================================
-   FILTROS
-===================================================== */
+  .replace(
+    /</g,
+    "&lt;"
+  )
 
-function clearFilters() {
+  .replace(
+    />/g,
+    "&gt;"
+  )
 
-  document.getElementById(
-    "search"
-  ).value = "";
+  .replace(
+    /"/g,
+    "&quot;"
+  )
 
-  document.getElementById(
-    "filterStage"
-  ).value = "all";
-
-  render();
-
-}
-
-
-/* =====================================================
-   FECHA
-===================================================== */
-
-function formatDate(dateString) {
-
-  if (!dateString) {
-    return "—";
-  }
-
-
-  try {
-
-    return new Date(
-      dateString + "T00:00:00"
-    ).toLocaleDateString(
-      "es-AR"
-    );
-
-  }
-
-  catch {
-
-    return dateString;
-
-  }
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
 
-/* =====================================================
-   CERRAR MODALES AL HACER CLICK AFUERA
-===================================================== */
+function escapeAttribute(
+  value
+) {
 
-window.addEventListener(
-  "click",
-  function(event) {
+  return String(
+    value ||
+    ""
+  )
+  .replace(
+    /'/g,
+    "\\'"
+  );
 
-    const opportunityModal =
-      document.getElementById(
-        "opportunityModal"
-      );
-
-    const detailModal =
-      document.getElementById(
-        "detailModal"
-      );
+}
 
 
-    if (
-      event.target ===
-      opportunityModal
-    ) {
+/* ==========================================
+   INICIO
+========================================== */
 
-      closeModal();
-
-    }
-
-
-    if (
-      event.target ===
-      detailModal
-    ) {
-
-      closeDetail();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   INICIAR
-===================================================== */
-
-init();
+renderOpportunities();
 
 </script>
 
 </body>
+
 </html>
