@@ -1,16 +1,16 @@
-name: Instalar PREVENTA IA FINAL
+name: Restaurar PREVENTA IA V1
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'PREVENTA-IA-FINAL-FUNCIONAL.zip'
+      - 'Preventa--ia-main(1).zip'
 
 permissions:
   contents: write
 
 jobs:
-  instalar:
+  restaurar:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,9 +19,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verificar paquete final
+      - name: Buscar ZIP V1
         run: |
-          ZIP="PREVENTA-IA-FINAL-FUNCIONAL.zip"
+          ZIP="Preventa--ia-main(1).zip"
 
           if [ ! -f "$ZIP" ]; then
             echo "ERROR: No se encontró $ZIP"
@@ -29,82 +29,75 @@ jobs:
             exit 1
           fi
 
-          echo "Paquete final encontrado: $ZIP"
+          echo "ZIP V1 encontrado."
 
-      - name: Extraer paquete final
+      - name: Extraer V1
         run: |
-          rm -rf _final
-          mkdir _final
-          unzip -q PREVENTA-IA-FINAL-FUNCIONAL.zip -d _final
+          rm -rf _restore
+          mkdir _restore
 
-      - name: Verificar archivos funcionales
+          unzip -q "Preventa--ia-main(1).zip" -d _restore
+
+          echo "Contenido extraído:"
+          find _restore -maxdepth 2 -type f | sort
+
+      - name: Verificar V1
         run: |
+          ROOT="_restore/Preventa--ia-main"
+
           archivos=(
             "index.html"
             "asistente.html"
-            "oportunidades.html"
-            "documentos.html"
-            "analisis.html"
-            "cotizador.html"
-            "mercado.html"
             "biblioteca.html"
-            "repositorio.html"
-            "conocimientoiaasistente.html"
-            "preventa-core.js"
             "conocimiento.json"
-            "api/chat.js"
-            "api/mercado.js"
+            "conocimientoiaasistente.html"
+            "cotizador.html"
+            "documentos.html"
+            "mercado.html"
+            "oportunidades.html"
+            "repositorio.html"
+            "analisis.html"
+            "package.json"
           )
 
           for archivo in "${archivos[@]}"; do
-            if [ ! -f "_final/$archivo" ]; then
+            if [ ! -f "$ROOT/$archivo" ]; then
               echo "ERROR: Falta $archivo"
               exit 1
             fi
           done
 
-          echo "OK: paquete final validado."
+          echo "V1 verificada correctamente."
 
-      - name: Instalar sistema final
+      - name: Restaurar V1 completa
         run: |
-          cp _final/index.html .
-          cp _final/asistente.html .
-          cp _final/oportunidades.html .
-          cp _final/documentos.html .
-          cp _final/analisis.html .
-          cp _final/cotizador.html .
-          cp _final/mercado.html .
-          cp _final/biblioteca.html .
-          cp _final/repositorio.html .
-          cp _final/conocimientoiaasistente.html .
-          cp _final/preventa-core.js .
-          cp _final/conocimiento.json .
-          cp _final/package.json .
+          ROOT="_restore/Preventa--ia-main"
 
-          mkdir -p api data docs
-          cp -a _final/api/. api/
-          cp -a _final/data/. data/
-          cp -a _final/docs/. docs/
+          echo "Eliminando archivos actuales..."
 
-      - name: Limpiar paquete
-        run: |
-          rm -rf _final
-          rm -f PREVENTA-IA-FINAL-FUNCIONAL.zip
+          find . -mindepth 1 -maxdepth 1 \
+            ! -name ".git" \
+            ! -name "_restore" \
+            -exec rm -rf {} +
 
-      - name: Guardar sistema final
+          echo "Copiando V1..."
+
+          cp -a "$ROOT"/. .
+
+          rm -rf _restore
+          rm -f "Preventa--ia-main(1).zip"
+
+      - name: Guardar restauración
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git fetch origin main
-          git reset --hard origin/main
-
           git add -A
 
           if git diff --cached --quiet; then
-            echo "Sin cambios."
+            echo "No hay cambios."
             exit 0
           fi
 
-          git commit -m "Instalar PREVENTA IA funcional integrada"
+          git commit -m "Restaurar PREVENTA IA V1"
           git push origin main
