@@ -22,7 +22,6 @@ jobs:
 
           if [ ! -f "$ZIP" ]; then
             echo "ERROR: No se encontró $ZIP"
-            echo "Archivos disponibles:"
             ls -la
             exit 1
           fi
@@ -48,7 +47,7 @@ jobs:
             exit 1
           fi
 
-          echo "Carpeta V1 encontrada: $ROOT"
+          echo "V1 encontrada en: $ROOT"
           echo "ROOT=$ROOT" >> "$GITHUB_ENV"
 
       - name: Verificar archivos V1
@@ -70,16 +69,16 @@ jobs:
 
           for archivo in "${archivos[@]}"; do
             if [ ! -f "$ROOT/$archivo" ]; then
-              echo "ERROR: Falta $archivo en la V1."
+              echo "ERROR: Falta $archivo"
               exit 1
             fi
           done
 
-          echo "Todos los archivos principales de V1 están presentes."
+          echo "V1 verificada correctamente."
 
-      - name: Restaurar V1
+      - name: Restaurar archivos V1
         run: |
-          echo "Eliminando archivos actuales del sistema..."
+          echo "Eliminando archivos actuales..."
 
           find . -mindepth 1 -maxdepth 1 \
             ! -name ".git" \
@@ -87,13 +86,13 @@ jobs:
             ! -name "Preventa--ia-main.zip" \
             -exec rm -rf {} +
 
-          echo "Copiando V1..."
+          echo "Copiando V1 sin modificar .github/workflows..."
 
-          cp -a "$ROOT"/. .
+          find "$ROOT" -mindepth 1 -maxdepth 1 ! -name ".github" -exec cp -a {} . \;
 
-          echo "V1 restaurada en el workspace."
+          echo "Restauración de archivos completada."
 
-      - name: Limpiar ZIP
+      - name: Limpiar
         run: |
           rm -rf _restore
           rm -f "Preventa--ia-main.zip"
@@ -106,7 +105,7 @@ jobs:
           git add -A
 
           if git diff --cached --quiet; then
-            echo "No hay cambios para guardar."
+            echo "No hay cambios."
             exit 0
           fi
 
