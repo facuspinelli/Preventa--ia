@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'PREVENTA-IA-INTEGRADO-ARCHIVOS.zip'
+      - 'PREVENTA-IA-INTEGRADO-ARCHIVOS*.zip'
 
 permissions:
   contents: write
@@ -19,35 +19,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verificar archivo integrado
+      - name: Buscar paquete integrado
         run: |
-          if [ ! -f "PREVENTA-IA-INTEGRADO-ARCHIVOS.zip" ]; then
-            echo "ERROR: No existe PREVENTA-IA-INTEGRADO-ARCHIVOS.zip"
+          ZIP=$(find . -maxdepth 1 -type f -name 'PREVENTA-IA-INTEGRADO-ARCHIVOS*.zip' | head -1)
+
+          if [ -z "$ZIP" ]; then
+            echo "ERROR: No se encontró el paquete integrado."
+            echo "Archivos disponibles:"
+            ls -la
             exit 1
           fi
+
+          echo "ZIP encontrado: $ZIP"
+          echo "ZIP=$ZIP" >> "$GITHUB_ENV"
 
       - name: Extraer paquete
         run: |
           rm -rf _integrado
           mkdir _integrado
-          unzip -q PREVENTA-IA-INTEGRADO-ARCHIVOS.zip -d _integrado
+          unzip -q "$ZIP" -d _integrado
 
-      - name: Detectar carpeta del paquete
-        run: |
-          ANALISIS=$(find _integrado -type f -name "analisis.html" | head -1)
-
-          if [ -z "$ANALISIS" ]; then
-            echo "ERROR: El paquete no contiene analisis.html"
-            find _integrado -maxdepth 3 -type f | sort
-            exit 1
-          fi
-
-          PACKAGE_ROOT=$(dirname "$ANALISIS")
-          echo "PACKAGE_ROOT=$PACKAGE_ROOT" >> "$GITHUB_ENV"
-
-          echo "Paquete encontrado en: $PACKAGE_ROOT"
-
-      - name: Verificar archivos principales
+      - name: Verificar archivos
         run: |
           archivos=(
             "analisis.html"
@@ -60,49 +52,41 @@ jobs:
             "mercado.html"
             "oportunidades.html"
             "repositorio.html"
+            "preventa-core.js"
           )
 
           for archivo in "${archivos[@]}"; do
-            if [ ! -f "$PACKAGE_ROOT/$archivo" ]; then
-              echo "ERROR: Falta $archivo en el paquete"
+            if [ ! -f "_integrado/$archivo" ]; then
+              echo "ERROR: Falta $archivo"
               exit 1
             fi
           done
 
-          echo "Todos los archivos principales están presentes."
+          echo "OK: todos los archivos fueron encontrados."
 
       - name: Instalar archivos integrados
         run: |
-          archivos=(
-            "analisis.html"
-            "asistente.html"
-            "biblioteca.html"
-            "conocimientoiaasistente.html"
-            "cotizador.html"
-            "documentos.html"
-            "index.html"
-            "mercado.html"
-            "oportunidades.html"
-            "repositorio.html"
-          )
+          cp _integrado/analisis.html .
+          cp _integrado/asistente.html .
+          cp _integrado/biblioteca.html .
+          cp _integrado/conocimientoiaasistente.html .
+          cp _integrado/cotizador.html .
+          cp _integrado/documentos.html .
+          cp _integrado/index.html .
+          cp _integrado/mercado.html .
+          cp _integrado/oportunidades.html .
+          cp _integrado/repositorio.html .
+          cp _integrado/preventa-core.js .
 
-          for archivo in "${archivos[@]}"; do
-            cp "$PACKAGE_ROOT/$archivo" "./$archivo"
-          done
-
-          if [ -f "$PACKAGE_ROOT/preventa-core.js" ]; then
-            cp "$PACKAGE_ROOT/preventa-core.js" "./preventa-core.js"
-          fi
-
-          if [ -d "$PACKAGE_ROOT/docs" ]; then
+          if [ -d "_integrado/docs" ]; then
             mkdir -p docs
-            cp -a "$PACKAGE_ROOT/docs/." "./docs/"
+            cp -a _integrado/docs/. docs/
           fi
 
-      - name: Eliminar paquete instalador
+      - name: Eliminar ZIP
         run: |
           rm -rf _integrado
-          rm -f PREVENTA-IA-INTEGRADO-ARCHIVOS.zip
+          rm -f "$ZIP"
 
       - name: Guardar cambios
         run: |
@@ -110,12 +94,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git fetch origin main
-          git pull --rebase origin main
+          git reset --hard origin/main
 
           git add -A
 
           if git diff --cached --quiet; then
-            echo "Sin cambios para guardar."
+            echo "Sin cambios."
             exit 0
           fi
 
