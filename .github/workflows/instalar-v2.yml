@@ -1,7 +1,9 @@
 name: Instalar PREVENTA IA V2
 
 on:
-  workflow_dispatch:
+  push:
+    paths:
+      - 'PREVENTA-IA-V2-WINDOWS.zip'
 
 permissions:
   contents: write
@@ -14,31 +16,18 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: Verificar ZIP
-        run: |
-          test -f PREVENTA-IA-V2-WINDOWS.zip
-          echo "ZIP encontrado correctamente"
-
-      - name: Descomprimir V2
+      - name: Instalar V2
         run: |
           rm -rf _v2
           mkdir _v2
           unzip -q PREVENTA-IA-V2-WINDOWS.zip -d _v2
-
-      - name: Instalar archivos V2
-        run: |
-          rsync -a --exclude='.github/' _v2/ ./
-
-      - name: Limpiar archivos temporales
-        run: |
-          rm -rf _v2
-          rm -f PREVENTA-IA-V2-WINDOWS.zip
+          cp -a _v2/. .
+          rm -rf _v2 PREVENTA-IA-V2-WINDOWS.zip
 
       - name: Guardar V2
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git restore --staged .github 2>/dev/null || true
           git commit -m "Instalar PREVENTA IA V2" || echo "Sin cambios"
           git push
