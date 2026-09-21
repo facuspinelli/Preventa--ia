@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Documento",
+  "type": "object",
+  "required": ["id", "nombre", "tipo"],
+  "properties": {
+    "id": {"type": "string"},
+    "nombre": {"type": "string"},
+    "tipo": {"type": "string"},
+    "origen": {"type": ["string", "null"]},
+    "fecha": {"type": ["string", "null"]},
+    "paginas": {"type": ["number", "null"]},
+    "texto": {"type": ["string", "null"]},
+    "ocr": {"type": "boolean"},
+    "metadata": {"type": "object"}
+  }
+}

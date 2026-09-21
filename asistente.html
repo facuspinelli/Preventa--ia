@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Asistente IA | PREVENTA IA</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+header {
+  background: #111827;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.back {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.welcome {
+  margin-bottom: 25px;
+}
+
+.welcome h2 {
+  margin-bottom: 8px;
+}
+
+.welcome p {
+  color: #6b7280;
+}
+
+.chat {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.messages {
+  min-height: 350px;
+  max-height: 550px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.message {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  max-width: 85%;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ia {
+  background: #eef2ff;
+  margin-right: auto;
+}
+
+.user {
+  background: #111827;
+  color: white;
+  margin-left: auto;
+}
+
+.loading {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+}
+
+textarea {
+  flex: 1;
+  resize: none;
+  height: 55px;
+  padding: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+button {
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 25px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #374151;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mode {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.help {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.status {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.success {
+  color: #166534;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <h1>🤖 PREVENTA IA</h1>
+
+  <a href="index.html" class="back">
+    ← Volver al inicio
+  </a>
+
+</header>
+
+<main class="container">
+
+  <div class="welcome">
+
+```
+<h2>Asistente IA</h2>
+
+<p>
+  Tu asistente inteligente para tareas de Preventa.
+</p>
+```
+
+  </div>
+
+  <div class="chat">
+
+```
+<div class="mode">
+  🟢 ASISTENTE PREVENTA IA
+</div>
+
+
+<div class="help">
+
+  <strong>¿Cómo quiero buscar?</strong>
+
+  <br><br>
+
+  🟢 <strong>Búsqueda interna:</strong>
+  busca únicamente en la base de conocimiento de PREVENTA IA.
+
+  <br><br>
+
+  🔵 <strong>Búsqueda en documento:</strong>
+  busca únicamente dentro de los documentos que hayas cargado
+  en el Centro de Conocimiento IA.
+
+  <br><br>
+
+  <strong>Ejemplos:</strong>
+
+  <br>
+
+  <code>Búsqueda interna: ¿Qué es Perfil Digital?</code>
+
+  <br>
+
+  <code>Búsqueda interna: ¿Qué es Thuban?</code>
+
+  <br>
+
+  <code>Búsqueda en documento: ¿Qué dice el documento sobre DocIntro?</code>
+
+  <br>
+
+  <code>Búsqueda en documento: ¿Qué dice el documento sobre Workflow?</code>
+
+</div>
+
+
+<div
+  class="messages"
+  id="messages"
+>
+
+  <div class="message ia">
+
+    👋 Hola. Soy PREVENTA IA.
+
+    Para buscar información indicame qué fuente querés utilizar.
+
+    🟢 Búsqueda interna
+    Consulta mi conocimiento interno.
+
+    🔵 Búsqueda en documento
+    Consulta los archivos cargados en el Centro de Conocimiento IA.
+
+    ¿Qué querés buscar?
+
+  </div>
+
+</div>
+
+
+<div class="input-area">
+
+  <textarea
+    id="question"
+    placeholder="Ejemplo: Búsqueda interna: ¿Qué es Perfil Digital?"
+  ></textarea>
+
+  <button
+    id="sendButton"
+    onclick="sendMessage()"
+  >
+    Enviar
+  </button>
+
+</div>
+
+
+<div
+  id="status"
+  class="status"
+>
+  🔎 Inicializando...
+</div>
+```
+
+  </div>
+
+</main>
+
+<script>
+
+
+/* =====================================================
+   CONFIGURACIÓN PDF.JS
+===================================================== */
+
+if (typeof pdfjsLib !== "undefined") {
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+}
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let conocimiento = null;
+
+let documentosConocimiento = [];
+
+let documentosTextoCache = new Map();
+
+
+/* =====================================================
+   INDEXED DB
+===================================================== */
+
+const KNOWLEDGE_DB_NAME =
+  "preventa_ia_conocimiento";
+
+const KNOWLEDGE_DB_VERSION =
+  1;
+
+const KNOWLEDGE_STORE =
+  "documents";
+
+let knowledgeDB = null;
+
+
+/* =====================================================
+   NORMALIZAR TEXTO
+===================================================== */
+
+function normalizarTexto(texto) {
+
+  return String(texto || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+}
+
+
+/* =====================================================
+   OBTENER PALABRAS IMPORTANTES
+===================================================== */
+
+function obtenerPalabras(texto) {
+
+  const palabras =
+    normalizarTexto(texto)
+      .split(" ");
+
+
+  const stopWords = [
+
+    "que",
+    "como",
+    "cual",
+    "cuales",
+    "para",
+    "donde",
+    "cuando",
+    "quiero",
+    "necesito",
+    "hace",
+    "hacen",
+    "son",
+    "una",
+    "uno",
+    "del",
+    "los",
+    "las",
+    "por",
+    "con",
+    "entre",
+    "sobre",
+    "hay",
+    "esta",
+    "este",
+    "esa",
+    "eso",
+    "esto",
+    "tambien",
+    "puede",
+    "pueden",
+    "usar",
+    "decime",
+    "decir",
+    "informacion",
+    "pregunta",
+    "preguntar",
+    "aparecen",
+    "aparece",
+    "dice",
+    "documentacion",
+    "documento",
+    "documentos",
+    "interno",
+    "internos",
+    "buscar",
+    "busca",
+    "buscame",
+    "saber",
+    "sobre",
+    "de",
+    "la",
+    "el",
+    "un",
+    "y",
+    "o",
+    "en",
+    "a"
+  ];
+
+
+  return palabras.filter(function(palabra) {
+
+    return (
+      palabra.length >= 3 &&
+      !stopWords.includes(palabra)
+    );
+
+  });
+
+}
+
+
+/* =====================================================
+   CARGAR CONOCIMIENTO.JSON
+===================================================== */
+
+async function cargarConocimiento() {
+
+  try {
+
+    const response =
+      await fetch(
+        "./conocimiento.json?version=" +
+        Date.now(),
+        {
+          cache: "no-store"
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "No se pudo cargar conocimiento.json"
+      );
+
+    }
+
+
+    conocimiento =
+      await response.json();
+
+
+    console.log(
+      "conocimiento.json cargado correctamente"
+    );
+
+
+    return true;
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error cargando conocimiento.json:",
+      error
+    );
+
+
+    conocimiento = null;
+
+    return false;
+
+  }
+
+}
+
+
+/* =====================================================
+   ABRIR INDEXED DB
+===================================================== */
+
+function openKnowledgeDatabase() {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      const request =
+        indexedDB.open(
+          KNOWLEDGE_DB_NAME,
+          KNOWLEDGE_DB_VERSION
+        );
+
+
+      request.onupgradeneeded =
+        function(event) {
+
+          const database =
+            event.target.result;
+
+
+          if (
+            !database.objectStoreNames.contains(
+              KNOWLEDGE_STORE
+            )
+          ) {
+
+            const store =
+              database.createObjectStore(
+                KNOWLEDGE_STORE,
+                {
+                  keyPath: "id",
+                  autoIncrement: true
+                }
+              );
+
+
+            store.createIndex(
+              "category",
+              "category",
+              {
+                unique: false
+              }
+            );
+
+
+            store.createIndex(
+              "createdAt",
+              "createdAt",
+              {
+                unique: false
+              }
+            );
+
+          }
+
+        };
+
+
+      request.onsuccess =
+        function(event) {
+
+          knowledgeDB =
+            event.target.result;
+
+          resolve(
+            knowledgeDB
+          );
+
+        };
+
+
+      request.onerror =
+        function() {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   OBTENER DOCUMENTOS DEL CENTRO DE CONOCIMIENTO
+===================================================== */
+
+function getKnowledgeDocuments() {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      if (!knowledgeDB) {
+
+        resolve([]);
+
+        return;
+
+      }
+
+
+      const transaction =
+        knowledgeDB.transaction(
+          KNOWLEDGE_STORE,
+          "readonly"
+        );
+
+
+      const store =
+        transaction.objectStore(
+          KNOWLEDGE_STORE
+        );
+
+
+      const request =
+        store.getAll();
+
+
+      request.onsuccess =
+        function() {
+
+          resolve(
+            request.result || []
+          );
+
+        };
+
+
+      request.onerror =
+        function() {
+
+          reject(
+            request.error
+          );
+
+        };
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   EXTRAER TEXTO DOCX
+===================================================== */
+
+async function extraerTextoDOCX(blob) {
+
+  try {
+
+    const arrayBuffer =
+      await blob.arrayBuffer();
+
+
+    const zip =
+      await JSZip.loadAsync(
+        arrayBuffer
+      );
+
+
+    const documentFile =
+      zip.file(
+        "word/document.xml"
+      );
+
+
+    if (!documentFile) {
+
+      return "";
+
+    }
+
+
+    const xml =
+      await documentFile.async(
+        "string"
+      );
+
+
+    const parser =
+      new DOMParser();
+
+
+    const xmlDoc =
+      parser.parseFromString(
+        xml,
+        "application/xml"
+      );
+
+
+    const paragraphs =
+      Array.from(
+        xmlDoc.getElementsByTagName(
+          "w:p"
+        )
+      );
+
+
+    const textos = [];
+
+
+    paragraphs.forEach(
+      function(parrafo) {
+
+        const nodos =
+          Array.from(
+            parrafo.getElementsByTagName(
+              "w:t"
+            )
+          );
+
+
+        const texto =
+          nodos
+            .map(
+              function(nodo) {
+
+                return nodo.textContent || "";
+
+              }
+            )
+            .join("");
+
+
+        if (texto.trim()) {
+
+          textos.push(
+            texto.trim()
+          );
+
+        }
+
+      }
+    );
+
+
+    return textos.join("\n");
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error leyendo DOCX:",
+      error
+    );
+
+    return "";
+
+  }
+
+}
+
+
+/* =====================================================
+   EXTRAER TEXTO PDF
+===================================================== */
+
+async function extraerTextoPDF(blob) {
+
+  try {
+
+    const arrayBuffer =
+      await blob.arrayBuffer();
+
+
+    const pdf =
+      await pdfjsLib.getDocument({
+        data: arrayBuffer
+      }).promise;
+
+
+    const paginas = [];
+
+
+    const maxPaginas =
+      Math.min(
+        pdf.numPages,
+        100
+      );
+
+
+    for (
+      let paginaNumero = 1;
+      paginaNumero <= maxPaginas;
+      paginaNumero++
+    ) {
+
+      const pagina =
+        await pdf.getPage(
+          paginaNumero
+        );
+
+
+      const content =
+        await pagina.getTextContent();
+
+
+      const textoPagina =
+        content.items
+          .map(
+            function(item) {
+
+              return item.str || "";
+
+            }
+          )
+          .join(" ");
+
+
+      if (textoPagina.trim()) {
+
+        paginas.push(
+          "Página " +
+          paginaNumero +
+          ":\n" +
+          textoPagina.trim()
+        );
+
+      }
+
+    }
+
+
+    return paginas.join(
+      "\n\n"
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error leyendo PDF:",
+      error
+    );
+
+    return "";
+
+  }
+
+}
+
+
+/* =====================================================
+   EXTRAER TEXTO EXCEL
+===================================================== */
+
+async function extraerTextoExcel(blob) {
+
+  try {
+
+    const arrayBuffer =
+      await blob.arrayBuffer();
+
+
+    const workbook =
+      XLSX.read(
+        arrayBuffer,
+        {
+          type: "array"
+        }
+      );
+
+
+    const partes = [];
+
+
+    workbook.SheetNames.forEach(
+      function(sheetName) {
+
+        const worksheet =
+          workbook.Sheets[sheetName];
+
+
+        const texto =
+          XLSX.utils.sheet_to_csv(
+            worksheet,
+            {
+              FS: " | "
+            }
+          );
+
+
+        if (texto.trim()) {
+
+          partes.push(
+            "Hoja: " +
+            sheetName +
+            "\n" +
+            texto
+          );
+
+        }
+
+      }
+    );
+
+
+    return partes.join(
+      "\n\n"
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error leyendo Excel:",
+      error
+    );
+
+    return "";
+
+  }
+
+}
+
+
+/* =====================================================
+   EXTRAER TEXTO DE CUALQUIER DOCUMENTO
+===================================================== */
+
+async function extraerTextoDocumento(documento) {
+
+  if (
+    !documento ||
+    !documento.blob
+  ) {
+
+    return "";
+
+  }
+
+
+  if (
+    documentosTextoCache.has(
+      documento.id
+    )
+  ) {
+
+    return documentosTextoCache.get(
+      documento.id
+    );
+
+  }
+
+
+  const nombre =
+    normalizarTexto(
+      documento.originalName ||
+      documento.name ||
+      ""
+    );
+
+
+  const type =
+    String(
+      documento.type || ""
+    ).toLowerCase();
+
+
+  let texto = "";
+
+
+  try {
+
+    if (
+      type.includes("text/") ||
+      nombre.endsWith(".txt") ||
+      nombre.endsWith(".json")
+    ) {
+
+      texto =
+        await documento.blob.text();
+
+    }
+
+
+    else if (
+      nombre.endsWith(".docx") ||
+      type.includes("wordprocessingml")
+    ) {
+
+      texto =
+        await extraerTextoDOCX(
+          documento.blob
+        );
+
+    }
+
+
+    else if (
+      nombre.endsWith(".pdf") ||
+      type.includes("pdf")
+    ) {
+
+      texto =
+        await extraerTextoPDF(
+          documento.blob
+        );
+
+    }
+
+
+    else if (
+      nombre.endsWith(".xlsx") ||
+      nombre.endsWith(".xls") ||
+      type.includes("spreadsheet") ||
+      type.includes("excel")
+    ) {
+
+      texto =
+        await extraerTextoExcel(
+          documento.blob
+        );
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error procesando documento:",
+      error
+    );
+
+  }
+
+
+  texto =
+    String(
+      texto || ""
+    ).trim();
+
+
+  documentosTextoCache.set(
+    documento.id,
+    texto
+  );
+
+
+  return texto;
+
+}
+
+
+/* =====================================================
+   DETECTAR MODO
+===================================================== */
+
+function detectarModo(pregunta) {
+
+  const texto =
+    normalizarTexto(
+      pregunta
+    );
+
+
+  if (
+    texto.startsWith(
+      "busqueda interna"
+    )
+  ) {
+
+    return "interna";
+
+  }
+
+
+  if (
+    texto.startsWith(
+      "busqueda en documento"
+    ) ||
+    texto.startsWith(
+      "busqueda en documentos"
+    )
+  ) {
+
+    return "documentos";
+
+  }
+
+
+  if (
+    texto.startsWith(
+      "busca interna"
+    )
+  ) {
+
+    return "interna";
+
+  }
+
+
+  if (
+    texto.startsWith(
+      "busca en documento"
+    ) ||
+    texto.startsWith(
+      "busca en documentos"
+    )
+  ) {
+
+    return "documentos";
+
+  }
+
+
+  if (
+    texto.startsWith(
+      "interna"
+    )
+  ) {
+
+    return "interna";
+
+  }
+
+
+  if (
+    texto.startsWith(
+      "documentos"
+    )
+  ) {
+
+    return "documentos";
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =====================================================
+   QUITAR COMANDO DE LA PREGUNTA
+===================================================== */
+
+function limpiarPregunta(pregunta) {
+
+  return pregunta
+    .replace(
+      /^\s*(búsqueda interna|busqueda interna|busca interna|interna)\s*:\s*/i,
+      ""
+    )
+    .replace(
+      /^\s*(búsqueda en documentos|busqueda en documentos|búsqueda en documento|busqueda en documento|busca en documentos|busca en documento|documentos)\s*:\s*/i,
+      ""
+    )
+    .trim();
+
+}
+
+
+/* =====================================================
+   BÚSQUEDA INTERNA EN JSON
+===================================================== */
+
+function buscarEnConocimientoInterno(pregunta) {
+
+  if (!conocimiento) {
+
+    return [];
+
+  }
+
+
+  const palabras =
+    obtenerPalabras(
+      pregunta
+    );
+
+
+  const resultados = [];
+
+
+  function buscar(
+    objeto,
+    ruta = ""
+  ) {
+
+    if (
+      typeof objeto === "string"
+    ) {
+
+      const texto =
+        normalizarTexto(
+          objeto
+        );
+
+
+      let coincidencias = 0;
+
+
+      palabras.forEach(
+        function(palabra) {
+
+          if (
+            texto.includes(
+              palabra
+            )
+          ) {
+
+            coincidencias++;
+
+          }
+
+        }
+      );
+
+
+      if (
+        coincidencias > 0
+      ) {
+
+        resultados.push({
+
+          texto:
+            objeto,
+
+          ruta:
+            ruta,
+
+          coincidencias:
+            coincidencias
+
+        });
+
+      }
+
+
+      return;
+
+    }
+
+
+    if (
+      Array.isArray(objeto)
+    ) {
+
+      objeto.forEach(
+        function(item) {
+
+          buscar(
+            item,
+            ruta
+          );
+
+        }
+      );
+
+
+      return;
+
+    }
+
+
+    if (
+      typeof objeto === "object" &&
+      objeto !== null
+    ) {
+
+      Object.keys(objeto).forEach(
+        function(clave) {
+
+          const nuevaRuta =
+            ruta
+              ? ruta +
+                " → " +
+                clave
+              : clave;
+
+
+          buscar(
+            objeto[clave],
+            nuevaRuta
+          );
+
+        }
+      );
+
+    }
+
+  }
+
+
+  buscar(
+    conocimiento
+  );
+
+
+  resultados.sort(
+    function(a, b) {
+
+      return (
+        b.coincidencias -
+        a.coincidencias
+      );
+
+    }
+  );
+
+
+  return resultados.slice(
+    0,
+    5
+  );
+
+}
+
+
+/* =====================================================
+   RESPUESTA INTERNA
+===================================================== */
+
+function construirRespuestaInterna(
+  resultados
+) {
+
+  if (!resultados.length) {
+
+    return (
+      "🟡 No encontré información sobre ese tema en la base de conocimiento interna."
+    );
+
+  }
+
+
+  let respuesta =
+    "🟢 Encontré esta información en el conocimiento interno:\n\n";
+
+
+  resultados.forEach(
+    function(resultado) {
+
+      respuesta +=
+        "• " +
+        resultado.texto +
+        "\n\n";
+
+    }
+  );
+
+
+  respuesta +=
+    "━━━━━━━━━━━━━━━━━━\n" +
+    "💡 Fuente: conocimiento interno de PREVENTA IA.";
+
+
+  return respuesta;
+
+}
+
+
+/* =====================================================
+   OBTENER FRAGMENTOS RELEVANTES
+===================================================== */
+
+function obtenerFragmentos(
+  texto,
+  pregunta
+) {
+
+  const palabras =
+    obtenerPalabras(
+      pregunta
+    );
+
+
+  const normalizado =
+    normalizarTexto(
+      texto
+    );
+
+
+  const fragmentos = [];
+
+
+  palabras.forEach(
+    function(palabra) {
+
+      if (
+        fragmentos.length >= 4
+      ) {
+
+        return;
+
+      }
+
+
+      let posicion =
+        normalizado.indexOf(
+          palabra
+        );
+
+
+      if (
+        posicion === -1
+      ) {
+
+        return;
+
+      }
+
+
+      const inicio =
+        Math.max(
+          0,
+          posicion - 400
+        );
+
+
+      const fin =
+        Math.min(
+          texto.length,
+          posicion + 1400
+        );
+
+
+      fragmentos.push(
+        texto.substring(
+          inicio,
+          fin
+        )
+      );
+
+    }
+  );
+
+
+  return fragmentos;
+
+}
+
+
+/* =====================================================
+   BÚSQUEDA EXCLUSIVA EN DOCUMENTOS
+===================================================== */
+
+async function buscarEnDocumentos(
+  pregunta
+) {
+
+  const resultados = [];
+
+
+  if (
+    !documentosConocimiento.length
+  ) {
+
+    return resultados;
+
+  }
+
+
+  const palabras =
+    obtenerPalabras(
+      pregunta
+    );
+
+
+  for (
+    const documento of
+    documentosConocimiento
+  ) {
+
+    const texto =
+      await extraerTextoDocumento(
+        documento
+      );
+
+
+    if (!texto) {
+
+      continue;
+
+    }
+
+
+    const textoNormalizado =
+      normalizarTexto(
+        texto
+      );
+
+
+    const nombre =
+      normalizarTexto(
+        documento.name ||
+        documento.originalName ||
+        ""
+      );
+
+
+    let puntuacion = 0;
+
+
+    palabras.forEach(
+      function(palabra) {
+
+        if (
+          textoNormalizado.includes(
+            palabra
+          )
+        ) {
+
+          puntuacion++;
+
+        }
+
+
+        if (
+          nombre.includes(
+            palabra
+          )
+        ) {
+
+          puntuacion += 3;
+
+        }
+
+      }
+    );
+
+
+    if (
+      puntuacion <= 0
+    ) {
+
+      continue;
+
+    }
+
+
+    const fragmentos =
+      obtenerFragmentos(
+        texto,
+        pregunta
+      );
+
+
+    if (
+      !fragmentos.length
+    ) {
+
+      continue;
+
+    }
+
+
+    resultados.push({
+
+      nombre:
+        documento.name ||
+        documento.originalName ||
+        "Documento",
+
+      categoria:
+        documento.category ||
+        "Sin categoría",
+
+      fragmentos:
+        fragmentos,
+
+      puntuacion:
+        puntuacion
+
+    });
+
+  }
+
+
+  resultados.sort(
+    function(a, b) {
+
+      return (
+        b.puntuacion -
+        a.puntuacion
+      );
+
+    }
+  );
+
+
+  return resultados.slice(
+    0,
+    3
+  );
+
+}
+
+
+/* =====================================================
+   RESPUESTA DOCUMENTAL
+===================================================== */
+
+function construirRespuestaDocumental(
+  resultados
+) {
+
+  if (!resultados.length) {
+
+    return (
+      "🟡 No encontré información relacionada con tu consulta dentro de los documentos cargados."
+    );
+
+  }
+
+
+  let respuesta =
+    "🔵 Encontré información relevante en los documentos:\n\n";
+
+
+  resultados.forEach(
+    function(documento) {
+
+      respuesta +=
+        "📄 " +
+        documento.nombre +
+        "\n\n";
+
+
+      documento.fragmentos.forEach(
+        function(fragmento) {
+
+          respuesta +=
+            fragmento.trim() +
+            "\n\n";
+
+        }
+      );
+
+
+      respuesta +=
+        "────────────────────\n\n";
+
+    }
+  );
+
+
+  respuesta +=
+    "━━━━━━━━━━━━━━━━━━\n" +
+    "📚 Fuente: documentos cargados en el Centro de Conocimiento IA.";
+
+
+  return respuesta;
+
+}
+
+
+/* =====================================================
+   AGREGAR MENSAJE
+===================================================== */
+
+function agregarMensaje(
+  texto,
+  tipo
+) {
+
+  const messages =
+    document.getElementById(
+      "messages"
+    );
+
+
+  const message =
+    document.createElement(
+      "div"
+    );
+
+
+  message.className =
+    "message " +
+    tipo;
+
+
+  message.textContent =
+    texto;
+
+
+  messages.appendChild(
+    message
+  );
+
+
+  messages.scrollTop =
+    messages.scrollHeight;
+
+
+  return message;
+
+}
+
+
+/* =====================================================
+   ACTUALIZAR ESTADO
+===================================================== */
+
+async function actualizarEstado() {
+
+  try {
+
+    documentosConocimiento =
+      await getKnowledgeDocuments();
+
+
+    const status =
+      document.getElementById(
+        "status"
+      );
+
+
+    if (
+      conocimiento &&
+      documentosConocimiento.length
+    ) {
+
+      status.className =
+        "status success";
+
+
+      status.textContent =
+        "🟢 Sistema listo — conocimiento interno + " +
+        documentosConocimiento.length +
+        " documento(s) disponible(s).";
+
+    }
+
+    else if (
+      conocimiento
+    ) {
+
+      status.className =
+        "status success";
+
+
+      status.textContent =
+        "🟢 Sistema listo — conocimiento interno disponible. Sin documentos cargados.";
+
+    }
+
+    else if (
+      documentosConocimiento.length
+    ) {
+
+      status.className =
+        "status";
+
+
+      status.textContent =
+        "🟡 Sistema listo — " +
+        documentosConocimiento.length +
+        " documento(s) disponible(s).";
+
+    }
+
+    else {
+
+      status.textContent =
+        "🟡 No hay fuentes disponibles.";
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   ENVIAR MENSAJE
+===================================================== */
+
+async function sendMessage() {
+
+  const input =
+    document.getElementById(
+      "question"
+    );
+
+
+  const button =
+    document.getElementById(
+      "sendButton"
+    );
+
+
+  const question =
+    input.value.trim();
+
+
+  if (!question) {
+
+    return;
+
+  }
+
+
+  agregarMensaje(
+    question,
+    "user"
+  );
+
+
+  input.value =
+    "";
+
+
+  button.disabled =
+    true;
+
+
+  const loading =
+    agregarMensaje(
+      "🔎 Buscando...",
+      "ia loading"
+    );
+
+
+  try {
+
+    const modo =
+      detectarModo(
+        question
+      );
+
+
+    /*
+      =================================================
+      SI NO INDICA MODO
+      =================================================
+    */
+
+    if (!modo) {
+
+      loading.remove();
+
+
+      agregarMensaje(
+
+        "🟡 No indiqué dónde buscar.\n\n" +
+
+        "Usá una de estas opciones:\n\n" +
+
+        "🟢 Búsqueda interna: ¿Qué es Perfil Digital?\n\n" +
+
+        "🔵 Búsqueda en documento: ¿Qué dice el documento sobre DocIntro?",
+
+        "ia"
+
+      );
+
+
+      button.disabled =
+        false;
+
+
+      input.focus();
+
+      return;
+
+    }
+
+
+    const preguntaLimpia =
+      limpiarPregunta(
+        question
+      );
+
+
+    /*
+      =================================================
+      BÚSQUEDA INTERNA
+      SOLO JSON
+      =================================================
+    */
+
+    if (
+      modo === "interna"
+    ) {
+
+      const resultados =
+        buscarEnConocimientoInterno(
+          preguntaLimpia
+        );
+
+
+      loading.remove();
+
+
+      agregarMensaje(
+
+        construirRespuestaInterna(
+          resultados
+        ),
+
+        "ia"
+
+      );
+
+
+      document.getElementById(
+        "status"
+      ).textContent =
+        "🟢 Búsqueda realizada exclusivamente en conocimiento.json.";
+
+    }
+
+
+    /*
+      =================================================
+      BÚSQUEDA DOCUMENTOS
+      SOLO ARCHIVOS
+      =================================================
+    */
+
+    else if (
+      modo === "documentos"
+    ) {
+
+      const resultados =
+        await buscarEnDocumentos(
+          preguntaLimpia
+        );
+
+
+      loading.remove();
+
+
+      agregarMensaje(
+
+        construirRespuestaDocumental(
+          resultados
+        ),
+
+        "ia"
+
+      );
+
+
+      document.getElementById(
+        "status"
+      ).textContent =
+        "🔵 Búsqueda realizada exclusivamente en documentos cargados.";
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error:",
+      error
+    );
+
+
+    loading.remove();
+
+
+    agregarMensaje(
+
+      "🔴 Ocurrió un error realizando la búsqueda.",
+
+      "ia"
+
+    );
+
+
+    document.getElementById(
+      "status"
+    ).textContent =
+      "🔴 Error realizando la búsqueda.";
+
+  }
+
+
+  button.disabled =
+    false;
+
+
+  input.focus();
+
+}
+
+
+/* =====================================================
+   CTRL + ENTER
+===================================================== */
+
+document
+  .getElementById(
+    "question"
+  )
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter" &&
+        event.ctrlKey
+      ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+(async function() {
+
+  await cargarConocimiento();
+
+
+  try {
+
+    await openKnowledgeDatabase();
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "No se pudo abrir IndexedDB:",
+      error
+    );
+
+  }
+
+
+  await actualizarEstado();
+
+})();
+
+</script>
+
+</body>
+
+</html>

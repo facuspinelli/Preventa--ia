@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Centro de Conocimiento IA | PREVENTA IA</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+header {
+  background: #111827;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.back {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 1150px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.welcome {
+  margin-bottom: 30px;
+}
+
+.welcome h2 {
+  margin-bottom: 8px;
+}
+
+.welcome p {
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.info {
+  background: #eff6ff;
+  color: #1e40af;
+  padding: 15px 18px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #6b7280;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.icon {
+  font-size: 35px;
+  margin-bottom: 12px;
+}
+
+.button {
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.button:hover {
+  background: #1d4ed8;
+}
+
+.green {
+  background: #166534;
+}
+
+.green:hover {
+  background: #15803d;
+}
+
+.gray {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.gray:hover {
+  background: #d1d5db;
+}
+
+.danger {
+  background: #dc2626;
+}
+
+.danger:hover {
+  background: #b91c1c;
+}
+
+.search-box {
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 25px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.documents {
+  display: grid;
+  gap: 15px;
+}
+
+.document {
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.document-main {
+  min-width: 0;
+}
+
+.document-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  word-break: break-word;
+}
+
+.document-meta {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.document-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.empty {
+  background: white;
+  border-radius: 12px;
+  padding: 45px 20px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.status {
+  margin-top: 20px;
+  padding: 13px 16px;
+  border-radius: 8px;
+  display: none;
+}
+
+.success {
+  display: block;
+  background: #dcfce7;
+  color: #166534;
+}
+
+.warning {
+  display: block;
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.category {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 15px 0 7px;
+}
+
+select,
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.note {
+  margin-top: 12px;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .document {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <h1>🧠 PREVENTA IA</h1>
+
+  <a href="index.html" class="back">
+    ← Volver al inicio
+  </a>
+
+</header>
+
+<main class="container">
+
+  <div class="welcome">
+
+```
+<h2>🧠 Centro de Conocimiento IA</h2>
+
+<p>
+  Este espacio es independiente de la Biblioteca Técnica.
+  Acá vamos a guardar documentación y conocimiento para que
+  el Asistente IA pueda consultarlo.
+</p>
+```
+
+  </div>
+
+  <div class="info">
+
+```
+<strong>Importante:</strong>
+esta sección NO modifica la Biblioteca Técnica ni las propuestas
+originales que utiliza el Cotizador.
+
+La Biblioteca Técnica sigue funcionando por separado.
+```
+
+  </div>
+
+  <div class="cards">
+
+```
+<div class="card">
+
+  <div class="icon">
+    📚
+  </div>
+
+  <h3>
+    Base estructurada
+  </h3>
+
+  <p>
+    Mantiene el conocimiento específico de Preventa IA:
+    productos, partners, funcionalidades, comparaciones,
+    relevamiento y criterios de cotización.
+  </p>
+
+  <div id="knowledgeStatus">
+    Cargando...
+  </div>
+
+</div>
+
+<div class="card">
+
+  <div class="icon">
+    📄
+  </div>
+
+  <h3>
+    Documentos
+  </h3>
+
+  <p>
+    En esta sección podremos incorporar documentación adicional
+    para ampliar el conocimiento del asistente.
+  </p>
+
+  <button
+    class="button"
+    onclick="openUploadModal()"
+  >
+    + Agregar documento
+  </button>
+
+</div>
+
+<div class="card">
+
+  <div class="icon">
+    🤖
+  </div>
+
+  <h3>
+    Asistente IA
+  </h3>
+
+  <p>
+    El asistente utiliza esta información como base cuando
+    la IA generativa no está disponible.
+  </p>
+
+  <a
+    href="asistente.html"
+    class="button green"
+  >
+    Probar asistente
+  </a>
+
+</div>
+```
+
+  </div>
+
+  <div class="search-box">
+
+```
+<input
+  id="search"
+  type="text"
+  placeholder="🔎 Buscar documentación..."
+  oninput="renderDocuments()"
+>
+```
+
+  </div>
+
+  <h3 class="category">
+    📄 Documentación cargada
+  </h3>
+
+  <div
+    id="documents"
+    class="documents"
+  ></div>
+
+  <div
+    id="status"
+    class="status"
+  ></div>
+
+</main>
+
+<div
+  id="uploadModal"
+  class="modal"
+>
+
+  <div class="modal-content">
+
+```
+<h3>
+  📄 Agregar conocimiento
+</h3>
+
+<p class="note">
+  Podés cargar documentación relacionada con productos,
+  partners, preventa, implementación, integraciones,
+  manuales y otros temas útiles para el asistente.
+</p>
+
+<label>
+  Categoría
+</label>
+
+<select id="documentCategory">
+
+  <option value="Productos">
+    Productos
+  </option>
+
+  <option value="Partners">
+    Partners
+  </option>
+
+  <option value="Implementación">
+    Implementación
+  </option>
+
+  <option value="Preventa">
+    Preventa
+  </option>
+
+  <option value="Integraciones">
+    Integraciones
+  </option>
+
+  <option value="Seguridad">
+    Seguridad
+  </option>
+
+  <option value="Otros">
+    Otros
+  </option>
+
+</select>
+
+<label>
+  Nombre
+</label>
+
+<input
+  id="documentName"
+  type="text"
+  placeholder="Ejemplo: Manual técnico Thuban"
+>
+
+<label>
+  Archivo
+</label>
+
+<input
+  id="documentFile"
+  type="file"
+  accept=".pdf,.doc,.docx,.txt,.xlsx,.xls"
+>
+
+<label>
+  Notas / descripción
+</label>
+
+<textarea
+  id="documentNotes"
+  placeholder="Opcional: explicá qué información contiene este documento..."
+></textarea>
+
+<div class="modal-buttons">
+
+  <button
+    class="button green"
+    onclick="saveDocument()"
+  >
+    💾 Guardar
+  </button>
+
+  <button
+    class="button gray"
+    onclick="closeUploadModal()"
+  >
+    Cancelar
+  </button>
+
+</div>
+```
+
+  </div>
+
+</div>
+
+<script>
+
+const DB_NAME =
+  "preventa_ia_conocimiento";
+
+const DB_VERSION =
+  1;
+
+const STORE =
+  "documents";
+
+let db = null;
+
+
+/* ==========================================
+   BASE DE DATOS
+========================================== */
+
+function openDatabase() {
+
+  return new Promise(function(resolve, reject) {
+
+    const request =
+      indexedDB.open(
+        DB_NAME,
+        DB_VERSION
+      );
+
+    request.onupgradeneeded =
+      function(event) {
+
+        const database =
+          event.target.result;
+
+        if (
+          !database.objectStoreNames.contains(
+            STORE
+          )
+        ) {
+
+          const store =
+            database.createObjectStore(
+              STORE,
+              {
+                keyPath: "id",
+                autoIncrement: true
+              }
+            );
+
+          store.createIndex(
+            "category",
+            "category",
+            {
+              unique: false
+            }
+          );
+
+          store.createIndex(
+            "createdAt",
+            "createdAt",
+            {
+              unique: false
+            }
+          );
+
+        }
+
+      };
+
+    request.onsuccess =
+      function(event) {
+
+        db =
+          event.target.result;
+
+        resolve(
+          db
+        );
+
+      };
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
+
+}
+
+
+/* ==========================================
+   MODAL
+========================================== */
+
+function openUploadModal() {
+
+  document.getElementById(
+    "documentName"
+  ).value = "";
+
+  document.getElementById(
+    "documentFile"
+  ).value = "";
+
+  document.getElementById(
+    "documentNotes"
+  ).value = "";
+
+  document.getElementById(
+    "documentCategory"
+  ).value =
+    "Productos";
+
+  document.getElementById(
+    "uploadModal"
+  ).style.display =
+    "flex";
+
+}
+
+function closeUploadModal() {
+
+  document.getElementById(
+    "uploadModal"
+  ).style.display =
+    "none";
+
+}
+
+
+/* ==========================================
+   GUARDAR DOCUMENTO
+========================================== */
+
+function saveDocument() {
+
+  const name =
+    document.getElementById(
+      "documentName"
+    ).value.trim();
+
+  const category =
+    document.getElementById(
+      "documentCategory"
+    ).value;
+
+  const notes =
+    document.getElementById(
+      "documentNotes"
+    ).value.trim();
+
+  const fileInput =
+    document.getElementById(
+      "documentFile"
+    );
+
+  if (!name) {
+
+    alert(
+      "Ingresá un nombre para el documento."
+    );
+
+    return;
+
+  }
+
+  if (!fileInput.files.length) {
+
+    alert(
+      "Seleccioná un archivo."
+    );
+
+    return;
+
+  }
+
+  const file =
+    fileInput.files[0];
+
+  const transaction =
+    db.transaction(
+      STORE,
+      "readwrite"
+    );
+
+  const store =
+    transaction.objectStore(
+      STORE
+    );
+
+  const request =
+    store.add({
+
+      name:
+        name,
+
+      category:
+        category,
+
+      notes:
+        notes,
+
+      originalName:
+        file.name,
+
+      type:
+        file.type ||
+        "application/octet-stream",
+
+      size:
+        file.size,
+
+      blob:
+        file,
+
+      createdAt:
+        new Date().toISOString()
+
+    });
+
+  request.onsuccess =
+    async function() {
+
+      closeUploadModal();
+
+      showStatus(
+        "✅ Documento agregado al Centro de Conocimiento.",
+        "success"
+      );
+
+      await renderDocuments();
+
+    };
+
+  request.onerror =
+    function() {
+
+      console.error(
+        request.error
+      );
+
+      showStatus(
+        "❌ No se pudo guardar el documento.",
+        "warning"
+      );
+
+    };
+
+}
+
+
+/* ==========================================
+   OBTENER DOCUMENTOS
+========================================== */
+
+function getDocuments() {
+
+  return new Promise(function(resolve, reject) {
+
+    const transaction =
+      db.transaction(
+        STORE,
+        "readonly"
+      );
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+    const request =
+      store.getAll();
+
+    request.onsuccess =
+      function() {
+
+        resolve(
+          request.result || []
+        );
+
+      };
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
+
+}
+
+
+/* ==========================================
+   ELIMINAR
+========================================== */
+
+function deleteDocument(
+  id
+) {
+
+  return new Promise(function(resolve, reject) {
+
+    const transaction =
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
+
+    const store =
+      transaction.objectStore(
+        STORE
+      );
+
+    const request =
+      store.delete(
+        id
+      );
+
+    request.onsuccess =
+      function() {
+
+        resolve();
+
+      };
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
+
+}
+
+
+async function removeDocument(
+  id
+) {
+
+  const documents =
+    await getDocuments();
+
+  const document =
+    documents.find(
+      item =>
+        item.id === id
+    );
+
+  if (!document) {
+
+    return;
+
+  }
+
+  if (
+    !confirm(
+      "¿Querés eliminar este documento del Centro de Conocimiento?"
+    )
+  ) {
+
+    return;
+
+  }
+
+  try {
+
+    await deleteDocument(
+      id
+    );
+
+    await renderDocuments();
+
+    showStatus(
+      "✅ Documento eliminado.",
+      "success"
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+    showStatus(
+      "❌ No se pudo eliminar el documento.",
+      "warning"
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   DESCARGAR
+========================================== */
+
+async function downloadDocument(
+  id
+) {
+
+  const documents =
+    await getDocuments();
+
+  const document =
+    documents.find(
+      item =>
+        item.id === id
+    );
+
+  if (!document) {
+
+    return;
+
+  }
+
+  const url =
+    URL.createObjectURL(
+      document.blob
+    );
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+  link.href =
+    url;
+
+  link.download =
+    document.originalName ||
+    document.name ||
+    "documento";
+
+  document.body.appendChild(
+    link
+  );
+
+  link.click();
+
+  document.body.removeChild(
+    link
+  );
+
+  setTimeout(function() {
+
+    URL.revokeObjectURL(
+      url
+    );
+
+  }, 1000);
+
+}
+
+
+/* ==========================================
+   RENDER
+========================================== */
+
+async function renderDocuments() {
+
+  const container =
+    document.getElementById(
+      "documents"
+    );
+
+  const search =
+    document.getElementById(
+      "search"
+    ).value
+      .toLowerCase()
+      .trim();
+
+  const documents =
+    await getDocuments();
+
+  const filtered =
+    documents.filter(
+      function(item) {
+
+        const texto =
+          (
+            String(
+              item.name ||
+              ""
+            ) +
+            " " +
+            String(
+              item.category ||
+              ""
+            ) +
+            " " +
+            String(
+              item.originalName ||
+              ""
+            ) +
+            " " +
+            String(
+              item.notes ||
+              ""
+            )
+          )
+          .toLowerCase();
+
+        return texto.includes(
+          search
+        );
+
+      }
+    );
+
+  filtered.sort(
+    function(a, b) {
+
+      return new Date(
+        b.createdAt || 0
+      ) -
+      new Date(
+        a.createdAt || 0
+      );
+
+    }
+  );
+
+  container.innerHTML =
+    "";
+
+  if (
+    filtered.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <div style="font-size:45px;">
+          🧠
+        </div>
+
+        <h3>
+          No hay documentación adicional
+        </h3>
+
+        <p>
+          Podés cargar manuales, PDFs, Word,
+          Excel u otros documentos relacionados con Preventa.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  filtered.forEach(
+    function(item) {
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "document";
+
+      row.innerHTML = `
+
+        <div class="document-main">
+
+          <div class="document-name">
+
+            📄 ${escapeHTML(
+              item.name
+            )}
+
+          </div>
+
+          <div class="document-meta">
+
+            Categoría:
+            ${escapeHTML(
+              item.category
+            )}
+
+            · Archivo:
+            ${escapeHTML(
+              item.originalName
+            )}
+
+            · ${formatBytes(
+              item.size
+            )}
+
+            ${
+              item.notes
+                ? " · " +
+                  escapeHTML(
+                    item.notes
+                  )
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+        <div class="document-actions">
+
+          <button
+            class="button gray"
+            onclick="downloadDocument(${item.id})"
+          >
+            📥 Descargar
+          </button>
+
+          <button
+            class="button danger"
+            onclick="removeDocument(${item.id})"
+          >
+            🗑️ Eliminar
+          </button>
+
+        </div>
+
+      `;
+
+      container.appendChild(
+        row
+      );
+
+    }
+  );
+
+}
+
+
+/* ==========================================
+   STATUS
+========================================== */
+
+function showStatus(
+  message,
+  type
+) {
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+  status.textContent =
+    message;
+
+  status.className =
+    "status " +
+    type;
+
+  setTimeout(function() {
+
+    status.style.display =
+      "none";
+
+  }, 4000);
+
+}
+
+
+/* ==========================================
+   UTILIDADES
+========================================== */
+
+function formatBytes(
+  bytes
+) {
+
+  if (!bytes) {
+
+    return "0 B";
+
+  }
+
+  if (
+    bytes < 1024
+  ) {
+
+    return bytes +
+      " B";
+
+  }
+
+  if (
+    bytes < 1024 * 1024
+  ) {
+
+    return (
+      bytes / 1024
+    ).toFixed(1) +
+    " KB";
+
+  }
+
+  return (
+    bytes /
+    1024 /
+    1024
+  ).toFixed(2) +
+  " MB";
+
+}
+
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value ||
+    ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/* ==========================================
+   CARGAR ESTADO DE KNOWLEDGE.JSON
+========================================== */
+
+async function checkKnowledgeBase() {
+
+  const element =
+    document.getElementById(
+      "knowledgeStatus"
+    );
+
+  try {
+
+    const response =
+      await fetch(
+        "conocimiento.json",
+        {
+          cache: "no-store"
+        }
+      );
+
+    if (!response.ok) {
+
+      throw new Error(
+        "No se pudo cargar conocimiento.json"
+      );
+
+    }
+
+    const data =
+      await response.json();
+
+    if (
+      data &&
+      data.nombre
+    ) {
+
+      element.innerHTML = `
+
+        <div
+          style="
+            margin-top:12px;
+            padding:10px;
+            border-radius:8px;
+            background:#dcfce7;
+            color:#166534;
+            font-size:13px;
+          "
+        >
+
+          🟢 Base estructurada disponible
+
+          <br>
+
+          Versión:
+          ${escapeHTML(
+            data.version ||
+            "Sin versión"
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+    element.innerHTML = `
+
+      <div
+        style="
+          margin-top:12px;
+          padding:10px;
+          border-radius:8px;
+          background:#fff7ed;
+          color:#9a3412;
+          font-size:13px;
+        "
+      >
+
+        ⚠️ No se pudo cargar
+        conocimiento.json
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* ==========================================
+   INICIO
+========================================== */
+
+(async function() {
+
+  try {
+
+    await openDatabase();
+
+    await renderDocuments();
+
+    await checkKnowledgeBase();
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error inicializando Centro de Conocimiento:",
+      error
+    );
+
+    showStatus(
+      "❌ No se pudo inicializar el Centro de Conocimiento.",
+      "warning"
+    );
+
+  }
+
+})();
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,2446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Repositorio | PREVENTA IA</title>
+
+<script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f6f8;
+  color:#1f2937;
+}
+
+header{
+  background:#111827;
+  color:white;
+  padding:20px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header h1{
+  margin:0;
+  font-size:24px;
+}
+
+header span{
+  color:#9ca3af;
+  font-size:14px;
+}
+
+.container{
+  max-width:1400px;
+  margin:0 auto;
+  padding:25px;
+}
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.summary-card{
+  background:white;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.summary-card small{
+  display:block;
+  color:#6b7280;
+  margin-bottom:8px;
+}
+
+.summary-card strong{
+  font-size:28px;
+}
+
+.search-box{
+  background:white;
+  padding:18px;
+  border-radius:14px;
+  margin-bottom:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.search-box input{
+  width:100%;
+  padding:13px 15px;
+  border:1px solid #d1d5db;
+  border-radius:9px;
+  font-size:15px;
+}
+
+.opportunity{
+  background:white;
+  border-radius:16px;
+  padding:22px;
+  margin-bottom:20px;
+  box-shadow:0 3px 14px rgba(0,0,0,.07);
+}
+
+.op-header{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+  margin-bottom:15px;
+}
+
+.op-header h2{
+  margin:0 0 6px;
+  font-size:20px;
+}
+
+.client{
+  color:#6b7280;
+  font-size:14px;
+}
+
+.status{
+  padding:7px 12px;
+  border-radius:20px;
+  font-weight:bold;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+.status-analysis{
+  background:#e0f2fe;
+  color:#0369a1;
+}
+
+.status-proposal{
+  background:#ede9fe;
+  color:#6d28d9;
+}
+
+.status-won{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.status-lost{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.data-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px;
+  margin:18px 0;
+}
+
+.data-item{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:10px;
+}
+
+.data-item small{
+  display:block;
+  color:#6b7280;
+  font-size:11px;
+  margin-bottom:4px;
+}
+
+.data-item strong{
+  font-size:14px;
+}
+
+.quote-box{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:15px;
+  margin-top:15px;
+}
+
+.quote-box h3{
+  margin:0 0 12px;
+  font-size:15px;
+}
+
+.quote-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.quote-value{
+  background:white;
+  border-radius:9px;
+  padding:10px;
+  border:1px solid #e5e7eb;
+}
+
+.quote-value small{
+  display:block;
+  color:#6b7280;
+  font-size:11px;
+}
+
+.quote-value strong{
+  font-size:14px;
+}
+
+.proposal-box{
+  margin-top:15px;
+  border:1px solid #ddd6fe;
+  background:#faf5ff;
+  padding:15px;
+  border-radius:12px;
+}
+
+.proposal-box h3{
+  margin:0 0 8px;
+  color:#6d28d9;
+}
+
+.proposal-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:18px;
+}
+
+button{
+  border:0;
+  border-radius:9px;
+  padding:10px 13px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:13px;
+}
+
+.btn-primary{
+  background:#2563eb;
+  color:white;
+}
+
+.btn-secondary{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+.btn-green{
+  background:#16a34a;
+  color:white;
+}
+
+.btn-purple{
+  background:#7c3aed;
+  color:white;
+}
+
+.btn-red{
+  background:#dc2626;
+  color:white;
+}
+
+.btn-danger{
+  background:#991b1b;
+  color:white;
+}
+
+.empty{
+  background:white;
+  padding:45px;
+  text-align:center;
+  border-radius:15px;
+  color:#6b7280;
+}
+
+/* CIERRE */
+.closure-box{
+  margin-top:15px;
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+  background:#fafafa;
+}
+
+.closure-box.won{
+  border-color:#bbf7d0;
+  background:#f0fdf4;
+}
+
+.closure-box.lost{
+  border-color:#fecaca;
+  background:#fef2f2;
+}
+
+.closure-title{
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.closure-row{
+  margin-top:6px;
+  font-size:14px;
+}
+
+.closure-row strong{
+  margin-right:5px;
+}
+
+.closure-date{
+  color:#6b7280;
+  font-size:12px;
+  margin-top:8px;
+}
+
+/* MODALES */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal-content{
+  width:100%;
+  max-width:650px;
+  max-height:90vh;
+  overflow:auto;
+  background:white;
+  border-radius:16px;
+  padding:25px;
+  box-shadow:0 15px 50px rgba(0,0,0,.25);
+}
+
+.modal-content h2{
+  margin-top:0;
+}
+
+.form-group{
+  margin-bottom:15px;
+}
+
+.form-group label{
+  display:block;
+  font-weight:bold;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  font-size:14px;
+  font-family:inherit;
+}
+
+.form-group textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:20px;
+}
+
+.close-x{
+  float:right;
+  font-size:24px;
+  cursor:pointer;
+  color:#6b7280;
+}
+
+@media(max-width:900px){
+  .summary{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .quote-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:600px){
+  .container{
+    padding:15px;
+  }
+
+  .summary{
+    grid-template-columns:1fr;
+  }
+
+  .op-header{
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <h1>📚 Repositorio</h1>
+    <span>PREVENTA IA · Oportunidades, cotizaciones y propuestas</span>
+  </div>
+
+  <button
+    onclick="window.location.href='index.html'"
+    style="
+      background:white;
+      color:#111827;
+      border:none;
+      border-radius:9px;
+      padding:10px 16px;
+      cursor:pointer;
+      font-weight:bold;
+      font-size:14px;
+    "
+  >
+    🏠 Inicio
+  </button>
+</header>
+
+<div class="container">
+
+  <div class="summary">
+    <div class="summary-card">
+      <small>Oportunidades</small>
+      <strong id="totalOpps">0</strong>
+    </div>
+
+    <div class="summary-card">
+      <small>En análisis</small>
+      <strong id="analysisCount">0</strong>
+    </div>
+
+    <div class="summary-card">
+      <small>Con cotización</small>
+      <strong id="quoteCount">0</strong>
+    </div>
+
+    <div class="summary-card">
+      <small>Ganadas</small>
+      <strong id="wonCount">0</strong>
+    </div>
+
+    <div class="summary-card">
+      <small>Perdidas</small>
+      <strong id="lostCount">0</strong>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔎 Buscar por cliente, proyecto, solución o producto..."
+      oninput="renderOpportunities()"
+    >
+  </div>
+
+  <div id="opportunitiesContainer"></div>
+
+</div>
+
+
+<!-- MODAL EDITAR -->
+<div class="modal" id="editModal">
+
+  <div class="modal-content">
+
+    <span class="close-x" onclick="closeEditModal()">×</span>
+
+    <h2>✏️ Editar oportunidad</h2>
+
+    <input type="hidden" id="editId">
+
+    <div class="form-group">
+      <label>Cliente</label>
+      <input id="editClient">
+    </div>
+
+    <div class="form-group">
+      <label>Proyecto</label>
+      <input id="editProject">
+    </div>
+
+    <div class="form-group">
+      <label>Solución</label>
+      <input id="editSolution">
+    </div>
+
+    <div class="form-group">
+      <label>Usuarios</label>
+      <input id="editUsers">
+    </div>
+
+    <div class="form-group">
+      <label>Almacenamiento</label>
+      <input id="editStorage">
+    </div>
+
+    <div class="form-group">
+      <label>Documentos</label>
+      <input id="editDocuments">
+    </div>
+
+    <div class="form-group">
+      <label>Workflows</label>
+      <input id="editWorkflows">
+    </div>
+
+    <div class="form-group">
+      <label>OCR</label>
+      <input id="editOCR">
+    </div>
+
+    <div class="form-group">
+      <label>Firmas</label>
+      <input id="editSignatures">
+    </div>
+
+    <div class="form-group">
+      <label>Infraestructura</label>
+      <input id="editInfrastructure">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha límite</label>
+      <input id="editDeadline">
+    </div>
+
+    <div class="form-group">
+      <label>Estado</label>
+      <select id="editStatus">
+        <option value="analysis">Análisis</option>
+        <option value="proposal">Propuesta</option>
+        <option value="won">Ganada</option>
+        <option value="lost">Perdida</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeEditModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveEditedOpportunity()">Guardar cambios</button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- MODAL CIERRE -->
+<div class="modal" id="statusModal">
+
+  <div class="modal-content">
+
+    <span class="close-x" onclick="closeStatusModal()">×</span>
+
+    <h2 id="statusModalTitle">Cerrar oportunidad</h2>
+
+    <p id="statusModalDescription" style="color:#6b7280;"></p>
+
+    <input type="hidden" id="statusOpportunityId">
+    <input type="hidden" id="statusOpportunityValue">
+
+    <div class="form-group" id="lostReasonGroup">
+
+      <label>Motivo de pérdida</label>
+
+      <select id="statusReason">
+        <option value="">Seleccionar motivo...</option>
+        <option value="Precio / demasiado caro">Precio / demasiado caro</option>
+        <option value="Competencia">Competencia</option>
+        <option value="Proyecto cancelado">Proyecto cancelado</option>
+        <option value="Cliente no avanzó">Cliente no avanzó</option>
+        <option value="Requerimientos no cubiertos">Requerimientos no cubiertos</option>
+        <option value="Sin presupuesto">Sin presupuesto</option>
+        <option value="Tiempos / plazos">Tiempos / plazos</option>
+        <option value="Otro">Otro</option>
+      </select>
+
+    </div>
+
+    <div class="form-group">
+
+      <label id="statusCommentLabel">Comentario / detalle</label>
+
+      <textarea
+        id="statusComment"
+        placeholder="Escribí cualquier detalle que quieras guardar sobre el cierre..."
+      ></textarea>
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button class="btn-secondary" onclick="closeStatusModal()">
+        Cancelar
+      </button>
+
+      <button
+        id="saveStatusButton"
+        class="btn-primary"
+        onclick="saveStatusChange()"
+      >
+        Guardar
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+
+/* =========================================================
+   DATOS
+========================================================= */
+
+let opportunities = [];
+
+const STORAGE_KEY = "preventa_opportunities";
+
+
+/* =========================================================
+   INDEXED DB - PROPUESTAS FINALES
+========================================================= */
+
+const DB_NAME = "preventa_ia_biblioteca";
+const DB_VERSION = 2;
+const FINAL_STORE = "finalProposals";
+
+let db = null;
+
+function openDB(){
+
+  return new Promise((resolve,reject)=>{
+
+    const request = indexedDB.open(DB_NAME,DB_VERSION);
+
+    request.onerror = () => reject(request.error);
+
+    request.onsuccess = () => {
+
+      db = request.result;
+
+      resolve(db);
+
+    };
+
+    request.onupgradeneeded = event => {
+
+      const database = event.target.result;
+
+      if(!database.objectStoreNames.contains(FINAL_STORE)){
+
+        database.createObjectStore(FINAL_STORE,{
+          keyPath:"id"
+        });
+
+      }
+
+    };
+
+  });
+
+}
+
+
+async function getFinalProposal(opportunityId){
+
+  try{
+
+    if(!db){
+      await openDB();
+    }
+
+    return new Promise((resolve,reject)=>{
+
+      const transaction = db.transaction(
+        FINAL_STORE,
+        "readonly"
+      );
+
+      const store = transaction.objectStore(FINAL_STORE);
+
+      const request = store.get(opportunityId);
+
+      request.onsuccess = () => resolve(request.result || null);
+
+      request.onerror = () => reject(request.error);
+
+    });
+
+  }catch(error){
+
+    console.error("Error leyendo propuesta final:",error);
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   CARGA
+========================================================= */
+
+function loadOpportunities(){
+
+  try{
+
+    opportunities =
+      JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+      ) || [];
+
+  }catch(error){
+
+    console.error(error);
+
+    opportunities = [];
+
+  }
+
+}
+
+
+/* =========================================================
+   GUARDAR
+========================================================= */
+
+function saveOpportunities(){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(opportunities)
+  );
+
+}
+
+
+/* =========================================================
+   ESTADOS
+========================================================= */
+
+function statusLabel(status){
+
+  switch(status){
+
+    case "won":
+      return "🟢 Ganada";
+
+    case "lost":
+      return "🔴 Perdida";
+
+    case "proposal":
+      return "🟣 Propuesta";
+
+    case "analysis":
+    default:
+      return "🔵 Análisis";
+
+  }
+
+}
+
+
+function statusClass(status){
+
+  switch(status){
+
+    case "won":
+      return "status-won";
+
+    case "lost":
+      return "status-lost";
+
+    case "proposal":
+      return "status-proposal";
+
+    default:
+      return "status-analysis";
+
+  }
+
+}
+
+
+/* =========================================================
+   FORMATEO
+========================================================= */
+
+function safe(value){
+
+  if(value === null || value === undefined || value === ""){
+    return "—";
+  }
+
+  return String(value);
+
+}
+
+
+function escapeHTML(value){
+
+  if(value === null || value === undefined){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDate(date){
+
+  if(!date){
+    return "";
+  }
+
+  try{
+
+    return new Date(date).toLocaleDateString(
+      "es-AR",
+      {
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric"
+      }
+    );
+
+  }catch(e){
+
+    return "";
+
+  }
+
+}
+
+
+function formatMoney(value){
+
+  if(value === null || value === undefined || value === ""){
+    return "—";
+  }
+
+  const number = Number(value);
+
+  if(Number.isNaN(number)){
+    return safe(value);
+  }
+
+  return number.toLocaleString(
+    "es-AR",
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+async function renderOpportunities(){
+
+  const container =
+    document.getElementById(
+      "opportunitiesContainer"
+    );
+
+  const search =
+    document.getElementById(
+      "searchInput"
+    ).value
+    .toLowerCase()
+    .trim();
+
+  let filtered = opportunities.filter(opportunity => {
+
+    const text = [
+
+      opportunity.client,
+      opportunity.project,
+      opportunity.solution,
+      opportunity.product
+
+    ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+    return text.includes(search);
+
+  });
+
+
+  /* RESUMEN */
+
+  document.getElementById("totalOpps").textContent =
+    opportunities.length;
+
+  document.getElementById("analysisCount").textContent =
+    opportunities.filter(
+      o => o.status === "analysis"
+    ).length;
+
+  document.getElementById("quoteCount").textContent =
+    opportunities.filter(
+      o => o.quote
+    ).length;
+
+  document.getElementById("wonCount").textContent =
+    opportunities.filter(
+      o => o.status === "won"
+    ).length;
+
+  document.getElementById("lostCount").textContent =
+    opportunities.filter(
+      o => o.status === "lost"
+    ).length;
+
+
+  if(!filtered.length){
+
+    container.innerHTML = `
+      <div class="empty">
+        <h3>📭 No hay oportunidades</h3>
+        <p>No encontramos oportunidades con ese criterio.</p>
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  let html = "";
+
+  for(const opportunity of filtered){
+
+    html += await renderOpportunity(
+      opportunity
+    );
+
+  }
+
+  container.innerHTML = html;
+
+}
+
+
+async function renderOpportunity(opportunity){
+
+  const quote =
+    opportunity.quote || null;
+
+  const proposal =
+    await getFinalProposal(
+      opportunity.id
+    );
+
+
+  let closureHTML = "";
+
+  if(
+    opportunity.status === "won" ||
+    opportunity.status === "lost"
+  ){
+
+    const isWon =
+      opportunity.status === "won";
+
+    const reason =
+      opportunity.closeReason ||
+      "";
+
+    const comment =
+      opportunity.closeComment ||
+      "";
+
+    const date =
+      opportunity.closedAt ||
+      opportunity.updatedAt ||
+      "";
+
+    closureHTML = `
+
+      <div class="closure-box ${isWon ? "won" : "lost"}">
+
+        <div class="closure-title">
+          ${isWon ? "🟢 Información del cierre" : "🔴 Motivo de pérdida"}
+        </div>
+
+        ${
+          reason
+          ?
+          `
+          <div class="closure-row">
+            <strong>${isWon ? "Motivo:" : "Motivo:"}</strong>
+            ${escapeHTML(reason)}
+          </div>
+          `
+          :
+          `
+          <div class="closure-row">
+            <strong>Motivo:</strong>
+            Sin especificar
+          </div>
+          `
+        }
+
+        ${
+          comment
+          ?
+          `
+          <div class="closure-row">
+            <strong>Detalle:</strong>
+            ${escapeHTML(comment)}
+          </div>
+          `
+          :
+          ""
+        }
+
+        ${
+          date
+          ?
+          `
+          <div class="closure-date">
+            Cerrada el ${formatDate(date)}
+          </div>
+          `
+          :
+          ""
+        }
+
+      </div>
+
+    `;
+
+  }
+
+
+  let quoteHTML = "";
+
+  if(quote){
+
+    const setup =
+      quote.setup ??
+      quote.setupTotal ??
+      quote.oneShot ??
+      "";
+
+    const monthly =
+      quote.monthly ??
+      quote.monthlyTotal ??
+      "";
+
+    const firstYear =
+      quote.firstYear ??
+      quote.firstYearTotal ??
+      quote.year1 ??
+      "";
+
+
+    quoteHTML = `
+
+      <div class="quote-box">
+
+        <h3>💰 Cotización asociada</h3>
+
+        <div class="quote-grid">
+
+          <div class="quote-value">
+            <small>SETUP</small>
+            <strong>${formatMoney(setup)}</strong>
+          </div>
+
+          <div class="quote-value">
+            <small>MENSUAL</small>
+            <strong>${formatMoney(monthly)}</strong>
+          </div>
+
+          <div class="quote-value">
+            <small>PRIMER AÑO</small>
+            <strong>${formatMoney(firstYear)}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  let proposalHTML = "";
+
+  if(proposal){
+
+    proposalHTML = `
+
+      <div class="proposal-box">
+
+        <h3>📄 Propuesta final</h3>
+
+        <div>
+          ${
+            escapeHTML(
+              proposal.name ||
+              proposal.fileName ||
+              "Propuesta generada"
+            )
+          }
+        </div>
+
+        <div class="proposal-actions">
+
+          <button
+            class="btn-purple"
+            onclick="previewProposal('${escapeHTML(opportunity.id)}')"
+          >
+            👁️ Ver propuesta
+          </button>
+
+          <button
+            class="btn-secondary"
+            onclick="downloadProposal('${escapeHTML(opportunity.id)}')"
+          >
+            ⬇️ Descargar Word
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  return `
+
+    <div class="opportunity">
+
+      <div class="op-header">
+
+        <div>
+
+          <h2>
+            ${escapeHTML(
+              safe(opportunity.project)
+            )}
+          </h2>
+
+          <div class="client">
+            Cliente:
+            ${escapeHTML(
+              safe(opportunity.client)
+            )}
+          </div>
+
+          <div class="client">
+            Solución:
+            ${escapeHTML(
+              safe(opportunity.solution)
+            )}
+          </div>
+
+        </div>
+
+        <div class="status ${statusClass(opportunity.status)}">
+          ${statusLabel(opportunity.status)}
+        </div>
+
+      </div>
+
+
+      <div class="data-grid">
+
+        <div class="data-item">
+          <small>Usuarios</small>
+          <strong>${escapeHTML(safe(opportunity.users))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Almacenamiento</small>
+          <strong>${escapeHTML(safe(opportunity.storage))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Documentos</small>
+          <strong>${escapeHTML(safe(opportunity.documents))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Workflows</small>
+          <strong>${escapeHTML(safe(opportunity.workflows))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>OCR</small>
+          <strong>${escapeHTML(safe(opportunity.ocr))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Firmas</small>
+          <strong>${escapeHTML(safe(opportunity.signatures))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Infraestructura</small>
+          <strong>${escapeHTML(safe(opportunity.infrastructure))}</strong>
+        </div>
+
+        <div class="data-item">
+          <small>Fecha límite</small>
+          <strong>${escapeHTML(safe(opportunity.deadline))}</strong>
+        </div>
+
+      </div>
+
+
+      ${closureHTML}
+
+      ${quoteHTML}
+
+      ${proposalHTML}
+
+
+      <div class="actions">
+
+        <button
+          class="btn-secondary"
+          onclick="viewSummary('${escapeHTML(opportunity.id)}')"
+        >
+          📋 Ver resumen
+        </button>
+
+        <button
+          class="btn-primary"
+          onclick="goToQuote('${escapeHTML(opportunity.id)}')"
+        >
+          💰 Cotizar / Editar cotización
+        </button>
+
+        <button
+          class="btn-green"
+          onclick="setOpportunityStatus('${escapeHTML(opportunity.id)}','won')"
+        >
+          🟢 Ganada
+        </button>
+
+        <button
+          class="btn-purple"
+          onclick="setOpportunityStatus('${escapeHTML(opportunity.id)}','proposal')"
+        >
+          🟣 Propuesta
+        </button>
+
+        <button
+          class="btn-red"
+          onclick="setOpportunityStatus('${escapeHTML(opportunity.id)}','lost')"
+        >
+          🔴 Perdida
+        </button>
+
+        <button
+          class="btn-secondary"
+          onclick="editOpportunity('${escapeHTML(opportunity.id)}')"
+        >
+          ✏️ Editar
+        </button>
+
+        <button
+          class="btn-danger"
+          onclick="deleteOpportunity('${escapeHTML(opportunity.id)}')"
+        >
+          🗑️ Eliminar
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   CAMBIO DE ESTADO
+========================================================= */
+
+function setOpportunityStatus(id,status){
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+    return;
+  }
+
+
+  /*
+   * GANADA / PERDIDA
+   * Ahora abre el formulario de cierre.
+   */
+
+  if(
+    status === "won" ||
+    status === "lost"
+  ){
+
+    openStatusModal(
+      opportunity,
+      status
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * PROPUESTA
+   * Mantiene el comportamiento anterior.
+   */
+
+  const label =
+    statusLabel(status);
+
+  if(
+    !confirm(
+      `¿Querés cambiar el estado de esta oportunidad a ${label}?`
+    )
+  ){
+
+    return;
+
+  }
+
+
+  opportunity.status = status;
+
+  /*
+   * Si vuelve a un estado activo,
+   * eliminamos los datos de cierre para
+   * que no aparezcan como si siguiera cerrada.
+   */
+
+  opportunity.closeReason = "";
+  opportunity.closeComment = "";
+  opportunity.closedAt = "";
+
+  opportunity.updatedAt =
+    new Date().toISOString();
+
+  saveOpportunities();
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(opportunity)
+  );
+
+  renderOpportunities();
+
+}
+
+
+/* =========================================================
+   MODAL DE CIERRE
+========================================================= */
+
+function openStatusModal(opportunity,status){
+
+  const modal =
+    document.getElementById(
+      "statusModal"
+    );
+
+  const title =
+    document.getElementById(
+      "statusModalTitle"
+    );
+
+  const description =
+    document.getElementById(
+      "statusModalDescription"
+    );
+
+  const reasonGroup =
+    document.getElementById(
+      "lostReasonGroup"
+    );
+
+  const reason =
+    document.getElementById(
+      "statusReason"
+    );
+
+  const comment =
+    document.getElementById(
+      "statusComment"
+    );
+
+  const commentLabel =
+    document.getElementById(
+      "statusCommentLabel"
+    );
+
+  const saveButton =
+    document.getElementById(
+      "saveStatusButton"
+    );
+
+
+  document.getElementById(
+    "statusOpportunityId"
+  ).value = opportunity.id;
+
+  document.getElementById(
+    "statusOpportunityValue"
+  ).value = status;
+
+
+  reason.value =
+    opportunity.closeReason ||
+    "";
+
+  comment.value =
+    opportunity.closeComment ||
+    "";
+
+
+  if(status === "lost"){
+
+    title.textContent =
+      "🔴 Marcar oportunidad como perdida";
+
+    description.textContent =
+      "Podés seleccionar un motivo y agregar cualquier detalle que quieras conservar para futuras oportunidades.";
+
+    reasonGroup.style.display =
+      "block";
+
+    commentLabel.textContent =
+      "Comentario / detalle";
+
+    comment.placeholder =
+      "Ejemplo: El cliente recibió una propuesta más económica y decidió avanzar con la competencia.";
+
+    saveButton.textContent =
+      "Guardar pérdida";
+
+    saveButton.className =
+      "btn-red";
+
+  }else{
+
+    title.textContent =
+      "🟢 Marcar oportunidad como ganada";
+
+    description.textContent =
+      "Guardá un comentario sobre por qué se ganó la oportunidad o cualquier información útil para futuras propuestas.";
+
+    reasonGroup.style.display =
+      "none";
+
+    reason.value =
+      opportunity.closeReason ||
+      "";
+
+    commentLabel.textContent =
+      "Motivo / comentario";
+
+    comment.placeholder =
+      "Ejemplo: El cliente eligió nuestra propuesta por alcance, solución y condiciones comerciales.";
+
+    saveButton.textContent =
+      "Guardar ganada";
+
+    saveButton.className =
+      "btn-green";
+
+  }
+
+
+  modal.style.display =
+    "flex";
+
+}
+
+
+function closeStatusModal(){
+
+  document.getElementById(
+    "statusModal"
+  ).style.display =
+    "none";
+
+}
+
+
+function saveStatusChange(){
+
+  const id =
+    document.getElementById(
+      "statusOpportunityId"
+    ).value;
+
+  const status =
+    document.getElementById(
+      "statusOpportunityValue"
+    ).value;
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+
+    alert(
+      "No se encontró la oportunidad."
+    );
+
+    closeStatusModal();
+
+    return;
+
+  }
+
+
+  const reason =
+    document.getElementById(
+      "statusReason"
+    ).value.trim();
+
+  const comment =
+    document.getElementById(
+      "statusComment"
+    ).value.trim();
+
+
+  /*
+   * PERDIDA
+   */
+
+  if(status === "lost"){
+
+    if(!reason && !comment){
+
+      if(
+        !confirm(
+          "No ingresaste un motivo ni comentario. ¿Querés marcarla igualmente como perdida?"
+        )
+      ){
+
+        return;
+
+      }
+
+    }
+
+    opportunity.closeReason =
+      reason || "Sin especificar";
+
+    opportunity.closeComment =
+      comment || "";
+
+  }
+
+
+  /*
+   * GANADA
+   */
+
+  if(status === "won"){
+
+    opportunity.closeReason =
+      reason || "Ganada";
+
+    opportunity.closeComment =
+      comment || "";
+
+  }
+
+
+  opportunity.status =
+    status;
+
+  opportunity.closedAt =
+    new Date().toISOString();
+
+  opportunity.updatedAt =
+    new Date().toISOString();
+
+
+  saveOpportunities();
+
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(opportunity)
+  );
+
+
+  closeStatusModal();
+
+  renderOpportunities();
+
+}
+
+
+/* =========================================================
+   EDITAR OPORTUNIDAD
+========================================================= */
+
+function editOpportunity(id){
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+    return;
+  }
+
+
+  document.getElementById("editId").value =
+    opportunity.id;
+
+  document.getElementById("editClient").value =
+    opportunity.client || "";
+
+  document.getElementById("editProject").value =
+    opportunity.project || "";
+
+  document.getElementById("editSolution").value =
+    opportunity.solution || "";
+
+  document.getElementById("editUsers").value =
+    opportunity.users || "";
+
+  document.getElementById("editStorage").value =
+    opportunity.storage || "";
+
+  document.getElementById("editDocuments").value =
+    opportunity.documents || "";
+
+  document.getElementById("editWorkflows").value =
+    opportunity.workflows || "";
+
+  document.getElementById("editOCR").value =
+    opportunity.ocr || "";
+
+  document.getElementById("editSignatures").value =
+    opportunity.signatures || "";
+
+  document.getElementById("editInfrastructure").value =
+    opportunity.infrastructure || "";
+
+  document.getElementById("editDeadline").value =
+    opportunity.deadline || "";
+
+  document.getElementById("editStatus").value =
+    opportunity.status || "analysis";
+
+
+  document.getElementById(
+    "editModal"
+  ).style.display =
+    "flex";
+
+}
+
+
+function closeEditModal(){
+
+  document.getElementById(
+    "editModal"
+  ).style.display =
+    "none";
+
+}
+
+
+function saveEditedOpportunity(){
+
+  const id =
+    document.getElementById(
+      "editId"
+    ).value;
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+
+    alert(
+      "No se encontró la oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  const oldStatus =
+    opportunity.status;
+
+  const newStatus =
+    document.getElementById(
+      "editStatus"
+    ).value;
+
+
+  opportunity.client =
+    document.getElementById(
+      "editClient"
+    ).value.trim();
+
+  opportunity.project =
+    document.getElementById(
+      "editProject"
+    ).value.trim();
+
+  opportunity.solution =
+    document.getElementById(
+      "editSolution"
+    ).value.trim();
+
+  opportunity.users =
+    document.getElementById(
+      "editUsers"
+    ).value.trim();
+
+  opportunity.storage =
+    document.getElementById(
+      "editStorage"
+    ).value.trim();
+
+  opportunity.documents =
+    document.getElementById(
+      "editDocuments"
+    ).value.trim();
+
+  opportunity.workflows =
+    document.getElementById(
+      "editWorkflows"
+    ).value.trim();
+
+  opportunity.ocr =
+    document.getElementById(
+      "editOCR"
+    ).value.trim();
+
+  opportunity.signatures =
+    document.getElementById(
+      "editSignatures"
+    ).value.trim();
+
+  opportunity.infrastructure =
+    document.getElementById(
+      "editInfrastructure"
+    ).value.trim();
+
+  opportunity.deadline =
+    document.getElementById(
+      "editDeadline"
+    ).value.trim();
+
+  opportunity.status =
+    newStatus;
+
+
+  /*
+   * Si desde editar se cambia una oportunidad
+   * ganada/perdida a un estado activo,
+   * limpiamos la información de cierre.
+   */
+
+  if(
+    newStatus !== "won" &&
+    newStatus !== "lost"
+  ){
+
+    opportunity.closeReason = "";
+    opportunity.closeComment = "";
+    opportunity.closedAt = "";
+
+  }
+
+
+  /*
+   * Si se cambia manualmente a ganada/perdida
+   * desde el editor y antes no estaba cerrada,
+   * dejamos la información preparada para que
+   * pueda completarse luego desde los botones.
+   */
+
+  if(
+    newStatus !== oldStatus &&
+    (
+      newStatus === "won" ||
+      newStatus === "lost"
+    ) &&
+    !opportunity.closedAt
+  ){
+
+    opportunity.closeReason = "";
+    opportunity.closeComment = "";
+    opportunity.closedAt =
+      new Date().toISOString();
+
+  }
+
+
+  opportunity.updatedAt =
+    new Date().toISOString();
+
+
+  saveOpportunities();
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(opportunity)
+  );
+
+
+  closeEditModal();
+
+  renderOpportunities();
+
+}
+
+
+/* =========================================================
+   IR AL COTIZADOR
+========================================================= */
+
+function goToQuote(id){
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+    return;
+  }
+
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(opportunity)
+  );
+
+
+  window.location.href =
+    "cotizador.html";
+
+}
+
+
+/* =========================================================
+   VER RESUMEN
+========================================================= */
+
+function viewSummary(id){
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+    return;
+  }
+
+
+  let message = "";
+
+  message +=
+    "CLIENTE: " +
+    safe(opportunity.client) +
+    "\n\n";
+
+  message +=
+    "PROYECTO: " +
+    safe(opportunity.project) +
+    "\n\n";
+
+  message +=
+    "SOLUCIÓN: " +
+    safe(opportunity.solution) +
+    "\n\n";
+
+  message +=
+    "ESTADO: " +
+    statusLabel(opportunity.status) +
+    "\n\n";
+
+  message +=
+    "USUARIOS: " +
+    safe(opportunity.users) +
+    "\n";
+
+  message +=
+    "ALMACENAMIENTO: " +
+    safe(opportunity.storage) +
+    "\n";
+
+  message +=
+    "DOCUMENTOS: " +
+    safe(opportunity.documents) +
+    "\n";
+
+  message +=
+    "WORKFLOWS: " +
+    safe(opportunity.workflows) +
+    "\n";
+
+  message +=
+    "OCR: " +
+    safe(opportunity.ocr) +
+    "\n";
+
+  message +=
+    "FIRMAS: " +
+    safe(opportunity.signatures) +
+    "\n";
+
+  message +=
+    "INFRAESTRUCTURA: " +
+    safe(opportunity.infrastructure) +
+    "\n";
+
+  message +=
+    "FECHA LÍMITE: " +
+    safe(opportunity.deadline) +
+    "\n";
+
+
+  if(
+    opportunity.status === "won" ||
+    opportunity.status === "lost"
+  ){
+
+    message +=
+      "\n--------------------------------\n";
+
+    message +=
+      "CIERRE\n\n";
+
+    message +=
+      "Motivo: " +
+      safe(opportunity.closeReason) +
+      "\n";
+
+    message +=
+      "Detalle: " +
+      safe(opportunity.closeComment) +
+      "\n";
+
+    message +=
+      "Fecha: " +
+      safe(
+        formatDate(
+          opportunity.closedAt
+        )
+      );
+
+  }
+
+
+  alert(message);
+
+}
+
+
+/* =========================================================
+   ELIMINAR
+========================================================= */
+
+async function deleteOpportunity(id){
+
+  const opportunity =
+    opportunities.find(
+      o => String(o.id) === String(id)
+    );
+
+  if(!opportunity){
+    return;
+  }
+
+
+  if(
+    !confirm(
+      `¿Querés eliminar la oportunidad "${opportunity.project || opportunity.client || ""}"?`
+    )
+  ){
+
+    return;
+
+  }
+
+
+  /*
+   * Eliminar propuesta final asociada
+   */
+
+  try{
+
+    if(!db){
+      await openDB();
+    }
+
+    await new Promise((resolve,reject)=>{
+
+      const transaction =
+        db.transaction(
+          FINAL_STORE,
+          "readwrite"
+        );
+
+      const store =
+        transaction.objectStore(
+          FINAL_STORE
+        );
+
+      const request =
+        store.delete(opportunity.id);
+
+      request.onsuccess =
+        () => resolve();
+
+      request.onerror =
+        () => reject(request.error);
+
+    });
+
+  }catch(error){
+
+    console.warn(
+      "No se pudo eliminar la propuesta final:",
+      error
+    );
+
+  }
+
+
+  opportunities =
+    opportunities.filter(
+      o => String(o.id) !== String(id)
+    );
+
+
+  saveOpportunities();
+
+  renderOpportunities();
+
+}
+
+
+/* =========================================================
+   PROPUESTA FINAL
+========================================================= */
+
+async function previewProposal(id){
+
+  const proposal =
+    await getFinalProposal(id);
+
+  if(!proposal){
+
+    alert(
+      "No se encontró la propuesta final."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Si tenemos blob, abrimos directamente.
+   */
+
+  if(proposal.blob){
+
+    try{
+
+      const url =
+        URL.createObjectURL(
+          proposal.blob
+        );
+
+      window.open(
+        url,
+        "_blank"
+      );
+
+      return;
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  }
+
+
+  /*
+   * Si tenemos texto HTML,
+   * lo mostramos en una nueva ventana.
+   */
+
+  if(proposal.html){
+
+    const preview =
+      window.open(
+        "",
+        "_blank"
+      );
+
+    if(preview){
+
+      preview.document.write(`
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>Vista previa de propuesta</title>
+          <style>
+            body{
+              font-family:Arial,sans-serif;
+              max-width:900px;
+              margin:40px auto;
+              padding:20px;
+              line-height:1.6;
+            }
+          </style>
+        </head>
+        <body>
+          ${proposal.html}
+        </body>
+        </html>
+      `);
+
+      preview.document.close();
+
+    }
+
+    return;
+
+  }
+
+
+  /*
+   * Si tenemos arrayBuffer del Word,
+   * intentamos convertirlo con Mammoth.
+   */
+
+  if(proposal.arrayBuffer){
+
+    try{
+
+      const result =
+        await mammoth.convertToHtml({
+          arrayBuffer:
+            proposal.arrayBuffer
+        });
+
+      const preview =
+        window.open(
+          "",
+          "_blank"
+        );
+
+      if(preview){
+
+        preview.document.write(`
+          <!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8">
+            <title>Vista previa de propuesta</title>
+            <style>
+              body{
+                font-family:Arial,sans-serif;
+                max-width:900px;
+                margin:40px auto;
+                padding:20px;
+                line-height:1.6;
+              }
+            </style>
+          </head>
+          <body>
+            ${result.value}
+          </body>
+          </html>
+        `);
+
+        preview.document.close();
+
+      }
+
+      return;
+
+    }catch(error){
+
+      console.error(
+        "Error convirtiendo Word:",
+        error
+      );
+
+    }
+
+  }
+
+
+  alert(
+    "La propuesta existe, pero no se pudo generar una vista previa."
+  );
+
+}
+
+
+async function downloadProposal(id){
+
+  const proposal =
+    await getFinalProposal(id);
+
+  if(!proposal){
+
+    alert(
+      "No se encontró la propuesta final."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Caso normal: Blob
+   */
+
+  if(proposal.blob){
+
+    const url =
+      URL.createObjectURL(
+        proposal.blob
+      );
+
+    const a =
+      document.createElement("a");
+
+    a.href =
+      url;
+
+    a.download =
+      proposal.fileName ||
+      proposal.name ||
+      "Propuesta.docx";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    setTimeout(
+      () => URL.revokeObjectURL(url),
+      1000
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Caso ArrayBuffer
+   */
+
+  if(proposal.arrayBuffer){
+
+    try{
+
+      const blob =
+        new Blob(
+          [proposal.arrayBuffer],
+          {
+            type:
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          }
+        );
+
+      const url =
+        URL.createObjectURL(blob);
+
+      const a =
+        document.createElement("a");
+
+      a.href =
+        url;
+
+      a.download =
+        proposal.fileName ||
+        proposal.name ||
+        "Propuesta.docx";
+
+      document.body.appendChild(a);
+
+      a.click();
+
+      a.remove();
+
+      setTimeout(
+        () => URL.revokeObjectURL(url),
+        1000
+      );
+
+      return;
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  }
+
+
+  alert(
+    "No se pudo descargar la propuesta."
+  );
+
+}
+
+
+/* =========================================================
+   CERRAR MODALES AL HACER CLICK AFUERA
+========================================================= */
+
+window.addEventListener(
+  "click",
+  function(event){
+
+    const editModal =
+      document.getElementById(
+        "editModal"
+      );
+
+    const statusModal =
+      document.getElementById(
+        "statusModal"
+      );
+
+
+    if(
+      event.target === editModal
+    ){
+
+      closeEditModal();
+
+    }
+
+
+    if(
+      event.target === statusModal
+    ){
+
+      closeStatusModal();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+async function init(){
+
+  loadOpportunities();
+
+  try{
+
+    await openDB();
+
+  }catch(error){
+
+    console.warn(
+      "IndexedDB no disponible:",
+      error
+    );
+
+  }
+
+  renderOpportunities();
+
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3640 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Análisis de Oportunidad | PREVENTA IA</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #1f2937;
+}
+
+header {
+    background: linear-gradient(135deg, #111827, #1e3a8a);
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+h2 {
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #6b7280;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.07);
+    margin-bottom: 24px;
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+/* ================================
+   ARCHIVO
+================================ */
+
+.source-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    padding: 15px 18px;
+    margin-bottom: 25px;
+}
+
+.source-name {
+    font-weight: bold;
+    color: #1e40af;
+}
+
+.source-info {
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* ================================
+   RESUMEN
+================================ */
+
+.summary {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    border-left: 5px solid #2563eb;
+    border-radius: 12px;
+    padding: 22px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    margin-bottom: 22px;
+}
+
+/* ================================
+   METRICAS
+================================ */
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 25px;
+}
+
+.metric {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 17px;
+}
+
+.metric-number {
+    font-size: 25px;
+    font-weight: bold;
+    color: #1d4ed8;
+}
+
+.metric-label {
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* ================================
+   PRIORIDAD
+================================ */
+
+.priority-box {
+    border: 2px solid #bfdbfe;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.priority-header {
+    background: #eff6ff;
+    padding: 16px 20px;
+    color: #1e40af;
+    font-weight: bold;
+}
+
+.priority-question {
+    padding: 15px 20px;
+    border-bottom: 1px solid #dbeafe;
+    background: white;
+}
+
+.priority-result {
+    padding: 18px 20px;
+    line-height: 1.6;
+}
+
+.priority-result + .priority-result {
+    border-top: 1px solid #e5e7eb;
+}
+
+.page-label {
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.result-text {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* ================================
+   GRID
+================================ */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.analysis-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 11px;
+    padding: 18px;
+    background: white;
+}
+
+.analysis-title {
+    font-weight: bold;
+    color: #374151;
+    margin-bottom: 9px;
+}
+
+.analysis-value {
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.found {
+    border-left: 4px solid #16a34a;
+}
+
+.not-found {
+    border-left: 4px solid #f59e0b;
+}
+
+/* ================================
+   EVIDENCIA
+================================ */
+
+.evidence-item {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.evidence-title {
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.evidence-source {
+    color: #2563eb;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.evidence-text {
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* ================================
+   BOTONES
+================================ */
+
+.actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.button {
+    border: none;
+    border-radius: 9px;
+    padding: 13px 22px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button-blue {
+    background: #2563eb;
+    color: white;
+}
+
+.button-blue:hover {
+    background: #1d4ed8;
+}
+
+.button-green {
+    background: #166534;
+    color: white;
+}
+
+.button-green:hover {
+    background: #15803d;
+}
+
+/* ================================
+   ESTADO VACIO
+================================ */
+
+.empty {
+    text-align: center;
+    padding: 60px 25px;
+}
+
+.empty-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.empty p {
+    color: #6b7280;
+}
+
+/* ================================
+   MODAL
+================================ */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.65);
+    z-index: 1000;
+    padding: 25px;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: white;
+    max-width: 850px;
+    margin: 30px auto;
+    border-radius: 16px;
+    padding: 30px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.close {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 11px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.form-actions {
+    margin-top: 22px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+
+    .metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 18px;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .metrics {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>📊 PREVENTA IA</h1>
+
+    <a href="index.html">
+        ← Inicio
+    </a>
+
+</header>
+
+
+<main class="container">
+
+    <h2>
+        🎯 Análisis de Oportunidad
+    </h2>
+
+    <div class="subtitle">
+        Resumen final de la información detectada en el documento para ayudarte a preparar la oportunidad.
+    </div>
+
+
+    <div id="emptyState" class="card empty">
+
+        <div class="empty-icon">
+            📄
+        </div>
+
+        <h3>
+            Todavía no hay un análisis
+        </h3>
+
+        <p>
+            Primero cargá y analizá un documento.
+        </p>
+
+        <a
+            href="documentos.html"
+            class="button button-blue"
+        >
+            📄 Ir a Documentos
+        </a>
+
+    </div>
+
+
+    <div
+        id="analysisContent"
+        style="display:none;"
+    >
+
+        <div
+            id="sourceBox"
+            class="source-box"
+        >
+
+            <div
+                id="sourceName"
+                class="source-name"
+            ></div>
+
+            <div
+                id="sourceInfo"
+                class="source-info"
+            ></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                🧠 Resumen final
+            </h3>
+
+            <div
+                id="summary"
+                class="summary"
+            ></div>
+
+            <div
+                id="metrics"
+                class="metrics"
+            ></div>
+
+        </div>
+
+
+        <div
+            id="priorityBox"
+            class="card"
+            style="display:none;"
+        >
+
+            <h3>
+                🎯 Resultado de tu búsqueda prioritaria
+            </h3>
+
+            <div
+                id="priorityQuestion"
+                class="priority-question"
+            ></div>
+
+            <div
+                id="priorityResults"
+            ></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                📋 Análisis general de Preventa
+            </h3>
+
+            <p style="color:#6b7280;">
+                Además de tu búsqueda puntual, esto es todo lo demás que PREVENTA IA encontró y que puede ser relevante para la oportunidad.
+            </p>
+
+
+            <div class="grid">
+
+                <div class="analysis-item" id="box-objective">
+                    <div class="analysis-title">🎯 Objetivo</div>
+                    <div id="objective" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-client">
+                    <div class="analysis-title">🏢 Cliente / Organización</div>
+                    <div id="client" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-users">
+                    <div class="analysis-title">👥 Usuarios</div>
+                    <div id="users" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-documents">
+                    <div class="analysis-title">📑 Documentos</div>
+                    <div id="documents" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-volume">
+                    <div class="analysis-title">📦 Volumen documental</div>
+                    <div id="volume" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-storage">
+                    <div class="analysis-title">💾 Storage</div>
+                    <div id="storage" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-ocr">
+                    <div class="analysis-title">🔎 OCR / Digitalización</div>
+                    <div id="ocr" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-fulltext">
+                    <div class="analysis-title">🔤 Full Text / Búsqueda</div>
+                    <div id="fulltext" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-workflows">
+                    <div class="analysis-title">🔄 Workflows</div>
+                    <div id="workflows" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-signatures">
+                    <div class="analysis-title">✍️ Firmas</div>
+                    <div id="signatures" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-integrations">
+                    <div class="analysis-title">🔌 Integraciones</div>
+                    <div id="integrations" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-infrastructure">
+                    <div class="analysis-title">🏗️ Infraestructura</div>
+                    <div id="infrastructure" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-security">
+                    <div class="analysis-title">🔐 Seguridad</div>
+                    <div id="security" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-migration">
+                    <div class="analysis-title">🚚 Migración</div>
+                    <div id="migration" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-support">
+                    <div class="analysis-title">🛠️ Soporte</div>
+                    <div id="support" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-deadlines">
+                    <div class="analysis-title">📅 Plazos</div>
+                    <div id="deadlines" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-pricing">
+                    <div class="analysis-title">💰 Datos para cotizar</div>
+                    <div id="pricing" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-risks">
+                    <div class="analysis-title">⚠️ Riesgos</div>
+                    <div id="risks" class="analysis-value"></div>
+                </div>
+
+                <div class="analysis-item" id="box-missing">
+                    <div class="analysis-title">❓ Información faltante</div>
+                    <div id="missing" class="analysis-value"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                📌 Evidencia encontrada
+            </h3>
+
+            <p style="color:#6b7280;">
+                Fragmentos del documento utilizados para construir el análisis.
+            </p>
+
+            <div id="evidence"></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                🚀 ¿Qué querés hacer con este análisis?
+            </h3>
+
+            <p style="color:#6b7280;">
+                Podés convertir toda esta información en una nueva oportunidad y continuar con la cotización.
+            </p>
+
+            <div class="actions">
+
+                <a
+                    href="documentos.html"
+                    class="button button-blue"
+                >
+                    📄 Analizar otro documento
+                </a>
+
+                <button
+                    class="button button-green"
+                    type="button"
+                    onclick="openOpportunityModal()"
+                >
+                    💼 Crear oportunidad
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<div
+    id="opportunityModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>
+                💼 Crear oportunidad
+            </h2>
+
+            <button
+                class="close"
+                type="button"
+                onclick="closeOpportunityModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <p style="color:#6b7280;">
+            PREVENTA IA va a completar automáticamente los datos que pudo detectar en el documento. Podés modificarlos antes de guardar.
+        </p>
+
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>
+                    Cliente
+                </label>
+
+                <input
+                    id="opClient"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Proyecto
+                </label>
+
+                <input
+                    id="opProject"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Solución
+                </label>
+
+                <select id="opSolution">
+
+                    <option value="">
+                        Seleccionar
+                    </option>
+
+                    <option value="Thuban">
+                        Thuban
+                    </option>
+
+                    <option value="Captika">
+                        Captika
+                    </option>
+
+                    <option value="Firmas Addoc">
+                        Firmas Addoc
+                    </option>
+
+                    <option value="Edatalia">
+                        Edatalia
+                    </option>
+
+                    <option value="Perfil Digital">
+                        Perfil Digital
+                    </option>
+
+                    <option value="Otra">
+                        Otra
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Estado
+                </label>
+
+                <select id="opStatus">
+
+                    <option value="Nueva">
+                        Nueva
+                    </option>
+
+                    <option value="En análisis">
+                        En análisis
+                    </option>
+
+                    <option value="Cotizando">
+                        Cotizando
+                    </option>
+
+                    <option value="Propuesta">
+                        Propuesta
+                    </option>
+
+                    <option value="Ganada">
+                        Ganada
+                    </option>
+
+                    <option value="Perdida">
+                        Perdida
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Usuarios
+                </label>
+
+                <input
+                    id="opUsers"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Storage
+                </label>
+
+                <input
+                    id="opStorage"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Documentos
+                </label>
+
+                <input
+                    id="opDocuments"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Workflows
+                </label>
+
+                <input
+                    id="opWorkflows"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    OCR
+                </label>
+
+                <input
+                    id="opOcr"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Firmas
+                </label>
+
+                <input
+                    id="opSignatures"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Infraestructura
+                </label>
+
+                <input
+                    id="opInfrastructure"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Fecha / Plazo
+                </label>
+
+                <input
+                    id="opDeadline"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Objetivo
+                </label>
+
+                <textarea
+                    id="opObjective"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Requerimientos
+                </label>
+
+                <textarea
+                    id="opRequirements"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Riesgos
+                </label>
+
+                <textarea
+                    id="opRisks"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Notas
+                </label>
+
+                <textarea
+                    id="opNotes"
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                class="button"
+                type="button"
+                onclick="closeOpportunityModal()"
+            >
+                Cancelar
+            </button>
+
+            <button
+                class="button button-green"
+                type="button"
+                onclick="saveOpportunity()"
+            >
+                💾 Guardar oportunidad
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let analysisData = null;
+
+
+/* =====================================================
+   LIMPIAR COMILLAS
+===================================================== */
+
+function limpiarComillas(texto) {
+
+    let resultado =
+        String(texto || "").trim();
+
+    resultado =
+        resultado.replace(
+            /^[\s"'“”„‟«»]+/,
+            ""
+        );
+
+    resultado =
+        resultado.replace(
+            /[\s"'“”„‟«»]+$/,
+            ""
+        );
+
+    return resultado.trim();
+
+}
+
+
+/* =====================================================
+   ESCAPAR HTML
+===================================================== */
+
+function escapeHTML(texto) {
+
+    return String(texto || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================================
+   OBTENER ANALISIS
+===================================================== */
+
+function getAnalysis() {
+
+    const guardado =
+        localStorage.getItem(
+            "preventa_document_analysis"
+        );
+
+    if (!guardado) {
+        return null;
+    }
+
+    try {
+
+        return JSON.parse(
+            guardado
+        );
+
+    } catch(error) {
+
+        console.error(
+            "No se pudo leer el análisis:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* =====================================================
+   NORMALIZAR ITEM
+   Permite leer:
+   - strings
+   - objetos
+   - arrays
+   - formatos anteriores
+===================================================== */
+
+function normalizarItem(item) {
+
+    if (
+        item === null ||
+        item === undefined
+    ) {
+        return null;
+    }
+
+    if (
+        typeof item === "string" ||
+        typeof item === "number"
+    ) {
+
+        const texto =
+            limpiarComillas(
+                String(item)
+            );
+
+        let page = "";
+
+        const matchPage =
+            texto.match(
+                /Página\s*(\d+)/i
+            );
+
+        if (matchPage) {
+            page = matchPage[1];
+        }
+
+        return {
+            texto: texto,
+            text: texto,
+            value: texto,
+            page: page,
+            source: ""
+        };
+
+    }
+
+    if (
+        typeof item === "object"
+    ) {
+
+        const texto =
+            limpiarComillas(
+                item.texto ||
+                item.text ||
+                item.value ||
+                item.valor ||
+                ""
+            );
+
+        return {
+            ...item,
+            texto: texto,
+            text: item.text || texto,
+            value: item.value || item.valor || texto,
+            page:
+                item.page ||
+                item.pagina ||
+                "",
+            source:
+                item.source ||
+                item.fuente ||
+                ""
+        };
+
+    }
+
+    return null;
+
+}
+
+
+/* =====================================================
+   OBTENER ITEMS DE CATEGORIA
+===================================================== */
+
+function obtenerItems(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined ||
+        valor === ""
+    ) {
+        return [];
+    }
+
+    if (
+        Array.isArray(valor)
+    ) {
+
+        return valor
+            .map(
+                item =>
+                    normalizarItem(item)
+            )
+            .filter(Boolean)
+            .filter(
+                item =>
+                    item.texto ||
+                    item.value
+            );
+
+    }
+
+    if (
+        typeof valor === "string" ||
+        typeof valor === "number"
+    ) {
+
+        const item =
+            normalizarItem(
+                valor
+            );
+
+        return item
+            ? [item]
+            : [];
+
+    }
+
+    if (
+        typeof valor === "object"
+    ) {
+
+        const item =
+            normalizarItem(
+                valor
+            );
+
+        return item
+            ? [item]
+            : [];
+
+    }
+
+    return [];
+
+}
+
+
+/* =====================================================
+   ITEMS DE CATEGORIA
+===================================================== */
+
+function itemsCategoria(
+    data,
+    key
+) {
+
+    if (
+        !data ||
+        !data.categories
+    ) {
+        return [];
+    }
+
+    return obtenerItems(
+        data.categories[key]
+    );
+
+}
+
+
+/* =====================================================
+   VALOR DE CLIENTE
+===================================================== */
+
+function obtenerCliente(data) {
+
+    if (
+        !data ||
+        !data.client
+    ) {
+        return "";
+    }
+
+    if (
+        typeof data.client === "string"
+    ) {
+        return limpiarComillas(
+            data.client
+        );
+    }
+
+    if (
+        typeof data.client === "object"
+    ) {
+
+        return limpiarComillas(
+            data.client.texto ||
+            data.client.text ||
+            data.client.value ||
+            data.client.valor ||
+            ""
+        );
+
+    }
+
+    return "";
+
+}
+
+
+/* =====================================================
+   PÁGINA CLIENTE
+===================================================== */
+
+function obtenerPaginaCliente(data) {
+
+    if (
+        !data ||
+        !data.client ||
+        typeof data.client !== "object"
+    ) {
+        return "";
+    }
+
+    return (
+        data.client.page ||
+        data.client.pagina ||
+        data.clientPage ||
+        ""
+    );
+
+}
+
+
+/* =====================================================
+   OBJETIVO
+===================================================== */
+
+function obtenerObjetivos(data) {
+
+    if (!data) {
+        return [];
+    }
+
+    return obtenerItems(
+        data.objective
+    );
+
+}
+
+
+/* =====================================================
+   VALOR
+===================================================== */
+
+function valueOf(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined
+    ) {
+        return "";
+    }
+
+    if (
+        typeof valor === "string"
+    ) {
+        return limpiarComillas(
+            valor
+        );
+    }
+
+    if (
+        Array.isArray(valor)
+    ) {
+
+        return valor
+            .map(
+                item =>
+                    valueOf(item)
+            )
+            .filter(Boolean)
+            .join("\n");
+
+    }
+
+    if (
+        typeof valor === "object"
+    ) {
+
+        return limpiarComillas(
+            valor.texto ||
+            valor.text ||
+            valor.value ||
+            valor.valor ||
+            ""
+        );
+
+    }
+
+    return String(valor);
+
+}
+
+
+/* =====================================================
+   FORMATEAR CATEGORIA
+===================================================== */
+
+function formatearCategoria(
+    items,
+    fallback
+) {
+
+    const normalizados =
+        obtenerItems(
+            items
+        );
+
+    if (
+        !normalizados.length
+    ) {
+
+        return fallback;
+
+    }
+
+    return normalizados
+        .slice(0, 12)
+        .map(
+            item => {
+
+                let texto =
+                    limpiarComillas(
+                        item.texto ||
+                        item.text ||
+                        item.value ||
+                        ""
+                    );
+
+                if (
+                    item.numeros &&
+                    Array.isArray(item.numeros) &&
+                    item.numeros.length
+                ) {
+
+                    texto +=
+                        "\n📌 Datos detectados: " +
+                        item.numeros.join(", ");
+
+                }
+
+                if (
+                    item.page
+                ) {
+
+                    texto +=
+                        "\n📄 Página " +
+                        item.page;
+
+                }
+
+                if (
+                    item.source
+                ) {
+
+                    texto +=
+                        " · " +
+                        item.source;
+
+                }
+
+                return texto;
+
+            }
+        )
+        .join("\n\n");
+
+}
+
+
+/* =====================================================
+   EXTRAER VALOR CONCRETO PARA FORMULARIO
+   Ej:
+   "10 usuarios — Página 2"
+   -> "10"
+===================================================== */
+
+function valorConcreto(
+    items,
+    tipo
+) {
+
+    const normalizados =
+        obtenerItems(
+            items
+        );
+
+    if (
+        !normalizados.length
+    ) {
+        return "";
+    }
+
+    for (
+        const item of normalizados
+    ) {
+
+        const texto =
+            limpiarComillas(
+                item.value ||
+                item.texto ||
+                item.text ||
+                ""
+            );
+
+        if (!texto) {
+            continue;
+        }
+
+
+        if (
+            tipo === "users"
+        ) {
+
+            const match =
+                texto.match(
+                    /(\d[\d.,]*)\s*(?:usuarios?|users?)/i
+                );
+
+            if (match) {
+                return match[1];
+            }
+
+        }
+
+
+        if (
+            tipo === "documents"
+        ) {
+
+            const match =
+                texto.match(
+                    /(\d[\d.,]*)\s*(?:documentos?|docs?)/i
+                );
+
+            if (match) {
+                return match[1];
+            }
+
+        }
+
+
+        if (
+            tipo === "storage"
+        ) {
+
+            const match =
+                texto.match(
+                    /(\d[\d.,]*)\s*(KB|MB|GB|TB|PB)/i
+                );
+
+            if (match) {
+                return match[1] + " " + match[2];
+            }
+
+        }
+
+
+        return texto
+            .replace(
+                /\s*[—-]\s*Página\s*\d+/i,
+                ""
+            )
+            .replace(
+                /\s*Página\s*\d+/i,
+                ""
+            )
+            .trim();
+
+    }
+
+    return "";
+
+}
+
+
+/* =====================================================
+   RESUMEN
+===================================================== */
+
+function crearResumen(data) {
+
+    const partes = [];
+
+    const paginas =
+        Number(
+            data.pages || 0
+        );
+
+    if (paginas) {
+
+        partes.push(
+            "📄 El documento analizado contiene " +
+            paginas +
+            " página(s)."
+        );
+
+    }
+
+
+    const cliente =
+        obtenerCliente(
+            data
+        );
+
+    if (cliente) {
+
+        partes.push(
+            "🏢 Cliente identificado: " +
+            cliente
+        );
+
+    }
+
+
+    const objetivos =
+        obtenerObjetivos(
+            data
+        );
+
+    if (
+        objetivos.length
+    ) {
+
+        partes.push(
+            "🎯 Objetivo detectado: " +
+            limpiarComillas(
+                objetivos[0].texto
+            )
+        );
+
+    }
+
+
+    const categoriasDetectadas = [];
+
+    const nombres = {
+
+        users: "usuarios",
+
+        documents: "documentos",
+
+        volume: "volumen documental",
+
+        storage: "storage",
+
+        ocr: "OCR",
+
+        fulltext: "búsqueda/full text",
+
+        workflows: "workflows",
+
+        signatures: "firmas",
+
+        integrations: "integraciones",
+
+        infrastructure: "infraestructura",
+
+        security: "seguridad",
+
+        migration: "migración",
+
+        support: "soporte",
+
+        deadlines: "plazos",
+
+        pricing: "datos económicos"
+
+    };
+
+
+    Object.keys(nombres)
+        .forEach(
+            key => {
+
+                if (
+                    itemsCategoria(
+                        data,
+                        key
+                    ).length
+                ) {
+
+                    categoriasDetectadas.push(
+                        nombres[key]
+                    );
+
+                }
+
+            }
+        );
+
+
+    if (
+        categoriasDetectadas.length
+    ) {
+
+        partes.push(
+            "📌 Se detectó información relacionada con: " +
+            categoriasDetectadas.join(", ") +
+            "."
+        );
+
+    }
+
+
+    const pregunta =
+        data.question ||
+        data.consultaPrioritaria ||
+        "";
+
+    if (
+        pregunta
+    ) {
+
+        partes.push(
+            "🔎 Además, se priorizó la búsqueda solicitada: " +
+            limpiarComillas(
+                pregunta
+            )
+        );
+
+    }
+
+
+    if (
+        !partes.length
+    ) {
+
+        return "Se realizó el análisis del documento.";
+
+    }
+
+
+    return partes.join(
+        "\n\n"
+    );
+
+}
+
+
+/* =====================================================
+   RIESGOS
+===================================================== */
+
+function crearRiesgos(data) {
+
+    const riesgos = [];
+
+
+    if (
+        !itemsCategoria(
+            data,
+            "users"
+        ).length
+    ) {
+
+        riesgos.push(
+            "⚠️ No se identificó claramente la cantidad de usuarios."
+        );
+
+    }
+
+
+    if (
+        !itemsCategoria(
+            data,
+            "storage"
+        ).length
+    ) {
+
+        riesgos.push(
+            "⚠️ No se identificó claramente el storage requerido."
+        );
+
+    }
+
+
+    if (
+        !itemsCategoria(
+            data,
+            "integrations"
+        ).length
+    ) {
+
+        riesgos.push(
+            "⚠️ No se identificaron integraciones explícitas."
+        );
+
+    }
+
+
+    if (
+        !itemsCategoria(
+            data,
+            "deadlines"
+        ).length
+    ) {
+
+        riesgos.push(
+            "⚠️ No se identificaron plazos claramente definidos."
+        );
+
+    }
+
+
+    return riesgos.length
+        ? riesgos.join("\n")
+        : "✅ No se detectaron faltantes críticos mediante las reglas actuales.";
+
+}
+
+
+/* =====================================================
+   FALTANTES
+===================================================== */
+
+function crearFaltantes(data) {
+
+    const faltantes = [];
+
+
+    if (
+        !obtenerObjetivos(data).length
+    ) {
+
+        faltantes.push(
+            "🎯 Objetivo del proyecto"
+        );
+
+    }
+
+
+    if (
+        !itemsCategoria(
+            data,
+            "users"
+        ).length
+    ) {
+
+        faltantes.push(
+            "👥 Cantidad de usuarios"
+        );
+
+    }
+
+
+    if (
+        !itemsCategoria(
+            data,
+            "documents"
+        ).length
+    ) {
+
+        faltantes.push(
+            "📑 Tipos documentales"
+        );
+
+    }
+
+
+    if (
+        !itemsCategoria(
+            data,
+            "storage"
+        ).length
+    ) {
+
+        faltantes.push(
+            "💾 Storage"
+        );
+
+    }
+
+
+    if (
+        !itemsCategoria(
+            data,
+            "deadlines"
+        ).length
+    ) {
+
+        faltantes.push(
+            "📅 Plazos"
+        );
+
+    }
+
+
+    return faltantes.length
+        ? faltantes.join("\n")
+        : "✅ No se detectaron faltantes básicos.";
+
+}
+
+
+/* =====================================================
+   RECOMENDAR SOLUCION
+===================================================== */
+
+function recomendarSolucion(data) {
+
+    if (
+        itemsCategoria(
+            data,
+            "workflows"
+        ).length
+    ) {
+
+        return "Thuban";
+
+    }
+
+
+    if (
+        itemsCategoria(
+            data,
+            "ocr"
+        ).length
+    ) {
+
+        return "Captika";
+
+    }
+
+
+    if (
+        itemsCategoria(
+            data,
+            "signatures"
+        ).length
+    ) {
+
+        return "Firmas Addoc";
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   NOMBRE PROYECTO
+===================================================== */
+
+function generarNombreProyecto(data) {
+
+    const cliente =
+        obtenerCliente(
+            data
+        );
+
+    if (cliente) {
+
+        return (
+            "Proyecto " +
+            cliente
+        );
+
+    }
+
+
+    if (
+        data.fileName
+    ) {
+
+        return (
+            "Oportunidad - " +
+            data.fileName
+                .replace(
+                    /\.[^/.]+$/,
+                    ""
+                )
+        );
+
+    }
+
+
+    return "Nueva oportunidad";
+
+}
+
+
+/* =====================================================
+   CREAR REQUERIMIENTOS
+===================================================== */
+
+function crearRequerimientos(data) {
+
+    const partes = [];
+
+    const mapa = {
+
+        users: "Usuarios",
+
+        documents: "Documentos",
+
+        volume: "Volumen documental",
+
+        storage: "Storage",
+
+        ocr: "OCR",
+
+        fulltext: "Full Text / Búsqueda",
+
+        workflows: "Workflows",
+
+        signatures: "Firmas",
+
+        integrations: "Integraciones",
+
+        infrastructure: "Infraestructura",
+
+        security: "Seguridad",
+
+        migration: "Migración",
+
+        support: "Soporte",
+
+        deadlines: "Plazos"
+
+    };
+
+
+    Object.keys(mapa)
+        .forEach(
+            key => {
+
+                const items =
+                    itemsCategoria(
+                        data,
+                        key
+                    );
+
+
+                if (
+                    items.length
+                ) {
+
+                    partes.push(
+                        "• " +
+                        mapa[key] +
+                        ": " +
+                        formatearCategoria(
+                            items,
+                            ""
+                        )
+                    );
+
+                }
+
+            }
+        );
+
+
+    return partes.join(
+        "\n\n"
+    );
+
+}
+
+
+/* =====================================================
+   CARGAR ANALISIS
+===================================================== */
+
+function loadAnalysis() {
+
+    analysisData =
+        getAnalysis();
+
+
+    const emptyState =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    const content =
+        document.getElementById(
+            "analysisContent"
+        );
+
+
+    if (!analysisData) {
+
+        emptyState.style.display =
+            "block";
+
+        content.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+    content.style.display =
+        "block";
+
+
+    renderAnalysis();
+
+}
+
+
+/* =====================================================
+   RENDER ANALISIS
+===================================================== */
+
+function renderAnalysis() {
+
+    const data =
+        analysisData;
+
+
+    document.getElementById(
+        "sourceName"
+    ).textContent =
+        "📄 " +
+        (
+            data.fileName ||
+            "Documento analizado"
+        );
+
+
+    const paginas =
+        data.pages ||
+        data.extraction?.pagesProcessed ||
+        0;
+
+
+    const ocrPages =
+        data.ocrPages ||
+        data.extraction?.ocrPages ||
+        0;
+
+
+    document.getElementById(
+        "sourceInfo"
+    ).textContent =
+        paginas +
+        " página(s) · " +
+        (
+            ocrPages
+            ? ocrPages +
+              " página(s) procesadas con OCR"
+            : "OCR no informado"
+        );
+
+
+    document.getElementById(
+        "summary"
+    ).textContent =
+        crearResumen(
+            data
+        );
+
+
+    const metrics =
+        document.getElementById(
+            "metrics"
+        );
+
+
+    metrics.innerHTML =
+        "";
+
+
+    const categoryKeys = [
+
+        "users",
+        "documents",
+        "volume",
+        "storage",
+        "ocr",
+        "fulltext",
+        "workflows",
+        "signatures",
+        "integrations",
+        "infrastructure",
+        "security",
+        "migration",
+        "support",
+        "deadlines",
+        "pricing"
+
+    ];
+
+
+    const cantidadCategorias =
+        categoryKeys
+            .filter(
+                key =>
+                    itemsCategoria(
+                        data,
+                        key
+                    ).length
+            )
+            .length;
+
+
+    const usuarios =
+        extraerUsuarios(
+            data
+        );
+
+
+    const valores = [
+
+        {
+            numero:
+                paginas,
+
+            label:
+                "Páginas"
+
+        },
+
+        {
+            numero:
+                cantidadCategorias,
+
+            label:
+                "Categorías detectadas"
+
+        },
+
+        {
+            numero:
+                Array.isArray(
+                    data.evidence
+                )
+                ? data.evidence.length
+                : 0,
+
+            label:
+                "Evidencias"
+
+        },
+
+        {
+            numero:
+                usuarios || "—",
+
+            label:
+                "Usuarios detectados"
+
+        }
+
+    ];
+
+
+    valores.forEach(
+        item => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "metric";
+
+
+            div.innerHTML =
+
+                "<div class='metric-number'>" +
+                escapeHTML(
+                    item.numero
+                ) +
+                "</div>" +
+
+                "<div class='metric-label'>" +
+                escapeHTML(
+                    item.label
+                ) +
+                "</div>";
+
+
+            metrics.appendChild(
+                div
+            );
+
+        }
+    );
+
+
+    const priorityBox =
+        document.getElementById(
+            "priorityBox"
+        );
+
+
+    const pregunta =
+        data.question ||
+        data.consultaPrioritaria ||
+        "";
+
+
+    if (
+        pregunta
+    ) {
+
+        priorityBox.style.display =
+            "block";
+
+
+        document.getElementById(
+            "priorityQuestion"
+        ).innerHTML =
+            "<strong>Buscaste:</strong> " +
+            escapeHTML(
+                limpiarComillas(
+                    pregunta
+                )
+            );
+
+
+        renderPriority(
+            data
+        );
+
+    } else {
+
+        priorityBox.style.display =
+            "none";
+
+    }
+
+
+    /* OBJETIVO */
+
+    const objetivos =
+        obtenerObjetivos(
+            data
+        );
+
+
+    setField(
+
+        "objective",
+
+        objetivos.length
+
+            ? objetivos
+                .map(
+                    item => {
+
+                        let texto =
+                            limpiarComillas(
+                                item.texto
+                            );
+
+                        if (
+                            item.page
+                        ) {
+
+                            texto +=
+                                "\n📄 Página " +
+                                item.page;
+
+                        }
+
+                        if (
+                            item.source
+                        ) {
+
+                            texto +=
+                                " · " +
+                                item.source;
+
+                        }
+
+                        return texto;
+
+                    }
+                )
+                .join("\n\n")
+
+            : "No encontré un objetivo claramente definido.",
+
+        "box-objective",
+
+        objetivos.length > 0
+
+    );
+
+
+    /* CLIENTE */
+
+    const cliente =
+        obtenerCliente(
+            data
+        );
+
+
+    let textoCliente =
+        cliente;
+
+
+    const paginaCliente =
+        obtenerPaginaCliente(
+            data
+        );
+
+
+    if (
+        paginaCliente
+    ) {
+
+        textoCliente +=
+            "\n📄 Página " +
+            paginaCliente;
+
+    }
+
+
+    setField(
+
+        "client",
+
+        cliente
+            ? textoCliente
+            : "No identificado claramente.",
+
+        "box-client",
+
+        Boolean(
+            cliente
+        )
+
+    );
+
+
+    /* CATEGORIAS */
+
+    const campos = [
+
+        "users",
+        "documents",
+        "volume",
+        "storage",
+        "ocr",
+        "fulltext",
+        "workflows",
+        "signatures",
+        "integrations",
+        "infrastructure",
+        "security",
+        "migration",
+        "support",
+        "deadlines"
+
+    ];
+
+
+    campos.forEach(
+        key => {
+
+            const items =
+                itemsCategoria(
+                    data,
+                    key
+                );
+
+
+            const encontrado =
+                items.length > 0;
+
+
+            setField(
+
+                key,
+
+                formatearCategoria(
+                    items,
+                    "No encontré información clara."
+                ),
+
+                "box-" + key,
+
+                encontrado
+
+            );
+
+        }
+    );
+
+
+    setField(
+
+        "pricing",
+
+        crearDatosCotizacion(
+            data
+        ),
+
+        "box-pricing",
+
+        true
+
+    );
+
+
+    setField(
+
+        "risks",
+
+        crearRiesgos(
+            data
+        ),
+
+        "box-risks",
+
+        false
+
+    );
+
+
+    setField(
+
+        "missing",
+
+        crearFaltantes(
+            data
+        ),
+
+        "box-missing",
+
+        false
+
+    );
+
+
+    renderEvidence(
+        data
+    );
+
+}
+
+
+/* =====================================================
+   CAMPO
+===================================================== */
+
+function setField(
+    id,
+    texto,
+    boxId,
+    encontrado
+) {
+
+    const elemento =
+        document.getElementById(
+            id
+        );
+
+
+    if (!elemento) {
+        return;
+    }
+
+
+    elemento.textContent =
+        texto ||
+        "Sin información.";
+
+
+    const box =
+        document.getElementById(
+            boxId
+        );
+
+
+    if (!box) {
+        return;
+    }
+
+
+    box.classList.remove(
+        "found",
+        "not-found"
+    );
+
+
+    box.classList.add(
+        encontrado
+            ? "found"
+            : "not-found"
+    );
+
+}
+
+
+/* =====================================================
+   USUARIOS
+===================================================== */
+
+function extraerUsuarios(data) {
+
+    const items =
+        itemsCategoria(
+            data,
+            "users"
+        );
+
+
+    for (
+        const item of items
+    ) {
+
+        const texto =
+            String(
+                item.texto ||
+                item.text ||
+                item.value ||
+                ""
+            );
+
+
+        const match =
+            texto.match(
+                /\b(\d[\d.,]*)\s*(usuarios?|users?)\b/i
+            );
+
+
+        if (
+            match
+        ) {
+
+            return match[1];
+
+        }
+
+
+        if (
+            item.value &&
+            /^\d[\d.,]*$/.test(
+                String(
+                    item.value
+                ).trim()
+            )
+        ) {
+
+            return String(
+                item.value
+            ).trim();
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   PRIORIDAD
+===================================================== */
+
+function renderPriority(data) {
+
+    const container =
+        document.getElementById(
+            "priorityResults"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    const resultados =
+        Array.isArray(
+            data.priorityResults
+        )
+        ? data.priorityResults
+        : [];
+
+
+    if (
+        resultados.length
+    ) {
+
+        resultados.forEach(
+            item => {
+
+                agregarPrioridad(
+                    container,
+                    item.page,
+                    item.source,
+                    item.text ||
+                    item.texto
+                );
+
+            }
+        );
+
+
+        return;
+
+    }
+
+
+    const pregunta =
+        data.question ||
+        data.consultaPrioritaria ||
+        "";
+
+
+    const categorias =
+        data.categories ||
+        {};
+
+
+    const palabras =
+        String(
+            pregunta
+        )
+        .toLowerCase()
+        .split(
+            /\s+/
+        )
+        .filter(
+            palabra =>
+                palabra.length > 3
+        );
+
+
+    const encontrados = [];
+
+
+    Object.values(
+        categorias
+    )
+    .forEach(
+        items => {
+
+            obtenerItems(
+                items
+            )
+            .forEach(
+                item => {
+
+                    const texto =
+                        String(
+                            item.texto ||
+                            item.text ||
+                            item.value ||
+                            ""
+                        );
+
+
+                    const normalizado =
+                        texto.toLowerCase();
+
+
+                    if (
+                        palabras.some(
+                            palabra =>
+                                normalizado.includes(
+                                    palabra
+                                )
+                        )
+                    ) {
+
+                        encontrados.push(
+                            item
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    if (
+        encontrados.length
+    ) {
+
+        encontrados
+            .slice(0, 10)
+            .forEach(
+                item => {
+
+                    agregarPrioridad(
+                        container,
+                        item.page,
+                        item.source,
+                        item.texto ||
+                        item.text ||
+                        item.value
+                    );
+
+                }
+            );
+
+    } else {
+
+        container.innerHTML =
+            "<div class='priority-result'>" +
+            "⚠️ No encontré una coincidencia específica para esta consulta. " +
+            "Revisá el análisis general." +
+            "</div>";
+
+    }
+
+}
+
+
+/* =====================================================
+   PRIORIDAD ITEM
+===================================================== */
+
+function agregarPrioridad(
+    container,
+    page,
+    source,
+    texto
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.className =
+        "priority-result";
+
+
+    div.innerHTML =
+
+        "<div class='page-label'>" +
+        "📄 Página " +
+        escapeHTML(
+            page ||
+            "?"
+        ) +
+        (
+            source
+                ? " · " +
+                  escapeHTML(
+                      source
+                  )
+                : ""
+        ) +
+        "</div>" +
+
+        "<div class='result-text'>" +
+        escapeHTML(
+            limpiarComillas(
+                texto
+            )
+        ) +
+        "</div>";
+
+
+    container.appendChild(
+        div
+    );
+
+}
+
+
+/* =====================================================
+   DATOS COTIZACION
+===================================================== */
+
+function crearDatosCotizacion(data) {
+
+    const partes = [];
+
+
+    const agregar =
+        (
+            titulo,
+            key
+        ) => {
+
+            const items =
+                itemsCategoria(
+                    data,
+                    key
+                );
+
+
+            if (
+                items.length
+            ) {
+
+                partes.push(
+                    titulo +
+                    ":\n" +
+                    formatearCategoria(
+                        items,
+                        ""
+                    )
+                );
+
+            }
+
+        };
+
+
+    agregar(
+        "👥 Usuarios",
+        "users"
+    );
+
+    agregar(
+        "📑 Documentos",
+        "documents"
+    );
+
+    agregar(
+        "📦 Volumen",
+        "volume"
+    );
+
+    agregar(
+        "💾 Storage",
+        "storage"
+    );
+
+    agregar(
+        "🔎 OCR",
+        "ocr"
+    );
+
+    agregar(
+        "🔄 Workflows",
+        "workflows"
+    );
+
+    agregar(
+        "✍️ Firmas",
+        "signatures"
+    );
+
+    agregar(
+        "🔌 Integraciones",
+        "integrations"
+    );
+
+    agregar(
+        "🏗️ Infraestructura",
+        "infrastructure"
+    );
+
+
+    if (
+        !partes.length
+    ) {
+
+        return "⚠️ No encontré datos suficientes para cotizar.";
+
+    }
+
+
+    return partes.join(
+        "\n\n"
+    );
+
+}
+
+
+/* =====================================================
+   EVIDENCIA
+===================================================== */
+
+function renderEvidence(data) {
+
+    const container =
+        document.getElementById(
+            "evidence"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    const evidencia =
+        Array.isArray(
+            data.evidence
+        )
+        ? data.evidence
+        : [];
+
+
+    if (
+        !evidencia.length
+    ) {
+
+        container.innerHTML =
+            "<div class='evidence-item'>" +
+            "No se encontró evidencia textual." +
+            "</div>";
+
+        return;
+
+    }
+
+
+    const vistos =
+        new Set();
+
+
+    evidencia
+        .slice(0, 30)
+        .forEach(
+            item => {
+
+                const texto =
+                    limpiarComillas(
+                        item.texto ||
+                        item.text ||
+                        item.value ||
+                        ""
+                    );
+
+
+                const clave =
+                    (
+                        item.page ||
+                        ""
+                    ) +
+                    "|" +
+                    texto;
+
+
+                if (
+                    vistos.has(
+                        clave
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                vistos.add(
+                    clave
+                );
+
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "evidence-item";
+
+
+                div.innerHTML =
+
+                    "<div class='evidence-title'>" +
+                    escapeHTML(
+                        item.titulo ||
+                        "Información detectada"
+                    ) +
+                    " · Página " +
+                    escapeHTML(
+                        item.page ||
+                        "?"
+                    ) +
+                    "</div>" +
+
+                    (
+                        item.source
+                            ? "<div class='evidence-source'>Fuente: " +
+                              escapeHTML(
+                                  item.source
+                              ) +
+                              "</div>"
+                            : ""
+                    ) +
+
+                    "<div class='evidence-text'>" +
+                    escapeHTML(
+                        texto
+                    ) +
+                    "</div>";
+
+
+                container.appendChild(
+                    div
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   ABRIR FORMULARIO
+===================================================== */
+
+function openOpportunityModal() {
+
+    if (
+        !analysisData
+    ) {
+
+        alert(
+            "No hay un análisis disponible."
+        );
+
+        return;
+
+    }
+
+
+    const data =
+        analysisData;
+
+
+    /* CLIENTE */
+
+    document.getElementById(
+        "opClient"
+    ).value =
+        obtenerCliente(
+            data
+        );
+
+
+    /* PROYECTO */
+
+    document.getElementById(
+        "opProject"
+    ).value =
+        generarNombreProyecto(
+            data
+        );
+
+
+    /* SOLUCION */
+
+    document.getElementById(
+        "opSolution"
+    ).value =
+        recomendarSolucion(
+            data
+        );
+
+
+    /* ESTADO */
+
+    document.getElementById(
+        "opStatus"
+    ).value =
+        "Nueva";
+
+
+    /*
+       IMPORTANTE:
+       Acá no usamos formatearCategoria(),
+       porque no queremos que el formulario
+       quede lleno de "Página 2 · OCR".
+
+       Queremos el dato editable.
+       Ej:
+       10 usuarios -> 10
+       200 GB -> 200 GB
+    */
+
+    document.getElementById(
+        "opUsers"
+    ).value =
+        valorConcreto(
+            data.categories?.users,
+            "users"
+        );
+
+
+    document.getElementById(
+        "opStorage"
+    ).value =
+        valorConcreto(
+            data.categories?.storage,
+            "storage"
+        );
+
+
+    document.getElementById(
+        "opDocuments"
+    ).value =
+        valorConcreto(
+            data.categories?.documents,
+            "documents"
+        );
+
+
+    document.getElementById(
+        "opWorkflows"
+    ).value =
+        valorConcreto(
+            data.categories?.workflows,
+            "workflows"
+        );
+
+
+    document.getElementById(
+        "opOcr"
+    ).value =
+        valorConcreto(
+            data.categories?.ocr,
+            "ocr"
+        );
+
+
+    document.getElementById(
+        "opSignatures"
+    ).value =
+        valorConcreto(
+            data.categories?.signatures,
+            "signatures"
+        );
+
+
+    document.getElementById(
+        "opInfrastructure"
+    ).value =
+        valorConcreto(
+            data.categories?.infrastructure,
+            "infrastructure"
+        );
+
+
+    document.getElementById(
+        "opDeadline"
+    ).value =
+        valorConcreto(
+            data.categories?.deadlines,
+            "deadlines"
+        );
+
+
+    /* OBJETIVO */
+
+    const objetivos =
+        obtenerObjetivos(
+            data
+        );
+
+
+    document.getElementById(
+        "opObjective"
+    ).value =
+
+        objetivos.length
+
+            ? objetivos
+                .map(
+                    item =>
+                        limpiarComillas(
+                            item.texto
+                        )
+                )
+                .join(
+                    "\n\n"
+                )
+
+            : "";
+
+
+    /* REQUERIMIENTOS */
+
+    document.getElementById(
+        "opRequirements"
+    ).value =
+        crearRequerimientos(
+            data
+        );
+
+
+    /* RIESGOS */
+
+    document.getElementById(
+        "opRisks"
+    ).value =
+        crearRiesgos(
+            data
+        );
+
+
+    /* NOTAS */
+
+    document.getElementById(
+        "opNotes"
+    ).value =
+
+        (
+            data.question ||
+            data.consultaPrioritaria
+
+                ? "Consulta prioritaria: " +
+                  limpiarComillas(
+                      data.question ||
+                      data.consultaPrioritaria
+                  ) +
+                  "\n\n"
+
+                : ""
+        ) +
+
+        (
+            data.fileName
+                ? "Documento origen: " +
+                  data.fileName
+                : ""
+        );
+
+
+    document.getElementById(
+        "opportunityModal"
+    ).style.display =
+        "block";
+
+}
+
+
+window.openOpportunityModal =
+    openOpportunityModal;
+
+
+/* =====================================================
+   CERRAR MODAL
+===================================================== */
+
+function closeOpportunityModal() {
+
+    document.getElementById(
+        "opportunityModal"
+    ).style.display =
+        "none";
+
+}
+
+
+window.closeOpportunityModal =
+    closeOpportunityModal;
+
+
+/* =====================================================
+   GUARDAR OPORTUNIDAD
+===================================================== */
+
+function saveOpportunity() {
+
+    /*
+       IMPORTANTE:
+       Se toman los valores DIRECTAMENTE
+       del formulario.
+
+       Si Documentos detectó:
+       Usuarios = 10
+
+       y vos lo cambiás a:
+       Usuarios = 5
+
+       acá se guarda 5.
+    */
+
+    const opportunity = {
+
+        id:
+            Date.now(),
+
+        client:
+            document.getElementById(
+                "opClient"
+            ).value.trim(),
+
+        project:
+            document.getElementById(
+                "opProject"
+            ).value.trim(),
+
+        solution:
+            document.getElementById(
+                "opSolution"
+            ).value,
+
+        status:
+            document.getElementById(
+                "opStatus"
+            ).value,
+
+        users:
+            document.getElementById(
+                "opUsers"
+            ).value.trim(),
+
+        storage:
+            document.getElementById(
+                "opStorage"
+            ).value.trim(),
+
+        documents:
+            document.getElementById(
+                "opDocuments"
+            ).value.trim(),
+
+        workflows:
+            document.getElementById(
+                "opWorkflows"
+            ).value.trim(),
+
+        ocr:
+            document.getElementById(
+                "opOcr"
+            ).value.trim(),
+
+        signatures:
+            document.getElementById(
+                "opSignatures"
+            ).value.trim(),
+
+        infrastructure:
+            document.getElementById(
+                "opInfrastructure"
+            ).value.trim(),
+
+        deadline:
+            document.getElementById(
+                "opDeadline"
+            ).value.trim(),
+
+        objective:
+            document.getElementById(
+                "opObjective"
+            ).value.trim(),
+
+        requirements:
+            document.getElementById(
+                "opRequirements"
+            ).value.trim(),
+
+        risks:
+            document.getElementById(
+                "opRisks"
+            ).value.trim(),
+
+        notes:
+            document.getElementById(
+                "opNotes"
+            ).value.trim(),
+
+        analysis:
+            analysisData,
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    if (
+        !opportunity.client
+    ) {
+
+        alert(
+            "Ingresá al menos el cliente."
+        );
+
+        return;
+
+    }
+
+
+    let opportunities = [];
+
+
+    try {
+
+        opportunities =
+            JSON.parse(
+                localStorage.getItem(
+                    "preventa_opportunities"
+                ) ||
+                "[]"
+            );
+
+
+        if (
+            !Array.isArray(
+                opportunities
+            )
+        ) {
+
+            opportunities = [];
+
+        }
+
+    } catch(error) {
+
+        opportunities = [];
+
+    }
+
+
+    opportunities.push(
+        opportunity
+    );
+
+
+    localStorage.setItem(
+        "preventa_opportunities",
+        JSON.stringify(
+            opportunities
+        )
+    );
+
+
+    localStorage.setItem(
+        "preventa_current_opportunity",
+        JSON.stringify(
+            opportunity
+        )
+    );
+
+
+    closeOpportunityModal();
+
+
+    alert(
+        "✅ Oportunidad creada correctamente."
+    );
+
+
+    window.location.href =
+        "oportunidades.html";
+
+}
+
+
+window.saveOpportunity =
+    saveOpportunity;
+
+
+/* =====================================================
+   CERRAR MODAL AL HACER CLICK AFUERA
+===================================================== */
+
+document
+    .getElementById(
+        "opportunityModal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeOpportunityModal();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+loadAnalysis();
+
+</script>
+
+</body>
+
+</html>

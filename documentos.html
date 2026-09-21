@@ -1,0 +1,2268 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PREVENTA IA - Documentos</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+header {
+    background: #0b5ed7;
+    color: white;
+    padding: 18px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+header nav {
+    display: flex;
+    gap: 20px;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+h2 {
+    margin-top: 0;
+    color: #123b6d;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.upload-area {
+    border: 2px dashed #8db7ef;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    background: #f8fbff;
+}
+
+input[type="file"] {
+    margin-top: 15px;
+}
+
+.preview {
+    margin-top: 20px;
+    display: none;
+}
+
+.preview iframe {
+    width: 100%;
+    height: 550px;
+    border: 1px solid #d8e0eb;
+    border-radius: 10px;
+}
+
+.txt-preview {
+    background: #f8fafc;
+    border: 1px solid #d8e0eb;
+    border-radius: 10px;
+    padding: 16px;
+    max-height: 400px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
+.query-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 110px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 14px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.example-button {
+    border: 1px solid #b8d2f5;
+    background: #eef6ff;
+    color: #0b5ed7;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.example-button:hover {
+    background: #dcecff;
+}
+
+.analyze-button,
+.final-button {
+    border: none;
+    border-radius: 10px;
+    padding: 13px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.analyze-button {
+    background: #0b5ed7;
+    color: white;
+    margin-top: 15px;
+}
+
+.analyze-button:hover {
+    background: #084cae;
+}
+
+.final-button {
+    background: #198754;
+    color: white;
+    margin-top: 20px;
+}
+
+.final-button:hover {
+    background: #146c43;
+}
+
+.status {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #eef4ff;
+    color: #31547c;
+    display: none;
+}
+
+.priority-result {
+    display: none;
+    background: #fff8e1;
+    border-left: 5px solid #f0ad00;
+    padding: 18px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.priority-result h3 {
+    margin-top: 0;
+    color: #8a6200;
+}
+
+.general-title {
+    margin-top: 30px;
+    color: #123b6d;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.category-card {
+    background: #f8fafc;
+    border: 1px solid #dce4ee;
+    border-radius: 10px;
+    padding: 16px;
+    min-height: 110px;
+}
+
+.category-card h4 {
+    margin: 0 0 8px 0;
+    color: #164d86;
+}
+
+.category-card p {
+    margin: 0;
+    line-height: 1.45;
+}
+
+.result-content {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.evidence-list {
+    margin-top: 20px;
+}
+
+.evidence-item {
+    background: #f8fafc;
+    border-left: 4px solid #0b5ed7;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.loading {
+    text-align: center;
+    padding: 25px;
+}
+
+.spinner {
+    width: 35px;
+    height: 35px;
+    border: 4px solid #dce8f8;
+    border-top: 4px solid #0b5ed7;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 12px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    .preview iframe {
+        height: 400px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🤖 PREVENTA IA</h1>
+
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="analisis.html">Análisis</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>📄 Analizar documento</h2>
+
+        <div class="upload-area">
+
+            <div>
+                Subí un documento PDF o TXT para analizarlo.
+            </div>
+
+            <input
+                id="archivo"
+                type="file"
+                accept=".pdf,.txt,application/pdf,text/plain"
+            >
+
+        </div>
+
+        <div id="preview" class="preview">
+
+            <h3>👀 Vista previa del documento</h3>
+
+            <iframe id="pdfPreview"></iframe>
+
+            <div id="txtPreview" class="txt-preview"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="query-title">
+            🔎 ¿Qué querés buscar prioritariamente?
+        </div>
+
+        <textarea
+            id="consulta"
+            placeholder="Ejemplo: ¿Cuántos usuarios necesita el cliente? ¿Qué infraestructura solicita? ¿Necesita OCR? ¿Qué volumen de documentos tiene?"
+        ></textarea>
+
+        <div class="examples">
+
+            <button
+                class="example-button"
+                type="button"
+                onclick="usarEjemplo('¿Cuántos usuarios necesita el cliente?')">
+                👥 Usuarios
+            </button>
+
+            <button
+                class="example-button"
+                type="button"
+                onclick="usarEjemplo('¿Qué volumen de documentos se debe gestionar?')">
+                📄 Documentos
+            </button>
+
+            <button
+                class="example-button"
+                type="button"
+                onclick="usarEjemplo('¿Necesita OCR o reconocimiento de datos?')">
+                🔍 OCR
+            </button>
+
+            <button
+                class="example-button"
+                type="button"
+                onclick="usarEjemplo('¿Solicita workflows o circuitos de aprobación?')">
+                🔄 Workflows
+            </button>
+
+            <button
+                class="example-button"
+                type="button"
+                onclick="usarEjemplo('¿Qué infraestructura solicita: Cloud u On-Premise?')">
+                ☁️ Infraestructura
+            </button>
+
+            <button
+                class="example-button"
+                type="button"
+                onclick="usarEjemplo('¿Necesita firma digital o electrónica?')">
+                ✍️ Firma
+            </button>
+
+        </div>
+
+        <button
+            id="btnAnalizar"
+            class="analyze-button"
+            type="button"
+            onclick="analyzeDocument()">
+
+            🧠 Analizar documento
+
+        </button>
+
+        <div id="status" class="status"></div>
+
+    </div>
+
+
+    <div id="loading" class="card hidden">
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+            <strong id="loadingText">
+                Analizando documento...
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div id="resultados" class="card hidden">
+
+        <div id="priorityResult" class="priority-result">
+
+            <h3>🎯 Resultado prioritario</h3>
+
+            <div id="priorityContent" class="result-content"></div>
+
+        </div>
+
+
+        <h3 class="general-title">
+            📊 Análisis general de Preventa
+        </h3>
+
+        <div id="categoryGrid" class="category-grid"></div>
+
+
+        <div class="evidence-list">
+
+            <h3>
+                📌 Evidencia encontrada
+            </h3>
+
+            <div id="evidenceList"></div>
+
+        </div>
+
+
+        <button
+            id="btnPasarAnalisis"
+            class="final-button"
+            type="button">
+
+            📊 Pasar a Análisis
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- PDF.js -->
+<script type="module">
+
+import * as pdfjsLib from
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+
+let archivoActual = null;
+let textoDocumento = "";
+let paginasDocumento = 0;
+let ultimoAnalisis = null;
+
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+
+function limpiarComillas(texto) {
+
+    let resultado = String(texto || "").trim();
+
+    resultado = resultado.replace(
+        /^[\s"'“”„‟«»]+/,
+        ""
+    );
+
+    resultado = resultado.replace(
+        /[\s"'“”„‟«»]+$/,
+        ""
+    );
+
+    return resultado.trim();
+
+}
+
+
+function limpiarTexto(texto) {
+
+    return String(texto || "")
+        .replace(/\r/g, " ")
+        .replace(/\n+/g, " ")
+        .replace(/\s{2,}/g, " ")
+        .trim();
+
+}
+
+
+function escaparHTML(texto) {
+
+    return String(texto || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function normalizar(texto) {
+
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+
+}
+
+
+function mostrarStatus(texto) {
+
+    const status = document.getElementById("status");
+
+    status.textContent = texto;
+    status.style.display = "block";
+
+}
+
+
+/* =========================================================
+   EJEMPLOS
+========================================================= */
+
+function usarEjemplo(texto) {
+
+    document.getElementById("consulta").value = texto;
+
+}
+
+window.usarEjemplo = usarEjemplo;
+
+
+/* =========================================================
+   CARGA DEL ARCHIVO
+========================================================= */
+
+document.getElementById("archivo").addEventListener(
+    "change",
+    async function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        archivoActual = file;
+        ultimoAnalisis = null;
+
+        const preview = document.getElementById("preview");
+        const pdfPreview = document.getElementById("pdfPreview");
+        const txtPreview = document.getElementById("txtPreview");
+
+        preview.style.display = "block";
+
+        if (
+            file.type === "application/pdf" ||
+            file.name.toLowerCase().endsWith(".pdf")
+        ) {
+
+            pdfPreview.style.display = "block";
+            txtPreview.style.display = "none";
+
+            pdfPreview.src = URL.createObjectURL(file);
+
+        } else {
+
+            pdfPreview.style.display = "none";
+            txtPreview.style.display = "block";
+
+            const texto = await file.text();
+
+            textoDocumento = texto;
+
+            txtPreview.textContent = texto;
+
+        }
+
+        mostrarStatus(
+            "📄 Documento cargado correctamente. Ahora podés indicar qué querés buscar."
+        );
+
+    }
+);
+
+
+/* =========================================================
+   EXTRAER TEXTO NATIVO DE UNA PÁGINA
+========================================================= */
+
+async function extraerTextoNativo(pagina) {
+
+    const contenido = await pagina.getTextContent();
+
+    return limpiarTexto(
+        contenido.items
+            .map(item => item.str || "")
+            .join(" ")
+    );
+
+}
+
+
+/* =========================================================
+   OCR DE UNA PÁGINA
+========================================================= */
+
+async function ejecutarOCR(pagina, numeroPagina) {
+
+    if (typeof Tesseract === "undefined") {
+
+        console.warn(
+            "Tesseract no está disponible."
+        );
+
+        return "";
+
+    }
+
+    try {
+
+        const viewport = pagina.getViewport({
+            scale: 1.5
+        });
+
+        const canvas = document.createElement("canvas");
+
+        const contexto = canvas.getContext("2d", {
+            willReadFrequently: true
+        });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await pagina.render({
+            canvasContext: contexto,
+            viewport: viewport
+        }).promise;
+
+        mostrarStatus(
+            `🔍 OCR: procesando página ${numeroPagina}...`
+        );
+
+        const resultado = await Tesseract.recognize(
+            canvas,
+            "spa",
+            {
+                logger: function(info) {
+
+                    if (
+                        info.status === "recognizing text" &&
+                        typeof info.progress === "number"
+                    ) {
+
+                        const porcentaje =
+                            Math.round(
+                                info.progress * 100
+                            );
+
+                        mostrarStatus(
+                            `🔍 OCR: página ${numeroPagina} — ${porcentaje}%`
+                        );
+
+                    }
+
+                }
+            }
+        );
+
+        return limpiarTexto(
+            resultado.data.text || ""
+        );
+
+    } catch (error) {
+
+        console.error(
+            `Error OCR página ${numeroPagina}:`,
+            error
+        );
+
+        return "";
+
+    }
+
+}
+
+
+/* =========================================================
+   EXTRAER PDF
+   TODOS LOS PDF PASAN POR OCR
+========================================================= */
+
+async function extraerPDF(file) {
+
+    const buffer = await file.arrayBuffer();
+
+    const pdf = await pdfjsLib.getDocument({
+        data: buffer
+    }).promise;
+
+    paginasDocumento = pdf.numPages;
+
+    const paginas = [];
+
+    for (
+        let numero = 1;
+        numero <= pdf.numPages;
+        numero++
+    ) {
+
+        mostrarStatus(
+            `📄 Procesando página ${numero} de ${pdf.numPages}...`
+        );
+
+        const pagina =
+            await pdf.getPage(numero);
+
+        /* -----------------------------------------
+           1. TEXTO NATIVO
+        ----------------------------------------- */
+
+        const textoNativo =
+            await extraerTextoNativo(
+                pagina
+            );
+
+
+        /* -----------------------------------------
+           2. OCR
+           SE EJECUTA SIEMPRE
+        ----------------------------------------- */
+
+        const textoOCR =
+            await ejecutarOCR(
+                pagina,
+                numero
+            );
+
+
+        /* -----------------------------------------
+           3. COMBINAR RESULTADOS
+        ----------------------------------------- */
+
+        let textoFinal = "";
+
+        if (textoNativo) {
+
+            textoFinal +=
+                textoNativo;
+
+        }
+
+        if (textoOCR) {
+
+            if (textoFinal) {
+                textoFinal += " ";
+            }
+
+            textoFinal +=
+                textoOCR;
+
+        }
+
+
+        textoFinal =
+            limpiarTexto(textoFinal);
+
+
+        paginas.push({
+
+            page: numero,
+
+            text: textoFinal,
+
+            nativeText: textoNativo,
+
+            ocrText: textoOCR
+
+        });
+
+    }
+
+
+    textoDocumento =
+        paginas
+            .map(p => p.text)
+            .join("\n\n");
+
+
+    return paginas;
+
+}
+
+
+/* =========================================================
+   EXTRAER FRAGMENTO CON CONTEXTO
+========================================================= */
+
+function extraerFragmento(texto, patron) {
+
+    const match =
+        texto.match(patron);
+
+    if (!match) {
+        return "";
+    }
+
+    const inicio =
+        Math.max(
+            0,
+            match.index - 100
+        );
+
+    const fin =
+        Math.min(
+            texto.length,
+            match.index +
+            match[0].length +
+            180
+        );
+
+    return limpiarComillas(
+        limpiarTexto(
+            texto.substring(
+                inicio,
+                fin
+            )
+        )
+    );
+
+}
+
+
+/* =========================================================
+   DETECTAR DATO CONCRETO
+========================================================= */
+
+function detectarDato(texto, patrones) {
+
+    for (const patron of patrones) {
+
+        const match =
+            texto.match(patron);
+
+        if (
+            match &&
+            match[1]
+        ) {
+
+            return limpiarComillas(
+                match[1].trim()
+            );
+
+        }
+
+    }
+
+    return "";
+
+}
+
+
+/* =========================================================
+   USUARIOS
+========================================================= */
+
+function detectarUsuariosEnPagina(texto) {
+
+    const patrones = [
+
+        /(\d[\d.,]*)\s*(usuarios?\s*(?:concurrentes?)?|users?)/i,
+
+        /(?:cantidad|n[uú]mero|total)\s*(?:de\s*)?usuarios?\s*[:\-]?\s*(\d[\d.,]*)/i,
+
+        /usuarios?\s*[:\-]\s*(\d[\d.,]*)/i,
+
+        /hasta\s*(\d[\d.,]*)\s*usuarios?/i,
+
+        /(\d[\d.,]*)\s*usuarios?\s*concurrentes?/i
+
+    ];
+
+    for (const patron of patrones) {
+
+        const match =
+            texto.match(patron);
+
+        if (!match) {
+            continue;
+        }
+
+        let valor = "";
+
+        if (
+            patron.source.startsWith("(?:")
+        ) {
+
+            valor =
+                match[1];
+
+        } else {
+
+            valor =
+                match[1];
+
+        }
+
+        if (valor) {
+
+            return {
+                value: limpiarComillas(valor),
+                context: extraerFragmento(
+                    texto,
+                    patron
+                )
+            };
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* =========================================================
+   CATEGORÍAS
+========================================================= */
+
+function detectarCategoriasPorPagina(pagina) {
+
+    const texto =
+        pagina.text || "";
+
+    const t =
+        normalizar(texto);
+
+    const resultado = {};
+
+    /* -----------------------------------------
+       USUARIOS
+    ----------------------------------------- */
+
+    const usuarios =
+        detectarUsuariosEnPagina(
+            texto
+        );
+
+    if (usuarios) {
+
+        resultado.users =
+            `${usuarios.value} usuarios — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       DOCUMENTOS / VOLUMEN
+    ----------------------------------------- */
+
+    const volumen =
+        detectarDato(
+            texto,
+            [
+
+                /(\d[\d.,]*)\s*(documentos|expedientes|legajos)/i,
+
+                /(?:cantidad|total|volumen)\s*(?:de\s*)?(?:documentos|expedientes|legajos)\s*[:\-]?\s*(\d[\d.,]*)/i
+
+            ]
+        );
+
+    if (volumen) {
+
+        resultado.volume =
+            `${volumen} documentos — Página ${pagina.page}`;
+
+        resultado.documents =
+            `${volumen} documentos — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       STORAGE
+    ----------------------------------------- */
+
+    const almacenamiento =
+        detectarDato(
+            texto,
+            [
+
+                /(\d[\d.,]*)\s*(gb|tb|mb)\b/i,
+
+                /(?:almacenamiento|storage|capacidad)\s*[:\-]?\s*(\d[\d.,]*\s*(?:gb|tb|mb))/i,
+
+                /(?:almacenamiento|storage|capacidad)[^.;]{0,80}(\d[\d.,]*\s*(?:gb|tb|mb))/i
+
+            ]
+        );
+
+    if (almacenamiento) {
+
+        resultado.storage =
+            `${almacenamiento} — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       OCR
+    ----------------------------------------- */
+
+    const tieneOCR =
+        /\bocr\b/i.test(texto) ||
+        /reconocimiento[ óo]+ptico de caracteres/i.test(texto) ||
+        /reconocimiento de caracteres/i.test(texto);
+
+    if (tieneOCR) {
+
+        const contexto =
+            extraerFragmento(
+                texto,
+                /\bocr\b|reconocimiento[ óo]+ptico de caracteres|reconocimiento de caracteres/i
+            );
+
+        resultado.ocr =
+            `Sí — Página ${pagina.page}${contexto ? ` — ${contexto}` : ""}`;
+
+    }
+
+
+    /* -----------------------------------------
+       TEXTO COMPLETO
+    ----------------------------------------- */
+
+    const tieneFullText =
+        /texto completo/i.test(texto) ||
+        /full[\s-]*text/i.test(texto) ||
+        /búsqueda por texto/i.test(texto) ||
+        /busqueda por texto/i.test(texto) ||
+        /búsqueda de texto/i.test(texto) ||
+        /busqueda de texto/i.test(texto);
+
+    if (tieneFullText) {
+
+        resultado.fulltext =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       WORKFLOWS
+    ----------------------------------------- */
+
+    const tieneWorkflow =
+        /\bworkflow(s)?\b/i.test(texto) ||
+        /flujo[s]? de trabajo/i.test(texto) ||
+        /circuito[s]? de aprobaci[oó]n/i.test(texto) ||
+        /proceso[s]? de aprobaci[oó]n/i.test(texto);
+
+    if (tieneWorkflow) {
+
+        resultado.workflows =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       FIRMAS
+    ----------------------------------------- */
+
+    const tieneFirma =
+        /firma digital/i.test(texto) ||
+        /firma electrónica/i.test(texto) ||
+        /firmas digitales/i.test(texto) ||
+        /firmas electrónicas/i.test(texto);
+
+    if (tieneFirma) {
+
+        resultado.signatures =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       INTEGRACIONES
+    ----------------------------------------- */
+
+    const tieneIntegracion =
+        /\bapi\b/i.test(texto) ||
+        /integraci[oó]n/i.test(texto) ||
+        /web service/i.test(texto) ||
+        /servicio web/i.test(texto);
+
+    if (tieneIntegracion) {
+
+        resultado.integrations =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       INFRAESTRUCTURA
+    ----------------------------------------- */
+
+    if (
+        /\bon[\s-]*premise\b/i.test(texto) ||
+        /\bon[\s-]*premises\b/i.test(texto) ||
+        /on premise/i.test(texto)
+    ) {
+
+        resultado.infrastructure =
+            `On-Premise — Página ${pagina.page}`;
+
+    } else if (
+        /\bcloud\b/i.test(texto) ||
+        /\bnube\b/i.test(texto)
+    ) {
+
+        resultado.infrastructure =
+            `Cloud — Página ${pagina.page}`;
+
+    } else if (
+        /\bservidor(es)?\b/i.test(texto) ||
+        /infraestructura/i.test(texto)
+    ) {
+
+        resultado.infrastructure =
+            `Se requieren referencias de infraestructura — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       SEGURIDAD
+    ----------------------------------------- */
+
+    if (
+        /seguridad/i.test(texto) ||
+        /autenticación/i.test(texto) ||
+        /autorización/i.test(texto) ||
+        /\bsso\b/i.test(texto)
+    ) {
+
+        resultado.security =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       MIGRACIÓN
+    ----------------------------------------- */
+
+    if (
+        /migración/i.test(texto) ||
+        /migracion/i.test(texto) ||
+        /\bmigrar\b/i.test(texto) ||
+        /migraci[oó]n de datos/i.test(texto)
+    ) {
+
+        resultado.migration =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       SOPORTE
+    ----------------------------------------- */
+
+    if (
+        /soporte/i.test(texto) ||
+        /mesa de ayuda/i.test(texto) ||
+        /help desk/i.test(texto)
+    ) {
+
+        resultado.support =
+            `Sí — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       PLAZOS
+    ----------------------------------------- */
+
+    const plazo =
+        detectarDato(
+            texto,
+            [
+
+                /(\d+)\s*(días|dias|semanas|meses)\b/i,
+
+                /plazo\s*[:\-]?\s*([^.;]+)/i,
+
+                /fecha límite\s*[:\-]?\s*([^.;]+)/i,
+
+                /fecha limite\s*[:\-]?\s*([^.;]+)/i
+
+            ]
+        );
+
+    if (plazo) {
+
+        resultado.deadlines =
+            `${plazo} — Página ${pagina.page}`;
+
+    }
+
+
+    /* -----------------------------------------
+       INFORMACIÓN ECONÓMICA
+    ----------------------------------------- */
+
+    if (
+        /precio/i.test(texto) ||
+        /presupuesto/i.test(texto) ||
+        /cotización/i.test(texto) ||
+        /cotizacion/i.test(texto) ||
+        /costo/i.test(texto) ||
+        /importe/i.test(texto)
+    ) {
+
+        resultado.pricing =
+            `Se detecta información económica — Página ${pagina.page}`;
+
+    }
+
+
+    return resultado;
+
+}
+
+
+/* =========================================================
+   DETECCIÓN GENERAL SOBRE TODAS LAS PÁGINAS
+========================================================= */
+
+function detectarCategorias(paginas) {
+
+    const categorias = {
+
+        users: "",
+        documents: "",
+        volume: "",
+        storage: "",
+        ocr: "",
+        fulltext: "",
+        workflows: "",
+        signatures: "",
+        integrations: "",
+        infrastructure: "",
+        security: "",
+        migration: "",
+        support: "",
+        deadlines: "",
+        pricing: ""
+
+    };
+
+
+    for (const pagina of paginas) {
+
+        const datos =
+            detectarCategoriasPorPagina(
+                pagina
+            );
+
+        Object.entries(datos)
+            .forEach(
+                ([clave, valor]) => {
+
+                    if (
+                        valor &&
+                        !categorias[clave]
+                    ) {
+
+                        categorias[clave] =
+                            valor;
+
+                    }
+
+                }
+            );
+
+    }
+
+    return categorias;
+
+}
+
+
+/* =========================================================
+   DETECTAR CLIENTE
+========================================================= */
+
+function detectarCliente(paginas) {
+
+    const patrones = [
+
+        /(?:cliente|empresa|comitente|raz[oó]n social)\s*[:\-]\s*([^.;\n]+)/i,
+
+        /(?:cliente|empresa)\s+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑ0-9 .,&_-]{2,80})/i
+
+    ];
+
+    for (const pagina of paginas) {
+
+        for (const patron of patrones) {
+
+            const match =
+                pagina.text.match(
+                    patron
+                );
+
+            if (
+                match &&
+                match[1]
+            ) {
+
+                return {
+                    value: limpiarComillas(
+                        limpiarTexto(
+                            match[1]
+                        )
+                    ),
+                    page: pagina.page
+                };
+
+            }
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* =========================================================
+   DETECTAR OBJETIVO
+========================================================= */
+
+function detectarObjetivo(paginas) {
+
+    const patrones = [
+
+        /objetivo\s*[:\-]\s*([^.;]{20,500})/i,
+
+        /finalidad\s*[:\-]\s*([^.;]{20,500})/i,
+
+        /propósito\s*[:\-]\s*([^.;]{20,500})/i,
+
+        /proposito\s*[:\-]\s*([^.;]{20,500})/i,
+
+        /se requiere\s+([^.;]{20,500})/i,
+
+        /la solución deberá\s+([^.;]{20,500})/i,
+
+        /la solucion debera\s+([^.;]{20,500})/i
+
+    ];
+
+    for (const pagina of paginas) {
+
+        for (const patron of patrones) {
+
+            const match =
+                pagina.text.match(
+                    patron
+                );
+
+            if (
+                match &&
+                match[1]
+            ) {
+
+                return {
+                    value: limpiarComillas(
+                        limpiarTexto(
+                            match[1]
+                        )
+                    ),
+                    page: pagina.page
+                };
+
+            }
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* =========================================================
+   BUSCAR EVIDENCIA
+========================================================= */
+
+function buscarEvidencia(paginas, palabras) {
+
+    const resultados = [];
+
+    for (const pagina of paginas) {
+
+        const textoNormalizado =
+            normalizar(
+                pagina.text
+            );
+
+        const coincide =
+            palabras.some(
+                palabra =>
+                    textoNormalizado.includes(
+                        normalizar(palabra)
+                    )
+            );
+
+        if (coincide) {
+
+            resultados.push({
+
+                page: pagina.page,
+
+                text:
+                    limpiarComillas(
+                        pagina.text.substring(
+                            0,
+                            900
+                        )
+                    )
+
+            });
+
+        }
+
+    }
+
+    return resultados;
+
+}
+
+
+/* =========================================================
+   CONSULTA PRIORITARIA
+========================================================= */
+
+function buscarConsulta(
+    consulta,
+    paginas
+) {
+
+    const palabras =
+        normalizar(consulta)
+            .split(/\s+/)
+            .filter(
+                p =>
+                    p.length > 3 &&
+                    ![
+                        "cuántos",
+                        "cuantos",
+                        "necesita",
+                        "necesitan",
+                        "qué",
+                        "que",
+                        "solicita",
+                        "solicitan",
+                        "necesita"
+                    ].includes(p)
+            )
+            .slice(0, 10);
+
+
+    if (!palabras.length) {
+
+        return {
+
+            encontrado: false,
+
+            texto:
+                "No se ingresó una consulta prioritaria."
+
+        };
+
+    }
+
+
+    const resultados =
+        buscarEvidencia(
+            paginas,
+            palabras
+        );
+
+
+    if (!resultados.length) {
+
+        return {
+
+            encontrado: false,
+
+            texto:
+                "No encontré una coincidencia directa con la búsqueda indicada. Revisá también el análisis general."
+
+        };
+
+    }
+
+
+    return {
+
+        encontrado: true,
+
+        resultados:
+            resultados
+
+    };
+
+}
+
+
+/* =========================================================
+   CONSTRUIR ANÁLISIS
+========================================================= */
+
+function construirAnalisis(
+    fileName,
+    paginas,
+    consulta,
+    prioridad,
+    categorias
+) {
+
+    const evidencia = [];
+
+    for (const pagina of paginas) {
+
+        if (!pagina.text) {
+            continue;
+        }
+
+        evidencia.push({
+
+            page: pagina.page,
+
+            text:
+                limpiarComillas(
+                    pagina.text.substring(
+                        0,
+                        900
+                    )
+                )
+
+        });
+
+    }
+
+
+    const temas = [];
+
+    Object.entries(categorias)
+        .forEach(
+            ([clave, valor]) => {
+
+                if (valor) {
+                    temas.push(clave);
+                }
+
+            }
+        );
+
+
+    const cliente =
+        detectarCliente(
+            paginas
+        );
+
+    const objetivo =
+        detectarObjetivo(
+            paginas
+        );
+
+
+    /*
+     * Datos enriquecidos.
+     * Los dejamos además de "categories"
+     * para que analisis.html pueda utilizarlos
+     * sin romper la estructura existente.
+     */
+
+    const categoryDetails = {};
+
+
+    Object.entries(categorias)
+        .forEach(
+            ([clave, valor]) => {
+
+                if (!valor) {
+                    return;
+                }
+
+                const paginaMatch =
+                    valor.match(
+                        /Página\s+(\d+)/i
+                    );
+
+                categoryDetails[clave] = {
+
+                    value: valor,
+
+                    page:
+                        paginaMatch
+                            ? Number(
+                                paginaMatch[1]
+                            )
+                            : null
+
+                };
+
+            }
+        );
+
+
+    return {
+
+        fileName: fileName,
+
+        pages: paginas.length,
+
+        consultaPrioritaria:
+            consulta,
+
+        prioridad:
+            prioridad,
+
+        objective:
+            objetivo
+                ? objetivo.value
+                : (
+                    consulta ||
+                    "Analizar los requerimientos de Preventa del documento."
+                ),
+
+        objectivePage:
+            objetivo
+                ? objetivo.page
+                : null,
+
+        client:
+            cliente
+                ? cliente.value
+                : "",
+
+        clientPage:
+            cliente
+                ? cliente.page
+                : null,
+
+        temas: temas,
+
+        categories:
+            categorias,
+
+        categoryDetails:
+            categoryDetails,
+
+        evidence:
+            evidencia,
+
+        /*
+         * Información adicional para la V2.
+         */
+
+        extraction: {
+
+            nativeTextAvailable:
+                paginas.some(
+                    p => !!p.nativeText
+                ),
+
+            ocrExecuted:
+                true,
+
+            pagesProcessed:
+                paginas.length
+
+        },
+
+        generatedAt:
+            new Date().toISOString()
+
+    };
+
+}
+
+
+/* =========================================================
+   MOSTRAR CATEGORÍAS
+========================================================= */
+
+function mostrarCategorias(
+    categorias
+) {
+
+    const grid =
+        document.getElementById(
+            "categoryGrid"
+        );
+
+    grid.innerHTML = "";
+
+
+    const nombres = {
+
+        users: "👥 Usuarios",
+
+        documents: "📄 Documentos",
+
+        volume: "📊 Volumen",
+
+        storage: "💾 Almacenamiento",
+
+        ocr: "🔍 OCR",
+
+        fulltext: "🔎 Texto completo",
+
+        workflows: "🔄 Workflows",
+
+        signatures: "✍️ Firmas",
+
+        integrations: "🔗 Integraciones",
+
+        infrastructure: "☁️ Infraestructura",
+
+        security: "🔐 Seguridad",
+
+        migration: "🚚 Migración",
+
+        support: "🛠️ Soporte",
+
+        deadlines: "📅 Plazos",
+
+        pricing: "💰 Información económica"
+
+    };
+
+
+    Object.entries(categorias)
+        .forEach(
+            ([clave, valor]) => {
+
+                if (!valor) {
+                    return;
+                }
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "category-card";
+
+                card.innerHTML = `
+                    <h4>
+                        ${escaparHTML(
+                            nombres[clave] ||
+                            clave
+                        )}
+                    </h4>
+
+                    <p class="result-content">
+                        ${escaparHTML(
+                            limpiarComillas(
+                                valor
+                            )
+                        )}
+                    </p>
+                `;
+
+                grid.appendChild(card);
+
+            }
+        );
+
+
+    if (!grid.children.length) {
+
+        grid.innerHTML = `
+            <div class="category-card">
+
+                <h4>
+                    ℹ️ Sin datos concretos
+                </h4>
+
+                <p>
+                    No se detectaron datos específicos
+                    en las categorías analizadas.
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOSTRAR EVIDENCIA
+========================================================= */
+
+function mostrarEvidencia(
+    evidencia
+) {
+
+    const contenedor =
+        document.getElementById(
+            "evidenceList"
+        );
+
+    contenedor.innerHTML = "";
+
+
+    evidencia
+        .slice(0, 20)
+        .forEach(
+            item => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+                div.className =
+                    "evidence-item";
+
+                div.innerHTML = `
+
+                    <strong>
+                        Página ${item.page}
+                    </strong>
+
+                    <div class="result-content">
+
+                        ${escaparHTML(
+                            limpiarComillas(
+                                item.text
+                            )
+                        )}
+
+                    </div>
+                `;
+
+                contenedor.appendChild(
+                    div
+                );
+
+            }
+        );
+
+
+    if (!contenedor.children.length) {
+
+        contenedor.innerHTML =
+            "<p>No se encontró evidencia textual.</p>";
+
+    }
+
+}
+
+
+/* =========================================================
+   ANALIZAR DOCUMENTO
+========================================================= */
+
+async function analyzeDocument() {
+
+    if (!archivoActual) {
+
+        alert(
+            "Primero seleccioná un documento PDF o TXT."
+        );
+
+        return;
+
+    }
+
+
+    const consulta =
+        document.getElementById(
+            "consulta"
+        ).value.trim();
+
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const resultados =
+        document.getElementById(
+            "resultados"
+        );
+
+    const priorityResult =
+        document.getElementById(
+            "priorityResult"
+        );
+
+    const priorityContent =
+        document.getElementById(
+            "priorityContent"
+        );
+
+
+    loading.classList.remove(
+        "hidden"
+    );
+
+    resultados.classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "loadingText"
+    ).textContent =
+        "📄 Extrayendo información del documento...";
+
+
+    try {
+
+        let paginas = [];
+
+
+        if (
+            archivoActual.type ===
+                "application/pdf" ||
+            archivoActual.name
+                .toLowerCase()
+                .endsWith(".pdf")
+        ) {
+
+            paginas =
+                await extraerPDF(
+                    archivoActual
+                );
+
+        } else {
+
+            paginas = [
+
+                {
+                    page: 1,
+
+                    text:
+                        textoDocumento,
+
+                    nativeText:
+                        textoDocumento,
+
+                    ocrText: ""
+
+                }
+
+            ];
+
+        }
+
+
+        document.getElementById(
+            "loadingText"
+        ).textContent =
+            "🧠 Analizando requerimientos de Preventa...";
+
+
+        /*
+         * Ahora analizamos por página.
+         * Esto permite conservar el origen
+         * de cada dato.
+         */
+
+        const categorias =
+            detectarCategorias(
+                paginas
+            );
+
+
+        const prioridad =
+            buscarConsulta(
+                consulta,
+                paginas
+            );
+
+
+        if (prioridad.encontrado) {
+
+            priorityContent.innerHTML =
+                prioridad.resultados
+                    .map(
+                        item => `
+
+                            <div class="evidence-item">
+
+                                <strong>
+                                    Página ${item.page}
+                                </strong>
+
+                                <div class="result-content">
+
+                                    ${escaparHTML(
+                                        limpiarComillas(
+                                            item.text
+                                        )
+                                    )}
+
+                                </div>
+
+                            </div>
+                        `
+                    )
+                    .join("");
+
+        } else {
+
+            priorityContent.textContent =
+                limpiarComillas(
+                    prioridad.texto
+                );
+
+        }
+
+
+        priorityResult.style.display =
+            "block";
+
+
+        mostrarCategorias(
+            categorias
+        );
+
+
+        const analisis =
+            construirAnalisis(
+                archivoActual.name,
+                paginas,
+                consulta,
+                prioridad,
+                categorias
+            );
+
+
+        mostrarEvidencia(
+            analisis.evidence
+        );
+
+
+        ultimoAnalisis =
+            analisis;
+
+
+        /*
+         * Guardamos el análisis completo.
+         */
+
+        localStorage.setItem(
+            "preventa_document_analysis",
+            JSON.stringify(
+                analisis
+            )
+        );
+
+
+        loading.classList.add(
+            "hidden"
+        );
+
+        resultados.classList.remove(
+            "hidden"
+        );
+
+
+        mostrarStatus(
+            "✅ Análisis terminado correctamente. OCR + extracción procesados."
+        );
+
+
+        resultados.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error completo:",
+            error
+        );
+
+
+        loading.classList.add(
+            "hidden"
+        );
+
+
+        mostrarStatus(
+            "❌ Ocurrió un error al analizar el documento."
+        );
+
+
+        alert(
+            "No se pudo analizar el documento. Revisá la consola si querés ver el detalle."
+        );
+
+    }
+
+}
+
+window.analyzeDocument =
+    analyzeDocument;
+
+
+/* =========================================================
+   PASAR A ANÁLISIS
+========================================================= */
+
+function pasarAAnalisis() {
+
+    try {
+
+        let datos =
+            ultimoAnalisis;
+
+
+        if (!datos) {
+
+            const guardado =
+                localStorage.getItem(
+                    "preventa_document_analysis"
+                );
+
+
+            if (guardado) {
+
+                datos =
+                    JSON.parse(
+                        guardado
+                    );
+
+            }
+
+        }
+
+
+        if (!datos) {
+
+            alert(
+                "Primero analizá un documento."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * Guardamos nuevamente para asegurar
+         * que analisis.html reciba exactamente
+         * el último análisis realizado.
+         */
+
+        localStorage.setItem(
+            "preventa_document_analysis",
+            JSON.stringify(
+                datos
+            )
+        );
+
+
+        mostrarStatus(
+            "📊 Abriendo el análisis completo..."
+        );
+
+
+        const destino =
+            new URL(
+                "analisis.html",
+                window.location.href
+            ).href;
+
+
+        window.location.assign(
+            destino
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error al pasar a análisis:",
+            error
+        );
+
+
+        alert(
+            "No se pudo abrir la pantalla de Análisis."
+        );
+
+    }
+
+}
+
+
+document
+    .getElementById(
+        "btnPasarAnalisis"
+    )
+    .addEventListener(
+        "click",
+        pasarAAnalisis
+    );
+
+
+window.pasarAAnalisis =
+    pasarAAnalisis;
+
+</script>
+
+
+<!-- Tesseract OCR -->
+<script
+    src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+</script>
+
+</body>
+</html>

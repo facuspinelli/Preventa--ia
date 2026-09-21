@@ -1,0 +1,2750 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cotizador | PREVENTA IA</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+header {
+  background: #111827;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.back {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+h2 {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.connection {
+  display: none;
+  background: #ecfdf5;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.library-status {
+  display: none;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.library-found {
+  display: block;
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.library-missing {
+  display: block;
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  margin-bottom: 25px;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.field small {
+  display: block;
+  color: #6b7280;
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  background: white;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.button {
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 22px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #374151;
+}
+
+.excel-button {
+  background: #166534;
+}
+
+.excel-button:hover {
+  background: #15803d;
+}
+
+.save-button {
+  background: #2563eb;
+}
+
+.save-button:hover {
+  background: #1d4ed8;
+}
+
+.docx-button {
+  background: #7c3aed;
+}
+
+.docx-button:hover {
+  background: #6d28d9;
+}
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.result {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.result-title {
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.result-value {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.storage-box {
+  background: #eef2ff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.storage-box p {
+  margin: 10px 0;
+}
+
+.total {
+  margin-top: 25px;
+  padding: 25px;
+  background: #111827;
+  color: white;
+  border-radius: 10px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.total-final {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #4b5563;
+}
+
+.warning,
+.info,
+.success {
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  display: none;
+}
+
+.warning {
+  color: #b45309;
+  background: #fef3c7;
+}
+
+.info {
+  color: #1e40af;
+  background: #dbeafe;
+}
+
+.success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.proposal-box {
+  display: none;
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 10px;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  color: #5b21b6;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .fields,
+  .results {
+    grid-template-columns: 1fr;
+  }
+
+  .total-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <h1>💰 PREVENTA IA</h1>
+
+  <a href="index.html" class="back">
+    ← Volver al inicio
+  </a>
+
+</header>
+
+<main class="container">
+
+  <h2>💰 Cotizador</h2>
+
+  <p class="subtitle">
+    Calculá automáticamente los costos de implementación y costos mensuales.
+  </p>
+
+  <div id="connection" class="connection"></div>
+
+  <div class="card">
+
+```
+<h3>📋 Datos de la cotización</h3>
+
+<div class="fields">
+
+  <div class="field">
+
+    <label for="product">
+      🧩 Producto / Solución
+    </label>
+
+    <select id="product" onchange="productChanged()">
+
+      <option value="">
+        Seleccioná un producto
+      </option>
+
+    </select>
+
+    <small>
+      Se toma de las carpetas creadas en la Biblioteca Técnica.
+    </small>
+
+    <div id="libraryStatus" class="library-status"></div>
+
+  </div>
+
+  <div class="field">
+
+    <label for="client">
+      Cliente
+    </label>
+
+    <input
+      type="text"
+      id="client"
+      placeholder="Nombre del cliente"
+    >
+
+  </div>
+
+  <div class="field">
+
+    <label for="opportunity">
+      Oportunidad
+    </label>
+
+    <input
+      type="text"
+      id="opportunity"
+      placeholder="Nombre de la oportunidad"
+    >
+
+  </div>
+
+  <div class="field">
+
+    <label for="setup">
+      Horas de parametrización / Setup
+    </label>
+
+    <input
+      type="number"
+      id="setup"
+      value="0"
+      min="0"
+    >
+
+    <small>
+      Costo: USD 25 por hora.
+    </small>
+
+  </div>
+
+  <div class="field">
+
+    <label for="users">
+      Cantidad de usuarios
+    </label>
+
+    <input
+      type="number"
+      id="users"
+      value="0"
+      min="0"
+    >
+
+    <small>
+      El precio depende del tramo de usuarios.
+    </small>
+
+  </div>
+
+  <div class="field">
+
+    <label for="signatures">
+      Firmas por mes
+    </label>
+
+    <input
+      type="number"
+      id="signatures"
+      value="0"
+      min="0"
+    >
+
+    <small>
+      Costo: USD 0,20 por firma.
+    </small>
+
+  </div>
+
+  <div class="field">
+
+    <label for="imageWeight">
+      Peso promedio de una imagen (KB)
+    </label>
+
+    <input
+      type="number"
+      id="imageWeight"
+      value="70"
+      min="0"
+    >
+
+    <small>
+      Referencia habitual: 70 KB por imagen.
+    </small>
+
+  </div>
+
+  <div class="field">
+
+    <label for="images">
+      Cantidad de imágenes
+    </label>
+
+    <input
+      type="number"
+      id="images"
+      value="0"
+      min="0"
+    >
+
+  </div>
+
+  <div class="field">
+
+    <label for="manualPacks">
+      Packs de Storage
+    </label>
+
+    <input
+      type="number"
+      id="manualPacks"
+      value="0"
+      min="0"
+    >
+
+    <small>
+      1 pack = 50 GB.
+    </small>
+
+  </div>
+
+  <div class="field">
+
+    <label for="support">
+      Horas de soporte Addoc
+    </label>
+
+    <input
+      type="number"
+      id="support"
+      value="0"
+      min="0"
+    >
+
+    <small>
+      Costo: USD 25 por hora.
+    </small>
+
+  </div>
+
+</div>
+
+<div id="warning" class="warning"></div>
+
+<div id="info" class="info"></div>
+
+<div id="success" class="success"></div>
+
+<div id="proposalBox" class="proposal-box"></div>
+
+<div class="buttons">
+
+  <button class="button" onclick="calculate()">
+    🧮 Calcular cotización
+  </button>
+
+  <button class="button save-button" onclick="saveQuoteToOpportunity()">
+    💾 Guardar en oportunidad
+  </button>
+
+  <button class="button docx-button" onclick="generateFinalProposal()">
+    📄 Generar propuesta final
+  </button>
+
+  <button class="button excel-button" onclick="downloadExcel()">
+    📥 Descargar Excel
+  </button>
+
+</div>
+```
+
+  </div>
+
+  <div class="card">
+
+```
+<h3>📊 Resultado</h3>
+
+<div class="results">
+
+  <div class="result">
+    <div class="result-title">Costo Setup</div>
+    <div class="result-value" id="setupCost">USD 0,00</div>
+  </div>
+
+  <div class="result">
+    <div class="result-title">Costo Usuarios</div>
+    <div class="result-value" id="usersCost">USD 0,00</div>
+  </div>
+
+  <div class="result">
+    <div class="result-title">Costo Firmas</div>
+    <div class="result-value" id="signatureCost">USD 0,00</div>
+  </div>
+
+  <div class="result">
+    <div class="result-title">Costo Soporte</div>
+    <div class="result-value" id="supportCost">USD 0,00</div>
+  </div>
+
+</div>
+
+<div class="storage-box">
+
+  <strong>💾 Storage</strong>
+
+  <p>
+    Necesidad calculada:
+    <strong id="storageNeeded">0 GB</strong>
+  </p>
+
+  <p>
+    Storage a cotizar:
+    <strong id="storageQuoted">0 GB</strong>
+  </p>
+
+  <p>
+    Cantidad de packs:
+    <strong id="storagePacks">0</strong>
+  </p>
+
+  <p>
+    Costo Storage:
+    <strong id="storageCost">USD 0,00</strong>
+  </p>
+
+</div>
+
+<div class="total">
+
+  <div class="total-row">
+    <span>Total único / Setup</span>
+    <strong id="totalSetup">USD 0,00</strong>
+  </div>
+
+  <div class="total-row">
+    <span>Total mensual</span>
+    <strong id="totalMonthly">USD 0,00</strong>
+  </div>
+
+  <div class="total-final">
+
+    <div>
+      Costo total primer año
+    </div>
+
+    <div id="totalYear">
+      USD 0,00
+    </div>
+
+  </div>
+
+</div>
+```
+
+  </div>
+
+</main>
+
+<script>
+
+/* =====================================================
+   CONFIGURACIÓN
+===================================================== */
+
+let currentOpportunity = null;
+let libraryDatabase = null;
+
+const LIBRARY_DB_NAME = "preventa_ia_biblioteca";
+const LIBRARY_DB_VERSION = 2;
+const LIBRARY_STORE = "proposals";
+const FINAL_STORE = "finalProposals";
+
+
+/* =====================================================
+   CARPETAS
+===================================================== */
+
+function getLibraryFolders() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem("preventa_library_folders")
+    ) || [];
+
+  } catch(error) {
+
+    console.error(error);
+    return [];
+
+  }
+
+}
+
+
+/* =====================================================
+   BASE DE DATOS
+===================================================== */
+
+function openLibraryDatabase() {
+
+  return new Promise(function(resolve, reject) {
+
+    const request =
+      indexedDB.open(
+        LIBRARY_DB_NAME,
+        LIBRARY_DB_VERSION
+      );
+
+    request.onupgradeneeded = function(event) {
+
+      const database = event.target.result;
+
+      if (!database.objectStoreNames.contains(LIBRARY_STORE)) {
+
+        const store =
+          database.createObjectStore(
+            LIBRARY_STORE,
+            {
+              keyPath: "id",
+              autoIncrement: true
+            }
+          );
+
+        store.createIndex(
+          "folder",
+          "folder",
+          {
+            unique: false
+          }
+        );
+
+      }
+
+      if (!database.objectStoreNames.contains(FINAL_STORE)) {
+
+        const finalStore =
+          database.createObjectStore(
+            FINAL_STORE,
+            {
+              keyPath: "id"
+            }
+          );
+
+        finalStore.createIndex(
+          "opportunityId",
+          "opportunityId",
+          {
+            unique: false
+          }
+        );
+
+        finalStore.createIndex(
+          "createdAt",
+          "createdAt",
+          {
+            unique: false
+          }
+        );
+
+      }
+
+    };
+
+    request.onsuccess = function(event) {
+
+      libraryDatabase =
+        event.target.result;
+
+      resolve(libraryDatabase);
+
+    };
+
+    request.onerror = function() {
+
+      reject(
+        request.error ||
+        new Error(
+          "No se pudo abrir la Biblioteca Técnica."
+        )
+      );
+
+    };
+
+  });
+
+}
+
+
+/* =====================================================
+   ARCHIVOS DE CARPETA
+===================================================== */
+
+function getLibraryFiles(folderId) {
+
+  return new Promise(function(resolve, reject) {
+
+    if (!libraryDatabase) {
+
+      resolve([]);
+      return;
+
+    }
+
+    const transaction =
+      libraryDatabase.transaction(
+        LIBRARY_STORE,
+        "readonly"
+      );
+
+    const store =
+      transaction.objectStore(
+        LIBRARY_STORE
+      );
+
+    const index =
+      store.index("folder");
+
+    const request =
+      index.getAll(folderId);
+
+    request.onsuccess = function() {
+
+      const files =
+        request.result || [];
+
+      files.sort(function(a,b) {
+
+        return new Date(
+          b.createdAt || 0
+        ) -
+        new Date(
+          a.createdAt || 0
+        );
+
+      });
+
+      resolve(files);
+
+    };
+
+    request.onerror = function() {
+
+      reject(request.error);
+
+    };
+
+  });
+
+}
+
+
+/* =====================================================
+   PRODUCTOS
+===================================================== */
+
+async function loadProducts() {
+
+  const select =
+    document.getElementById("product");
+
+  const folders =
+    getLibraryFolders();
+
+  select.innerHTML = "";
+
+  const option =
+    document.createElement("option");
+
+  option.value = "";
+
+  option.textContent =
+    folders.length
+      ? "Seleccioná un producto"
+      : "No hay productos en la Biblioteca";
+
+  select.appendChild(option);
+
+  folders.forEach(function(folder) {
+
+    const item =
+      document.createElement("option");
+
+    item.value =
+      folder.id;
+
+    item.textContent =
+      folder.name;
+
+    select.appendChild(item);
+
+  });
+
+}
+
+
+/* =====================================================
+   CAMBIO PRODUCTO
+===================================================== */
+
+async function productChanged() {
+
+  const select =
+    document.getElementById("product");
+
+  const status =
+    document.getElementById("libraryStatus");
+
+  status.className =
+    "library-status";
+
+  status.textContent =
+    "";
+
+  if (!select.value) {
+
+    return;
+
+  }
+
+  const folders =
+    getLibraryFolders();
+
+  const folder =
+    folders.find(function(item) {
+
+      return String(item.id) ===
+             String(select.value);
+
+    });
+
+  if (!folder) {
+
+    return;
+
+  }
+
+  try {
+
+    const files =
+      await getLibraryFiles(
+        select.value
+      );
+
+    if (files.length) {
+
+      const wordFile =
+        files.find(function(file) {
+
+          const name =
+            String(
+              file.name ||
+              file.originalName ||
+              ""
+            ).toLowerCase();
+
+          return name.endsWith(".docx");
+
+        }) || files[0];
+
+      status.classList.add(
+        "library-found"
+      );
+
+      status.textContent =
+        "📚 Propuesta técnica encontrada: " +
+        (
+          wordFile.name ||
+          wordFile.originalName ||
+          "Documento"
+        );
+
+    } else {
+
+      status.classList.add(
+        "library-missing"
+      );
+
+      status.textContent =
+        "⚠️ No hay archivos cargados para " +
+        folder.name +
+        ".";
+
+    }
+
+  } catch(error) {
+
+    console.error(error);
+
+    status.classList.add(
+      "library-missing"
+    );
+
+    status.textContent =
+      "⚠️ No pude consultar la Biblioteca Técnica.";
+
+  }
+
+}
+
+
+/* =====================================================
+   OPORTUNIDAD
+===================================================== */
+
+function loadCurrentOpportunity() {
+
+  const stored =
+    localStorage.getItem(
+      "preventa_current_opportunity"
+    );
+
+  if (!stored) {
+
+    currentOpportunity = null;
+    return;
+
+  }
+
+  try {
+
+    currentOpportunity =
+      JSON.parse(stored);
+
+  } catch(error) {
+
+    currentOpportunity = null;
+
+  }
+
+}
+
+
+/* =====================================================
+   NUMEROS
+===================================================== */
+
+function money(value) {
+
+  return "USD " +
+    Number(value || 0).toLocaleString(
+      "es-AR",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    );
+
+}
+
+function moneyPlain(value) {
+
+  return Number(value || 0).toLocaleString(
+    "es-AR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
+  );
+
+}
+
+
+/* =====================================================
+   PRECIO USUARIO
+===================================================== */
+
+function getUserPrice(users) {
+
+  if (users <= 0) return 0;
+
+  if (users <= 11) return 4.17;
+
+  if (users <= 49) return 2.20;
+
+  if (users <= 99) return 1.30;
+
+  if (users <= 249) return 1.10;
+
+  if (users <= 999) return 0.90;
+
+  if (users <= 3500) return 0.80;
+
+  return 0.80;
+
+}
+
+
+/* =====================================================
+   CALCULAR
+===================================================== */
+
+function calculate() {
+
+  const setup =
+    Number(document.getElementById("setup").value) || 0;
+
+  const users =
+    Number(document.getElementById("users").value) || 0;
+
+  const signatures =
+    Number(document.getElementById("signatures").value) || 0;
+
+  const imageWeight =
+    Number(document.getElementById("imageWeight").value) || 0;
+
+  const images =
+    Number(document.getElementById("images").value) || 0;
+
+  const manualPacks =
+    Number(document.getElementById("manualPacks").value) || 0;
+
+  const support =
+    Number(document.getElementById("support").value) || 0;
+
+
+  const setupCost =
+    setup * 25;
+
+  const userPrice =
+    getUserPrice(users);
+
+  const usersCost =
+    users * userPrice;
+
+  const signatureCost =
+    signatures * 0.20;
+
+  const supportCost =
+    support * 25;
+
+
+  const totalKB =
+    imageWeight * images;
+
+  const storageNeeded =
+    totalKB / 1024 / 1024;
+
+
+  let packs = 0;
+
+  if (manualPacks > 0) {
+
+    packs = manualPacks;
+
+  } else if (storageNeeded > 0) {
+
+    packs =
+      Math.ceil(
+        storageNeeded / 50
+      );
+
+  }
+
+
+  const storageQuoted =
+    packs * 50;
+
+  const storageCost =
+    packs * 2;
+
+
+  const totalSetup =
+    setupCost;
+
+  const totalMonthly =
+    usersCost +
+    signatureCost +
+    storageCost +
+    supportCost;
+
+  const totalYear =
+    totalSetup +
+    totalMonthly * 12;
+
+
+  document.getElementById("setupCost").innerText =
+    money(setupCost);
+
+  document.getElementById("usersCost").innerText =
+    money(usersCost);
+
+  document.getElementById("signatureCost").innerText =
+    money(signatureCost);
+
+  document.getElementById("supportCost").innerText =
+    money(supportCost);
+
+  document.getElementById("storageNeeded").innerText =
+    storageNeeded.toFixed(2) + " GB";
+
+  document.getElementById("storageQuoted").innerText =
+    storageQuoted + " GB";
+
+  document.getElementById("storagePacks").innerText =
+    packs;
+
+  document.getElementById("storageCost").innerText =
+    money(storageCost);
+
+  document.getElementById("totalSetup").innerText =
+    money(totalSetup);
+
+  document.getElementById("totalMonthly").innerText =
+    money(totalMonthly);
+
+  document.getElementById("totalYear").innerText =
+    money(totalYear);
+
+
+  const productSelect =
+    document.getElementById("product");
+
+  const folders =
+    getLibraryFolders();
+
+  const productFolder =
+    folders.find(function(folder) {
+
+      return String(folder.id) ===
+             String(productSelect.value);
+
+    });
+
+
+  window.cotizacion = {
+
+    client:
+      document.getElementById("client").value.trim(),
+
+    opportunity:
+      document.getElementById("opportunity").value.trim(),
+
+    product:
+      productFolder
+        ? productFolder.name
+        : "",
+
+    productFolderId:
+      productFolder
+        ? productFolder.id
+        : "",
+
+    setup,
+    users,
+    signatures,
+    imageWeight,
+    images,
+    manualPacks,
+    support,
+
+    userPrice,
+    setupCost,
+    usersCost,
+    signatureCost,
+    supportCost,
+
+    storageNeeded,
+    storageQuoted,
+    packs,
+    storageCost,
+
+    totalSetup,
+    totalMonthly,
+    totalYear,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+
+  const info =
+    document.getElementById("info");
+
+  info.innerText =
+    productFolder
+      ? "✅ Cotización calculada para " +
+        productFolder.name +
+        "."
+      : "✅ Cotización calculada correctamente.";
+
+  info.style.display =
+    "block";
+
+}
+
+
+/* =====================================================
+   GUARDAR EN OPORTUNIDAD
+===================================================== */
+
+function saveQuoteToOpportunity() {
+
+  calculate();
+
+  if (!currentOpportunity) {
+
+    alert(
+      "Esta cotización no está vinculada a una oportunidad. Entrá desde Oportunidades → Cotizar."
+    );
+
+    return;
+
+  }
+
+  const opportunities =
+    JSON.parse(
+      localStorage.getItem(
+        "preventa_opportunities"
+      )
+    ) || [];
+
+  const index =
+    opportunities.findIndex(function(item) {
+
+      return String(item.id) ===
+             String(currentOpportunity.id);
+
+    });
+
+  if (index === -1) {
+
+    alert(
+      "No encontré la oportunidad original."
+    );
+
+    return;
+
+  }
+
+  opportunities[index].quote =
+    window.cotizacion;
+
+  opportunities[index].product =
+    window.cotizacion.product;
+
+  opportunities[index].productFolderId =
+    window.cotizacion.productFolderId;
+
+  opportunities[index].solution =
+    window.cotizacion.product;
+
+  opportunities[index].updatedAt =
+    new Date().toISOString();
+
+  if (
+    opportunities[index].status ===
+    "analysis"
+  ) {
+
+    opportunities[index].status =
+      "quote";
+
+  }
+
+  localStorage.setItem(
+    "preventa_opportunities",
+    JSON.stringify(opportunities)
+  );
+
+  currentOpportunity =
+    opportunities[index];
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(currentOpportunity)
+  );
+
+  const success =
+    document.getElementById("success");
+
+  success.innerText =
+    "✅ Cotización guardada correctamente en la oportunidad.";
+
+  success.style.display =
+    "block";
+
+}
+
+
+/* =====================================================
+   GENERAR PROPUESTA FINAL
+===================================================== */
+
+async function generateFinalProposal() {
+
+  calculate();
+
+  const quote =
+    window.cotizacion;
+
+  if (!quote.productFolderId) {
+
+    alert(
+      "Seleccioná primero el Producto / Solución."
+    );
+
+    return;
+
+  }
+
+  if (!libraryDatabase) {
+
+    alert(
+      "La Biblioteca Técnica no está disponible. Recargá la página."
+    );
+
+    return;
+
+  }
+
+  const success =
+    document.getElementById("success");
+
+  const proposalBox =
+    document.getElementById("proposalBox");
+
+  try {
+
+    success.style.display =
+      "block";
+
+    success.innerText =
+      "📚 Buscando la propuesta técnica...";
+
+
+    const files =
+      await getLibraryFiles(
+        quote.productFolderId
+      );
+
+
+    if (!files.length) {
+
+      throw new Error(
+        "No hay una propuesta técnica cargada para el producto seleccionado."
+      );
+
+    }
+
+
+    /*
+      BUSCAMOS ESPECÍFICAMENTE EL WORD
+    */
+
+    const baseFile =
+      files.find(function(file) {
+
+        const name =
+          String(
+            file.name ||
+            file.originalName ||
+            ""
+          ).toLowerCase();
+
+        return name.endsWith(".docx");
+
+      }) || files[0];
+
+
+    if (!baseFile.blob) {
+
+      throw new Error(
+        "La propuesta encontrada no contiene el archivo Word."
+      );
+
+    }
+
+
+    success.innerText =
+      "📝 Agregando una nueva página con la propuesta económica...";
+
+
+    const finalBlob =
+      await addEconomicProposal(
+        baseFile.blob,
+        quote
+      );
+
+
+    success.innerText =
+      "💾 Guardando propuesta final...";
+
+
+    const savedProposal =
+      await saveFinalProposal(
+        finalBlob,
+        quote,
+        currentOpportunity,
+        baseFile
+      );
+
+
+    const client =
+      sanitizeFileName(
+        quote.client ||
+        "Cliente"
+      );
+
+    const product =
+      sanitizeFileName(
+        quote.product ||
+        "Propuesta"
+      );
+
+
+    const finalFileName =
+      "Propuesta_" +
+      product +
+      "_" +
+      client +
+      ".docx";
+
+
+    /*
+      DESCARGA
+    */
+
+    const url =
+      URL.createObjectURL(
+        finalBlob
+      );
+
+    const link =
+      document.createElement("a");
+
+    link.href =
+      url;
+
+    link.download =
+      finalFileName;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+
+    setTimeout(function() {
+
+      URL.revokeObjectURL(url);
+
+    }, 2000);
+
+
+    saveFinalProposalReference(
+      savedProposal
+    );
+
+
+    success.innerText =
+      "✅ Propuesta final generada correctamente.";
+
+    success.style.display =
+      "block";
+
+
+    proposalBox.innerHTML =
+
+      "<strong>📄 Propuesta final generada</strong><br><br>" +
+
+      "Archivo: " +
+      escapeHTML(finalFileName) +
+      "<br>" +
+
+      "Producto: " +
+      escapeHTML(quote.product) +
+      "<br>" +
+
+      "Cliente: " +
+      escapeHTML(quote.client) +
+      "<br><br>" +
+
+      "✅ Se utilizó la propuesta técnica de la Biblioteca.<br>" +
+
+      "✅ Se agregó la propuesta económica en una nueva página.<br>" +
+
+      "✅ Se guardó la propuesta final.<br>" +
+
+      "✅ Se descargó el Word.";
+
+    proposalBox.style.display =
+      "block";
+
+
+  } catch(error) {
+
+    console.error(
+      "Error:",
+      error
+    );
+
+    success.innerText =
+      "❌ No se pudo generar la propuesta.";
+
+    success.style.display =
+      "block";
+
+    alert(
+      error.message ||
+      "Error generando el Word."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   AGREGAR PÁGINA ECONÓMICA AL WORD
+===================================================== */
+
+async function addEconomicProposal(
+  baseBlob,
+  quote
+) {
+
+  if (
+    typeof JSZip === "undefined"
+  ) {
+
+    throw new Error(
+      "No se pudo cargar JSZip."
+    );
+
+  }
+
+
+  const buffer =
+    await baseBlob.arrayBuffer();
+
+
+  const zip =
+    await JSZip.loadAsync(
+      buffer
+    );
+
+
+  const documentFile =
+    zip.file(
+      "word/document.xml"
+    );
+
+
+  if (!documentFile) {
+
+    throw new Error(
+      "El Word no contiene word/document.xml."
+    );
+
+  }
+
+
+  let xml =
+    await documentFile.async("string");
+
+
+  /*
+    CONSTRUIMOS LA NUEVA PÁGINA
+  */
+
+  const economicPage =
+    buildEconomicPage(
+      quote
+    );
+
+
+  const bodyEnd =
+    xml.lastIndexOf(
+      "</w:body>"
+    );
+
+
+  if (bodyEnd === -1) {
+
+    throw new Error(
+      "No pude encontrar el cuerpo del documento Word."
+    );
+
+  }
+
+
+  /*
+    IMPORTANTE:
+    insertamos ANTES de </w:body>
+    para que quede al final.
+  */
+
+  xml =
+    xml.substring(
+      0,
+      bodyEnd
+    ) +
+
+    economicPage +
+
+    xml.substring(
+      bodyEnd
+    );
+
+
+  zip.file(
+    "word/document.xml",
+    xml
+  );
+
+
+  return await zip.generateAsync({
+
+    type: "blob",
+
+    mimeType:
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+
+  });
+
+}
+
+
+/* =====================================================
+   CONSTRUIR PÁGINA ECONÓMICA
+===================================================== */
+
+function buildEconomicPage(quote) {
+
+  const rows = [];
+
+
+  if (quote.users > 0) {
+
+    rows.push({
+
+      concept: "Usuarios",
+
+      unit: "Usuario / mes",
+
+      quantity: quote.users,
+
+      unitPrice: quote.userPrice,
+
+      total: quote.usersCost
+
+    });
+
+  }
+
+
+  if (quote.packs > 0) {
+
+    rows.push({
+
+      concept: "Storage",
+
+      unit: "Pack de 50 GB / mes",
+
+      quantity: quote.packs,
+
+      unitPrice: 2,
+
+      total: quote.storageCost
+
+    });
+
+  }
+
+
+  if (quote.signatures > 0) {
+
+    rows.push({
+
+      concept: "Firmas",
+
+      unit: "Firma / mes",
+
+      quantity: quote.signatures,
+
+      unitPrice: 0.20,
+
+      total: quote.signatureCost
+
+    });
+
+  }
+
+
+  if (quote.setup > 0) {
+
+    rows.push({
+
+      concept: "Parametrización / Setup",
+
+      unit: "Hora",
+
+      quantity: quote.setup,
+
+      unitPrice: 25,
+
+      total: quote.setupCost
+
+    });
+
+  }
+
+
+  if (quote.support > 0) {
+
+    rows.push({
+
+      concept: "Soporte Addoc",
+
+      unit: "Hora / mes",
+
+      quantity: quote.support,
+
+      unitPrice: 25,
+
+      total: quote.supportCost
+
+    });
+
+  }
+
+
+  let tableRows = "";
+
+
+  tableRows +=
+
+    "<w:tr>" +
+
+      tableCell("Concepto", true) +
+
+      tableCell("Unidad", true) +
+
+      tableCell("Cantidad", true) +
+
+      tableCell("Precio unitario", true) +
+
+      tableCell("Precio total", true) +
+
+    "</w:tr>";
+
+
+  rows.forEach(function(row) {
+
+    tableRows +=
+
+      "<w:tr>" +
+
+        tableCell(row.concept, false) +
+
+        tableCell(row.unit, false) +
+
+        tableCell(String(row.quantity), false) +
+
+        tableCell("USD " + moneyPlain(row.unitPrice), false) +
+
+        tableCell("USD " + moneyPlain(row.total), false) +
+
+      "</w:tr>";
+
+  });
+
+
+  if (!rows.length) {
+
+    tableRows +=
+
+      "<w:tr>" +
+
+        tableCell(
+          "No se cargaron conceptos económicos.",
+          false,
+          5
+        ) +
+
+      "</w:tr>";
+
+  }
+
+
+  /*
+    SALTO DE PÁGINA
+  */
+
+  let page =
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:br w:type=\"page\"/>" +
+
+      "</w:r>" +
+
+    "</w:p>";
+
+
+  /*
+    TÍTULO
+  */
+
+  page +=
+
+    "<w:p>" +
+
+      "<w:pPr>" +
+
+        "<w:jc w:val=\"center\"/>" +
+
+        "<w:spacing w:after=\"300\"/>" +
+
+      "</w:pPr>" +
+
+      "<w:r>" +
+
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+          "<w:sz w:val=\"32\"/>" +
+
+        "</w:rPr>" +
+
+        "<w:t>PROPUESTA ECONÓMICA</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>";
+
+
+  page +=
+    paragraphBoldValue(
+      "Cliente: ",
+      quote.client || "Sin especificar"
+    );
+
+
+  page +=
+    paragraphBoldValue(
+      "Oportunidad: ",
+      quote.opportunity || "Sin especificar"
+    );
+
+
+  page +=
+    paragraphBoldValue(
+      "Producto: ",
+      quote.product || "Sin especificar"
+    );
+
+
+  page +=
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+        "</w:rPr>" +
+
+        "<w:t>Detalle económico</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>";
+
+
+  /*
+    TABLA
+  */
+
+  page +=
+
+    "<w:tbl>" +
+
+      "<w:tblPr>" +
+
+        "<w:tblBorders>" +
+
+          borderXML("top") +
+
+          borderXML("left") +
+
+          borderXML("bottom") +
+
+          borderXML("right") +
+
+          borderXML("insideH") +
+
+          borderXML("insideV") +
+
+        "</w:tblBorders>" +
+
+        "<w:tblLayout w:type=\"fixed\"/>" +
+
+      "</w:tblPr>" +
+
+      tableRows +
+
+    "</w:tbl>";
+
+
+  /*
+    TOTALES
+  */
+
+  page +=
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:t></w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>";
+
+
+  page +=
+    paragraphBoldValue(
+      "Total único / Setup: ",
+      money(quote.totalSetup)
+    );
+
+
+  page +=
+    paragraphBoldValue(
+      "Total mensual: ",
+      money(quote.totalMonthly)
+    );
+
+
+  page +=
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+          "<w:sz w:val=\"28\"/>" +
+
+        "</w:rPr>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            "Costo total primer año: " +
+            money(quote.totalYear)
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>";
+
+
+  page +=
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          escapeXML(
+            "Fecha: " +
+            new Date().toLocaleDateString(
+              "es-AR"
+            )
+          ) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>";
+
+
+  return page;
+
+}
+
+
+/* =====================================================
+   PARÁGRAFO
+===================================================== */
+
+function paragraphBoldValue(
+  label,
+  value
+) {
+
+  return (
+
+    "<w:p>" +
+
+      "<w:r>" +
+
+        "<w:rPr>" +
+
+          "<w:b/>" +
+
+        "</w:rPr>" +
+
+        "<w:t>" +
+
+          escapeXML(label) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+      "<w:r>" +
+
+        "<w:t>" +
+
+          escapeXML(value) +
+
+        "</w:t>" +
+
+      "</w:r>" +
+
+    "</w:p>"
+
+  );
+
+}
+
+
+/* =====================================================
+   CELDA
+===================================================== */
+
+function tableCell(
+  text,
+  header,
+  span = 1
+) {
+
+  return (
+
+    "<w:tc>" +
+
+      "<w:tcPr>" +
+
+        (
+          span > 1
+            ? "<w:gridSpan w:val=\"" +
+              span +
+              "\"/>"
+            : ""
+        ) +
+
+        "<w:tcW w:w=\"1800\" w:type=\"dxa\"/>" +
+
+      "</w:tcPr>" +
+
+      "<w:p>" +
+
+        "<w:pPr>" +
+
+          "<w:jc w:val=\"" +
+          (
+            header
+              ? "center"
+              : "left"
+          ) +
+          "\"/>" +
+
+        "</w:pPr>" +
+
+        "<w:r>" +
+
+          "<w:rPr>" +
+
+            (
+              header
+                ? "<w:b/>"
+                : ""
+            ) +
+
+          "</w:rPr>" +
+
+          "<w:t>" +
+
+            escapeXML(
+              String(text)
+            ) +
+
+          "</w:t>" +
+
+        "</w:r>" +
+
+      "</w:p>" +
+
+    "</w:tc>"
+
+  );
+
+}
+
+
+/* =====================================================
+   BORDES
+===================================================== */
+
+function borderXML(side) {
+
+  return (
+
+    "<w:" +
+    side +
+    " w:val=\"single\" w:sz=\"4\" w:space=\"0\" w:color=\"B7B7B7\"/>"
+
+  );
+
+}
+
+
+/* =====================================================
+   ESCAPE XML
+===================================================== */
+
+function escapeXML(value) {
+
+  return String(value || "")
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&apos;");
+
+}
+
+
+/* =====================================================
+   NOMBRE ARCHIVO
+===================================================== */
+
+function sanitizeFileName(value) {
+
+  return String(value || "")
+
+    .replace(
+      /[<>:"/\\|?*]+/g,
+      "_"
+    )
+
+    .replace(
+      /\s+/g,
+      "_"
+    )
+
+    .substring(
+      0,
+      100
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+  return String(value || "")
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================================
+   GUARDAR PROPUESTA FINAL
+===================================================== */
+
+function saveFinalProposal(
+  blob,
+  quote,
+  opportunity,
+  baseFile
+) {
+
+  return new Promise(function(resolve, reject) {
+
+    if (!libraryDatabase) {
+
+      reject(
+        new Error(
+          "La Biblioteca Técnica no está disponible."
+        )
+      );
+
+      return;
+
+    }
+
+
+    const transaction =
+      libraryDatabase.transaction(
+        FINAL_STORE,
+        "readwrite"
+      );
+
+    const store =
+      transaction.objectStore(
+        FINAL_STORE
+      );
+
+    const index =
+      store.index(
+        "opportunityId"
+      );
+
+
+    const opportunityId =
+      String(
+        opportunity
+          ? opportunity.id
+          : "sin_oportunidad"
+      );
+
+
+    const request =
+      index.getAll(
+        opportunityId
+      );
+
+
+    request.onsuccess =
+      function() {
+
+        const anteriores =
+          request.result || [];
+
+
+        anteriores.forEach(function(item) {
+
+          store.delete(item.id);
+
+        });
+
+
+        const fileName =
+          "Propuesta_" +
+          sanitizeFileName(
+            quote.product ||
+            "Propuesta"
+          ) +
+          "_" +
+          sanitizeFileName(
+            quote.client ||
+            "Cliente"
+          ) +
+          ".docx";
+
+
+        const registro = {
+
+          id:
+            opportunityId +
+            "_" +
+            Date.now(),
+
+          opportunityId,
+
+          client:
+            quote.client || "",
+
+          opportunity:
+            quote.opportunity || "",
+
+          product:
+            quote.product || "",
+
+          productFolderId:
+            quote.productFolderId || "",
+
+          fileName,
+
+          blob,
+
+          sourceProposal:
+            baseFile.name ||
+            baseFile.originalName ||
+            "",
+
+          createdAt:
+            new Date().toISOString(),
+
+          totalSetup:
+            quote.totalSetup,
+
+          totalMonthly:
+            quote.totalMonthly,
+
+          totalYear:
+            quote.totalYear
+
+        };
+
+
+        const addRequest =
+          store.add(
+            registro
+          );
+
+
+        addRequest.onsuccess =
+          function() {
+
+            resolve(
+              registro
+            );
+
+          };
+
+
+        addRequest.onerror =
+          function() {
+
+            reject(
+              addRequest.error
+            );
+
+          };
+
+      };
+
+
+    request.onerror =
+      function() {
+
+        reject(
+          request.error
+        );
+
+      };
+
+  });
+
+}
+
+
+/* =====================================================
+   REFERENCIA EN OPORTUNIDAD
+===================================================== */
+
+function saveFinalProposalReference(
+  proposal
+) {
+
+  if (
+    !proposal ||
+    !currentOpportunity
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const opportunities =
+      JSON.parse(
+        localStorage.getItem(
+          "preventa_opportunities"
+        )
+      ) || [];
+
+
+    const index =
+      opportunities.findIndex(
+        function(item) {
+
+          return String(item.id) ===
+                 String(currentOpportunity.id);
+
+        }
+      );
+
+
+    if (index === -1) {
+
+      return;
+
+    }
+
+
+    opportunities[index].finalProposal = {
+
+      fileName:
+        proposal.fileName,
+
+      createdAt:
+        proposal.createdAt,
+
+      product:
+        proposal.product,
+
+      sourceProposal:
+        proposal.sourceProposal
+
+    };
+
+
+    opportunities[index].updatedAt =
+      new Date().toISOString();
+
+
+    if (
+      opportunities[index].status === "analysis" ||
+      opportunities[index].status === "quote"
+    ) {
+
+      opportunities[index].status =
+        "proposal";
+
+    }
+
+
+    localStorage.setItem(
+      "preventa_opportunities",
+      JSON.stringify(opportunities)
+    );
+
+
+    currentOpportunity =
+      opportunities[index];
+
+
+    localStorage.setItem(
+      "preventa_current_opportunity",
+      JSON.stringify(currentOpportunity)
+    );
+
+
+  } catch(error) {
+
+    console.warn(error);
+
+  }
+
+}
+
+
+/* =====================================================
+   EXCEL / CSV
+===================================================== */
+
+function downloadExcel() {
+
+  calculate();
+
+  const c =
+    window.cotizacion;
+
+
+  const rows = [
+
+    ["PREVENTA IA - COTIZACIÓN"],
+
+    [],
+
+    ["Cliente", c.client || "Sin especificar"],
+
+    ["Oportunidad", c.opportunity || "Sin especificar"],
+
+    ["Producto / Solución", c.product || "Sin especificar"],
+
+    ["Fecha", new Date().toLocaleDateString("es-AR")],
+
+    [],
+
+    [
+      "Solución",
+      "Unidad",
+      "Cantidad",
+      "Precio Unitario USD",
+      "Total Único USD",
+      "Total Mensual USD"
+    ],
+
+    [
+      "Parametrización / Setup",
+      "Horas",
+      c.setup,
+      25,
+      c.setupCost,
+      ""
+    ],
+
+    [
+      "Usuarios",
+      "Usuario",
+      c.users,
+      c.userPrice,
+      "",
+      c.usersCost
+    ],
+
+    [
+      "Firmas",
+      "Firmas",
+      c.signatures,
+      0.20,
+      "",
+      c.signatureCost
+    ],
+
+    [
+      "Storage",
+      "Pack 50 GB",
+      c.packs,
+      2,
+      "",
+      c.storageCost
+    ],
+
+    [
+      "Soporte Addoc",
+      "Horas",
+      c.support,
+      25,
+      "",
+      c.supportCost
+    ],
+
+    [],
+
+    [
+      "TOTAL",
+      "",
+      "",
+      "",
+      c.totalSetup,
+      c.totalMonthly
+    ],
+
+    [],
+
+    [
+      "Storage necesario",
+      c.storageNeeded.toFixed(2) + " GB"
+    ],
+
+    [
+      "Storage cotizado",
+      c.storageQuoted + " GB"
+    ],
+
+    [
+      "Cantidad de packs",
+      c.packs
+    ],
+
+    [],
+
+    [
+      "Costo total primer año",
+      c.totalYear
+    ]
+
+  ];
+
+
+  const csv =
+    rows.map(function(row) {
+
+      return row.map(function(value) {
+
+        return '"' +
+          String(value ?? "")
+            .replace(/"/g, '""') +
+          '"';
+
+      }).join(";");
+
+    }).join("\n");
+
+
+  const blob =
+    new Blob(
+      ["\ufeff" + csv],
+      {
+        type:
+          "text/csv;charset=utf-8;"
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const link =
+    document.createElement("a");
+
+  link.href =
+    url;
+
+  link.download =
+    "Cotizacion_Preventa_IA.csv";
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
+
+  setTimeout(function() {
+
+    URL.revokeObjectURL(url);
+
+  }, 1000);
+
+}
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+(async function() {
+
+  loadCurrentOpportunity();
+
+  try {
+
+    await openLibraryDatabase();
+
+  } catch(error) {
+
+    console.error(
+      "Error Biblioteca Técnica:",
+      error
+    );
+
+  }
+
+  document.getElementById("imageWeight").value =
+    "70";
+
+  await loadProducts();
+
+  calculate();
+
+})();
+
+</script>
+
+</body>
+
+</html>

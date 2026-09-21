@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Requisito",
+  "type": "object",
+  "required": ["id", "descripcion", "estado"],
+  "properties": {
+    "id": {"type": "string"},
+    "documentoId": {"type": ["string", "null"]},
+    "categoria": {"type": ["string", "null"]},
+    "descripcion": {"type": "string"},
+    "obligatorio": {"type": "boolean"},
+    "pagina": {"type": ["number", "null"]},
+    "evidencia": {"type": ["string", "null"]},
+    "estado": {"enum": ["CUMPLE", "PARCIAL", "NO_IDENTIFICADO", "NO_CUMPLE", "POR_VALIDAR"]},
+    "productosRelacionados": {"type": "array", "items": {"type": "string"}},
+    "observaciones": {"type": ["string", "null"]},
+    "riesgo": {"enum": ["BAJO", "MEDIO", "ALTO", "CRITICO", null]}
+  }
+}

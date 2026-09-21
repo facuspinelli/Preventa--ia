@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Oportunidades | PREVENTA IA</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+header {
+  background: #111827;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.back {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.welcome {
+  margin-bottom: 30px;
+}
+
+.welcome h2 {
+  margin-bottom: 8px;
+}
+
+.top-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.top-actions h3 {
+  margin: 0;
+}
+
+.search {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.search input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 17px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #111827;
+  color: white;
+}
+
+button:hover {
+  background: #374151;
+}
+
+.primary {
+  background: #2563eb;
+}
+
+.primary:hover {
+  background: #1d4ed8;
+}
+
+.green {
+  background: #166534;
+}
+
+.green:hover {
+  background: #15803d;
+}
+
+.edit {
+  background: #2563eb;
+}
+
+.edit:hover {
+  background: #1d4ed8;
+}
+
+.secondary {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.secondary:hover {
+  background: #d1d5db;
+}
+
+.danger {
+  background: #dc2626;
+}
+
+.danger:hover {
+  background: #b91c1c;
+}
+
+.opportunities {
+  display: grid;
+  gap: 16px;
+}
+
+.opportunity {
+  background: white;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.opportunity-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.opportunity-title h3 {
+  margin: 0 0 8px;
+}
+
+.opportunity-title p {
+  margin: 5px 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.analysis-status {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.quote-status {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.proposal-status {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.won-status {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.lost-status {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.data-box {
+  background: #f9fafb;
+  padding: 13px;
+  border-radius: 8px;
+}
+
+.data-label {
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.data-value {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: pre-wrap;
+}
+
+.quote-box {
+  margin-top: 20px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.quote-title {
+  font-weight: bold;
+  color: #166534;
+  margin-bottom: 12px;
+}
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.quote-item {
+  background: white;
+  padding: 14px;
+  border-radius: 8px;
+}
+
+.quote-label {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.quote-value {
+  margin-top: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #166534;
+}
+
+.no-quote {
+  margin-top: 20px;
+  padding: 13px;
+  background: #fff7ed;
+  color: #9a3412;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.detail {
+  display: none;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detail-section {
+  margin-bottom: 18px;
+}
+
+.detail-section h4 {
+  margin: 0 0 7px;
+}
+
+.detail-text {
+  background: #f9fafb;
+  padding: 14px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.empty {
+  background: white;
+  border-radius: 12px;
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 850px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 14px;
+  padding: 30px;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+}
+
+.modal-subtitle {
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+@media (max-width: 900px) {
+
+  .data-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .top-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .data-grid,
+  .quote-grid,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  .opportunity-header {
+    flex-direction: column;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <h1>💼 PREVENTA IA</h1>
+
+  <a
+    href="index.html"
+    class="back"
+  >
+    ← Volver al inicio
+  </a>
+
+</header>
+
+
+<main class="container">
+
+  <div class="welcome">
+
+    <h2>
+      💼 Oportunidades
+    </h2>
+
+    <p>
+      Centralizá clientes, proyectos, requerimientos,
+      estados y cotizaciones.
+    </p>
+
+  </div>
+
+
+  <div class="top-actions">
+
+    <h3>
+      Mis oportunidades
+    </h3>
+
+    <button
+      class="primary"
+      onclick="openNewModal()"
+    >
+      + Nueva oportunidad
+    </button>
+
+  </div>
+
+
+  <div class="search">
+
+    <input
+      id="search"
+      type="text"
+      placeholder="🔎 Buscar por cliente, proyecto o solución..."
+      oninput="renderOpportunities()"
+    >
+
+  </div>
+
+
+  <div
+    id="opportunities"
+    class="opportunities"
+  ></div>
+
+</main>
+
+
+<!-- MODAL -->
+
+<div
+  id="modal"
+  class="modal"
+>
+
+  <div class="modal-content">
+
+    <h3 id="modalTitle">
+      ➕ Nueva oportunidad
+    </h3>
+
+    <p class="modal-subtitle">
+      Completá o corregí los datos de la oportunidad.
+    </p>
+
+
+    <div class="form-grid">
+
+
+      <div>
+
+        <label>
+          Cliente
+        </label>
+
+        <input
+          id="client"
+          type="text"
+          placeholder="Nombre del cliente"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Oportunidad / Proyecto
+        </label>
+
+        <input
+          id="project"
+          type="text"
+          placeholder="Nombre del proyecto"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Solución
+        </label>
+
+        <input
+          id="solution"
+          type="text"
+          placeholder="Thuban / Captika / etc."
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Estado
+        </label>
+
+        <select id="status">
+
+          <option value="analysis">
+            🟡 En análisis
+          </option>
+
+          <option value="quote">
+            🔵 Cotizando
+          </option>
+
+          <option value="proposal">
+            🟣 Propuesta
+          </option>
+
+          <option value="won">
+            🟢 Ganada
+          </option>
+
+          <option value="lost">
+            🔴 Perdida
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Usuarios
+        </label>
+
+        <input
+          id="users"
+          type="text"
+          placeholder="Ejemplo: 500"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Storage
+        </label>
+
+        <input
+          id="storage"
+          type="text"
+          placeholder="Ejemplo: 250 GB"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Documentos / Volumen
+        </label>
+
+        <input
+          id="documents"
+          type="text"
+          placeholder="Legajos, contratos, etc."
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Workflows
+        </label>
+
+        <input
+          id="workflows"
+          type="text"
+          placeholder="Ejemplo: 3 circuitos"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          OCR
+        </label>
+
+        <select id="ocr">
+
+          <option value="No definido">
+            No definido
+          </option>
+
+          <option value="No requerido">
+            No requerido
+          </option>
+
+          <option value="Requerido">
+            Requerido
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Firmas
+        </label>
+
+        <select id="signatures">
+
+          <option value="No definido">
+            No definido
+          </option>
+
+          <option value="No requerido">
+            No requerido
+          </option>
+
+          <option value="Requerido">
+            Requerido
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Infraestructura
+        </label>
+
+        <input
+          id="infrastructure"
+          type="text"
+        >
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Plazo
+        </label>
+
+        <input
+          id="deadline"
+          type="text"
+        >
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Objetivo
+        </label>
+
+        <textarea
+          id="objective"
+        ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Requerimientos
+        </label>
+
+        <textarea
+          id="requirements"
+        ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Riesgos
+        </label>
+
+        <textarea
+          id="risks"
+        ></textarea>
+
+      </div>
+
+
+      <div class="full">
+
+        <label>
+          Notas
+        </label>
+
+        <textarea
+          id="notes"
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-buttons">
+
+      <button
+        class="green"
+        onclick="saveOpportunity()"
+      >
+        💾 Guardar
+      </button>
+
+
+      <button
+        class="secondary"
+        onclick="closeModal()"
+      >
+        Cancelar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+/* ==========================================
+   DATOS
+========================================== */
+
+let opportunities =
+  getOpportunities();
+
+
+let editingId =
+  null;
+
+
+/* ==========================================
+   LOCAL STORAGE
+========================================== */
+
+function getOpportunities() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "preventa_opportunities"
+      )
+    ) || [];
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Error leyendo oportunidades:",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+function saveOpportunities() {
+
+  localStorage.setItem(
+    "preventa_opportunities",
+    JSON.stringify(
+      opportunities
+    )
+  );
+
+}
+
+
+/* ==========================================
+   ESTADO
+========================================== */
+
+function getStatusName(
+  status
+) {
+
+  const names = {
+
+    analysis:
+      "🟡 En análisis",
+
+    quote:
+      "🔵 Cotizando",
+
+    proposal:
+      "🟣 Propuesta",
+
+    won:
+      "🟢 Ganada",
+
+    lost:
+      "🔴 Perdida"
+
+  };
+
+
+  return (
+    names[status] ||
+    "Sin estado"
+  );
+
+}
+
+
+function getStatusClass(
+  status
+) {
+
+  const classes = {
+
+    analysis:
+      "analysis-status",
+
+    quote:
+      "quote-status",
+
+    proposal:
+      "proposal-status",
+
+    won:
+      "won-status",
+
+    lost:
+      "lost-status"
+
+  };
+
+
+  return (
+    classes[status] ||
+    "analysis-status"
+  );
+
+}
+
+
+/* ==========================================
+   RENDER
+========================================== */
+
+function renderOpportunities() {
+
+  const container =
+    document.getElementById(
+      "opportunities"
+    );
+
+
+  const search =
+    document.getElementById(
+      "search"
+    )
+    .value
+    .toLowerCase()
+    .trim();
+
+
+  opportunities =
+    getOpportunities();
+
+
+  container.innerHTML = "";
+
+
+  const filtered =
+    opportunities.filter(
+      function(opportunity) {
+
+        const texto =
+          (
+            opportunity.client ||
+            ""
+          ) +
+          " " +
+          (
+            opportunity.project ||
+            ""
+          ) +
+          " " +
+          (
+            opportunity.solution ||
+            ""
+          );
+
+
+        return texto
+          .toLowerCase()
+          .includes(
+            search
+          );
+
+      }
+    );
+
+
+  if (
+    filtered.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <div style="font-size:42px;">
+          💼
+        </div>
+
+        <h3>
+          No hay oportunidades
+        </h3>
+
+        <p>
+          Creá una oportunidad nueva para comenzar.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  filtered.forEach(
+    function(opportunity) {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "opportunity";
+
+
+      const quote =
+        opportunity.quote;
+
+
+      card.innerHTML = `
+
+        <div class="opportunity-header">
+
+          <div class="opportunity-title">
+
+            <h3>
+              ${escapeHTML(
+                opportunity.project ||
+                "Sin nombre"
+              )}
+            </h3>
+
+            <p>
+              👤 Cliente:
+              ${escapeHTML(
+                opportunity.client ||
+                "Sin definir"
+              )}
+            </p>
+
+            <p>
+              🧩 Solución:
+              ${escapeHTML(
+                opportunity.solution ||
+                "Por definir"
+              )}
+            </p>
+
+            <span
+              class="status ${getStatusClass(
+                opportunity.status
+              )}"
+            >
+              ${getStatusName(
+                opportunity.status
+              )}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="data-grid">
+
+          ${dataCard(
+            "👥 Usuarios",
+            opportunity.users
+          )}
+
+          ${dataCard(
+            "💾 Storage",
+            opportunity.storage
+          )}
+
+          ${dataCard(
+            "📑 Documentos",
+            opportunity.documents
+          )}
+
+          ${dataCard(
+            "🔄 Workflows",
+            opportunity.workflows
+          )}
+
+          ${dataCard(
+            "🔎 OCR",
+            opportunity.ocr
+          )}
+
+          ${dataCard(
+            "✍️ Firmas",
+            opportunity.signatures
+          )}
+
+          ${dataCard(
+            "🏗️ Infraestructura",
+            opportunity.infrastructure
+          )}
+
+          ${dataCard(
+            "📅 Plazo",
+            opportunity.deadline
+          )}
+
+        </div>
+
+
+        ${
+          quote
+
+            ? `
+
+              <div class="quote-box">
+
+                <div class="quote-title">
+                  💰 Cotización guardada
+                </div>
+
+                <div class="quote-grid">
+
+                  ${quoteCard(
+                    "SETUP",
+                    quote.totalSetup
+                  )}
+
+                  ${quoteCard(
+                    "MENSUAL",
+                    quote.totalMonthly
+                  )}
+
+                  ${quoteCard(
+                    "PRIMER AÑO",
+                    quote.totalYear
+                  )}
+
+                </div>
+
+              </div>
+
+            `
+
+            : `
+
+              <div class="no-quote">
+                ⚠️ Esta oportunidad todavía no tiene cotización.
+              </div>
+
+            `
+        }
+
+
+        <div class="actions">
+
+          <button
+            class="edit"
+            onclick="editOpportunity('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            ✏️ Editar
+          </button>
+
+
+          <button
+            onclick="toggleDetail(this)"
+          >
+            👁️ Ver detalle
+          </button>
+
+
+          <button
+            class="green"
+            onclick="goToQuote('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            💰 ${
+              quote
+                ? "Editar cotización"
+                : "Cotizar"
+            }
+          </button>
+
+
+          <button
+            class="danger"
+            onclick="deleteOpportunity('${escapeAttribute(
+              opportunity.id
+            )}')"
+          >
+            🗑️ Eliminar
+          </button>
+
+        </div>
+
+
+        <div class="detail">
+
+          <div class="detail-section">
+
+            <h4>
+              🎯 Objetivo
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.objective ||
+                "No definido"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              🧩 Requerimientos
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.requirements ||
+                "No definidos"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              ⚠️ Riesgos
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.risks ||
+                "No definidos"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              📝 Notas
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.notes ||
+                "Sin notas"
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="detail-section">
+
+            <h4>
+              📄 Documento de origen
+            </h4>
+
+            <div class="detail-text">
+              ${escapeHTML(
+                opportunity.sourceDocument ||
+                "No asociado"
+              )}
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* ==========================================
+   DATA CARD
+========================================== */
+
+function dataCard(
+  label,
+  value
+) {
+
+  return `
+
+    <div class="data-box">
+
+      <div class="data-label">
+        ${escapeHTML(label)}
+      </div>
+
+      <div class="data-value">
+        ${escapeHTML(
+          String(
+            value ||
+            "No definido"
+          )
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================
+   QUOTE CARD
+========================================== */
+
+function quoteCard(
+  label,
+  value
+) {
+
+  return `
+
+    <div class="quote-item">
+
+      <div class="quote-label">
+        ${escapeHTML(label)}
+      </div>
+
+      <div class="quote-value">
+        ${escapeHTML(
+          String(
+            value ||
+            "USD 0,00"
+          )
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================
+   NUEVA
+========================================== */
+
+function openNewModal() {
+
+  editingId =
+    null;
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    "➕ Nueva oportunidad";
+
+
+  clearForm();
+
+
+  document.getElementById(
+    "modal"
+  ).style.display =
+    "flex";
+
+}
+
+
+/* ==========================================
+   EDITAR
+========================================== */
+
+function editOpportunity(
+  id
+) {
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
+
+
+  if (!opportunity) {
+
+    alert(
+      "No encontré la oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  editingId =
+    opportunity.id;
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    "✏️ Editar oportunidad";
+
+
+  setValue(
+    "client",
+    opportunity.client
+  );
+
+  setValue(
+    "project",
+    opportunity.project
+  );
+
+  setValue(
+    "solution",
+    opportunity.solution
+  );
+
+  setValue(
+    "status",
+    opportunity.status
+  );
+
+  setValue(
+    "users",
+    opportunity.users
+  );
+
+  setValue(
+    "storage",
+    opportunity.storage
+  );
+
+  setValue(
+    "documents",
+    opportunity.documents
+  );
+
+  setValue(
+    "workflows",
+    opportunity.workflows
+  );
+
+  setValue(
+    "ocr",
+    opportunity.ocr ||
+    "No definido"
+  );
+
+  setValue(
+    "signatures",
+    opportunity.signatures ||
+    "No definido"
+  );
+
+  setValue(
+    "infrastructure",
+    opportunity.infrastructure
+  );
+
+  setValue(
+    "deadline",
+    opportunity.deadline
+  );
+
+  setValue(
+    "objective",
+    opportunity.objective
+  );
+
+  setValue(
+    "requirements",
+    opportunity.requirements
+  );
+
+  setValue(
+    "risks",
+    opportunity.risks
+  );
+
+  setValue(
+    "notes",
+    opportunity.notes
+  );
+
+
+  document.getElementById(
+    "modal"
+  ).style.display =
+    "flex";
+
+}
+
+
+/* ==========================================
+   GUARDAR
+========================================== */
+
+function saveOpportunity() {
+
+  const client =
+    getValue(
+      "client"
+    );
+
+
+  const project =
+    getValue(
+      "project"
+    );
+
+
+  if (
+    !client ||
+    !project
+  ) {
+
+    alert(
+      "Completá al menos Cliente y Oportunidad / Proyecto."
+    );
+
+    return;
+
+  }
+
+
+  const data = {
+
+    client:
+      client,
+
+    project:
+      project,
+
+    solution:
+      getValue(
+        "solution"
+      ) ||
+      "Por definir",
+
+    status:
+      getValue(
+        "status"
+      ) ||
+      "analysis",
+
+    users:
+      getValue(
+        "users"
+      ),
+
+    storage:
+      getValue(
+        "storage"
+      ),
+
+    documents:
+      getValue(
+        "documents"
+      ),
+
+    workflows:
+      getValue(
+        "workflows"
+      ),
+
+    ocr:
+      getValue(
+        "ocr"
+      ),
+
+    signatures:
+      getValue(
+        "signatures"
+      ),
+
+    infrastructure:
+      getValue(
+        "infrastructure"
+      ),
+
+    deadline:
+      getValue(
+        "deadline"
+      ),
+
+    objective:
+      getValue(
+        "objective"
+      ),
+
+    requirements:
+      getValue(
+        "requirements"
+      ),
+
+    risks:
+      getValue(
+        "risks"
+      ),
+
+    notes:
+      getValue(
+        "notes"
+      ),
+
+    updatedAt:
+      new Date().toISOString()
+
+  };
+
+
+  /*
+    EDITAR EXISTENTE
+  */
+
+  if (
+    editingId !== null
+  ) {
+
+    const index =
+      opportunities.findIndex(
+        opportunity =>
+          String(
+            opportunity.id
+          ) ===
+          String(
+            editingId
+          )
+      );
+
+
+    if (
+      index === -1
+    ) {
+
+      alert(
+        "No encontré la oportunidad."
+      );
+
+      return;
+
+    }
+
+
+    const anterior =
+      opportunities[index];
+
+
+    /*
+      Mantenemos todos los datos
+      que no estamos editando.
+
+      MUY IMPORTANTE:
+      quote NO SE PIERDE.
+    */
+
+    opportunities[index] = {
+
+      ...anterior,
+
+      ...data,
+
+      id:
+        anterior.id,
+
+      createdAt:
+        anterior.createdAt,
+
+      quote:
+        anterior.quote ||
+        null,
+
+      sourceDocument:
+        anterior.sourceDocument ||
+        ""
+
+    };
+
+  }
+
+  else {
+
+    /*
+      CREAR NUEVA
+    */
+
+    opportunities.unshift({
+
+      id:
+        Date.now(),
+
+      ...data,
+
+      createdAt:
+        new Date().toISOString(),
+
+      quote:
+        null,
+
+      sourceDocument:
+        ""
+
+    });
+
+  }
+
+
+  saveOpportunities();
+
+
+  /*
+    Actualizar oportunidad actual
+  */
+
+  const updated =
+    opportunities.find(
+      opportunity =>
+        String(
+          opportunity.id
+        ) ===
+        String(
+          editingId
+        )
+    );
+
+
+  if (
+    updated
+  ) {
+
+    localStorage.setItem(
+      "preventa_current_opportunity",
+      JSON.stringify(
+        updated
+      )
+    );
+
+  }
+
+
+  closeModal();
+
+
+  renderOpportunities();
+
+}
+
+
+/* ==========================================
+   ELIMINAR
+========================================== */
+
+function deleteOpportunity(
+  id
+) {
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
+
+
+  if (!opportunity) {
+
+    return;
+
+  }
+
+
+  if (
+    !confirm(
+      "¿Querés eliminar la oportunidad '" +
+      (
+        opportunity.project ||
+        ""
+      ) +
+      "'?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  opportunities =
+    opportunities.filter(
+      item =>
+        String(
+          item.id
+        ) !==
+        String(id)
+    );
+
+
+  saveOpportunities();
+
+
+  /*
+    Si era la actual,
+    eliminar también la selección.
+  */
+
+  const current =
+    JSON.parse(
+      localStorage.getItem(
+        "preventa_current_opportunity"
+      ) || "null"
+    );
+
+
+  if (
+    current &&
+    String(
+      current.id
+    ) ===
+    String(id)
+  ) {
+
+    localStorage.removeItem(
+      "preventa_current_opportunity"
+    );
+
+  }
+
+
+  renderOpportunities();
+
+}
+
+
+/* ==========================================
+   COTIZADOR
+========================================== */
+
+function goToQuote(
+  id
+) {
+
+  const opportunity =
+    opportunities.find(
+      item =>
+        String(
+          item.id
+        ) ===
+        String(id)
+    );
+
+
+  if (!opportunity) {
+
+    alert(
+      "No encontré la oportunidad."
+    );
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+    "preventa_current_opportunity",
+    JSON.stringify(
+      opportunity
+    )
+  );
+
+
+  window.location.href =
+    "cotizador.html";
+
+}
+
+
+/* ==========================================
+   DETALLE
+========================================== */
+
+function toggleDetail(
+  button
+) {
+
+  const card =
+    button.closest(
+      ".opportunity"
+    );
+
+
+  const detail =
+    card.querySelector(
+      ".detail"
+    );
+
+
+  if (
+    detail.style.display ===
+    "block"
+  ) {
+
+    detail.style.display =
+      "none";
+
+    button.textContent =
+      "👁️ Ver detalle";
+
+  }
+
+  else {
+
+    detail.style.display =
+      "block";
+
+    button.textContent =
+      "🔼 Ocultar detalle";
+
+  }
+
+}
+
+
+/* ==========================================
+   FORMULARIO
+========================================== */
+
+function getValue(
+  id
+) {
+
+  return document
+    .getElementById(
+      id
+    )
+    .value
+    .trim();
+
+}
+
+
+function setValue(
+  id,
+  value
+) {
+
+  document.getElementById(
+    id
+  ).value =
+    value ||
+    "";
+
+}
+
+
+function clearForm() {
+
+  const fields = [
+
+    "client",
+    "project",
+    "solution",
+    "users",
+    "storage",
+    "documents",
+    "workflows",
+    "infrastructure",
+    "deadline",
+    "objective",
+    "requirements",
+    "risks",
+    "notes"
+
+  ];
+
+
+  fields.forEach(
+    function(id) {
+
+      setValue(
+        id,
+        ""
+      );
+
+    }
+  );
+
+
+  setValue(
+    "status",
+    "analysis"
+  );
+
+
+  setValue(
+    "ocr",
+    "No definido"
+  );
+
+
+  setValue(
+    "signatures",
+    "No definido"
+  );
+
+}
+
+
+function closeModal() {
+
+  document.getElementById(
+    "modal"
+  ).style.display =
+    "none";
+
+}
+
+
+/* ==========================================
+   ESCAPE
+========================================== */
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value ||
+    ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+function escapeAttribute(
+  value
+) {
+
+  return String(
+    value ||
+    ""
+  )
+  .replace(
+    /'/g,
+    "\\'"
+  );
+
+}
+
+
+/* ==========================================
+   INICIO
+========================================== */
+
+renderOpportunities();
+
+</script>
+
+</body>
+
+</html>

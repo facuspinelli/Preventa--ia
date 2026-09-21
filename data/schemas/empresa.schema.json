@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Empresa",
+  "type": "object",
+  "required": ["id", "razonSocial"],
+  "properties": {
+    "id": {"type": "string"},
+    "razonSocial": {"type": "string"},
+    "cuit": {"type": ["string", "null"]},
+    "actividad": {"type": ["string", "null"]},
+    "industria": {"type": ["string", "null"]},
+    "provincia": {"type": ["string", "null"]},
+    "localidad": {"type": ["string", "null"]},
+    "empleados": {"type": ["number", "null"]},
+    "tamano": {"type": ["string", "null"]},
+    "fuentes": {"type": "array", "items": {"type": "string"}},
+    "fechaActualizacion": {"type": ["string", "null"]}
+  }
+}

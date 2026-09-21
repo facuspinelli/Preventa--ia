@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Oportunidad",
+  "type": "object",
+  "required": ["id", "nombre", "estado"],
+  "properties": {
+    "id": {"type": "string"},
+    "clienteId": {"type": ["string", "null"]},
+    "nombre": {"type": "string"},
+    "origen": {"type": ["string", "null"]},
+    "estado": {"enum": ["NUEVA", "EN_ANALISIS", "COTIZANDO", "PROPUESTA", "GANADA", "PERDIDA"]},
+    "responsable": {"type": ["string", "null"]},
+    "fecha": {"type": ["string", "null"]},
+    "fechaLimite": {"type": ["string", "null"]},
+    "montoEstimado": {"type": ["number", "null"]},
+    "productoIds": {"type": "array", "items": {"type": "string"}},
+    "documentoIds": {"type": "array", "items": {"type": "string"}},
+    "analisisId": {"type": ["string", "null"]},
+    "cotizacionId": {"type": ["string", "null"]},
+    "propuestaTecnicaId": {"type": ["string", "null"]},
+    "propuestaEconomicaId": {"type": ["string", "null"]},
+    "riesgos": {"type": "array", "items": {"type": "object"}},
+    "actividades": {"type": "array", "items": {"type": "object"}},
+    "resultado": {"type": ["string", "null"]},
+    "motivoPerdida": {"type": ["string", "null"]}
+  }
+}

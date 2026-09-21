@@ -1,0 +1,9 @@
+{
+  "name": "preventa-ia",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "openai": "^5.12.2",
+    "xlsx": "^0.18.5"
+  }
+}
