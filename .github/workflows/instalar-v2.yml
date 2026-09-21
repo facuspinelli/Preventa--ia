@@ -1,10 +1,10 @@
-name: Instalar PREVENTA IA Integrado
+name: Instalar PREVENTA IA V3
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'PREVENTA-IA-INTEGRADO-ARCHIVOS*.zip'
+      - 'PREVENTA-IA-INTEGRADO-ARCHIVOS-V3.zip'
 
 permissions:
   contents: write
@@ -19,76 +19,100 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Buscar paquete integrado
+      - name: Buscar paquete V3
         run: |
-          ZIP=$(find . -maxdepth 1 -type f -name 'PREVENTA-IA-INTEGRADO-ARCHIVOS*.zip' | head -1)
+          ZIP="PREVENTA-IA-INTEGRADO-ARCHIVOS-V3.zip"
 
-          if [ -z "$ZIP" ]; then
-            echo "ERROR: No se encontró el paquete integrado."
-            echo "Archivos disponibles:"
+          if [ ! -f "$ZIP" ]; then
+            echo "ERROR: No se encontró $ZIP"
+            echo "Archivos disponibles en la raíz:"
             ls -la
             exit 1
           fi
 
-          echo "ZIP encontrado: $ZIP"
+          echo "Paquete encontrado: $ZIP"
           echo "ZIP=$ZIP" >> "$GITHUB_ENV"
 
-      - name: Extraer paquete
+      - name: Extraer V3
         run: |
-          rm -rf _integrado
-          mkdir _integrado
-          unzip -q "$ZIP" -d _integrado
+          rm -rf _v3
+          mkdir _v3
+          unzip -q "$ZIP" -d _v3
 
-      - name: Verificar archivos
+      - name: Verificar V3
         run: |
           archivos=(
-            "analisis.html"
-            "asistente.html"
-            "biblioteca.html"
-            "conocimientoiaasistente.html"
-            "cotizador.html"
-            "documentos.html"
             "index.html"
-            "mercado.html"
+            "asistente.html"
             "oportunidades.html"
+            "analisis.html"
+            "documentos.html"
+            "cotizador.html"
+            "mercado.html"
+            "biblioteca.html"
             "repositorio.html"
+            "conocimientoiaasistente.html"
             "preventa-core.js"
           )
 
           for archivo in "${archivos[@]}"; do
-            if [ ! -f "_integrado/$archivo" ]; then
-              echo "ERROR: Falta $archivo"
+            if [ ! -f "_v3/$archivo" ]; then
+              echo "ERROR: Falta $archivo en V3"
               exit 1
             fi
           done
 
-          echo "OK: todos los archivos fueron encontrados."
+          echo "V3 validada correctamente."
 
-      - name: Instalar archivos integrados
+      - name: Instalar V3
         run: |
-          cp _integrado/analisis.html .
-          cp _integrado/asistente.html .
-          cp _integrado/biblioteca.html .
-          cp _integrado/conocimientoiaasistente.html .
-          cp _integrado/cotizador.html .
-          cp _integrado/documentos.html .
-          cp _integrado/index.html .
-          cp _integrado/mercado.html .
-          cp _integrado/oportunidades.html .
-          cp _integrado/repositorio.html .
-          cp _integrado/preventa-core.js .
+          cp _v3/index.html .
+          cp _v3/asistente.html .
+          cp _v3/oportunidades.html .
+          cp _v3/analisis.html .
+          cp _v3/documentos.html .
+          cp _v3/cotizador.html .
+          cp _v3/mercado.html .
+          cp _v3/biblioteca.html .
+          cp _v3/repositorio.html .
+          cp _v3/conocimientoiaasistente.html .
+          cp _v3/cotizador.html .
+          cp _v3/preventa-core.js .
 
-          if [ -d "_integrado/docs" ]; then
-            mkdir -p docs
-            cp -a _integrado/docs/. docs/
+          if [ -d "_v3/lib" ]; then
+            mkdir -p lib
+            cp -a _v3/lib/. lib/
           fi
 
-      - name: Eliminar ZIP
+          if [ -d "_v3/data" ]; then
+            mkdir -p data
+            cp -a _v3/data/. data/
+          fi
+
+          if [ -d "_v3/api" ]; then
+            mkdir -p api
+            cp -a _v3/api/. api/
+          fi
+
+          if [ -d "_v3/docs" ]; then
+            mkdir -p docs
+            cp -a _v3/docs/. docs/
+          fi
+
+          if [ -f "_v3/conocimiento.json" ]; then
+            cp _v3/conocimiento.json .
+          fi
+
+          if [ -f "_v3/package.json" ]; then
+            cp _v3/package.json .
+          fi
+
+      - name: Limpiar instalador
         run: |
-          rm -rf _integrado
+          rm -rf _v3
           rm -f "$ZIP"
 
-      - name: Guardar cambios
+      - name: Guardar V3
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -103,5 +127,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Instalar PREVENTA IA Integrado"
+          git commit -m "Instalar PREVENTA IA V3 completa"
           git push origin main
