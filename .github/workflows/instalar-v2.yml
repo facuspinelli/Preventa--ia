@@ -21,6 +21,7 @@ jobs:
           rm -rf _v2
           mkdir _v2
           unzip -q PREVENTA-IA-V2-WINDOWS.zip -d _v2
+          rm -rf _v2/.github
           cp -a _v2/. .
           rm -rf _v2 PREVENTA-IA-V2-WINDOWS.zip
 
